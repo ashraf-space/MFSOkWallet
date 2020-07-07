@@ -1,0 +1,136 @@
+<p-toast [style]="{marginTop: '80px'}"></p-toast>
+
+<div *ngIf="currentUser">
+    <!-- nav -->
+    <nav class="navbar navbar-dark fixed-top bg-top-bar flex-md-nowrap p-0 navbar-expand">
+        <a class="navbar-brand" (click)="display = true" (mouseover)="display = true">
+            <i class="fas fa-bars" style="color:white"></i>
+        </a>
+        <a class="navbar-brand" routerLink="/">
+            <img src="assets/wallet.png" height="40px" alt="">
+        </a>
+        <ul class="navbar-nav mr-auto"></ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="initiateGlobalSearch()"><i class="fas fa-search"></i> </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="onProfileVisit()"> <i class="fas fa-user-circle"></i> {{currentUser.user.name}} </button>
+            </li>
+            <li class="nav-item">
+                <p-menu #menu [popup]="true" [model]="settingItems"></p-menu>
+                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="menu.toggle($event)"><i class="fas fa-cog spin"></i></button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="logout()"> <i class="fas fa-sign-out-alt"></i> </button>
+            </li>
+        </ul>
+    </nav>
+    <p-sidebar [(visible)]="display" position="left" showCloseIcon="false">
+        <div class="left-menu-top-item">
+            <h5 style="text-align:center;color:white;padding: 5%;"><img src="assets/bs-img.png" height="80px" alt=""><br />{{currentUser.user.name}}</h5>
+        </div>
+        <p-scrollPanel [style]="{height: 'calc(80vh - 110px)',width: '105%', 'margin-left': '-0.5em'}">
+            <p-panelMenu [model]="leftMenuItems" [transitionOptions]="'150ms'" [style]="{'margin-top':'1%','border':'none'}" [multiple]=false></p-panelMenu>
+        </p-scrollPanel>
+    </p-sidebar>
+
+    <div class="container-fluid main-body bg-main ">
+        <div class="p-grid">
+            <main role="main" class="p-col-12 ml-sm-auto main-body " style="min-height:calc(100vh - 48px)" id="main-body" [@menu-annimation]>
+                <div class="main-router-outlet">
+                    <router-outlet>
+                    </router-outlet>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid hold-transition scale-down" *ngIf="!currentUser">
+    <router-outlet>
+    </router-outlet>
+</div>
+
+<br />
+<div class="text-right footer" *ngIf="currentUser">
+    <p class="footer-text">Designed & Developed by Software Development Team, MFS and Agent Banking Division  | <i class="far fa-copyright"></i> ONE Bank Limited</p>
+</div>
+
+<app-generic-modal [initiateModal]="promptChangePasswordModal" *ngIf="currentUser" [header]="'Change Password'" (onConfirm)="confirmPasswordChange()" (onDestroy)="promptChangePasswordModal=false" [disableConfirm]="changePasswordModel.newPassword==null || changePasswordModel.newPassword!=changePasswordModel.confirmNewPassword || changePasswordModel.oldPassword==null" [hideCancel]="firstTimeChange">
+    <div class="form-group">
+        <div class="row" *ngIf="invalidCredentials">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Old Password</span>
+                </div>
+            </div>
+        </div>
+        <h6 class="form-header"><i class="fas fa-user" aria-hidden="true"></i>  {{currentUser.user.name}} | Change Password <i class="fas fa-key"></i> <span *ngIf="firstTimeChange">| Please Change Password for First Time Logging in</span></h6>
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">Old Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" class="form-control form-input" [(ngModel)]="changePasswordModel.oldPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">New Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" pPassword class="form-control form-input" [(ngModel)]="changePasswordModel.newPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">Confirm New Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" class="form-control form-input" [(ngModel)]="changePasswordModel.confirmNewPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="changePasswordModel.newPassword!=null && changePasswordModel.newPassword!=changePasswordModel.confirmNewPassword">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: New Password and Confirm New Password does not Match</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="globalSearchModal" *ngIf="currentUser" [header]="'Global Search'" (onDestroy)="globalSearchModal=false" [hideConfirm]="true">
+    <div class="form-group" style="margin-bottom:17.5em!important">
+        <div class="p-grid">
+            <div class="p-col-3">
+                <label class="col-form-label-dd"><i class="fas fa-search"></i> Option </label>
+                <p-dropdown [options]="searchModel.optionList" placeholder="Select Option" [(ngModel)]="searchModel.option"
+                            [filter]="true" [style]="{display: 'grid'}" (onChange)="fillCriteriaList()"></p-dropdown>
+            </div>
+            <div class="p-col-3">
+                <label class="col-form-label-dd"><i class="fas fa-search"></i> Criteria </label>
+                <p-dropdown [options]="searchModel.criteriaList" placeholder="Select Criteria" [(ngModel)]="searchModel.criteria"
+                            [disabled]="!searchModel.option" [filter]="true" [style]="{display: 'grid'}"></p-dropdown>
+            </div>
+            <div class="p-col-3">
+                <span class="ui-float-label" style="margin-top:5%">
+                    <input type="text" class="form-control" [(ngModel)]="searchModel.filter" pInputText id="float-input" [disabled]="!searchModel.criteria">
+                    <label for="float-input input-lg" class="col-form-label"><i class="fas fa-filter"></i> Filter</label>
+                </span>
+            </div>
+            <div class="p-col-3">
+                <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" style="margin-top:5%" (click)="onSearch()" [disabled]="!searchModel.filter"><i class="fas fa-search"></i> Search </button>
+            </div>
+        </div>
+        <div class="p-grid" *ngIf="searchModel.initiateSearch">
+            <div class="p-col-12" *ngIf="isGridLoading">
+                <p style="text-align:center;"><p-progressSpinner></p-progressSpinner></p>
+            </div>
+            <div class="p-col-12" *ngIf="!isGridLoading">
+                <generic-grid [gridConfig]="searchGridConfig">
+                </generic-grid>
+            </div>
+        </div>
+    </div>
+</app-generic-modal>
+
+

@@ -1,0 +1,181 @@
+﻿<div >
+    <div class="p-grid" *ngIf="!isLoading">
+        <div class="p-col-12">
+            <p-card>
+                <h6><b><i class="fas fa-tachometer-alt"></i> Ok Wallet Dashboard</b></h6>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">TOTAL CLIENTS</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.TOTAL |number }}</b></h6>
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fas fa-users"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">ACTIVE</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">NEW CLIENTS</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.CLIENTTHISMONTH |number }}</b></h6>
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fas fa-user-plus"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">THIS MONTH</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card styleClass="ui-card-shadow">
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">NEW CLIENTS</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.CLIENTTHISYEAR |number }}</b></h6>
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fas fa-user-plus"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">THIS YEAR</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">TOTAL CLIENTS</h6>
+                    </div>
+                    <div class="p-col-12">
+                        <p-chart type="doughnut" [data]="pieData"></p-chart>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">TRANSACTIONS THIS YEAR</h6>
+                    </div>
+                    <div class="p-col-12">
+                        <p-chart type="line" [data]="barData"></p-chart>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">TOTAL TRANSACTION</h6>
+                    </div>
+                    <div class="p-col-12">
+                        <p-chart type="line" [data]="barData2"></p-chart>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">ASSET</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalAsset.ASSET | number | bdtCurrency">৳</b></h6>
+
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fas fa-money-bill-wave"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">ACTIVE</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">TOTAL TRANSACTION (Crore)</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalTransaction | number | bdtCurrency"></b> <b style="margin-left:0.2em;">Cr</b></h6>
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fas fa-comment-dollar"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">ACTIVE</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-4">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12">
+                        <h6 style="color:cadetblue">PROMOTIONS AND CASHBACK</h6>
+                    </div>
+                    <div class="p-col-7">
+                        <h6 style="color:blue"><b>3</b></h6>
+                    </div>
+                    <div class="p-col-5">
+                        <h6 style="float:right"><i class="fab fa-battle-net"></i></h6>
+                    </div>
+                    <div class="p-col-12">
+                        <hr /><h6 style="color:cadetblue">ONGOING</h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-12">
+            <p-carousel headerText="Client Count" [value]="clientCountList" numVisible="7" *ngIf="!isLoading" easing="easeOutStrong">
+                <ng-template let-client pTemplate="item">
+                    <p-card>
+                        <div class="p-grid" *ngIf="client.name != 'CLIENT'">
+                            <div class="p-col-12"> <h6 style="text-align:center"><i class="{{client.icon}}"></i></h6></div>
+                            <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.name}}</b></h6> </div>
+                            <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.count}}</b></h6> </div>
+                            <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.thisMonth}}</b></h6> </div>
+                            <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.thisYear}}</b></h6> </div>
+                            <div class="p-col-12"><h6 style="color:red;text-align:center"><b>{{client.pending}}</b></h6> </div>
+                        </div>
+                        <div class="p-grid" *ngIf="client.name == 'CLIENT'">
+                            <div class="p-col-12"> <h6 style="color:cadetblue;text-align:center"><i class="{{client.icon}}"></i></h6></div>
+                            <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"><b>Client Type</b></h6></div>
+                            <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>Total Count</b></h6></div>
+                            <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>(+) This Month</b></h6></div>
+                            <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>(+) This Year</b></h6></div>
+                            <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>Pending</b></h6></div>
+                        </div>
+                    </p-card>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+    <div class="loader-center" *ngIf="isLoading">
+        <p-progressSpinner></p-progressSpinner>
+    </div>   
+</div>

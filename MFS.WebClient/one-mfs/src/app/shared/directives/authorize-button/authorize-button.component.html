@@ -1,0 +1,43 @@
+<button class="btn btn-outline-success btn-sm" (click)="onButtonClickEvent('add')"
+        *ngIf="isAdd" [disabled]="!isAuthorized || forcedDisable">
+    New <i class="fa fa-plus" aria-hidden="true"></i>
+</button>
+
+
+<button class="btn btn-outline-info btn-sm" *ngIf="isEdit" [disabled]="!isAuthorized || forcedDisable" (click)="onButtonClickEvent('edit')"><i class="far fa-edit"></i></button>
+
+<button class="btn btn-blue btn-sm btn-reverse" *ngIf="isdetailEdit" [disabled]="!isAuthorized || forcedDisable" (click)="onButtonClickEvent('detail-edit')"><i class="far fa-edit"></i></button>
+<button class="btn btn-blue btn-sm btn-reverse" *ngIf="isDetailRegister" [disabled]="!isAuthorized || forcedDisable" (click)="onButtonClickEvent('detail-register')"><i class="far fa-eye"></i></button>
+
+<button class="btn btn-outline-info btn-sm" *ngIf="isRegister" [disabled]="!isAuthorized || forcedDisable" (click)="onButtonClickEvent('register')"><i class="far fa-eye"></i></button>
+
+
+<button class="btn btn-warning btn-block btn-reverse  btn-sm" (click)="onButtonClickEvent('delete')"
+        *ngIf="isDelete" [disabled]="!isAuthorized || forcedDisable">
+    Delete <i class="far fa-trash-alt"></i>
+</button>
+
+<button class="btn btn-success btn-block btn-reverse  btn-sm" (click)="onButtonClickEvent('save')"
+        *ngIf="isSaveEntity && !isEditMode" [disabled]="!isAuthorized || forcedDisable">
+    Save <i class="far fa-save"></i>
+</button>
+
+<button class="btn btn-success btn-block btn-reverse  btn-sm" (click)="onButtonClickEvent('edit')"
+        *ngIf="isSaveEntity && isEditMode" [disabled]="!isAuthorized || forcedDisable">
+    Save <i class="far fa-save"></i>
+</button>
+
+<button class="btn btn-success btn-block btn-reverse  btn-sm" (click)="onButtonClickEvent('register')"
+        *ngIf="isRegisterEntity" [disabled]="!isAuthorized || forcedDisable">
+    Approve <i class="far fa-save"></i>
+</button>
+
+<button class="btn btn-blue btn-block btn-reverse  btn-sm" (click)="onButtonClickEvent('pass-to-maker')"
+        *ngIf="isPassToMaker" [disabled]="!isAuthorized || forcedDisable">
+    Pass To Maker <i class="fab fa-odnoklassniki"></i>
+</button>
+
+<button class="btn btn-warning btn-block btn-reverse btn-sm" (click)="onButtonClickEvent('reject')"
+        *ngIf="isRejection" [disabled]="!isAuthorized || forcedDisable">
+    Reject <i class="far fa-trash-alt"></i>
+</button>

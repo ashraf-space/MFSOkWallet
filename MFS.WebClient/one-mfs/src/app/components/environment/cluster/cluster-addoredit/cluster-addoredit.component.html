@@ -1,0 +1,70 @@
+<fieldset [disabled]="isRegPermit ? 'disabled' : null">
+
+	<div class="form-elements">
+		<p-card [style]="{'margin-bottom':'20px'}">
+			<div class="form-group">
+				<h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Create</span><span *ngIf="isEditMode"> Update</span> Cluster </h6>
+				<div class="p-grid">
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Region <span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<!--<p-dropdown [options]="regionCategoryList" (onChange)="SelectAreasByRegion();" [(ngModel)]="clusterModel.parent" placeholder="Select Region" [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>-->
+								<p-dropdown [options]="regionCategoryList" [disabled]="isEditMode  || isRegPermit" [(ngModel)]="clusterModel.regionCode"
+											placeholder="Select Region" [filter]="true" filterBy="label,value.name"
+											[style]="{display: 'grid'}" (ngModelChange)="SelectAreasByRegion($event);"></p-dropdown>
+								<p-message *ngIf="(clusterModel.regionCode==null || clusterModel.regionCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Area <span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<p-dropdown [options]="areaList" [disabled]="isEditMode" [(ngModel)]="clusterModel.areaCode" (ngModelChange)="SelectTerritoriesByArea($event);"
+											placeholder="Select Area" [filter]="true" filterBy="label,value.name"
+											[showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
+								<p-message *ngIf="(clusterModel.areaCode==null || clusterModel.areaCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Territory <span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<p-dropdown [options]="territoryList" [disabled]="isEditMode" [(ngModel)]="clusterModel.parent" (ngModelChange)="GetClusterCode($event);"
+											placeholder="Select Area" [filter]="true" filterBy="label,value.name"
+											[showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
+								<p-message *ngIf="(clusterModel.parent==null || clusterModel.parent=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="p-grid">
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="DistributorCode" class="col-sm-2 col-form-label">Cluster Code</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control form-input" [(ngModel)]="clusterModel.code" id="clusterCode" placeholder="auto code" disabled="disabled" />
+							</div>
+						</div>
+					</div>
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Cluster Name<span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="Cluster Name" [(ngModel)]="clusterModel.name">
+								<p-message *ngIf="(clusterModel.name==null || clusterModel.name=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p-card>
+	</div>
+</fieldset>
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onSaveCluster($event)"></app-generic-form-action>

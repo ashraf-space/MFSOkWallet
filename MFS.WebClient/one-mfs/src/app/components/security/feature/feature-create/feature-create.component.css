@@ -1,0 +1,3 @@
+body .ui-messages .ui-messages-icon {
+    visibility: hidden !important;
+}

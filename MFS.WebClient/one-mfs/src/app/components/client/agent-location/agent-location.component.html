@@ -1,0 +1,26 @@
+<p-panel header="Search Location" [toggleable]="true" >
+    <div class="p-grid">
+        <div class="p-col-2">
+            <p-dropdown [options]="regionList" [(ngModel)]="model.region" placeholder="Select Region" (onChange)="fillAreaDDL()" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+        </div>
+        <div class="p-col-2">
+            <p-dropdown [options]="areaList" [(ngModel)]="model.area" placeholder="Select Area" (onChange)="fillTerritoryDDL()" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+        </div>
+        <div class="p-col-3">
+            <p-dropdown [options]="territoryList" [(ngModel)]="model.territory" 
+                        placeholder="Select Territory" [filter]="true" filterBy="label,value.name" (onChange)="getclusterByTerritoryCode()"
+                        [style]="{display: 'grid'}"></p-dropdown>
+        </div>
+        <div class="p-col-3">
+            <p-dropdown [options]="clusterList" [(ngModel)]="model.cluster" id="cluster" placeholder="Select Cluster"                        
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+                        [disabled]="isEditMode"></p-dropdown>
+        </div>
+        <div class="p-col-2">
+            <button type="button" class="btn btn-blue btn-sm btn-block" (click)="onSearch()"><i class="fas fa-search"></i> Search</button>
+        </div>
+    </div>
+</p-panel>
+<br />
+<generic-grid [gridConfig]="gridConfig" *ngIf="showGrid">    
+</generic-grid>

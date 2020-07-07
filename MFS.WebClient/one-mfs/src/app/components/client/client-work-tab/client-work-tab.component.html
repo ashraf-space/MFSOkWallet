@@ -1,0 +1,58 @@
+
+<mfs-loader *ngIf="loading"></mfs-loader>
+<br />
+<p-panel [toggleable]="true" *ngIf="showSearch" header="Search Client Work">
+	<div class="p-grid" >
+		<div class="p-col-9">
+			<span class="ui-float-label ">
+				<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="mphone">
+				<label for="float-input input-sm" class="col-form-label"><i class='fa fa-search'></i> Enter MPhone Number</label>
+			</span>
+		</div>
+		<div class="p-col-3">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()" [disabled]="!mphone"><i class="fas fa-search"></i> Search </button>
+		</div>
+	</div>
+</p-panel>
+
+<div class="p-col-12" *ngIf="showTabForWork">
+	<p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+		<p-tabPanel header="Communication">
+			<app-outbox [mPhone]="searchModel.mphone"></app-outbox>
+		</p-tabPanel>
+		<p-tabPanel header="Transaction List">
+			<app-transaction-master [mPhone]="searchModel.mphone"></app-transaction-master>
+		</p-tabPanel>
+		<p-tabPanel header="Request">
+			<app-customer-request [mPhone]="searchModel.mphone"></app-customer-request>
+		</p-tabPanel>
+		<p-tabPanel header="Agent" *ngIf="searchModel.catId=='D'">
+			<app-agent-list [distributor]="searchModel" [agents]="childList"></app-agent-list>
+		</p-tabPanel>
+		<p-tabPanel header="DSR" *ngIf="searchModel.catId=='D'">
+			<app-dsr-list [distributor]="searchModel" [dsr]="childList"></app-dsr-list>
+		</p-tabPanel>
+	</p-tabView>
+</div>
+
+<div class="p-col-12" *ngIf="showTabForCustomerPortal">
+	<p-tabView [activeIndex]="index" (onChange)="handleChange($event)">
+		<p-tabPanel header="Communication">
+			<app-outbox [mPhone]="entity.mphone"></app-outbox>
+		</p-tabPanel>
+		<p-tabPanel header="Transaction List">
+			<app-transaction-master [mPhone]="entity.mphone"></app-transaction-master>
+		</p-tabPanel>
+		<p-tabPanel header="Request">
+			<app-customer-request [mPhone]="entity.mphone"></app-customer-request>
+		</p-tabPanel>
+		<p-tabPanel header="Agent" *ngIf="entity.catId=='D'">
+			<app-agent-list [distributor]="entity" [agents]="childList"></app-agent-list>
+		</p-tabPanel>
+		<p-tabPanel header="DSR" *ngIf="entity.catId=='D'">
+			<app-dsr-list [distributor]="entity" [dsr]="childList"></app-dsr-list>
+		</p-tabPanel>
+	</p-tabView>
+</div>
+
+

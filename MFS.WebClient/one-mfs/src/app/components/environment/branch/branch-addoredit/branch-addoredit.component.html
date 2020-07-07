@@ -1,0 +1,23 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Create</span><span *ngIf="isEditMode"> Update</span> Bank Branch</h6>
+            <div class="form-group row">
+                <label for="BranchCode" class="col-sm-2 col-form-label">Branch Code <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" id="BranchCode" placeholder="Branch Code" [(ngModel)]="bankBranchModel.branchcode">
+                    <p-message *ngIf="(bankBranchModel.branchcode==null || bankBranchModel.branchcode=='') && error " severity="error" text="Field is requird"></p-message>
+                </div>               
+            </div>
+            <div class="form-group row">
+                <label for="BranchName" class="col-sm-2 col-form-label single-line">Branch Name <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" id="BranchName" placeholder="Branch Name" [(ngModel)]="bankBranchModel.branchname">
+                    <p-message *ngIf="(bankBranchModel.branchname==null || bankBranchModel.branchname=='') && error " severity="error" text="Field is requird"></p-message>
+                </div>
+            </div>           
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onBankBranchSave()" (onDelete)="onBranchDelete($event)"></app-generic-form-action>

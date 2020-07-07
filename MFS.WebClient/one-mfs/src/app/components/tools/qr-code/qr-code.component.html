@@ -1,0 +1,38 @@
+<!--<div class="form-group" >
+	<div class="merchant_badge" id="main-badge">
+		<div class="merchant_badge_inner">
+			<div class="ok_wallet" style="background:#FFF;max-height:3in;padding:0.35in 0px;" align="center">
+				<div id="ok-wallet-logo">
+				</div>
+				<img src="./wallet.png" style="height: 1.5in;" />
+			</div>
+			<div class="merchant_info" style="height:auto;">
+				<h2 class="merchant_name" style="max-height:1.25in;overflow:hidden;margin:0px;margin-top:.5mm;padding:4mm;font-size:22pt;text-align:center;">{{model.clientName}}</h2>
+
+				<div style="text-align:center;max-width:2.2in;max-height:2.2in;overflow:hidden;border:1px solid #CCC;background:#FFF;padding:0.05in;margin:0px auto;" *ngIf="!model.isDownloadable">
+					<ngx-qrcode *ngIf="display" id="qrCodeImage" [qrc-element-type]="elementType" [qrc-value]="value" style="zoom:1.79">
+					</ngx-qrcode>
+				</div>
+
+				<div class="merchant_qr" style="width:2.2in;height:2.2in;overflow:hidden;border:1px solid #CCC;background:#FFF;padding:0.05in;margin:0px auto;" *ngIf="model.isDownloadable">
+					<img id="img_merchant_badge" [src]="model.qrCodeSrc" style="width:2in" />
+				</div>
+
+				<div class="scan_qr" align="center">
+					Scan QR Code to Pay
+				</div>
+				<div class="merchant_mobile" style="width:4in;margin:0px auto;">
+					<div class="merchant_no" align="left">
+						Merchant Account Number
+					</div>
+					<div class="merchant_mobile_no" style="margin-top:2mm;">
+						<span *ngFor="let num of model.qrCodeNumber.split('')">{{num}}</span>
+					</div>
+				</div>
+				<div class="call_center_info" align="right" style="padding-right:0.3in;margin-top:1in">
+					Call Center: 16269
+				</div>
+			</div>
+		</div>
+	</div>
+</div>-->

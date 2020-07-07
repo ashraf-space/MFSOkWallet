@@ -1,0 +1,580 @@
+
+.bg-svg{
+    background-image: url(above-cloud.png);
+}
+.loader {
+    margin-top: 15%;
+}
+
+.main-loader {
+    margin-top: 14% !important;
+    margin-left: 40% !important;
+    padding: 1rem !important;
+    position: absolute;
+    width: 100%;
+    z-index: 500000;
+    top: 0;
+}
+
+.lds-circle {
+    display: inline-block;
+    transform: translateZ(1px);
+}
+
+    .lds-circle > div {
+        display: inline-block;
+        width: 51px;
+        height: 51px;
+        margin: 6px;
+        border-radius: 50%;
+        background: #689cc5;
+        animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+
+@keyframes lds-circle {
+    0%, 100% {
+        animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
+    }
+
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    50% {
+        transform: rotateY(1800deg);
+        animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
+    }
+
+    100% {
+        transform: rotateY(3600deg);
+    }
+}
+
+/*.login-box, .register-box {    
+    margin: 7% auto !important;
+}*/
+
+/*loader css end*/
+
+@keyframes lds-flickr-opacity {
+    0% {
+        -webkit-transform: translate(0 0);
+        transform: translate(0 0);
+        opacity: 1;
+    }
+
+    49.99% {
+        opacity: 1;
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@-webkit-keyframes lds-flickr-opacity {
+    0% {
+        -webkit-transform: translate(0 0);
+        transform: translate(0 0);
+        opacity: 1;
+    }
+
+    49.99% {
+        opacity: 1;
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    50% {
+        opacity: 0;
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes lds-flickr {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+
+    50% {
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    100% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+@-webkit-keyframes lds-flickr {
+    0% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+
+    50% {
+        -webkit-transform: translate(80px, 0);
+        transform: translate(80px, 0);
+    }
+
+    100% {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+}
+
+.lds-flickr {
+    position: relative;
+}
+
+    .lds-flickr div {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        top: 60px;
+        left: 20px;
+    }
+
+        .lds-flickr div:nth-child(1) {
+            background: #93dbe9;
+            -webkit-animation: lds-flickr 1s linear infinite;
+            animation: lds-flickr 1s linear infinite;
+            -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s;
+        }
+
+        .lds-flickr div:nth-child(2) {
+            background: #689cc5;
+            -webkit-animation: lds-flickr 1s linear infinite;
+            animation: lds-flickr 1s linear infinite;
+            -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+        }
+
+        .lds-flickr div:nth-child(3) {
+            background: #93dbe9;
+            -webkit-animation: lds-flickr-opacity 1s linear infinite;
+            animation: lds-flickr-opacity 1s linear infinite;
+            -webkit-animation-delay: -0.5s;
+            animation-delay: -0.5s;
+        }
+
+.lds-flickr {
+    width: 200px !important;
+    height: 200px !important;
+    -webkit-transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+    transform: translate(-100px, -100px) scale(1) translate(100px, 100px);
+}
+
+.ui-menuitem-text{
+    font-size:90%;
+}
+
+.custom-bar .ui-scrollpanel-wrapper {
+    border-right: 9px solid #f4f4f4;
+}
+
+.custom-bar .ui-scrollpanel-bar {
+    background-color: #1976d2;
+    opacity: 0.2;
+    transition: background-color .200ms;
+}
+
+    .custom-bar .ui-scrollpanel-bar:hover {
+        background-color: #135ba1;
+    }
+
+.main-body {
+    margin-top: 1.95%;
+}
+
+.navbar-brand{
+    margin-left:2%;
+}
+
+.bg-top-bar {
+    background-color: #78A0CA;
+}
+
+.bg-main {
+    background-color: #efefeff2;
+}
+
+.fixed{
+    position:fixed;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 0;
+    height: 3.5%;
+    background-color: #42a5f5;
+    opacity: .9;
+}
+
+.footer:hover{
+    opacity:1;
+}
+
+.text-right
+{
+    text-align:right;
+}
+.footer-text {
+    font-size: 90%;
+    font-family: Calibri;
+    color: #fff;
+    margin: 0%;
+    font-weight: 700;
+    margin-right: 25%;
+}
+
+.event-buttons {
+    position: fixed;
+    bottom: 0.28rem;
+    right: 0;
+    left: 0;
+    z-index: 999;
+}
+    .event-buttons:hover {
+        opacity: 1;
+    }
+
+.nav-link {
+    color: white !important;
+    padding-left: 14.5px !important;
+    padding-right: 14.5px !important;
+}
+
+    .nav-link:hover {
+        color: #78A0CA !important;
+        background-color: #f4f4f4 !important;
+        border: #f4f4f4 !important;        
+    }
+
+.fixed-top {
+    z-index: 999 !important;
+    max-height: 2.5rem;
+    box-shadow: 0px 1px #f7f7f7;
+}
+
+.gap {
+    padding-left:1%;
+}
+
+.form-header {
+    background-color: #78A0CA;
+    padding: 0.8rem;
+    color: white;
+    
+    margin-bottom: 1%;
+}
+
+.ui-menuitem-icon {
+    margin-left: 0.5rem;
+    width: 1.8rem;
+    align-content: center;
+}
+
+body .ui-panelmenu .ui-panelmenu-header > a {
+    border: none !important;
+    padding: 0.954em !important;   
+}
+
+body .ui-panelmenu .ui-panelmenu-header.ui-state-active > a {
+    background-color: #78A0CA !important;
+}
+
+body .ui-panelmenu .ui-panelmenu-header.ui-state-default > a {
+    background-color: white ;
+}
+
+    body .ui-panelmenu .ui-panelmenu-header.ui-state-default > a:hover {
+        background-color: #78A0CA !important;
+        color:white !important;
+    }
+
+.ui-panelmenu .ui-panelmenu-icon {
+    
+    font-size: 0.8rem !important;
+    float: right;
+    margin-top: 3%;
+}
+.form-group {
+    margin-bottom: 0px !important;
+}
+
+.form-control {
+    padding: 1px 1px !important;
+    margin: 1px 0 !important ;
+    font-size: 90% !important;
+}
+
+.form-elements {
+    margin-bottom: 8% !important;
+}
+
+
+.single-line {
+    margin-top: 7.8px !important;
+}
+
+.col-form-label {
+    font-size: 90% !important;
+    color: cadetblue !important;
+    padding-top: 2.5px !important;
+    font-weight: 700 !important;
+}
+
+.col-form-label-dd {
+    font-size: 90% !important;
+    color: cadetblue !important;
+    font-weight: 700 !important;
+    margin-bottom: -1.5%;
+}
+
+hr {
+    margin-top: 0 !important;
+}
+
+.third-line {
+    padding-top: 0 !important;
+    line-height: 1 !important;
+}
+
+.mandatory {
+    color: red !important;
+    line-height: 0.5 !important;
+}
+
+
+.btn-reverse:hover {
+    background-color: #ffffff !important;
+    color: black !important;
+}
+
+.btn-blue {
+    background-color: #78A0CA !important;
+    color:white !important;
+   
+}
+
+.btn-orange {
+    background-color: #e87b52 !important;
+    color: white !important;
+}
+
+.edit-group {
+    margin-right: 0.15rem;
+    margin-bottom: 1rem;
+}
+
+.top-menu {
+    margin-bottom: 3rem !important;
+}
+
+body {
+    line-height: 1.25 !important;    
+}
+
+    body .ui-panel .ui-panel-titlebar {
+        background-color: #78a0ca !important;
+        color: #ffffff !important;
+    }
+
+
+.form-header-orange {
+    background-color: #e87b52 !important;
+    padding: 0.2rem;
+    color: white;
+}
+
+.form-header-light-blue {
+    background-color: #78a0ca !important;
+    padding: 0.2rem;
+    color: white;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+    background-color: #78A0CA !important;
+    padding: 0.05rem !important;
+    color: white !important;
+}
+
+body .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
+    position: static;
+    border: 0px solid #ff936b !important;
+    background-color: #cfd8dc !important;
+    color: white !important;
+    padding: 0rem !important;
+    color: white !important;
+    transition: background-color 0.1s !important;
+}
+
+body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a {
+    background-color: #78a0ca !important;
+    border: 1px solid #ffffff !important;
+    color: #ffffff !important;
+}
+
+body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-left .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-right .ui-tabview-nav li.ui-state-active {
+    background-color: #78a0ca !important;
+    border: 0px solid #ffffff !important;
+}
+
+.new-edit-group {
+    margin-left: 1.2em !important;    
+}
+
+.fa-bdt:before {
+    content: "file:///C:\Users\019008503691\Downloads\bdt.ico";
+}
+
+body .ui-tree.ui-tree-horizontal .ui-treenode .ui-treenode-content:hover {
+    background-color: #78a0ca !important;
+    color: #ffffff !important;
+}
+
+
+body .ui-tree.ui-tree-horizontal .ui-treenode .ui-treenode-content {
+    font-size:90% !important;
+}
+
+.ui-dropdown {
+    width: 100% !important;
+}
+
+body .ui-accordion .ui-accordion-header a {
+    color: #5f9eb2 !important;
+}
+
+body .ui-panelmenu .ui-panelmenu-content .ui-menuitem .ui-menuitem-link {
+    padding: 0.5em 0.787em !important;
+    color: #00595d !important;
+}
+
+@media only all {
+    th.ui-p-6,
+    td.ui-p-6,
+    th.ui-p-5,
+    td.ui-p-5,
+    th.ui-p-4,
+    td.ui-p-4,
+    th.ui-p-3,
+    td.ui-p-3,
+    th.ui-p-2,
+    td.ui-p-2,
+    th.ui-p-1,
+    td.ui-p-1 {
+        display: none;
+    }
+}
+
+body .ui-selectbutton .ui-button.ui-state-active {
+    background-color: #78A0CA !important;
+    border-color: #dadada !important;
+    color: #ffffff;
+    padding:0.05rem !important;
+}
+
+body .ui-tabview .ui-tabview-panels {
+    background-color: #ffffff !important;
+    padding: 0.571em 0.1em !important;
+    border: 0px !important;
+    border-top: 1px solid #c8c8c8 !important; 
+    color: #333333 !important;
+}
+
+.nav-item {
+    border-right: 1px solid #ffffff !important;
+}
+
+button:disabled {
+    cursor: not-allowed !important;
+}
+input:disabled {
+    cursor: not-allowed !important;
+}
+
+.left-menu-top-item {
+    background-color: #78a0ca;
+    width: 112% !important;
+    margin-left: -1.1em;
+    min-height: 6em;
+    margin-top: -0.9em;
+}
+
+.main-router-outlet {
+    margin-right: 1% !important;
+    margin-left: 1% !important;
+}
+
+.spin {
+    -webkit-transition: -webkit-transform 2.1s ease-in-out;
+    transition: transform 1.9s ease-in-out;
+}
+    .spin:hover {
+        -webkit-transform: rotate(1260deg) !important;
+        transform: rotate(1260deg) !important;
+    }
+
+body .ui-dialog .ui-dialog-titlebar {
+    border: 1px solid #78a0ca !important;
+    background-color: #78a0ca !important;
+    color: #ffffff !important;
+}
+
+.pi-window-maximize {
+    color: white !important;
+}
+.pi-window-minimize {
+    color: white !important;
+}
+
+body .ui-dialog .ui-dialog-content {
+    background-color: #ffffff !important;
+    color: #333333;
+    border: 0px solid #c8c8c8;
+    padding: 0em 0em !important;
+}
+
+
+.ui-dialog .ui-dialog-titlebar-icon span {
+    color: white !important;
+}
+
+.overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: block; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 9999; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}

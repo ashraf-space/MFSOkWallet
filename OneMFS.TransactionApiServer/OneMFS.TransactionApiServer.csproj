@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.70" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MFS.CommunicationService\MFS.CommunicationService.csproj" />
+    <ProjectReference Include="..\MFS.DistributionService\MFS.DistributionService.csproj" />
+    <ProjectReference Include="..\MFS.ReportingService\MFS.ReportingService.csproj" />
+    <ProjectReference Include="..\MFS.SecurityService\MFS.SecurityService.csproj" />
+    <ProjectReference Include="..\MFS.TransactionService\MFS.TransactionService.csproj" />
+    <ProjectReference Include="..\OneMFS.SharedResources\OneMFS.SharedResources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ExcelDataReader">
+      <HintPath>..\..\Downloaded software\Excel Upload Web api and angular 7\SourceCode\Source Code\ExcelUploadAPI\ExcelUploadAPI\ExcelUploadAPI\bin\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet">
+      <HintPath>..\..\Downloaded software\Excel Upload Web api and angular 7\SourceCode\Source Code\ExcelUploadAPI\ExcelUploadAPI\ExcelUploadAPI\bin\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Reference Include="SpellNumber">
+      <HintPath>..\..\Downloaded software\Spell_Amount\Spell_Amount\WindowsFormsApplication1\bin\Debug\SpellNumber.dll</HintPath>
+    </Reference>
+  </ItemGroup>-->
+
+</Project>

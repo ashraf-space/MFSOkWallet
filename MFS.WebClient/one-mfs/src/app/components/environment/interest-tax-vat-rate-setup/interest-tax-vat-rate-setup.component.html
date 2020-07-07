@@ -1,0 +1,71 @@
+<div class="form-elements">
+	<p-card [style]="{'margin-bottom':'20px'}">
+		<div class="form-group">
+			<h5 class="form-header"> Rate Config</h5>
+			<div class="p-grid">
+				<div class="p-col-12">
+					<h6 class="form-header-light-blue">Interest Rate</h6>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" name="interestPer" [(ngModel)]="rateModel.interestPer" pInputText id="float-input" pKeyFilter="int">
+						<label for="float-input input-lg" class="col-form-label">Interest Rate</label>
+					</span>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span class="ui-float-label ">
+						<p-dropdown [options]="calculationMethodList" [(ngModel)]="rateModel.calculationMethodId" 
+									[filter]="true" filterBy="label,value.name"
+									[style]="{display: 'grid'}"></p-dropdown>
+						<label for="float-input input-lg" class="col-form-label">Calculation Method</label>
+					</span>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span class="ui-float-label ">
+						<p-dropdown [options]="statusList" [(ngModel)]="rateModel.serviceStatus" 
+									[filter]="true" filterBy="label,value.name"
+									[style]="{display: 'grid'}"></p-dropdown>
+						<label for="float-input input-lg" class="col-form-label">Status</label>
+					</span>
+				</div>
+				<!--<div class="p-col-4">
+					<br />
+					<label for="name" class="col-sm-2 col-form-label">Status</label>
+					<p-inputSwitch [(ngModel)]="rateModel.status" style="padding-left: 38px; margin-left: -6px; padding-top: 1.8em; margin-top: 5px;"></p-inputSwitch>
+				</div>-->
+				<div class="p-col-12">
+					<h6 class="form-header-light-blue">Vat Rate</h6>
+				</div>
+				<div class="p-col-12">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" name="photoId" [(ngModel)]="rateModel.vatPer" pInputText id="float-input" pKeyFilter="int">
+						<label for="float-input input-lg" class="col-form-label">Vat on service charge</label>
+					</span>
+				</div>
+				<div class="p-col-12">
+					<h6 class="form-header-light-blue">Tax Rate</h6>
+				</div>
+				<div class="p-col-6">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" name="taxPer" [(ngModel)]="rateModel.taxPer" pInputText id="float-input" pKeyFilter="int">
+						<label for="float-input input-lg" class="col-form-label">Tax on service charge</label>
+					</span>
+				</div>
+				<div class="p-col-6">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" name="tinTaxPer" [(ngModel)]="rateModel.tinTaxPer" pInputText id="float-input" pKeyFilter="int">
+						<label for="float-input input-lg" class="col-form-label">Tax with Tin</label>
+					</span>
+				</div>
+			</div>
+		</div>
+	</p-card>	
+</div>
+<app-generic-form-action [isEditMode]="true" (onSave)="onSave()" ></app-generic-form-action>
+

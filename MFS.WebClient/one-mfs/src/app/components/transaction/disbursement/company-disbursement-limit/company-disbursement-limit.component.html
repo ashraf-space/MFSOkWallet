@@ -1,0 +1,50 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Create</span><span *ngIf="isEditMode"> Update</span> Disbursement Limit Entry for Company</h6>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Company Name & ID<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="disburseCompanyList" [(ngModel)]="tblDisburseAmtDtlMakeModel.companyId" placeholder="Select Company" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                    <p-message *ngIf="(tblDisburseAmtDtlMakeModel.companyId==null || tblDisburseAmtDtlMakeModel.companyId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Disburse Type<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="disburseTypeList" [(ngModel)]="tblDisburseAmtDtlMakeModel.disburseTp" placeholder="Select Disburse Type" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                    <p-message *ngIf="(tblDisburseAmtDtlMakeModel.disburseTp==null || tblDisburseAmtDtlMakeModel.disburseTp=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Amount<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.amountCr">
+                    <p-message *ngIf="(tblDisburseAmtDtlMakeModel.amountCr==null || tblDisburseAmtDtlMakeModel.amountCr=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Ref No<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.refNo">
+                    <p-message *ngIf="(tblDisburseAmtDtlMakeModel.refNo==null || tblDisburseAmtDtlMakeModel.refNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Disburse Name & Code<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="disburseNameCodeList" [(ngModel)]="tblDisburseAmtDtlMakeModel.accNo" placeholder="Select Disburse Name & Code" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                    <p-message *ngIf="(tblDisburseAmtDtlMakeModel.accNo==null || tblDisburseAmtDtlMakeModel.accNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-6">
+
+                </div>
+            </div>
+
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="companyLimitSave()" (onDelete)="companyDelete($event)"></app-generic-form-action>

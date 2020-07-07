@@ -1,0 +1,461 @@
+<div *ngIf="isLoading">
+	<p style="text-align:center"><p-progressSpinner></p-progressSpinner></p>
+</div>
+
+<div *ngIf="!isLoading">
+	<h6 class="form-header header"><i class="fas fa-user" aria-hidden="true"></i> {{model.catId | clientCategory}} - {{model.name}} <span style="float:right" [innerHtml]="model.balanceM | number | bdtCurrency"></span></h6>
+	<div>
+		<div class="btn-group edit-group " role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goBack()"><i class="fas fa-chevron-left"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example" *ngIf="isDetailMode">
+			<app-authorize-button [type]="'detail-edit'" *ngIf="isDetailMode" (onButtonClick)="openModal('edit')"></app-authorize-button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('black')">Black Listed {{blackListed}} <i class="far fa-lightbulb"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('close')">Client {{closeStatus}} <i class="far fa-lightbulb"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('dormant')">{{dormantStatus}} Dormant <i class="far fa-lightbulb"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('generate-request')">Request <i class="far fa-bell"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('lien')">Un-Lien <i class="fab fa-modx"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('pin-reset')">Pin Reset <i class="fas fa-sync"></i></button>
+		</div>
+		<div class="btn-group edit-group" role="group" aria-label="Basic example">
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('unlock')" [disabled]="model.pinStatus!='L' || isDetailMode">Unlock Account <i class="fas fa-unlock"></i></button>
+		</div>
+	</div>
+	<div class="p-grid ">
+		<div class="p-col-9">
+			<p-accordion>
+				<p-accordionTab header="Balance Info" [selected]="true">
+					<div class="p-grid ">
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Main Balance: </label>
+								<label class="p-col-9  single-line">{{ model.balanceM }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Main Lien Balance: </label>
+								<label class="p-col-9  single-line">{{ model.lienM }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Commission Balance: </label>
+								<label class="p-col-9  single-line">{{ model.balanceC }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Commission Lien Balance: </label>
+								<label class="p-col-9  single-line">{{ model.lienC }}</label>
+							</div>
+						</div>
+					</div>
+				</p-accordionTab>
+				<p-accordionTab header=" Details" [selected]="true">
+					<div class="p-grid ">
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">MPhone: </label>
+								<label class="p-col-9  single-line">{{ model.mphone }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Date Of Birth: </label>
+								<label class="p-col-9  single-line">{{ model.dateOfBirth | date }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Permanent Address: </label>
+								<label class="p-col-9  single-line">{{ model.perAddr }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Religeon: </label>
+								<label class="p-col-9  single-line">{{ model.religion }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Name: </label>
+								<label class="p-col-9  single-line">{{ model.name }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Gender: </label>
+								<label class="p-col-9  single-line" [innerHtml]="model.gender | genderCheck"></label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Office Address: </label>
+								<label class="p-col-9  single-line">{{ model.offAddr }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Present Address: </label>
+								<label class="p-col-9  single-line">{{ model.preAddr }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Photo Id Type: </label>
+								<label class="p-col-9  single-line">{{ model.photoIdType }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Photo Id No: </label>
+								<label class="p-col-9  single-line">{{ model.photoId }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Logical Reg Date: </label>
+								<label class="p-col-9  single-line">{{ model.regDate | date:'MM/dd/yyyy' }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Physical Reg Date </label>
+								<label class="p-col-9  single-line">{{ model.authoDate | date:'MM/dd/yyyy'}}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Registration Source: </label>
+								<label class="p-col-9  single-line" [innerHtml]=" model.regSource | statusCheck: 'regSource'"></label>
+							</div>
+
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Check By: </label>
+								<label class="p-col-9  single-line">{{ model.authoBy }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Branch Name: </label>
+								<label class="p-col-9  single-line">{{ model.branchName}}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line">Remarks: </label>
+								<label class="p-col-9  single-line">{{ model.remarks}}</label>
+							</div>
+						</div>
+					</div>
+				</p-accordionTab>
+			</p-accordion>
+			<p-accordion>
+				<p-accordionTab header=" Additional Information" [selected]="false">
+					<div class="p-grid">
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Occupation: </label>
+								<label class="p-col-9  single-line">{{ model.occupation }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Mother Name: </label>
+								<label class="p-col-9  single-line">{{ model.motherName }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Spouse Name: </label>
+								<label class="p-col-9  single-line">{{ model.spouseName }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Nationality : </label>
+								<label class="p-col-9  single-line">{{ model.nationality }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Fathers Name: </label>
+								<label class="p-col-9  single-line">{{ model.fatherName }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Emergency Contact#: </label>
+								<label class="p-col-9  single-line">{{ model.emergencyConNo }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Division : </label>
+								<label class="p-col-9  single-line">{{ model.division }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">District: </label>
+								<label class="p-col-9  single-line">{{ model.district }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Thana: </label>
+								<label class="p-col-9  single-line">{{ model.thana }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Region : </label>
+								<label class="p-col-9  single-line">{{ model.region }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Area: </label>
+								<label class="p-col-9  single-line">{{ model.area }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Territory: </label>
+								<label class="p-col-9  single-line">{{ model.territory }}</label>
+							</div>
+						</div>
+					</div>
+				</p-accordionTab>
+			</p-accordion>
+			<p-accordion>
+				<p-accordionTab header=" Nominee Information" [selected]="false">
+					<div class="p-grid">
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label property-name">Nominee Name: </label>
+								<label class="p-col-9  single-line">{{ model.firstNomineeName }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Age: </label>
+								<label class="p-col-9  single-line">{{ model.firstNomineeAge }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Ratio Allotment: </label>
+								<label class="p-col-9  single-line">{{ model.partOfFirst }}</label>
+							</div>
+						</div>
+						<div class="p-col-6">
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Contact#: </label>
+								<label class="p-col-9  single-line">{{ model.nomineeConNo }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Relation: </label>
+								<label class="p-col-9  single-line">{{ model.relationFirstNominee }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Address: </label>
+								<label class="p-col-9  single-line">{{ model.firstNomineeAddress }}</label>
+							</div>
+						</div>
+					</div>
+				</p-accordionTab>
+			</p-accordion>
+			<p-accordion>
+				<app-client-work-tab [entity]="model"></app-client-work-tab>
+			</p-accordion>
+		</div>
+		<div class="p-col-3">
+			<p-accordion>
+				<p-accordionTab header=" Id & Tracking" [selected]="true">
+					<p-scrollPanel [style]="{width: '100%', height: '170px'}">
+						<div class="p-grid">
+							<div class="p-col-12">
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Category: </label>
+									<label class="p-col-6  single-line">{{ model.catId | clientCategory }}</label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line">Registration Status: </label>
+									<label class="p-col-6  single-line" [innerHtml]=" model.regStatus | statusCheck: 'regStatus'"></label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Status: </label>
+									<label class="p-col-6  single-line" [innerHtml]=" model.status | statusCheck: 'status'"></label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Black Status: </label>
+									<label class="p-col-6  single-line" [innerHtml]=" model.blackList | statusCheck: 'blackStatus'"></label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Pin Status: </label>
+									<label class="p-col-6  single-line" [innerHtml]=" model.pinStatus | statusCheck: 'pinStatus'"></label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Entry By: </label>
+									<label class="p-col-6  single-line">{{ model.entryBy }}</label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Member Since: </label>
+									<label class="p-col-6  single-line">{{ model.regDate | date}}</label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line">Maintainence Charge YN?: </label>
+									<label class="p-col-6  single-line" [innerHtml]=" model.acMaintainCharge | yesNo"></label>
+								</div>
+							</div>
+						</div>
+					</p-scrollPanel>
+				</p-accordionTab>
+			</p-accordion>
+			<p-accordion>
+				<p-accordionTab header=" Bank Information" [selected]="false">
+					<div class="p-grid">
+						<div class="p-col-12">
+							<div class="form-group p-grid">
+								<label class="p-col-6 col-form-label single-line property-name">Branch: </label>
+								<label class="p-col-6  single-line">{{ model.branchCode }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-6 col-form-label single-line property-name">Account #: </label>
+								<label class="p-col-6  single-line">{{ model.bankAcNo | securedData}}</label>
+							</div>
+							<div class="form-group p-grid property-name">
+								<label class="p-col-6 col-form-label single-line">Account Name: </label>
+								<label class="p-col-6  single-line">{{ model.accountName }}</label>
+							</div>
+						</div>
+					</div>
+				</p-accordionTab>
+			</p-accordion>
+			<p-accordion>
+				<p-accordionTab header=" Introducer Information" [selected]="false" *ngIf="model.catId=='C'">
+					<p-scrollPanel [style]="{width: '100%', height: '127.5px'}">
+						<div class="p-grid">
+							<div class="p-col-12">
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Name: </label>
+									<label class="p-col-6  single-line">{{ model.introName }}</label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-6 col-form-label single-line property-name">Contact #: </label>
+									<label class="p-col-6  single-line">{{ model.introAcNo }}</label>
+								</div>
+								<div class="form-group p-grid property-name">
+									<label class="p-col-6 col-form-label single-line property-name">Occupation: </label>
+									<label class="p-col-6  single-line">{{ model.introOccupation }}</label>
+								</div>
+								<div class="form-group p-grid property-name">
+									<label class="p-col-6 col-form-label single-line property-name">Address: </label>
+									<label class="p-col-6  single-line">{{ model.introAddr }}</label>
+								</div>
+							</div>
+						</div>
+					</p-scrollPanel>
+				</p-accordionTab>
+			</p-accordion>
+		</div>
+	</div>
+</div>
+<app-generic-modal [initiateModal]="showEditModal" [header]="'Client'" [hideConfirm]="true" (onDestroy)="showEditModal=false">
+	<!--<div style="margin-bottom:2rem" [ngSwitch]="model.catId">
+		<app-agent-addoredit *ngSwitchCase="'A'"></app-agent-addoredit>
+		<app-customer-addoredit *ngSwitchCase="'C'"></app-customer-addoredit>
+		<app-distributor-addoredit *ngSwitchCase="'D'"></app-distributor-addoredit>
+		<app-dsr-addoredit *ngSwitchCase="'R'"></app-dsr-addoredit>
+	</div>-->
+	<mfs-client-update [model]="model"></mfs-client-update>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showBlackModal" [header]="'Black List Client'" (onDestroy)="showBlackModal=false" (onConfirm)="blackListClient()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showBlackModal">
+	<div style="margin-bottom:2rem">
+		<div class="p-grid">
+			<div class="p-col-3">
+				<br />
+				<br />
+				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
+			</div>
+			<div class="p-col-9">
+				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+			</div>
+			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+		</div>
+	</div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showCloseModal" [header]="'Close  Client'" (onDestroy)="showCloseModal=false" (onConfirm)="closeClient()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showCloseModal">
+	<div style="margin-bottom:2rem">
+		<div class="p-grid">
+			<div class="p-col-3">
+				<br />
+				<br />
+				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
+			</div>
+			<div class="p-col-9">
+				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+			</div>
+			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+		</div>
+	</div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showDormantModal" [header]="'Dormant Configuration'" (onDestroy)="showDormantModal=false" (onConfirm)="addRemoveDormant()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showDormantModal">
+	<div style="margin-bottom:2rem">
+		<div class="p-grid">
+			<div class="p-col-3">
+				<br />
+				<br />
+				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
+			</div>
+			<div class="p-col-9">
+				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+			</div>
+			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+		</div>
+	</div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showGenerateRequestModal" [header]="'Generate Request'" (onDestroy)="showGenerateRequestModal=false" (onConfirm)="addNewRequest()" [disableConfirm]="(requestModel.request=='' && disableButton== true)|| !requestModel.request" *ngIf="showGenerateRequestModal">
+	<div style="margin-bottom:5.5rem;">
+		<div class="p-grid">
+			<div class="p-col-12">
+				<span>
+					<label for="input-lg" class="col-form-label-dd">Request</label>
+					<br />
+					<p-dropdown [options]="requestList" [(ngModel)]="requestModel.request" placeholder="Select Option" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="requestModel.mphone" [disabled]="true">
+					<label for="float-input input-lg" class="col-form-label">MPhone</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="requestModel.remarks">
+					<label for="float-input input-lg" class="col-form-label">Remarks</label>
+				</span>
+			</div>
+			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+			<div class="p-col-6">
+				<span class="ui-float-label ">
+					<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="requestModel.checkedBy" [disabled]="true">
+					<label for="float-input input-lg" class="col-form-label">Issued By</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<div class="p-grid">
+					<div class="p-col-2">
+						<h6 style="text-align:right;color:cadetblue;margin-top:0.6em;">Status:</h6>
+					</div>
+					<div class="p-col-10">
+						<p-selectButton [options]="actionList" [(ngModel)]="requestModel.status" [style]="{color: 'white'}" [disabled]="true"></p-selectButton>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</app-generic-modal>
+<app-generic-modal [initiateModal]="showLienModal" [header]="'Lien Configuration'" (onDestroy)="showLienModal=false" (onConfirm)="addRemoveLien()" [disableConfirm]="remarks==''" *ngIf="showLienModal">
+	<div style="margin-bottom:2rem">
+		<p-card [style]="{'margin-bottom':'20px'}">
+			<div class="p-grid">
+				<div class="p-col-3">
+					<label for="name" class="p-col-3 col-form-label single-line">Lien Amount: </label>
+				</div>
+				<div class="p-col-7">
+					<input class="form-control form-input" placeholder="" [(ngModel)]="model.lienM" disabled="disabled">
+				</div>
+			</div>
+		</p-card>
+
+		<div class="p-grid">
+			<div class="p-col-3">
+				<br />
+				<br />
+				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
+			</div>
+			<div class="p-col-9">
+				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+			</div>
+			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+		</div>
+	</div>
+</app-generic-modal>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

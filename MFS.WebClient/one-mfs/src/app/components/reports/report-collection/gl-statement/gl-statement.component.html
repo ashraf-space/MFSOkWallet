@@ -1,0 +1,41 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+    <div class="p-grid">
+        <div class="p-col-4">
+            <label for="float-input" class="col-form-label">From<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="From"
+                       name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+                       id="float-input">
+            </div>
+        </div>
+        <div class="p-col-4">
+            <label for="float-input" class="col-form-label">To<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="To"
+                       name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+                       (click)="h.toggle()" id="float-input">
+            </div>
+        </div>
+        <div class="p-col-4">
+            <label for="float-input" class="col-form-label">Asset Type<span class="mandatory">*</span></label>
+            <p-dropdown [options]="assetTypeList" placeholder="Select Status" [(ngModel)]="model.assetType"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="loadGLCodeNameLevel()"></p-dropdown>
+            <p-message *ngIf="(model.assetType==null || model.assetType=='') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">GL Coa Code, Name & level <span class="mandatory">*</span></label>
+            <p-dropdown [options]="glCoaCodenalelevelDDL" placeholder="Select GL" [(ngModel)]="model.sysCoaCode"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+            <p-message *ngIf="(model.sysCoaCode==null || model.sysCoaCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+
+        <div class="p-col-6">
+        </div>
+
+
+    </div>
+</div>

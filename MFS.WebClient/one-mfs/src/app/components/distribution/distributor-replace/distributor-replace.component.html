@@ -1,0 +1,78 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Distributor Replace</h6>
+            <p-fieldset legend="Distributor Replacement">
+                <div class="p-grid">
+                    <div class="p-col-2">
+
+                    </div>
+                    <div class="p-col-7">
+                        <div style="text-align:center">
+                            <label>Mobile and Name</label>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div style="text-align:center">
+                            <label style="text-align:center">Total Agent</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-grid">
+                    <div class="p-col-2">
+                        <label class="col-form-label" style="text-align:center">Existing Distributor<span class="mandatory">*</span></label>
+                    </div>
+                    <div class="p-col-7">
+                        <div>
+                            <p-dropdown [options]="distributorList" [(ngModel)]="distributorReplaceModel.exMobileNo" placeholder="Select Distributor" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getTotalAgentByMobileNo(distributorReplaceModel.exMobileNo)"></p-dropdown>
+                            <p-message *ngIf="(distributorReplaceModel.exMobileNo==null || distributorReplaceModel.exMobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div>
+                            <input type="text" class="form-control" [(ngModel)]="totalAgent" id="totalAgent" pKeyFilter="int" [disabled]="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-grid">
+                    <div class="p-col-2">
+                        <label class="col-form-label" style="text-align:center">New Distributor <span class="mandatory">*</span></label>
+                    </div>
+                    <div class="p-col-7">
+                        <div>
+                            <p-dropdown [options]="distributorList" [(ngModel)]="distributorReplaceModel.newMobileNo" placeholder="Select new Distributor" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                            <p-message *ngIf="(distributorReplaceModel.newMobileNo==null || distributorReplaceModel.newMobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div class="ui-g-6">
+                            <label class="col-form-label" style="text-align:left">Is with DSR?</label>
+                        </div>
+                        <div class="ui-g-6">
+                            <!--<p-inputSwitch [(ngModel)]="distributorReplaceModel.isRegistrationAllowed"></p-inputSwitch>-->
+                            <p-inputSwitch [(ngModel)]="distributorReplaceModel.isWithDSR"></p-inputSwitch>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="p-grid">
+                    <div class="p-col-2">
+                        <label class="col-form-label" style="text-align:center">Is with DSR?</label>
+                    </div>
+                    <div class="p-col-7">
+                        <div class="ui-g-12">
+                            <p-inputSwitch [(ngModel)]="distributorReplaceModel.isRegistrationAllowed"></p-inputSwitch>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+
+                    </div>
+                </div>-->
+            </p-fieldset>
+        </div>
+    </p-card>
+</div>
+<app-generic-form-action (onSave)="ExecuteReplace()"></app-generic-form-action>

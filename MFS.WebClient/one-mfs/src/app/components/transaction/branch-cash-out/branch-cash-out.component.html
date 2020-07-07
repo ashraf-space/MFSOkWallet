@@ -1,0 +1,68 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Branch Cash Out</h6>
+
+            <div class="form-group row">
+                <label for="mphone" class="col-sm-2 col-form-label">Account No <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <p-inputMask mask="99999999999" [(ngModel)]="tblPortalCashoutModel.mphone" placeholder="017xxxxxxxx" pKeyFilter="int" (change)="getReginfoCashoutByMphone()" [style]="{'width':'100%'}"></p-inputMask>
+                    <p-message *ngIf="(tblPortalCashoutModel.mphone==null || tblPortalCashoutModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Name </label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" placeholder="" [(ngModel)]="tblPortalCashoutModel.name" disabled="disabled">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Category</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" placeholder="" [(ngModel)]="tblPortalCashoutModel.category" disabled="disabled">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Status</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" placeholder="" [(ngModel)]="tblPortalCashoutModel.status" disabled="disabled">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Reg Status</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" placeholder="" [(ngModel)]="tblPortalCashoutModel.regStatus" disabled="disabled">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Transaction Number <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" placeholder="" pKeyFilter="int" [(ngModel)]="tblPortalCashoutModel.transNo" (change)="getAmountByTransNo();">
+                    <p-message *ngIf="(tblPortalCashoutModel.transNo==null || tblPortalCashoutModel.transNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-2 col-form-label single-line">Cash Out Amount <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" pKeyFilter="int" placeholder="" [(ngModel)]="tblPortalCashoutModel.amount" (change)="GetAmountInWords();" disabled="disabled">
+                    <p-message *ngIf="(tblPortalCashoutModel.amount==null || tblPortalCashoutModel.amount==''|| tblPortalCashoutModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="amountInWords" [disabled]="true">
+                </div>
+            </div>
+
+
+        </div>
+
+    </p-card>
+</div>
+
+<app-generic-form-action [disableAction]="isActionDisabled" [isRejectAllowed]="true" [isEditMode]="isEditMode" (onSave)="AproveOrRejectBranchCashout($event)"></app-generic-form-action>
+

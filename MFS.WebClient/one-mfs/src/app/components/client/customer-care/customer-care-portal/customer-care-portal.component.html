@@ -1,0 +1,158 @@
+<p-tabMenu [model]="caseList" [activeItem]="activeCase">
+    <ng-template pTemplate="item" let-item let-i="index">
+        <div style="position: relative; text-align: center;" (click)="openTab($event, i)" >
+            <div class="ui-menuitem-icon" [ngClass]="item.icon" *ngIf="item.icon"></div>
+            <div class="ui-menuitem-text">
+                {{item.label}}
+            </div>
+            <a tabindex="0" class="ui-menuitem-icon" (click)="closeCase($event, i)" style="position: absolute; right: -1em; top: -.5em; padding: 0" *ngIf="i !== 0" >
+                <span class="pi pi-times"></span>
+            </a>
+        </div>
+    </ng-template>
+</p-tabMenu>
+<br />
+<div *ngIf="switchCaseLoading">
+    <p style="text-align:center"><p-progressSpinner></p-progressSpinner></p>
+</div>
+<div *ngIf="isHomeActive && !switchCaseLoading">
+    <div>
+        <div class="btn-group edit-group " role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goBack()"><i class="fas fa-chevron-left"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('agent-location')">Agent Location <i class="fas fa-thumbtack"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('resend-message')">Resend Message <i class="fas fa-paper-plane"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('error')">Error Log <i class="fas fa-bug"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('profile')">Profile <i class="far fa-user-circle"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('hot-key')">Hot Key <i class="fab fa-keycdn"></i></button>
+        </div>
+        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('trans-detail')">Transaction Details <i class="fas fa-money-check-alt"></i></button>
+        </div>
+        <!--<div class="btn-group edit-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="openModal('request')">Customer Request <i class="fab fa-replyd"></i></button>
+        </div>-->
+    </div>
+    <app-outbox></app-outbox>
+</div>
+<div *ngIf="!isHomeActive && !switchCaseLoading">
+    <app-client-profile [model]="activeCaseDetails"></app-client-profile>
+</div>
+
+<app-generic-modal [initiateModal]="showAgentLocation" [header]="'Agent Location'" [hideConfirm]="true" (onDestroy)="showAgentLocation=false">
+    <div style="margin-bottom:8rem">
+        <app-agent-location></app-agent-location>
+    </div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showResendMessage" [header]="'Resend Message'" [hideConfirm]="true" (onDestroy)="showResendMessage=false">
+    <div style="margin-bottom:5rem">
+        <app-message-resend></app-message-resend>
+    </div>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showHotKey" [header]="'Hot Key'" [hideConfirm]="true" (onDestroy)="showHotKey=false">
+    <app-hotkey-list [showCaption]="false"></app-hotkey-list>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showTransDetail" [header]="'Transaction Detail'" [hideConfirm]="true" (onDestroy)="showTransDetail=false">
+    <app-transaction-detail></app-transaction-detail>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showCustomerRequestLog" [header]="'Customer Request'" [hideConfirm]="true" (onDestroy)="showCustomerRequestLog=false">
+    <app-customer-request></app-customer-request>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="showErrorLog" [header]="'Error Log'" [hideConfirm]="true" (onDestroy)="showErrorLog=false">
+    <app-error-list></app-error-list>
+</app-generic-modal>
+
+<app-generic-modal [initiateModal]="addCaseModal" [header]="'Profile'" [hideConfirm]="true" (onDestroy)="addCaseModal=false">
+    <div class="p-grid">
+        <div class="p-col-9">
+            <span class="ui-float-label ">
+                <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="searchModel.mphone">
+                <label for="float-input input-lg"><i class='fa fa-search'></i> Enter MPhone Number</label>
+            </span>
+        </div>
+        <div class="p-col-3">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()" [disabled]="!searchModel.mphone"><i class="fas fa-search"></i> Search </button>
+        </div>
+    </div>
+    <div *ngIf="loading">
+        <p style="text-align:center"><p-progressSpinner></p-progressSpinner></p>
+    </div>
+    <div class="form-group" *ngIf="searchModel.result">
+        <h6 class="form-header-orange" *ngIf="!isEditMode"><i class="fas fa-user" aria-hidden="true"></i>   {{ searchModel.result.name  }}</h6>
+        <br />
+        <div class="p-grid">
+            <div class="p-col-8">
+                <div class="p-grid">
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="searchModel.result.mphone" [disabled]="true">
+                            <label for="float-input input-lg">MPhone</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="searchModel.result.name" [disabled]="true">
+                            <label for="float-input input-lg">Name</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="searchModel.result.branchCode" [disabled]="true">
+                            <label for="float-input input-lg">Branch Code</label>
+                        </span>
+                    </div>
+                    <div class="p-col-12">
+                        <h4 class="form-header">Verification</h4>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.dateOfBirth" [disabled]="!searchModel.result.dateOfBirth" (change)="verify('dob')">
+                            <label for="float-input input-lg">Date of Birth [ yyyy-mm-dd ]</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.conMob" [disabled]="!searchModel.result.conMob" (change)="verify('con-mob')">
+                            <label for="float-input input-lg">Second Contact Number</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.photoId" [disabled]="!searchModel.result.photoId" (change)="verify('photo-id')">
+                            <label for="float-input input-lg">{{searchModel.result.photoIdTypeCode | photoId}}</label>
+                        </span>
+                    </div>
+                    <div class="p-col-12">
+                        <h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Verify with the editable fields only</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="p-col-4">
+                <br />
+                <!--remove the disabled property from the below line-->
+                <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="addCase()" style="margin-top: 3.2em;" [disabled]="!verification.verified"><i class="fas fa-map-pin"></i>  Pin Details</button>
+                <br />
+                <div style="text-align:center">
+                    <p-message *ngIf="!verification.verified" severity="error" text="Warning! Profile Not Verified"></p-message>
+                    <p-message *ngIf="verification.verified" severity="success" text="Profile Verified"></p-message>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-generic-modal>

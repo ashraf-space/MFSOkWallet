@@ -1,0 +1,35 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>   Feature Category</h6>
+            <div class="form-group row">
+                <label for="customerAC" class="col-sm-1 col-form-label">Category Name <span class="mandatory">*</span></label>
+                <div class="col-sm-11">
+                    <!--<p-inputMask mask="+880 (999) 999-9999" [(ngModel)]="featureCategoryModel" placeholder="+880 (999) 999-9999" [style]="{display: 'grid'}" class="form-control"></p-inputMask>-->
+                    <!--<input type="text" class="form-control" placeholder="Customer Phone Number" aria-label="Username" aria-describedby="bdPhoneInitial">-->
+                    <input type="text" class="form-control form-input" id="customerAC" placeholder="Category Name" [(ngModel)]="featureCategoryModel.name">
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Icon</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="regDate" placeholder="Icon" [(ngModel)]="featureCategoryModel.icon">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Order#</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="regDate" placeholder="Order Number" [(ngModel)]="featureCategoryModel.orderNo" pKeyFilter="int">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onSave()" (onDelete)="onDeleteCategory($event)"></app-generic-form-action>

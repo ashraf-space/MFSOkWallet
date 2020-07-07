@@ -1,0 +1,6 @@
+
+<app-generic-modal [initiateModal]="showReport" [header]="'Report Details'" [hideConfirm]="true" (onDestroy)="showReport=false">
+    <div style="height: 30em">
+        <ng2-pdfjs-viewer #pdfViewer [showSpinner]="true" [fullScreen]="true" zoom="100"></ng2-pdfjs-viewer>
+    </div>
+</app-generic-modal>

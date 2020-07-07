@@ -1,0 +1,83 @@
+<p-card [style]="{'margin-bottom':'20px'}">
+	<div class="form-group">
+		<h6 class="form-header">Office use only</h6>
+		<div class="p-grid">
+
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">Report Name<span class="mandatory">*</span></label>
+				<input type="text" class="form-control" [(ngModel)]="reportInfoModel.ReportName"
+					   pInputText id="float-input">
+				<p-message *ngIf="(reportInfoModel.ReportName == null || reportInfoModel.ReportName == '') && error" severity="error" text="Cannot be left blank"></p-message>
+			</div>
+
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">Report Type<span class="mandatory">*</span></label>
+				<p-dropdown [options]="reportList" [(ngModel)]="reportInfoModel.ReportType" placeholder="Please Select"
+							[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+							[disabled]="isRegistrationPermitted"
+							id="float-input"></p-dropdown>
+				<p-message *ngIf="(reportInfoModel.ReportType == null || reportInfoModel.ReportType == '') && error" severity="error" text="Cannot be left blank"></p-message>
+			</div>
+		</div>
+
+		<div class="p-grid">
+
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="reportInfoModel.ReportPath"
+						   pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label-dd">Report Path</label>
+				</span>
+				<p-message *ngIf="(reportInfoModel.ReportPath==null || reportInfoModel.ReportPath=='') && error "
+						   severity="error" text="Cannot be left blank"></p-message>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="reportInfoModel.ReportDescription" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Report Description</label>
+				</span>
+			</div>
+		</div>
+
+		<div class="p-grid">
+
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="reportInfoModel.Remarks" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Remarks</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="reportInfoModel.InputParameter" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Input Parameter</label>
+				</span>
+			</div>
+		</div>
+
+		<div class="p-grid">
+
+
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="reportInfoModel.CallingApi" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Calling Api</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">Select Role <span class="mandatory">*</span></label>
+				<p-multiSelect [options]="roleList" [(ngModel)]="selectRoles" [style]="{display: 'grid'}" ></p-multiSelect>
+				<p-message *ngIf="(reportInfoModel.merchantSmsNotification == '' || reportInfoModel.merchantSmsNotification == null) && error"
+						   severity="error" text="Cannot be left blank"></p-message>
+			</div>
+		</div>
+
+	</div>
+</p-card>
+
+<app-generic-form-action (onSave)="onReportInfoSave($event)"></app-generic-form-action>

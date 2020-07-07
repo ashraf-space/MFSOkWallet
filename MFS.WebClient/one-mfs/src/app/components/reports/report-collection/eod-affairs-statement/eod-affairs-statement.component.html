@@ -1,0 +1,11 @@
+<div class="p-grid">
+    <div class="p-col-6">
+        <div class="input-group">
+            <input class="form-control" style="border: 1px solid;min-height: 70% !important; border-color: #78A0CA;" pInputText placeholder="Date" placement="bottom"
+                   name="dp1" [(ngModel)]="model.date" ngbDatepicker #e="ngbDatepicker">
+            <div class="input-group-append">
+                <button class="fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block" (click)="e.toggle()" type="button"></button>
+            </div>
+        </div>
+    </div>
+</div>

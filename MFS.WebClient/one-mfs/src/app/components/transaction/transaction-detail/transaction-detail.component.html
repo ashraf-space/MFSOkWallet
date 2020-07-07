@@ -1,0 +1,80 @@
+<p-panel header="Transaction" [toggleable]="true">
+    <br />
+    <div class="p-grid">
+        <div class="p-col-8">
+            <span class="ui-float-label ">
+                <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.transNo">
+                <label for="float-input input-lg"><i class='fa fa-search'></i> Enter Transaction #</label>
+            </span>
+        </div>
+        <div class="p-col-4">
+            <button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" (click)="onSearch()"><i class="fas fa-search"></i> Search</button>
+        </div>
+    </div>
+    <div class="form-group" *ngIf="transactionModel">
+        <br />
+        <div class="p-grid">
+            <div class="p-col-8">
+                <div class="p-grid">
+                    <div class="p-col-8">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.particular" [disabled]="true">
+                            <label for="float-input input-lg">Event</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.transNo" [disabled]="true">
+                            <label for="float-input input-lg">Transaction #</label>
+                        </span>
+                    </div>
+                    <br />
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.transFrom" [disabled]="true">
+                            <label for="float-input input-lg">Transfer From</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.transTo" [disabled]="true">
+                            <label for="float-input input-lg">Transfer To</label>
+                        </span>
+                    </div>
+                    <div class="p-col-4">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.billno" [disabled]="true">
+                            <label for="float-input input-lg">Bill #</label>
+                        </span>
+                    </div>
+                </div>                
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.payAmt" [disabled]="true">
+                    <label for="float-input input-lg">Amount Paid</label>
+                </span>
+                <br />
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.msgAmt" [disabled]="true">
+                            <label for="float-input input-lg">Amount</label>
+                        </span>
+                    </div>
+                    <div class="p-col-6">
+                        <span class="ui-float-label ">
+                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="transactionModel.schargeAmt" [disabled]="true">
+                            <label for="float-input input-lg">Service Charge</label>
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+</p-panel>
+<br />
+<generic-grid [gridConfig]="gridConfig">
+</generic-grid>

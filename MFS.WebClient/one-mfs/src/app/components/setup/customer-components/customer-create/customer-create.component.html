@@ -1,0 +1,431 @@
+<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+
+<div class="form-elements">
+
+    <!--Primary Information-->
+    <div *ngIf="activeIndex==0">
+        <p-card [style]="{'margin-bottom':'20px'}">
+            <div class="form-group">
+                <h6 class="form-header">Account Information</h6>
+                <div class="form-group row">
+                    <label for="customerAC" class="col-sm-1 col-form-label">Customer A/C# <span class="mandatory">*</span></label>
+                    <div class="col-sm-11">          
+                        <!--<p-inputMask mask="+880 (999) 999-9999" [(ngModel)]="val4" placeholder="+880 (999) 999-9999" [style]="{display: 'grid'}" class="form-control"></p-inputMask>-->
+                        <!--<input type="text" class="form-control" placeholder="Customer Phone Number" aria-label="Username" aria-describedby="bdPhoneInitial">-->
+                        <input type="text" class="form-control form-input" id="customerAC" placeholder="(019) 999-9999" pKeyFilter="int">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="regDate" class="col-sm-1 col-form-label">Registration Date</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="regDate" placeholder="Registration Date">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="formNum" class="col-sm-1 col-form-label single-line">Form#</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="formNum" placeholder="Form Number">
+                    </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+
+    <!--Personal Information-->
+    <div *ngIf="activeIndex==1">
+        <p-card [style]="{'margin-bottom':'20px'}">
+            <div class="form-group">
+                <h6 class="form-header">Customer Information</h6>
+                <div class="form-group row">
+                    <label for="customerAC" class="col-sm-1 col-form-label">Customer Name <span class="mandatory">*</span></label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control form-input" id="customerAC" placeholder="Customer Name">
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6 ">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line gap">Birth Date</label>
+                            <div class="col-sm-10">
+                                <p-calendar [(ngModel)]="date6" [monthNavigator]="true" [yearNavigator]="true" yearRange="1960:2025" [showIcon]="false" [style]="{display: 'grid'}"></p-calendar>
+                                <!--<input type="text" class="form-control" id="regDate" placeholder="Registration Date">-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line">Gender</label>
+                            <div class="col-sm-10">
+                                <p-selectButton [options]="genderTypes" [(ngModel)]="selectedType" [style]="{color: 'white'}"></p-selectButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line gap">Religeon</label>
+                            <div class="col-sm-10">
+                                <p-dropdown [options]="religeonList" [(ngModel)]="selectedCity" placeholder="Select Religeon" [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line">Nationality</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nationality">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label">Photo Id Type <span class="mandatory">*</span></label>
+                            <div class="col-sm-10">
+                                <p-selectButton [options]="photoIdTypes" [(ngModel)]="selectedTypePhoto" [style]="{color: 'white'}"></p-selectButton>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line">Photo Id# <span class="mandatory">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Photo Id Number" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label single-line">Occupation</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Occupation">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label">Monthly Income</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Monthly Income" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="form-header">Contact Information</h6>
+                <div class="form-group row">
+                    <label for="regDate" class="col-sm-1 col-form-label">Spouse Name</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="regDate" placeholder="Spouse Name">
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label gap">Father Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Father Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label">Mother Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Mother Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label gap">Customer Phone#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Customer Phone Number" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label">Contact Phone#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Contact Phone" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label gap third-line">Secondary Contact Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Secondary Contact Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label third-line">Secondary Contact Phone#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Secondary Contact Phone Number" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label gap third-line">Third Contact Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Third Contact Name" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="regDate" class="col-sm-2 col-form-label third-line">Third Contact Phone#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Third Contact Phone Number" pKeyFilter="int">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h6 class="form-header">Contact Address</h6>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Mailing Address</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="formNum" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Present Address</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="formNum" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Permanent Address</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="formNum" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">Division <span class="mandatory">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Division">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">District <span class="mandatory">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="District">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">Thana</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Thana">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+    <!--Nominee and Introducer-->
+    <div *ngIf="activeIndex==2">
+        <p-card [style]="{'margin-bottom':'20px'}">
+            <div class="form-group">
+                <h6 class="form-header">Nominee Information</h6>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Nominee Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label third-line">Relation with Nominee</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Relation">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Nominee Contact#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Contact Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Nominee Age</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Age">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="customerAC" class="col-sm-1 col-form-label">Percentage %</label>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control" id="regDate" placeholder="Percentage" pKeyFilter="num">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="customerAC" class="col-sm-1 col-form-label">Nominee Address</label>
+                    <div class="col-sm-11">
+                        <textarea class="form-control" id="formNum" rows="3"></textarea>
+                    </div>
+                </div>
+                <h6 class="form-header">Introducer Information</h6>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Introducer Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Introducer Contact#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Introducer Contact Number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">Occupation</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Occupation">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Introducer Address</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="formNum" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <div *ngIf="activeIndex==3">
+        <p-card [style]="{'margin-bottom':'20px'}">
+            <div class="form-group">
+                <h6 class="form-header">Bank Information</h6>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">Bank A/C#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Bank A/C Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Account Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Account Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Account Branch</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Contact Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label single-line">TIN#</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="TIN Number">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Secret Question</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Nominee Contact Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-6">
+                        <div class="form-group row">
+                            <label for="formNum" class="col-sm-2 col-form-label">Secret Answer</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="regDate" placeholder="Secret Answer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>
+
+
+
+<div class="event-buttons">
+    <p-card>
+        <div class="p-grid">
+            <div class="p-col-1">
+                <button class="btn btn-danger btn-block btn-reverse" (click)="cancel()">Cancel</button>
+            </div>
+            <div class="p-col-9">
+            </div>
+            <div class="p-col-1">
+                <button class="btn btn-warning btn-block btn-reverse" *ngIf="activeIndex!=0" (click)="onStepBack()">Back</button>
+            </div>
+            <div class="p-col-1">
+                <button class="btn btn-success btn-block btn-reverse" (click)="onStepAhead()"><span *ngIf="activeIndex<3">Next</span><span *ngIf="activeIndex==3">Save</span></button>
+            </div>
+        </div>
+    </p-card>
+</div>

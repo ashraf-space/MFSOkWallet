@@ -1,0 +1,187 @@
+<p-messages [(value)]="msgs" *ngIf="showDuplicateMsg"></p-messages>
+<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="!isEditMode"></p-steps>
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<fieldset [disabled]="isRegPermit ? 'disabled' : null">
+	<div class="form-elements">
+
+		<!--Primary Information-->
+		<div *ngIf="activeIndex==0">
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Office use only</h6>
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="regInfoModel.mphone" (change)="checkMphoneAlreadyExist()"
+											 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
+								<label for="float-input input-lg" class="col-form-label">Enterprise AC No<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+						</div>
+
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control form-input" [(ngModel)]="regInfoModel.formSerial"
+									   pInputText [pKeyFilter]="customeNumberInput" id="float-input" />
+								<label for="FormSerialNo" class="col-form-label">Form SL No</label>
+							</span>
+						</div>
+
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input class="form-control" placement="top"
+									   name="dp" #regDateControl="ngModel" [(ngModel)]="regDate" [readonly]="true"
+									   ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" pInputText id="float-input">
+								<label for="regDate" class="col-form-label">Reg Date</label>
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+			</p-card>
+		</div>
+
+		<!--Personal Information-->
+		<div *ngIf="activeIndex==1">
+
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Personal details</h6>
+					<br />
+					<div class="p-grid">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control" [(ngModel)]="regInfoModel.name" uppercase pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Enterprise Name <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error" severity="error"
+									   text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control" [(ngModel)]="regInfoModel.conMob"
+									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label"> Enterprise Mobile No</label>
+							</span>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control" [(ngModel)]="regInfoModel.conPhone"
+									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label"> Enterprise Phone</label>
+							</span>
+						</div>
+
+
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd"> Division <span class="mandatory">*</span></label>
+							<p-dropdown [options]="divisionList" placeholder="Select Division" [(ngModel)]="selectedDivision"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegPermit"
+										(onChange)="fillDistrictDDLByDivision();"></p-dropdown>
+
+							<p-message *ngIf="(selectedDivision == '0') && error"
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd"> District <span class="mandatory">*</span></label>
+							<p-dropdown [options]="districtList" placeholder="Select District" [(ngModel)]="selectedDistrict"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegPermit"
+										(onChange)="fillThanaDDLByDistrict();"></p-dropdown>
+
+							<p-message *ngIf="(selectedDistrict == '0') && error"
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd"> Thana <span class="mandatory">*</span></label>
+							<p-dropdown [options]="thanaList" placeholder="Select Thana" [(ngModel)]="regInfoModel.locationCode" [disabled]="isRegPermit"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+							<p-message *ngIf="(regInfoModel.locationCode==null || regInfoModel.locationCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="2" cols="55" id="float-input" [(ngModel)]="regInfoModel.offAddr"
+										  pInputTextarea uppercase autoResize="autoResize"></textarea>
+								<label for="float-input input-lg" class="col-form-label"> Official Address</label>
+							</span>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="2" cols="55" id="float-input" [(ngModel)]="regInfoModel.preAddr"
+										  pInputTextarea uppercase autoResize="autoResize"></textarea>
+								<label for="float-input input-lg" class="col-form-label"> Present Address</label>
+							</span>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="2" cols="55" id="float-input" [(ngModel)]="regInfoModel.perAddr"
+										  pInputTextarea uppercase autoResize="autoResize"></textarea>
+								<label for="float-input input-lg" class="col-form-label"> Permanent Address<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.perAddr==null || regInfoModel.perAddr=='')  && error " severity="error" text="Cannot be left blank"></p-message>
+						</div>
+					</div>
+				</div>
+			</p-card>
+		</div>
+
+
+		<!--Bank info-->
+		<div *ngIf="activeIndex==2">
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Bank Information</h6>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<label for="BankBranch" class="col-form-label ">Branch Name <span class="mandatory">*</span></label>
+							<p-dropdown [options]="bankBranchList" [(ngModel)]="regInfoModel.branchCode" [disabled]="isRegPermit"
+										[filter]="true" filterBy="label,value.name" [showClear]="true" placeholder="Select Branch"
+										[style]="{display: 'grid'}"></p-dropdown>
+							<p-message *ngIf="(regInfoModel.branchCode==null || regInfoModel.branchCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control" uppercase [(ngModel)]="regInfoModel.accountName"
+									   pInputText id="float-input">
+								<label for="AccountName" class="col-form-label">Account Name</label>
+							</span>
+						</div>
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo"
+									   pInputText id="float-input" [pKeyFilter]="customeNumberInput">
+								<label for="AccountNo" class="col-form-label ">Account No</label>
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</p-card>
+
+		</div>
+	</div>
+</fieldset>
+<app-generic-stepper-form-action [activeIndex]="activeIndex" [maxIndex]="3"  (onSaveAction)="SaveEnterprise($event)" (onStepAhead)="onStepAhead($event)" (onStepBack)="onStepBack()"></app-generic-stepper-form-action>
+

@@ -1,0 +1,64 @@
+.merchant_badge * {
+    font-family: calibri !important;
+    color: #000;
+    font-weight: 400;
+    text-align:center;
+}
+
+.merchant_badge {
+    width: 8in;
+    height: 11in;
+    background: #FFF;
+    padding: 0.12in;
+}
+
+.merchant_badge_inner {
+    width: 7.76in;
+    height: 10.76in;
+    background: #fef200;
+    border: 1px solid #000;
+}
+
+.scan_qr {
+    font-size: 16pt;
+    margin: 0.75in auto;
+    font-weight: bold;
+}
+
+.merchant_mobile {
+}
+
+.merchant_mobile_no {
+    width: 4in;
+    background: #FFF;
+}
+
+.merchant_mobile span {
+    display: inline-block;
+    width: 0.363in;
+    height: 0.40in;
+    border: 1px solid #000;
+    font-size: 16pt;
+    padding-top: 0.5mm;
+    text-align: center;
+}
+
+.merchant_no {
+    font-size: 12pt;
+}
+
+#ok-wallet-logo {
+    background-image: url(../../../../assets/ok-logo.png);
+    height: 5em;
+    background-position: center;
+    background-repeat: no-repeat;    
+    position: relative;
+}
+
+#img_merchant_badge {
+    background-size: 100% 100%;
+}
+
+#contentToConvert{
+    text-align:center;
+}

@@ -1,0 +1,68 @@
+<div>
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Feature</h6>
+            <div class="form-group row">
+                <label for="customerAC" class="col-sm-1 col-form-label double-line">Feature Name <span class="mandatory">*</span></label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control form-input" id="customerAC" placeholder="Feature Name" [(ngModel)]="featureModel.alias" required>
+                    <!--<span *ngIf="(featureModel.alias==null || featureModel.alias=='') && error" class="mandatory">Cannot be left blank</span>-->
+                    <p-message *ngIf="(featureModel.alias==null || featureModel.alias=='') && error" severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6 ">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line gap">Controller</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control form-input" id="customerAC" placeholder="Controller Name" [(ngModel)]="featureModel.controller">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Category</label>
+                        <div class="col-sm-10">
+                            <p-dropdown [options]="featureCategoryList" [(ngModel)]="featureModel.categoryId" placeholder="Select Category" [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
+                            <p-message *ngIf="(featureModel.categoryId==null || featureModel.categoryId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Icon</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="regDate" placeholder="Icon" [(ngModel)]="featureModel.icon">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Order#</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="regDate" placeholder="Order Number" [(ngModel)]="featureModel.orderNo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="customerAC" class="col-sm-1 col-form-label single-line">URL <span class="mandatory">*</span></label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control form-input" id="customerAC" placeholder="URL" [(ngModel)]="featureModel.url">
+                    <p-message *ngIf="(featureModel.url==null || featureModel.url=='') && error" severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label class="col-sm-1 col-form-label">Registration Allowed</label>
+                <div class="col-sm-11">
+                    <p-inputSwitch [(ngModel)]="featureModel.isRegistrationAllowed"></p-inputSwitch>                 
+                </div>
+            </div>
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode"  (onSave)="onSaveFeature($event)" (onDelete)="onDeleteFeature($event)"></app-generic-form-action>

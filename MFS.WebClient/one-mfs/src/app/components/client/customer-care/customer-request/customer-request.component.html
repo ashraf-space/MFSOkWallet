@@ -1,0 +1,42 @@
+<generic-grid [gridConfig]="gridConfig" (customAction)="onAction($event)">
+    <div class="p-grid">
+        <div class="p-col-1">
+        </div>
+        <div class="p-col-5">
+            <input class="form-control" style="border:none; min-height: 70% !important;font-size: 150% !important" pInputText placeholder="MPhone - Optional" [(ngModel)]="searchObj.mphone" [disabled]="mPhone">
+        </div>
+        <div class="p-col-4">
+            <p-dropdown [options]="searchObj.statusList" [(ngModel)]="searchObj.selectedStatus" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
+        </div>
+        <div class="p-col-2">                 
+            <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()"><i class="far fa-clock"></i> Reload</button>
+        </div>
+    </div>
+</generic-grid>
+
+<app-generic-modal [initiateModal]="showRequestAction" [header]="'Request Action'" (onDestroy)="showRequestAction=false" (onConfirm)="confirmRequestAction()">
+    <div style="margin-bottom:2rem">
+        <div class="p-grid">
+            <div class="p-col-3">
+                <h6 style="text-align:right;color:cadetblue;">Request: <br /><span>{{model.reqDate | date}}</span></h6>
+            </div>
+            <div class="p-col-9">
+                <input type="text" class="form-control form-input" [(ngModel)]="model.request" pInputText id="float-input" [disabled]="true"/>
+            </div>
+            <div class="p-col-3">
+                <h6 style="text-align:right;color:cadetblue;margin-top:0.6em;">Action:</h6>
+            </div>
+            <div class="p-col-9">
+                <p-selectButton [options]="actionList" [(ngModel)]="model.status" [style]="{color: 'white'}"></p-selectButton>
+            </div>
+            <div class="p-col-3">
+                <br />
+                <h6 style="text-align:right;color:cadetblue;">Remarks:</h6>
+            </div>
+            <div class="p-col-9">
+                <textarea rows="3" cols="120" pInputTextarea [(ngModel)]="model.remarks"></textarea>
+            </div>
+            <div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
+        </div>
+    </div>
+</app-generic-modal>

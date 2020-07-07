@@ -1,0 +1,12 @@
+<p-dialog [header]="header" [(visible)]="initiateModal" [modal]="true" [responsive]="true" [style]="{width: '1250px', minWidth: '600px'}" [minY]="7" [positionTop]="7"
+          [maximizable]="true" [baseZIndex]="999" [closable]="true" (onHide)="onDestroyClick()">
+    <div>
+        <p-card>
+            <ng-content></ng-content>
+        </p-card>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check"  *ngIf="!hideConfirm" [disabled]="disableConfirm" (click)="onConfirmClick()" label="Confirm" class="ui-button-success"></button>
+        <button type="button" pButton (click)="onDestroyClick()" *ngIf="!hideCancel" label="Cancel" class="ui-button-info"></button>
+    </p-footer>
+</p-dialog>

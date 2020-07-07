@@ -1,0 +1,69 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Merchant Configuration</h6>
+
+            <div class="form-group row">
+                <label for="mphone" class="col-sm-4 col-form-label">A/C No <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <p-dropdown [options]="merchantConfigAcList" [(ngModel)]="merchantConfigModel.mphone" placeholder="Select AC" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="GetMerchantConfigDetails();"></p-dropdown>
+                    <p-message *ngIf="(merchantConfigModel.mphone==null || merchantConfigModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Merchant Code </label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.mcode">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mphone" class="col-sm-4 col-form-label">Status</label>
+                <div class="col-sm-6">
+                    <p-dropdown [options]="statusList" [(ngModel)]="merchantConfigModel.status" placeholder="Select status" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Fixed customer service charge</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.customerServiceChargeFxt">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Customer service charge %</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.customerServiceChargePer" (change)="CheckAmount(merchantConfigModel.customerServiceChargePer,'CSC');">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Minimum transaction amount(tk)</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.minTransAmt">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Database charge (tk)</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.semiconDbCharge">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="name" class="col-sm-4 col-form-label single-line">Merchant cash out charge %</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control form-input" [(ngModel)]="merchantConfigModel.merchantCashoutCharge" (change)="CheckAmount(merchantConfigModel.merchantCashoutCharge,'MCOC');">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="mphone" class="col-sm-4 col-form-label">Merchant SMS notification</label>
+                <div class="col-sm-6">
+                    <p-dropdown [options]="statusList" [(ngModel)]="merchantConfigModel.MerchantSmsNotification" placeholder="" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                </div>
+            </div>
+
+        </div>
+
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="saveMerchantConfig()"></app-generic-form-action>
+

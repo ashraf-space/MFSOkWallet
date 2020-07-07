@@ -1,0 +1,20 @@
+<p-panel [toggleable]="true" header="Search Client Profile" >
+    <br />
+    <div class="p-grid">
+        <div class="p-col-9">
+            <span class="ui-float-label ">
+                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="int" [(ngModel)]="searchModel.mphone">
+                <label for="float-input input-sm" class="col-form-label"><i class='fa fa-search'></i> Enter MPhone Number</label>
+            </span>
+        </div>
+        <div class="p-col-3">
+            <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()" [disabled]=" !searchModel.mphone || (searchModel.mphone.length != 11)"><i class="fas fa-search"></i> Search </button>
+        </div>
+        <div class="p-col-12" *ngIf="searchModel.result">
+            <hr />
+            <app-client-profile [model]="searchModel.result"></app-client-profile>
+        </div>
+    </div>
+</p-panel>
+
+<mfs-loader *ngIf="loading"></mfs-loader>

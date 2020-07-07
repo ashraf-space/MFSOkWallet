@@ -1,0 +1,27 @@
+<p-panel header="Search Account" [toggleable]="true" >
+	<div class="p-grid">		
+		<div class="p-col-8">
+			<div class="form-group row">
+				<label for="mblAcc" class="col-sm-2 col-form-label">Mobile Account</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control form-input"  [(ngModel)]="mtCbsInfoModel.mblAcc" id="mblAcc" />
+					<p-message *ngIf="(mtCbsInfoModel.mblAcc && mtCbsInfoModel.mblAcc.length !=11 )" 
+					           severity="warning" text="Please input 11 digit mobile number"></p-message>
+				</div>
+			</div>
+		</div>
+		<div class="p-col-4">
+			<div class="form-group row">			
+				<div class="col-sm-10">
+					<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" [disabled]="!mtCbsInfoModel.mblAcc  || mtCbsInfoModel.mblAcc && mtCbsInfoModel.mblAcc.length !=11" (click)="onSearch()"><i class="fas fa-search"></i> Search</button>
+				</div>
+			</div>
+		</div>	
+	</div>
+</p-panel>
+
+<br/>
+<br/>
+
+<generic-grid [gridConfig]="gridConfig" *ngIf="showGrid">
+</generic-grid>

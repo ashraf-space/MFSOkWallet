@@ -1,0 +1,123 @@
+<div class="p-grid">
+	<div class="p-col-12">
+		<button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" style="background-color:#67bb64 !important" (click)="onSave()">Save <i class="far fa-save"></i></button>
+	</div>
+	<div class="p-col-12">
+		<hr />
+	</div>
+	<div class="p-col-6">
+		<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Account Number </label>
+		<input id="float-input" type="text" class="form-control" [readonly]="true" pInputText [(ngModel)]="model.mphone">
+
+	</div>
+	<div class="p-col-6">
+		<label for="float-input input-lg" class="col-form-label">Client Name <span class="mandatory">*</span></label>
+		<input type="text" class="form-control" [(ngModel)]="model.name" uppercase pInputText id="float-input">
+	</div>
+	<div class="p-col-4">
+		<span class="ui-float-label ">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.spouseName">
+			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Spouse Name </label>
+		</span>
+	</div>
+	<div class="p-col-4">
+		<span class="ui-float-label ">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.fatherName">
+			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Fathers Name </label>
+		</span>
+	</div>
+	<div class="p-col-4">
+		<span class="ui-float-label ">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.motherName">
+			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Mothers Name </label>
+		</span>
+	</div>
+	<div class="p-col-6">
+		<br />
+		<span class="ui-float-label ">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.monthlyIncome">
+			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Monthly Income </label>
+		</span>
+	</div>
+	<div *ngIf="model.catId == 'C'" class="p-col-6">
+		<label for="float-input input-lg" class="col-form-label-dd"> Occupation</label>
+		<p-dropdown [options]="occupationList" placeholder="Select Occupation" [(ngModel)]="model.occupation"
+					[filter]="true" filterBy="label,value.name"
+					[style]="{display: 'grid'}" [disabled]="isRegPermit"></p-dropdown>
+		<!--<br />
+		<span class="ui-float-label ">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.occupation">
+			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Occupation </label>
+		</span>-->
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.conMob"
+				   [pKeyFilter]="positveNumber" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Customer Mobile No</label>
+		</span>
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.conPhone"
+				   [pKeyFilter]="positveNumber" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Customer Phone</label>
+		</span>
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.secondConName" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Second Contact Name</label>
+		</span>
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.secondConMob"
+				   [pKeyFilter]="positveNumber" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Second Contact Mobile</label>
+		</span>
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.thirdConName" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Third Contact Name</label>
+		</span>
+	</div>
+	<div class="p-col-2">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.thirdConMob"
+				   [pKeyFilter]="positveNumber" pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Third Contact Mobile</label>
+		</span>
+	</div>
+	<div class="p-col-6">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.offAddr"
+				   pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Official Address</label>
+		</span>
+	</div>
+	<div class="p-col-6">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.preAddr"
+				   pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Present Address</label>
+		</span>
+	</div>
+	<div class="p-col-12">
+		<br />
+		<span class="ui-float-label ">
+			<input type="text" class="form-control" [(ngModel)]="model.perAddr"
+				   pInputText id="float-input">
+			<label for="float-input input-lg" class="col-form-label"> Permanent Address</label>
+		</span>
+	</div>
+</div>

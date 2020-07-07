@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="one-mfs\dist\**" />
+    <Compile Remove="one-mfs\node_modules\**" />
+    <Compile Remove="one-mfs\src\app\components\environment\MerchantConfig\**" />
+    <EmbeddedResource Remove="one-mfs\dist\**" />
+    <EmbeddedResource Remove="one-mfs\node_modules\**" />
+    <EmbeddedResource Remove="one-mfs\src\app\components\environment\MerchantConfig\**" />
+    <None Remove="one-mfs\dist\**" />
+    <None Remove="one-mfs\node_modules\**" />
+    <None Remove="one-mfs\src\app\components\environment\MerchantConfig\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="one-mfs\src\app\components\client\hotkey\" />
+    <Folder Include="one-mfs\src\app\components\client\customer-care\" />
+    <Folder Include="one-mfs\src\app\components\distribution\dsr\" />
+    <Folder Include="one-mfs\src\app\components\distribution\merchant\" />
+    <Folder Include="one-mfs\src\app\components\environment\branch\" />
+    <Folder Include="one-mfs\src\app\components\environment\distribution-channel\region\" />
+    <Folder Include="one-mfs\src\app\components\environment\merchant-config\" />
+    <Folder Include="one-mfs\src\app\components\process\" />
+    <Folder Include="one-mfs\src\app\components\reports\report-collection\transaction-type\" />
+    <Folder Include="one-mfs\src\app\components\security\role\" />
+    <Folder Include="one-mfs\src\app\components\transaction\chart-of-accounts\" />
+    <Folder Include="one-mfs\src\app\components\transaction\rate-config\" />
+    <Folder Include="one-mfs\src\app\services\client\" />
+    <Folder Include="one-mfs\src\app\services\report\" />
+    <Folder Include="one-mfs\src\app\shared\filter-pipes\" />
+  </ItemGroup>
+
+</Project>

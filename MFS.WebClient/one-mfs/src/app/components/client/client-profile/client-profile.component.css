@@ -1,0 +1,15 @@
+.header {
+    padding:1em;
+    padding-left:1em;
+}
+
+.property-name {
+    padding-top: 0.5rem !important;
+}
+
+.detail-font-size {
+    font-size:90% !important;
+}
+.form-group {
+    margin-top: -10px !important;
+}

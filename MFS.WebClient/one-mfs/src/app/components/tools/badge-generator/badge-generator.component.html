@@ -1,0 +1,61 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+	<p-card [style]="{'margin-bottom':'20px'}">
+		<div class="p-grid">
+			<div class="p-col-3">
+				<p-dropdown [options]="clientList" [(ngModel)]="model.clientType" placeholder="Select Client" [filter]="true" [style]="{display: 'grid'}"></p-dropdown>
+			</div>
+			<div class="p-col-3">
+				<span class="ui-float-label ">
+					<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="model.qrCodeNumber" (change)="checkIfExist()"
+								 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int" [style]="{'width':'100%'}"></p-inputMask>
+					<label *ngIf="model.clientType == 'M'" for="float-input input-lg" class="col-form-label">Merchant Account No</label>
+					<label *ngIf="model.clientType == 'A'" for="float-input input-lg" class="col-form-label">Agent Account No</label>
+
+				</span>
+			</div>
+			<div class="p-col-3">
+				<button type="button" [disabled]="model.qrCodeNumber.length != 11" class="btn btn-blue btn-sm btn-block" style="margin-top:1%" (click)="generateQRCode()"><i class="fas fa-qrcode"></i> Generate</button>
+			</div>
+			<div class="p-col-3">
+				<button type="button" class="btn btn-blue btn-sm btn-block" style="margin-top:1%" (click)="downloadImage()"><i class="fas fa-download"></i> Download</button>
+				<!--<a [href]="href" *ngIf="display" class="btn btn-blue btn-sm btn-block" (click)="downloadImage()" download>Download Image</a>-->
+			</div>
+		</div>
+	</p-card>
+	<div class="form-group">
+		<div class="merchant_badge" id="main-badge">
+			<div class="merchant_badge_inner" id="contentToConvert">
+				<div class="ok_wallet" style="background:#FFF;max-height:3in;padding:0.35in 0px;" align="center">
+					<div id="ok-wallet-logo">
+					</div>					
+				</div>
+				<div class="merchant_info" style="height:auto;">
+					<h2 class="merchant_name" style="max-height:1.25in;overflow:hidden;margin:0px;margin-top:.5mm;padding:4mm;font-size:22pt;text-align:center;">{{model.clientName}}</h2>
+
+					<div style="text-align:center;max-width:2.2in;max-height:2.2in;overflow:hidden;border:1px solid #CCC;background:#FFF;padding:0.05in;margin:0px auto;">
+						
+						<img [src]="imageToShow" alt="Place image title" *ngIf="isImageLoading">
+					</div>					
+					<div class="scan_qr" align="center">
+						Scan QR Code to Pay
+					</div>
+					<div class="merchant_mobile" style="width:4in;margin:0px auto;">
+						<div *ngIf="model.clientType == 'M'" class="merchant_no" align="left">
+							Merchant Account Number
+						</div>
+						<div *ngIf="model.clientType == 'A'" class="merchant_no" align="left">
+							Agent Account Number
+						</div>
+						<div class="merchant_mobile_no" style="margin-top:2mm;">
+							<span *ngFor="let num of model.qrCodeNumber.split('')">{{num}}</span>
+						</div>
+					</div>
+					<div class="call_center_info" align="right" style="padding-right:0.3in;margin-top:1in">
+						Call Center: 16269
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

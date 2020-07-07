@@ -1,0 +1,192 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h5 class="form-header"> Rate Config | {{model.rateconfig_for}} 
+                <span style="float:right;margin-top: -0.5%;">Status: <p-selectButton [options]="statusList" [(ngModel)]="model.status"></p-selectButton></span>
+            </h5>
+            <div class="p-grid">
+                <div class="p-col-12">
+                    <h6 class="form-header-light-blue"> Charges & Commissions</h6>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.schargePer">
+                        <label for="float-input input-lg" class="col-form-label">Service Charge %</label>
+                    </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.schargeFxt">
+                        <label for="float-input input-lg" class="col-form-label">Service Charge Fixed</label>
+                    </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.schargeMin">
+                        <label for="float-input input-lg" class="col-form-label">Service Charge Minimum</label>
+                    </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.spDistPer">
+                        <label for="float-input input-lg" class="col-form-label">Total Commissions %</label>
+                    </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.distPer">
+                        <label for="float-input input-lg" class="col-form-label">Distributor Commissions %</label>
+                    </span>
+                </div>
+                <div class="p-col-4">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.agentPer">
+                        <label for="float-input input-lg" class="col-form-label">Agent Commissions %</label>
+                    </span>
+                </div>
+                <div class="p-col-12">
+                    <h6 class="form-header-light-blue"> Transaction Limit</h6>
+                </div>
+                <div class="p-col-6">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.maxTransAmt">
+                        <label for="float-input input-lg" class="col-form-label">Maximum</label>
+                    </span>
+                </div>
+                <div class="p-col-6">
+                    <span class="ui-float-label ">
+                        <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.minTransAmt">
+                        <label for="float-input input-lg" class="col-form-label">Minimum</label>
+                    </span>
+                </div>
+                <div class="p-col-6">
+                    <h6 class="form-header-light-blue"> From Transaction Limit</h6>
+                    <br />
+                    <div class="p-grid">
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.fromDailyAmt">
+                                <label for="float-input input-lg" class="col-form-label">Daily Amount</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.fromDailyCount">
+                                <label for="float-input input-lg" class="col-form-label">Daily Count</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.fromMonthlyAmt">
+                                <label for="float-input input-lg" class="col-form-label">Monthly Amount</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.fromMonthlyCount">
+                                <label for="float-input input-lg" class="col-form-label">Monthly Count</label>
+                            </span>
+                        </div>
+                        <div class="p-col-12">
+                            <span class="ui-float-label ">
+                                <p-dropdown [options]="yesNoOptions" [filter]="true" [(ngModel)]="model.fromLimitStatus"></p-dropdown>
+                                <!--<input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.fromLimitStatus">-->
+                                <label for="float-input input-lg" class="col-form-label">Limit Check Status</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <h6 class="form-header-light-blue"> To Transaction Limit</h6>
+                    <br />
+                    <div class="p-grid">
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.toDailyAmt">
+                                <label for="float-input input-lg" class="col-form-label">Daily Amount</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.toDailyCount">
+                                <label for="float-input input-lg" class="col-form-label">Daily Count</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.toMonthlyAmt">
+                                <label for="float-input input-lg" class="col-form-label">Monthly Amount</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.toMonthlyCount">
+                                <label for="float-input input-lg" class="col-form-label">Monthly Count</label>
+                            </span>
+                        </div>
+                        <div class="p-col-12">
+                            <span class="ui-float-label ">
+                                <p-dropdown [options]="yesNoOptions" [filter]="true" [autoWidth]="false" [(ngModel)]="model.toLimitStatus"></p-dropdown>                                
+                                <label for="float-input input-lg" class="col-form-label">Limit Check Status</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12">
+                    <h6 class="form-header-light-blue"> Posting Status</h6>
+                </div>
+                <div class="p-col-6">
+                    <span class="ui-float-label ">
+                        <p-dropdown [options]="yesNoOptions" [filter]="true" [autoWidth]="false" [(ngModel)]="model.agentGlPostStatus"></p-dropdown>                        
+                        <label for="float-input input-lg" class="col-form-label">Agent</label>
+                    </span>
+                </div>
+                <div class="p-col-6">
+                    <span class="ui-float-label ">
+                        <p-dropdown [options]="yesNoOptions" [filter]="true" [autoWidth]="false" [(ngModel)]="model.distGlPostStatus"></p-dropdown>                       
+                        <label for="float-input input-lg" class="col-form-label">Distributor</label>
+                    </span>
+                </div>
+                <div class="p-col-12" *ngIf="model.telco_config == 'Y' && false">
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 class="form-header-light-blue"> Telco Commissions</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.agentGlPostStatus">
+                                <label for="float-input input-lg">Grameen Phone</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.distGlPostStatus">
+                                <label for="float-input input-lg">Robi</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.agentGlPostStatus">
+                                <label for="float-input input-lg">Airtel</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.distGlPostStatus">
+                                <label for="float-input input-lg">Banglalink</label>
+                            </span>
+                        </div>
+                        <div class="p-col-6">
+                            <span class="ui-float-label ">
+                                <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.agentGlPostStatus">
+                                <label for="float-input input-lg">Citycel</label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onSave()" (onDelete)="onDelete($event)"></app-generic-form-action>

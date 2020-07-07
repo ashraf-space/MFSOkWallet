@@ -1,0 +1,120 @@
+<h5 class="form-header header">Chart of Accounts 
+    <button class="btn btn-blue btn-small btn-reverse" (click)="createNewCoa()"><i class="fas fa-plus-circle"></i></button>
+    <span style="float:right;margin-top: -0.5%;"><p-selectButton [options]="views" [(ngModel)]="viewData"></p-selectButton></span> </h5>
+<div *ngIf="showData">
+    <div *ngIf="viewData==1">
+        <p-treeTable #tt [value]="tabularChartOfAccounts" [scrollable]="true" scrollHeight="calc(61vh - (50px + 1.25em))" >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Account Code</th>
+                    <th>Account Description</th>
+                    <th>Hierarchy level</th>
+                    <th>Date Created</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowNode let-rowData="rowData">
+                <tr [ttRow]="rowNode">
+                    <td>
+                        <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                        {{rowData.code}}
+                    </td>
+                    <td>{{rowData.description}}</td>
+                    <td>{{rowData.level}}</td>
+                    <td>{{rowData.date | date}}</td> 
+                </tr>
+            </ng-template>
+            <ng-template  pTemplate="summary">
+                <h6 style="text-align:center">{{masterLog.length }} data loaded</h6>
+            </ng-template>
+        </p-treeTable>
+    </div>
+    <div *ngIf="viewData==2">
+        <div *ngFor="let item of graphicalChartOfAccounts">
+            <p-tree [value]="item" layout="horizontal" [filter]="true"></p-tree>
+            <br />
+        </div>
+    </div>
+</div>
+<div *ngIf="!showData" style="text-align:center;margin-top:5%;">
+    <p-progressSpinner></p-progressSpinner>
+</div>
+<app-generic-modal [initiateModal]="showCreateNewModal" [header]="'GL Chart Of Account(s)'" (onDestroy)="showCreateNewModal=false" (onConfirm)="confirmAddNewGL()" [disableConfirm]="model.coaCode=='' || !model.coaCode || !model.coaDesc || model.coaDesc==''">
+    <div style="margin-bottom:2rem" >
+        <div class="p-grid">
+            <div class="p-col-12">
+                <h6 class="form-header-light-blue"> GL Chart Of Account(s) </h6>
+            </div>
+            <div class="p-col-12">
+                <span>
+                    <label class="col-form-label-dd">Parent ledger<span class="mandatory">*</span></label><br />
+                    <p-dropdown [options]="chartOfAccountsDropdownList" [(ngModel)]="model.value" [style]="{display: 'grid'}" placeholder="Please Select" [filter]="true" (onChange)="prepareCoaModel($event)"></p-dropdown>
+                </span>
+                <br />
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.pCoaCode" [disabled]="true">
+                    <label for="float-input input-lg" class="col-form-label">Parent Ledger Code</label>
+                </span>
+                <br />
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.pCoaDesc" [disabled]="true">
+                    <label for="float-input input-lg" class="col-form-label">Parent Ledger Description</label>
+                </span>
+                <br />
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.pCoaLevel" [disabled]="true">
+                    <label for="float-input input-lg" class="col-form-label">Parent ledger Level</label>
+                </span>
+                <br />
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.coaCode">
+                    <label for="float-input input-lg" class="col-form-label">Ledger Code</label>
+                </span>
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.coaDesc">
+                    <label for="float-input input-lg" class="col-form-label">Ledger Description</label>
+                </span>
+            </div>
+            <div class="p-col-4">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.coaLevel" [disabled]="true">
+                    <label for="float-input input-lg" class="col-form-label">ledger Level</label>
+                </span>
+            </div>
+            <div class="p-col-4">
+                <span>
+                    <label class="col-form-label-dd">Account Type<span class="mandatory">*</span></label><br />
+                    <p-dropdown [options]="accountTypeList" [(ngModel)]="model.accType" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="true"></p-dropdown>
+                </span>
+            </div>
+            <div class="p-col-4">
+                <span>
+                    <label class="col-form-label-dd">Level Type<span class="mandatory">*</span></label><br />
+                    <p-dropdown [options]="levelTypeList" [(ngModel)]="model.levelType" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="true"></p-dropdown>
+                </span>
+            </div>
+            <div class="p-col-4">
+                <span>
+                    <label class="col-form-label-dd">Status <span class="mandatory">*</span></label><br />
+                    <p-dropdown [options]="statusList" [(ngModel)]="model.status" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="true"></p-dropdown>
+                </span>
+            </div>
+            <div class="p-col-12">
+                <span class="ui-float-label ">
+                    <input id="float-input" type="text" class="form-control" pInputText pKeyFilter="num" [(ngModel)]="model.linkedCoaCode">
+                    <label for="float-input input-lg" class="col-form-label">Linked Chart Of Account Code</label>
+                </span>
+            </div>
+        </div>
+    </div>
+</app-generic-modal>
+

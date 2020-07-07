@@ -1,0 +1,75 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Create</span><span *ngIf="isEditMode"> Update</span> Disbursement Company</h6>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Company Name<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.companyName">
+                    <p-message *ngIf="(tblDisburseCompanyInfoModel.companyName==null || tblDisburseCompanyInfoModel.companyName=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Address<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.address">
+                    <p-message *ngIf="(tblDisburseCompanyInfoModel.address==null || tblDisburseCompanyInfoModel.address=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Phone<span class="mandatory">*</span></label>
+                    <!--<input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.phone">
+                    <p-message *ngIf="(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                    <p-inputMask mask="99999999999" [(ngModel)]="tblDisburseCompanyInfoModel.phone" pKeyFilter="int" [style]="{'width':'100%'}"></p-inputMask>
+                    <p-message *ngIf="(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Fax</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.fax">
+                </div>
+
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Salary Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.salAcc" (change)="enableSave(tblDisburseCompanyInfoModel.salAcc);">
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Remittance Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.remAcc" (change)="enableSave(tblDisburseCompanyInfoModel.remAcc);">
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Cach Back Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.cabAcc" (change)="enableSave(tblDisburseCompanyInfoModel.cabAcc);">
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Customer Activation Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.catAcc" (change)="enableSave(tblDisburseCompanyInfoModel.catAcc);">
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Reword Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.rwdAcc" (change)="enableSave(tblDisburseCompanyInfoModel.rwdAcc);">
+                </div>
+
+                <div class="p-col-6" *ngIf="isShow" style="color:red">
+                    <!--<label for="float-input input-lg" class="col-form-label-dd">Please give at least one account</label>-->
+                    <p>Please give at least one account</p>
+                </div>
+            </div>
+
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" [disableAction]="isActionDisabled" (onSave)="companySave()" (onDelete)="companyDelete($event)"></app-generic-form-action>

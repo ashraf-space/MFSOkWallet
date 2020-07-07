@@ -1,0 +1,47 @@
+<br />
+<div class="login-box hold-transition  alert alert-light">
+    <div class="login-logo">
+        <img src="assets/ok-logo.png"/>
+    </div>    
+    <div class="login-box-msg login-box hold-transition " *ngIf="loading">
+        <div class="lds-circle loader"><div></div></div>
+    </div>
+    <div *ngIf="!loading">
+        <p class="login-box-msg ">Sign in to start your Session</p>
+        <div>
+			<div class="p-grid">
+				<div class="p-col-12" *ngIf="invalidCredentials">
+					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+						<span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Username or Password</span>
+					</div>
+				</div>
+				<div class="p-col-12" *ngIf="lockDownState">
+					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+						<span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been temporarily Locked</span>
+					</div>
+				</div>
+				<div class="p-col-12" *ngIf="forceLocklockDownState">
+					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+						<span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been Forced Log-Out</span>
+					</div>
+				</div>
+				<div class="p-col-12">
+					<span class="ui-float-label">
+						<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="loginModel.UserName" [disabled]="fixedUserName || lockDownState">
+						<label for="float-input">User Name</label>
+					</span>
+				</div>
+				<div class="p-col-12">
+					<span class="ui-float-label">
+						<input id="pwd" type="password" class="form-control" pInputText [(ngModel)]="loginModel.Password" [disabled]="lockDownState" (keyup)="onFinishEvent($event)">
+						<label for="float-input">Password</label>
+					</span>
+				</div>
+				<div class="p-col-12">
+					<button type="button" class="btn btn-blue btn-reverse btn-block" (click)="onSignIn()" [disabled]="lockDownState">Sign In</button>
+				</div>
+			</div>                    
+        </div>        
+    </div>
+</div>
+

@@ -1,0 +1,30 @@
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<div class="event-buttons">
+    <p-card>        
+        <div class="p-grid">
+            <div class="p-col-1">
+                <button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
+            </div>
+            <div class="p-col-1">
+                <app-authorize-button *ngIf="isEditMode && isDeleteAllowed" [type]="'delete'" (onButtonClick)="onDeleteAction()"></app-authorize-button>
+            </div>
+            <div class="p-col-5">
+            </div>
+            <div class="p-col-2" *ngIf="!isRejectAllowed && !isPassToMakerAllowed">
+
+            </div>
+            <div class="p-col-2" *ngIf="isRejectAllowed && !isPassToMakerAllowed">
+
+            </div>
+            <div class="p-col-1">
+                <app-authorize-button *ngIf="isRejectAllowed" [type]="'reject'" [forcedDisable]="disableAction" (onButtonClick)="onSaveAction($event)"></app-authorize-button>
+            </div>
+            <div class="p-col-2" *ngIf="isPassToMakerAllowed">
+                <app-authorize-button *ngIf="isPassToMakerAllowed" [type]="'pass-to-maker'" [forcedDisable]="disableAction" (onButtonClick)="onSaveAction($event)"></app-authorize-button>
+            </div>
+            <div class="p-col-2">
+                <app-authorize-button [type]="'save'" [forcedDisable]="disableAction" (onButtonClick)="onSaveAction($event)"></app-authorize-button>
+            </div>
+        </div>
+    </p-card>
+</div>

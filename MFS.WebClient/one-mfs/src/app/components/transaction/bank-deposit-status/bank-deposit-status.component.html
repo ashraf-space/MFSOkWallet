@@ -1,0 +1,60 @@
+<!--<p-messages [(value)]="msgs" *ngIf="showMsg"></p-messages>-->
+
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'5px'}">
+        <div class="form-group">
+            <h6 class="form-header">Bank Deposit Status</h6>
+            <div *ngIf="loading">
+                <p><p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner></p>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-3">
+                    <br />
+                    <!--<div class="form-group row">-->
+                    <span class="ui-float-label">
+                        <input class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
+                               [(ngModel)]="fromDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+                        <label for="float-input input-lg">From Date <span class="mandatory">*</span></label>
+                    </span>
+                    <p-message *ngIf="(fromDate.year==null || fromDate.year=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+                    <!--</div>-->
+                </div>
+                <div class="p-col-3">
+                    <br />
+                    <!--<div class="form-group row">-->
+                    <span class="ui-float-label">
+                        <input class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
+                               [(ngModel)]="toDate" ngbDatepicker #e="ngbDatepicker" (click)="e.toggle()">
+                        <label for="float-input input-lg">To Date <span class="mandatory">*</span></label>
+                    </span>
+                    <p-message *ngIf="(toDate.year==null || toDate.year=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    <!--</div>-->
+                </div>
+                <div class="p-col-3">
+
+                    <label for="float-input input-lg" class="col-form-label-dd">Select Balance Type<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="balanceTypeList" placeholder="Select Balance Type" [(ngModel)]="selectedBalanceType"
+                                [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                    <p-message *ngIf="(selectedBalanceType == '0' ||selectedBalanceType == ''||selectedBalanceType == null) && error"
+                               severity="error" text="Cannot be left blank"></p-message>
+                </div>
+                <div class="p-col-3">
+                    <br />
+                    <button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"
+                            [disabled]="!fromDate  && !toDate && selectedBalanceType =='0'"
+                            (click)="getBankDepositStatusBySearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card [style]="{'margin-bottom':'5px'}">
+        <generic-grid [gridConfig]="gridConfig">
+        </generic-grid>
+    </p-card>
+</div>
+
+<app-generic-form-action [isRejectAllowed]="true" (onSave)="approveOrReject($event)"></app-generic-form-action>

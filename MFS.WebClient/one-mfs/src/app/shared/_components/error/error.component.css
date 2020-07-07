@@ -1,0 +1,31 @@
+.error-bg {
+    height: 32em;
+    min-width: 45em;
+    background-image: url(../../../../error-500.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    padding: 1em;
+    opacity: 0.8;
+}
+
+.error-text {
+    text-align: left;
+    position: absolute;
+    top: 2%;
+    left: 4%;    
+    color: cadetblue;
+    font-size:500%;
+    font-weight:800;
+}
+
+.warning-icon {
+    background-image: url(../../../../broken.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    height: 1em;
+    width: 90px
+}

@@ -1,0 +1,52 @@
+
+.btn-reverse:hover {
+    background-color: #ffffff;
+    color: black;
+}
+
+.form-control {
+    padding: 1px 1px !important;
+    margin: 1px 0 !important;
+    font-size: 90%;
+}
+
+.form-group {
+    margin-bottom: 0px !important;
+}
+
+.form-elements {
+    margin-bottom: 8%;
+}
+
+
+.single-line {
+    margin-top: 7.8px;
+}
+
+.col-form-label {
+    font-size: 90%;
+    color: cadetblue;
+    padding-top: 2.5px;
+    text-align:center;
+}
+
+
+hr {
+    margin-top: 0;
+}
+
+.third-line {
+    padding-top: 0;
+    line-height: 1;
+}
+
+.mandatory {
+    color: red;
+    line-height: 0.5;
+}
+
+body .ui-messages .ui-messages-icon {
+    visibility: hidden !important;
+    background-color:none;
+    
+}

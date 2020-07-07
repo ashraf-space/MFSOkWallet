@@ -1,0 +1,101 @@
+<!--<fieldset [disabled]="isRegistrationPermitted && isEditMode ? 'disabled' : null">-->
+
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Distributor</span><span *ngIf="isEditMode && !isRegistrationPermitted"> Update</span><span *ngIf="isEditMode && isRegistrationPermitted"> Register</span> Cash Entry</h6>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="AcNumber" class="col-sm-3 col-form-label">A/C Number<span class="mandatory">*</span></label>
+                        <div class="col-sm-9">
+                            <p-dropdown [options]="distributorAcList" [(ngModel)]="cashEntryModel.acNo" placeholder="Select AC" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="GetCompanyAndHolderName();" [disabled]="isRegistrationPermitted"></p-dropdown>
+                            <p-message *ngIf="(cashEntryModel.acNo==null || cashEntryModel.acNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="AcCode" class="col-sm-3 col-form-label">A/C Code <span class="mandatory">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="distCode" id="AcCode" pKeyFilter="int"  [disabled]="true">
+                            <p-message *ngIf="(distCode==null || distCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="CompanyName" class="col-sm-3 col-form-label">Company Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="cashEntryModel.companyName" id="CompanyName" [disabled]="true">
+                            <!--<p-message *ngIf="(CompanyName==null || CompanyName=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="AcHolderName" class="col-sm-3 col-form-label third-line">A/C Holder Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="cashEntryModel.name" id="AcHolderName" [disabled]="true">
+                            <!--<p-message *ngIf="(CompanyName==null || CompanyName=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="TracerNo" class="col-sm-3 col-form-label">Tracer No<span class="mandatory">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="cashEntryModel.tracerNo" id="TracerNo"  [disabled]="isRegistrationPermitted">
+                            <p-message *ngIf="(cashEntryModel.tracerNo==null || cashEntryModel.tracerNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="AdviceNo" class="col-sm-3 col-form-label">Advice No <span class="mandatory">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="cashEntryModel.adviceNo" id="AdviceNo" [disabled]="isRegistrationPermitted">
+                            <p-message *ngIf="(cashEntryModel.adviceNo==null || cashEntryModel.adviceNo=='') && error " severity="error" text="Cannot be left blank" ></p-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                        <label for="Amount" class="col-sm-3 col-form-label">Amount<span class="mandatory">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" maxlength="9" [(ngModel)]="cashEntryModel.amount" id="Amount" pKeyFilter="int" (change)="GetAmountInWords();" [disabled]="isRegistrationPermitted">
+                            <p-message *ngIf="(cashEntryModel.amount==null || cashEntryModel.amount=='' || cashEntryModel.amount == '0') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" [(ngModel)]="amountInWords" [disabled]="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-6">
+
+                </div>
+            </div>
+        </div>
+    </p-card>
+</div>
+<!--</fieldset>-->
+<!--<app-generic-form-action [isEditMode]="isEditMode" (onSave)="saveDistributorDepositCashEntry($event)" (onDelete)="onDeleteMerchant($event)"></app-generic-form-action>-->
+<app-generic-form-action [isEditMode]="isEditMode" [isPassToMakerAllowed]="true" (onSave)="saveDistributorDepositCashEntry($event)" ></app-generic-form-action>

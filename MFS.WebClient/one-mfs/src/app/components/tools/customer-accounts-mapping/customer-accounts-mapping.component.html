@@ -1,0 +1,171 @@
+<p-messages [(value)]="msgs" *ngIf="showMsg"></p-messages>
+<fieldset [disabled]="isRegPermit ? 'disabled' : null">
+	<div class="form-elements">
+		<p-card [style]="{'margin-bottom':'5px'}">
+			<div class="form-group">
+				<h6 class="form-header">Search Customer</h6>
+				<div *ngIf="loading">
+					<p><p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner></p>
+				</div>
+				<div class="p-grid">
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="mblAcc" class="col-sm-2 col-form-label">Mobile Account</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control form-input" [(ngModel)]="mblAcc" id="mblAcc" />
+								<p-message *ngIf="(mblAcc && mblAcc.length !=11 )"
+										   severity="warning" text="Please input 11 digit mobile number"></p-message>
+							</div>
+						</div>
+					</div>
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="accno" class="col-sm-2 col-form-label gap"></label>
+							<div class="col-sm-10">
+								<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"
+										[disabled]="!mblAcc  || mblAcc && mblAcc.length !=11"
+										(click)="checkAccountValidityByCount()">
+									<i class="fas fa-search"></i> Search
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="p-col-4">
+						<div class="form-group row">
+							<label for="FormSerialNo" class="col-sm-2 col-form-label single-line">Name</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control form-input" [readonly]="true" [(ngModel)]="mtCbsName" id="FormSerialNo" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p-card>
+		<p-card [style]="{'margin-bottom':'5px'}">
+			<fieldset [disabled]="validMblNo">
+				<div class="form-group">
+					<h6 class="form-header">CBS Information</h6>
+					<div *ngIf="loadingCbsInfo">
+						<p>
+							<p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner>
+						</p>
+					</div>
+					<div class="p-grid">
+						<div class="p-col-4">
+							<div class="form-group row">
+								<label for="accno" class="col-sm-2 col-form-label gap">A/C No</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.accno" />
+								</div>
+							</div>
+						</div>
+
+						<div class="p-col-4">
+							<div class="form-group row">
+								<label for="accno" class="col-sm-2 col-form-label gap"></label>
+								<div class="col-sm-10">
+									<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" (click)="checkAccNoIsMappedByMblNo()"><i class="fas fa-search"></i> Search</button>
+								</div>
+							</div>
+						</div>
+						<div class="p-col-4">
+							<div class="form-group row">
+								<label for="accno" class="col-sm-2 col-form-label gap"></label>
+								<div class="col-sm-10">
+									<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" (click)="checkIsAccountValid()"><i class="fa fa-link"></i> Map</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<fieldset [disabled]="true">
+						<div class="p-grid">
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="custid" class="col-sm-2 col-form-label gap">Cust Id</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.custid" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">Name</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.name" id="name" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="branch" class="col-sm-2 col-form-label">Branch</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.branch" id="branch" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="p-grid">
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="class" class="col-sm-2 col-form-label gap">Class</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.class" id="class" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="status" class="col-sm-2 col-form-label">Status</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.accstat" id="accstat" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="frozen" class="col-sm-2 col-form-label">Frozen</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.frozen" id="frozen" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="p-grid">
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="dorm" class="col-sm-2 col-form-label gap">Dorm</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.dorm" id="dorm" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="mobile" class="col-sm-2 col-form-label">Mobile</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.mobnum" id="mobile" />
+									</div>
+								</div>
+							</div>
+							<div class="p-col-4">
+								<div class="form-group row">
+									<label for="nid" class="col-sm-2 col-form-label">National Id</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control form-input" [(ngModel)]="mtCbsInfoModel.nationid" id="nid" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</fieldset>
+
+		</p-card>
+		<p-card [style]="{'margin-bottom':'5px'}">
+			<generic-grid [gridConfig]="gridConfig">
+			</generic-grid>
+		</p-card>
+	</div>
+
+</fieldset>

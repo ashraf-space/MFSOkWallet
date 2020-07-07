@@ -1,0 +1,92 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"> Bulk Upload Process</i> </h6>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <p-dropdown [options]="bulkUploadTypeList" [(ngModel)]="bulkModel.bulkUploadType" placeholder="Select Bulk Upload Type" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="showHideDiv();"></p-dropdown>
+                    <p-message *ngIf="(bulkModel.bulkUploadType==null || bulkModel.bulkUploadType=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+                <div class="col-md-4">
+                    <!--<button class="btn btn-primary" [disabled]="isProcessDisabled" (click)="Process();">Process</button>-->
+                </div>
+                <div class="col-md-4">
+                    <!--<button class="btn btn-primary" (click)="ShowValidInvaildData('V');">Show Valid Data</button>-->
+                </div>
+                <!--<div class="col-md-2">
+                    <button class="btn btn-primary" (click)="ShowValidInvaildData('I');">Show Invalid Data</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary" [disabled]="isPostingDisabled" (click)="SendToPostingLevel();">Send to Posting Level</button>
+                </div>-->
+            </div>
+
+            <div *ngIf="isAgentShow">
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div style="text-align:center">
+                            <label>Distributor A/C</label>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div style="text-align:center">
+                            <label style="text-align:center">Distributor Code</label>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div style="text-align:center">
+                            <label style="text-align:center">Distributor Name</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div>
+                            <input type="text" class="form-control" [(ngModel)]="bulkModel.distributorAC" (change)="disableUpload();">
+                            <p-message *ngIf="(bulkModel.distributorAC==null || bulkModel.distributorAC=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div>
+                            <input type="text" class="form-control" [(ngModel)]="bulkModel.distributorCode" [disabled]="true" (change)="disableUpload();">
+                            <p-message *ngIf="(bulkModel.distributorCode==null || bulkModel.distributorCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                    <div class="p-col-3">
+                        <div>
+                            <input type="text" class="form-control" [(ngModel)]="bulkModel.distributorName" [disabled]="true" (change)="disableUpload();">
+                            <p-message *ngIf="(bulkModel.distributorName==null || bulkModel.distributorName=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-3">
+                    <input class="form-control" type="file" #fileInput />
+                </div>
+                <div class="p-col-3">
+                    <button class="btn btn-primary" (click)="bulkUploadFile();" [disabled]="isUploadDisabled">Upload</button>
+                </div>
+                <div class="p-col-6">
+
+                </div>
+            </div>
+
+        </div>
+    </p-card>
+</div>
+
+<p-dialog header="Duplicate Account No." [(visible)]="displayMaximizable" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
+    <p>
+       {{content}}
+    </p>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="displayMaximizable=false" label="OK"></button>
+        <!--<button type="button" pButton icon="pi pi-times" (click)="displayMaximizable=false" label="No" class="ui-button-secondary"></button>-->
+    </p-footer>
+</p-dialog>

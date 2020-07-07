@@ -1,0 +1,140 @@
+<div *ngIf="isEditMode">
+    <div class="btn-group edit-group " role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-blue btn-sm" (click)="goBack()"><i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="btn-group edit-group" role="group" aria-label="Basic example" >
+        <button type="button" class="btn btn-blue btn-sm" (click)="onChangePassword()" *ngIf="IsCurrentUser" >Change Password <i class="fas fa-key"></i></button>
+        <button type="button" class="btn btn-blue btn-sm" (click)="onResetPassword()" *ngIf="!IsCurrentUser">Reset Password <i class="fas fa-key"></i></button>
+    </div>
+    <div class="btn-group edit-group" role="group" aria-label="Basic example" >
+        <p-selectButton [options]="optionList" [(ngModel)]="applicationUserModel.pstatus" [disabled]="true" (onChange)="changePstatus($event)" [style]="{color: 'white'}"></p-selectButton>
+    </div>
+</div>
+
+<div >
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header" *ngIf="isEditMode"><i class="fas fa-user" aria-hidden="true"></i>   {{applicationUserModel.name}}</h6>
+            <h6 class="form-header" *ngIf="!isEditMode"><i class="fas fa-user" aria-hidden="true"></i>   Application User</h6>
+			<div class="p-grid">
+				<div class="p-col-6">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.name" pInputText id="float-input" [disabled]="!hasEditPermission">
+						<label for="float-input input-lg" class="col-form-label">Name <span class="mandatory">*</span></label>
+					</span>
+					<p-message *ngIf="(applicationUserModel.name==null || applicationUserModel.name=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+				<div class="p-col-6">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.employeeId" pInputText id="float-input" [disabled]="!hasEditPermission">
+						<label for="float-input input-lg" class="col-form-label">Employee Id <span class="mandatory">*</span></label>
+					</span>
+					<p-message *ngIf="(applicationUserModel.employeeId==null || applicationUserModel.employeeId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+				<div class="p-col-3">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.username" pInputText id="float-input" [disabled]="isEditMode" (blur)="checkExistingUserName()" [pKeyFilter]="blockSpace">
+						<label for="float-input input-lg" class="col-form-label">Username <span class="mandatory">*</span></label>
+					</span>
+					<p-message *ngIf="(applicationUserModel.username==null || applicationUserModel.username=='') && error " severity="error" text="Cannot be left blank"></p-message>
+					<p-message *ngIf="isExistingUsername" severity="error" text="Username exist"></p-message>
+				</div>
+				<div class="p-col-3">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.emailId" pInputText id="float-input" [disabled]="!hasEditPermission">
+						<label for="float-input input-lg" class="col-form-label">Email Address</label>
+					</span>
+				</div>
+				<div class="p-col-3">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.mobileNo" pInputText id="float-input" [disabled]="!hasEditPermission">
+						<label for="float-input input-lg" class="col-form-label">Mobile # <span class="mandatory">*</span></label>
+					</span>
+					<p-message *ngIf="(applicationUserModel.mobileNo==null || applicationUserModel.mobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+				<div class="p-col-3">
+					<br />
+					<span class="ui-float-label ">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.tranAmtLimit" pInputText id="float-input" [disabled]="!hasEditPermission" pKeyFilter="num">
+						<label for="float-input input-lg" class="col-form-label">Transaction Amount Limit</label>
+					</span>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span>
+						<label class="col-form-label-dd">Branch Code <span class="mandatory">*</span></label><br />
+						<p-dropdown [options]="bankBranchList" [(ngModel)]="applicationUserModel.branchCode" [showClear]="true" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="!hasEditPermission" [filter]="true"></p-dropdown>
+					</span>
+					<p-message *ngIf="(applicationUserModel.branchCode==null || applicationUserModel.branchCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span>
+						<label for="input-lg" class="col-form-label-dd">Security Role <span class="mandatory">*</span></label><br />
+						<p-dropdown [options]="securedRoleList" [(ngModel)]="applicationUserModel.roleId" [showClear]="true" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="!hasEditPermission" [filter]="true"></p-dropdown>
+					</span>
+					<p-message *ngIf="(applicationUserModel.roleId==null || applicationUserModel.roleId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+				<div class="p-col-4">
+					<br />
+					<span>
+						<label for="input-lg" class="col-form-label-dd">Log In Status<span class="mandatory">*</span></label><br />
+						<p-dropdown [options]="logInStatusList" [(ngModel)]="applicationUserModel.logInStatus"
+									[showClear]="true" [style]="{display: 'grid'}" placeholder="Please Select" [disabled]="!hasEditPermission" [filter]="true"></p-dropdown>
+					</span>
+					<p-message *ngIf="(applicationUserModel.logInStatus==null || applicationUserModel.logInStatus=='') && error " severity="error" text="Cannot be left blank"></p-message>
+				</div>
+			</div>             
+        </div>
+    </p-card>
+</div>
+
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onUserSave()" (onDelete)="onDeleteUser($event)"></app-generic-form-action>
+
+
+<app-generic-modal [initiateModal]="initiateModal" [header]="'Change Password'" (onConfirm)="confirmPasswordChange()" (onDestroy)="initiateModal=false" [disableConfirm]="changePasswordModel.newPassword==null || changePasswordModel.newPassword!=changePasswordModel.confirmNewPassword || changePasswordModel.oldPassword==null" >
+    <div class="form-group">
+        <div class="row" *ngIf="invalidCredentials">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Password</span>
+                </div>
+            </div>
+        </div>
+        <h6 class="form-header" *ngIf="isEditMode"><i class="fas fa-user" aria-hidden="true"></i>  {{applicationUserModel.name}} | Change Password <i class="fas fa-key"></i></h6>
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">Old Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" class="form-control form-input" [(ngModel)]="changePasswordModel.oldPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">New Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" pPassword class="form-control form-input" [(ngModel)]="changePasswordModel.newPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerAC" class="col-sm-1 col-form-label third-line">Confirm New Password <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="password" class="form-control form-input" [(ngModel)]="changePasswordModel.confirmNewPassword" />
+            </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="changePasswordModel.newPassword!=null && changePasswordModel.newPassword!=changePasswordModel.confirmNewPassword">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: New Password and Confirm New Password does not Match</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-generic-modal>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

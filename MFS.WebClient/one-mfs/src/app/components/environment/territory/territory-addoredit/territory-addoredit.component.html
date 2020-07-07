@@ -1,0 +1,57 @@
+<fieldset [disabled]="isRegPermit ? 'disabled' : null">
+	<div class="form-elements">
+		<p-card [style]="{'margin-bottom':'20px'}">
+			<div class="form-group">
+				<h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i>  <span *ngIf="!isEditMode"> Create</span><span *ngIf="isEditMode"> Update</span> Territory </h6>			
+				<div class="p-grid">
+					<div class="p-col-6">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Region <span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<!--<p-dropdown [options]="regionCategoryList" (onChange)="SelectAreasByRegion();" [(ngModel)]="territoryModel.parent" placeholder="Select Region" [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>-->
+								<p-dropdown [options]="regionCategoryList" [(ngModel)]="territoryModel.regionCode"
+								            placeholder="Select Region" [filter]="true" filterBy="label,value.name" [disabled]="isEditMode || isRegPermit"
+								            [style]="{display: 'grid'}" (ngModelChange)="SelectAreasByRegion($event);"></p-dropdown>
+								<p-message *ngIf="(territoryModel.regionCode==null || territoryModel.regionCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+					<div class="p-col-6">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Area <span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<p-dropdown [options]="areaList" [(ngModel)]="territoryModel.parent" (ngModelChange)="GetTerritoryCode($event);"
+								            placeholder="Select Area" [filter]="true" filterBy="label,value.name" [disabled]="isEditMode || isRegPermit"
+								            [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
+								<p-message *ngIf="(territoryModel.parent==null || territoryModel.parent=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="p-grid">
+					<div class="p-col-6">
+						<div class="form-group row">
+							<label for="DistributorCode" class="col-sm-2 col-form-label">Territory Code</label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control form-input" [(ngModel)]="territoryModel.code" id="territoryCode" placeholder="auto code" disabled="disabled"/>
+							</div>
+						</div>
+					</div>
+					<div class="p-col-6">
+						<div class="form-group row">
+							<label for="regDate" class="col-sm-2 col-form-label single-line">Territory Name<span class="mandatory">*</span></label>
+							<div class="col-sm-10">
+								<input type="text" class="form-control" placeholder="Area Name" [(ngModel)]="territoryModel.name">
+								<p-message *ngIf="(territoryModel.name==null || territoryModel.name=='') && error " severity="error" text="Cannot be left blank"></p-message>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</p-card>
+	</div>
+</fieldset>
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="onSaveTerritory($event)" ></app-generic-form-action>

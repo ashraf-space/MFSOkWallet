@@ -1,0 +1,90 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<p-card [style]="{'margin-bottom':'20px'}">
+	<div class="form-group">
+		<h6 class="form-header">Office use only</h6>
+		<div class="p-grid">
+
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">Chain Merchant<span class="mandatory">*</span></label>
+				<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.mphone" [readonly]="true"
+					   pInputText id="float-input">
+				<p-message *ngIf="(merchantConfigModel.mphone == null || merchantConfigModel.mphone == '') && error" severity="error" text="Cannot be left blank"></p-message>
+			</div>
+
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.mcode" [readonly]="true"
+						   pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label-dd">Outlet Code<span class="mandatory">*</span></label>
+				</span>
+				<p-message *ngIf="(merchantConfigModel.mcode==null || merchantConfigModel.mcode=='') && error "
+						   severity="error" text="Cannot be left blank"></p-message>
+			</div>
+
+
+		</div>
+
+		<div class="p-grid">
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">Status<span class="mandatory">*</span></label>
+				<p-dropdown [options]="statusList" [(ngModel)]="merchantConfigModel.status" placeholder="Please Select"
+							[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+							[disabled]="isRegistrationPermitted"
+							id="float-input"></p-dropdown>
+				<p-message *ngIf="(merchantConfigModel.status == null || merchantConfigModel.status == '') && error" severity="error" text="Cannot be left blank"></p-message>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel._CompanyName" [readonly]="true"
+						   pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label-dd">Outlet Name</label>
+				</span>
+				<!--<p-message *ngIf="(merchantConfigModel.companyName==null || merchantConfigModel.companyName=='') && error "
+						   severity="error" text="Cannot be left blank"></p-message>-->
+			</div>
+		</div>
+
+		<div class="p-grid">
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.maxTransAmt" pInputText [pKeyFilter]="positveNumber" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Max Trans Amount</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.minTransAmt" pInputText [pKeyFilter]="positveNumber" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Min Trans Amount</label>
+				</span>
+			</div>
+
+		</div>
+
+		<div class="p-grid">
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.customerServiceChargePer" pInputText [pKeyFilter]="positveNumber" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Settlement Fee</label>
+				</span>
+			</div>
+
+			<div class="p-col-6">
+				<label for="float-input input-lg" class=" col-form-label-dd">SMS Notification<span class="mandatory">*</span></label>
+				<p-dropdown [options]="smsStatusList" [(ngModel)]="merchantConfigModel.merchantSmsNotification" placeholder="Please Select"
+							[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+							[disabled]="isRegistrationPermitted"
+							id="float-input"></p-dropdown>
+				<p-message *ngIf="(merchantConfigModel.merchantSmsNotification == '' || merchantConfigModel.merchantSmsNotification == null) && error" 
+						   severity="error" text="Cannot be left blank"></p-message>
+			</div>
+		</div>
+
+	</div>
+</p-card>
+
+<app-generic-form-action (onSave)="onMerchantConfigUpdate($event)"></app-generic-form-action>
