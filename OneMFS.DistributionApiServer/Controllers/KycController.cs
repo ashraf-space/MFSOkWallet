@@ -17,7 +17,7 @@ using MFS.SecurityService.Models;
 using System.Reflection;
 namespace OneMFS.DistributionApiServer.Controllers
 {
-	[Authorize]
+	[Authorize] 
 	[Produces("application/json")]
 	[Route("api/Kyc")]
 	public class KycController : Controller
