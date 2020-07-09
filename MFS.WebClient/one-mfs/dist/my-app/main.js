@@ -7145,12 +7145,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_reports_report_collection_transaction_type_transaction_transaction_component__WEBPACK_IMPORTED_MODULE_182__ = __webpack_require__(/*! ./components/reports/report-collection/transaction-type/transaction/transaction.component */ "./src/app/components/reports/report-collection/transaction-type/transaction/transaction.component.ts");
 /* harmony import */ var _components_security_audit_audit_trail_audit_trail_component__WEBPACK_IMPORTED_MODULE_183__ = __webpack_require__(/*! ./components/security/audit/audit-trail/audit-trail.component */ "./src/app/components/security/audit/audit-trail/audit-trail.component.ts");
 /* harmony import */ var _components_security_audit_audit_trail_dtl_audit_trail_dtl_component__WEBPACK_IMPORTED_MODULE_184__ = __webpack_require__(/*! ./components/security/audit/audit-trail-dtl/audit-trail-dtl.component */ "./src/app/components/security/audit/audit-trail-dtl/audit-trail-dtl.component.ts");
+/* harmony import */ var _components_reports_report_collection_dpdc_desco_dpdc_desco_component__WEBPACK_IMPORTED_MODULE_185__ = __webpack_require__(/*! ./components/reports/report-collection/dpdc-desco/dpdc-desco.component */ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -7528,7 +7530,8 @@ var AppModule = /** @class */ (function () {
                 _components_distribution_bulk_upload_bulk_upload_component__WEBPACK_IMPORTED_MODULE_181__["BulkUploadComponent"],
                 _components_reports_report_collection_transaction_type_transaction_transaction_component__WEBPACK_IMPORTED_MODULE_182__["TransactionComponent"],
                 _components_security_audit_audit_trail_audit_trail_component__WEBPACK_IMPORTED_MODULE_183__["AuditTrailComponent"],
-                _components_security_audit_audit_trail_dtl_audit_trail_dtl_component__WEBPACK_IMPORTED_MODULE_184__["AuditTrailDtlComponent"]
+                _components_security_audit_audit_trail_dtl_audit_trail_dtl_component__WEBPACK_IMPORTED_MODULE_184__["AuditTrailDtlComponent"],
+                _components_reports_report_collection_dpdc_desco_dpdc_desco_component__WEBPACK_IMPORTED_MODULE_185__["DpdcDescoComponent"]
             ],
             providers: [
                 { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HTTP_INTERCEPTORS"], useClass: _shared_helpers__WEBPACK_IMPORTED_MODULE_8__["JwtInterceptor"], multi: true },
@@ -18002,6 +18005,130 @@ var CurrentAffairsStatementComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.css":
+/*!******************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.css ***!
+  \******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcmVwb3J0cy9yZXBvcnQtY29sbGVjdGlvbi9kcGRjLWRlc2NvL2RwZGMtZGVzY28uY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.html":
+/*!*******************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.html ***!
+  \*******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"form-group\">\r\n\t<div class=\"p-grid\">\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Utility<span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"utilityList\" placeholder=\"Select Utility\" [(ngModel)]=\"model.utility\"\r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Gateway<span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"gatewayList\" placeholder=\"Select Gateway\" [(ngModel)]=\"model.gateway\"\r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Category Type<span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"catTypeList\" placeholder=\"Select Category\" [(ngModel)]=\"model.catType\"\r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\r\n\t</div>\r\n\t<div class=\"p-grid\">\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Select Date Type <span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"dateTypeList\" placeholder=\"Select Date Type\" [(ngModel)]=\"model.dateType\" \r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">From</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From\" [disabled]=\"isDateDisabled\"\r\n\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n\t\t\t\t\t   id=\"float-input\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">To</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To\" [disabled]=\"isDateDisabled\"\r\n\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n\t\t\t\t\t   (click)=\"h.toggle()\" id=\"float-input\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.ts":
+/*!*****************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.ts ***!
+  \*****************************************************************************************/
+/*! exports provided: DpdcDescoComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DpdcDescoComponent", function() { return DpdcDescoComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/mfs-utility.service */ "./src/app/services/mfs-utility.service.ts");
+/* harmony import */ var src_app_services_report_kyc_report_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/report/kyc-report.service */ "./src/app/services/report/kyc-report.service.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DpdcDescoComponent = /** @class */ (function () {
+    function DpdcDescoComponent(mfsUtilityService, kycReportService, ngbDatepickerConfig) {
+        this.mfsUtilityService = mfsUtilityService;
+        this.kycReportService = kycReportService;
+        this.ngbDatepickerConfig = ngbDatepickerConfig;
+        this.isDateDisabled = false;
+        ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
+        var currentDate = new Date();
+        ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
+        this.model = {};
+    }
+    DpdcDescoComponent.prototype.ngOnInit = function () {
+        console.log("Hello FROM Dpdc");
+        this.utilityList = [
+            { label: 'DPDC', value: 'dpdc' },
+            { label: 'DESCO', value: 'desco' }
+        ];
+        this.gatewayList = [
+            { label: 'USSD', value: 'U' },
+            { label: 'APP', value: 'A' }
+        ];
+        this.catTypeList = [
+            { label: 'Agent', value: 'A' },
+            { label: 'Customer', value: 'C' }
+        ];
+        this.dateTypeList = [
+            { label: 'EOD Date', value: 'eod' },
+            { label: 'Transaction Date', value: 'trans' }
+        ];
+    };
+    DpdcDescoComponent.prototype.getReportParam = function () {
+        if (this.validate()) {
+            var obj = {};
+            if (this.model.fromDate && this.model.toDate) {
+                obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
+                obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
+            }
+            obj.utility = this.model.utility;
+            obj.gateway = this.model.gateway;
+            obj.catType = this.model.catType;
+            obj.dateType = this.model.dateType;
+            return obj;
+        }
+        else {
+            var obj = {};
+            obj.isNotValidated = true;
+        }
+        return this.model;
+    };
+    DpdcDescoComponent.prototype.validate = function () {
+        if (!this.model.utility || !this.model.gateway || !this.model.catType || !this.model.dateType ||
+            !this.model.fromDate || !this.model.toDate) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+    DpdcDescoComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-dpdc-desco',
+            template: __webpack_require__(/*! ./dpdc-desco.component.html */ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.html"),
+            styles: [__webpack_require__(/*! ./dpdc-desco.component.css */ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_1__["MfsUtilityService"],
+            src_app_services_report_kyc_report_service__WEBPACK_IMPORTED_MODULE_2__["KycReportService"],
+            _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbDatepickerConfig"]])
+    ], DpdcDescoComponent);
+    return DpdcDescoComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/reports/report-collection/eod-affairs-statement/eod-affairs-statement.component.css":
 /*!****************************************************************************************************************!*\
   !*** ./src/app/components/reports/report-collection/eod-affairs-statement/eod-affairs-statement.component.css ***!
@@ -18865,7 +18992,7 @@ module.exports = ".report-description {\r\n    text-align: center;\r\n    font-s
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n\t<div class=\"p-col-12\">\r\n\t\t<p-card>\r\n\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t<div class=\"p-col-2\">\r\n\t\t\t\t\t<button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-7\">\r\n\t\t\t\t\t<h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t<p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<h6 class=\"report-description\">\r\n\t\t\t\t\t\t{{model.ReportDescription}}\r\n\t\t\t\t\t</h6>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-12\">\r\n                            <div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">\r\n                                <!--<div *ngSwitchCase=\"1\">\r\n                                    <transaction-history-report #form></transaction-history-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"13\">\r\n                                    <transaction-history-report #form></transaction-history-report>\r\n                                </div>-->\r\n                                <div *ngSwitchCase=\"20\">\r\n                                    <account-statement-report #form></account-statement-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"41\">\r\n                                    <current-affairs-statement #form></current-affairs-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"61\">\r\n                                    <chart-of-accounts #form></chart-of-accounts>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"81\">\r\n                                    <eod-affairs-statement #form></eod-affairs-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"82\">\r\n                                    <registration-report #form></registration-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"101\">\r\n                                    <app-registration-summary #form></app-registration-summary>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"121\">\r\n                                    <app-agent-information #form></app-agent-information>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"141\">\r\n                                    <app-gl-statement #form></app-gl-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"4\">\r\n                                    <app-kyc-balance #form></app-kyc-balance>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"1\">\r\n                                    <app-transaction #form></app-transaction>\r\n                                </div>\r\n                            </div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</p-card>\r\n\t</div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
+module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n\t<div class=\"p-col-12\">\r\n\t\t<p-card>\r\n\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t<div class=\"p-col-2\">\r\n\t\t\t\t\t<button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-7\">\r\n\t\t\t\t\t<h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t<p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<h6 class=\"report-description\">\r\n\t\t\t\t\t\t{{model.ReportDescription}}\r\n\t\t\t\t\t</h6>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t\t\t<div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">\r\n\t\t\t\t\t\t\t\t<!--<div *ngSwitchCase=\"1\">\r\n\t\t\t\t\t\t\t\t\t<transaction-history-report #form></transaction-history-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"13\">\r\n\t\t\t\t\t\t\t\t\t<transaction-history-report #form></transaction-history-report>\r\n\t\t\t\t\t\t\t\t</div>-->\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"20\">\r\n\t\t\t\t\t\t\t\t\t<account-statement-report #form></account-statement-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"41\">\r\n\t\t\t\t\t\t\t\t\t<current-affairs-statement #form></current-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"61\">\r\n\t\t\t\t\t\t\t\t\t<chart-of-accounts #form></chart-of-accounts>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"81\">\r\n\t\t\t\t\t\t\t\t\t<eod-affairs-statement #form></eod-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"82\">\r\n\t\t\t\t\t\t\t\t\t<registration-report #form></registration-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"101\">\r\n\t\t\t\t\t\t\t\t\t<app-registration-summary #form></app-registration-summary>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"121\">\r\n\t\t\t\t\t\t\t\t\t<app-agent-information #form></app-agent-information>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"141\">\r\n\t\t\t\t\t\t\t\t\t<app-gl-statement #form></app-gl-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"4\">\r\n\t\t\t\t\t\t\t\t\t<app-kyc-balance #form></app-kyc-balance>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"1\">\r\n\t\t\t\t\t\t\t\t\t<app-transaction #form></app-transaction>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"22\">\r\n\t\t\t\t\t\t\t\t\t<app-dpdc-desco #form></app-dpdc-desco>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</p-card>\r\n\t</div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
 
 /***/ }),
 
@@ -23722,7 +23849,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-elements\">\r\n    <p-card [style]=\"{'margin-bottom':'20px'}\">\r\n        <div class=\"form-group\">\r\n            <h6 class=\"form-header\"><i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i>  <span *ngIf=\"!isEditMode\"> Create</span><span *ngIf=\"isEditMode\"> Update</span> Disbursement Company</h6>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Company Name<span class=\"mandatory\">*</span></label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.companyName\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.companyName==null || tblDisburseCompanyInfoModel.companyName=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Address<span class=\"mandatory\">*</span></label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.address\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.address==null || tblDisburseCompanyInfoModel.address=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n            </div>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Phone<span class=\"mandatory\">*</span></label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.phone\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Fax</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.fax\">\r\n                </div>\r\n\r\n            </div>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Salary Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.salAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.salAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Remittance Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.remAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.remAcc);\">\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Cach Back Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.cabAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.cabAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Customer Activation Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.catAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.catAcc);\">\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Reword Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.rwdAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.rwdAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\" *ngIf=\"isShow\" style=\"color:red\">\r\n                    <!--<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Please give at least one account</label>-->\r\n                    <p>Please give at least one account</p>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </p-card>\r\n</div>\r\n\r\n<app-generic-form-action [isEditMode]=\"isEditMode\" [disableAction]=\"isActionDisabled\" (onSave)=\"companySave()\" (onDelete)=\"companyDelete($event)\"></app-generic-form-action>\r\n"
+module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-elements\">\r\n    <p-card [style]=\"{'margin-bottom':'20px'}\">\r\n        <div class=\"form-group\">\r\n            <h6 class=\"form-header\"><i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i>  <span *ngIf=\"!isEditMode\"> Create</span><span *ngIf=\"isEditMode\"> Update</span> Disbursement Company</h6>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Company Name<span class=\"mandatory\">*</span></label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.companyName\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.companyName==null || tblDisburseCompanyInfoModel.companyName=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Address<span class=\"mandatory\">*</span></label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.address\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.address==null || tblDisburseCompanyInfoModel.address=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n            </div>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Phone<span class=\"mandatory\">*</span></label>\r\n                    <!--<input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.phone\">\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>-->\r\n                    <p-inputMask mask=\"99999999999\" [(ngModel)]=\"tblDisburseCompanyInfoModel.phone\" pKeyFilter=\"int\" [style]=\"{'width':'100%'}\"></p-inputMask>\r\n                    <p-message *ngIf=\"(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Fax</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.fax\">\r\n                </div>\r\n\r\n            </div>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Salary Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.salAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.salAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Remittance Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.remAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.remAcc);\">\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Cach Back Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.cabAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.cabAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Customer Activation Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.catAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.catAcc);\">\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-6\">\r\n                    <label for=\"float-input input-lg\" class=\"col-form-label-dd\">Reword Account</label>\r\n                    <input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"tblDisburseCompanyInfoModel.rwdAcc\" (change)=\"enableSave(tblDisburseCompanyInfoModel.rwdAcc);\">\r\n                </div>\r\n\r\n                <div class=\"p-col-6\" *ngIf=\"isShow\" style=\"color:red\">\r\n                    <!--<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Please give at least one account</label>-->\r\n                    <p>Please give at least one account</p>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </p-card>\r\n</div>\r\n\r\n<app-generic-form-action [isEditMode]=\"isEditMode\" [disableAction]=\"isActionDisabled\" (onSave)=\"companySave()\" (onDelete)=\"companyDelete($event)\"></app-generic-form-action>\r\n"
 
 /***/ }),
 
@@ -24307,7 +24434,7 @@ var DisburseAmountPostingComponent = /** @class */ (function () {
                     }
                 else
                     _this.messageService.add({ severity: 'success', summary: 'Reject successfully', detail: 'Disburse amount posting is rejected' });
-                console.log(data);
+                //console.log(data);
                 setTimeout(function () {
                     _this.isLoading = false;
                     location.reload();
@@ -25583,7 +25710,7 @@ var FundEntryActoacComponent = /** @class */ (function () {
                         _this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Fund entry AC to AC updated' });
                     else
                         _this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Fund entry AC to AC added' });
-                    console.log(data);
+                    //console.log(data);
                     setTimeout(function () {
                         _this.isLoading = false;
                         location.reload();
@@ -26794,7 +26921,7 @@ var FundEntryComponent = /** @class */ (function () {
                     _this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Fund entry GL to GL updated' });
                 else
                     _this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Fund entry GL to GL added' });
-                console.log(data);
+                //console.log(data);
                 setTimeout(function () {
                     _this.isLoading = false;
                     location.reload();
@@ -31600,7 +31727,7 @@ var FundTransferService = /** @class */ (function () {
 /*!***********************************************!*\
   !*** ./src/app/services/transaction/index.ts ***!
   \***********************************************/
-/*! exports provided: TransactionDetailService, DistributorDepositService, FundTransferService, TransactionMasterService, ChartOfAccountsService, BranchCashInService, disbursementService, ProcessService */
+/*! exports provided: DistributorDepositService, FundTransferService, TransactionDetailService, TransactionMasterService, ChartOfAccountsService, BranchCashInService, disbursementService, ProcessService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

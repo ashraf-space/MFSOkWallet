@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Models\AccountStatement.cs" />
     <Compile Include="Models\AgentInformation.cs" />
+    <Compile Include="Models\BillCollection.cs" />
     <Compile Include="Models\CurrentAffairsFirst.cs" />
     <Compile Include="Models\CurrentAffairsStatement.cs" />
     <Compile Include="Models\GLStatement.cs" />
@@ -60,9 +61,11 @@
     <Compile Include="Models\TransactionDetails.cs" />
     <Compile Include="Models\TransactionSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\BillCollectionRepository.cs" />
     <Compile Include="Repository\KycRepository.cs" />
     <Compile Include="Repository\ReportShareRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
+    <Compile Include="Service\BillCollectionService.cs" />
     <Compile Include="Service\KycService.cs" />
     <Compile Include="Service\ReportShareService.cs" />
     <Compile Include="Service\TransactionService.cs" />

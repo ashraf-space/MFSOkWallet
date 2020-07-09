@@ -21,6 +21,7 @@ namespace OneMFS.ReportingApiServer.IOMapper
             kernel.Bind<IDistributorRepository>().To<DistributorRepository>();
             kernel.Bind<IAgentRepository>().To<AgentRepository>();
 			kernel.Bind<IErrorLogRepository>().To<ErrorLogRepository>();
+			kernel.Bind<IBillCollectionRepository>().To<BillCollectionRepository>();			
 		}
 	}
 }

@@ -190,6 +190,7 @@ import { BulkUploadComponent } from './components/distribution/bulk-upload/bulk-
 import { TransactionComponent } from './components/reports/report-collection/transaction-type/transaction/transaction.component';
 import { AuditTrailComponent } from './components/security/audit/audit-trail/audit-trail.component';
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
+import { DpdcDescoComponent } from './components/reports/report-collection/dpdc-desco/dpdc-desco.component';
 
 @NgModule({
     imports: [
@@ -377,7 +378,8 @@ import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-
         BulkUploadComponent,
         TransactionComponent,
         AuditTrailComponent,
-        AuditTrailDtlComponent
+        AuditTrailDtlComponent,
+        DpdcDescoComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

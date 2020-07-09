@@ -193,6 +193,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\BillCollectionController.cs" />
     <Compile Include="Controllers\ExcelUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KycController.cs" />
@@ -266,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionDetails.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionSummary.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTKycBalance.rdlc" />
