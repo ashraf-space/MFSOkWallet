@@ -332,8 +332,17 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				int fourDigitRandomNo = new Random().Next(1000, 9999);
-
+				Reginfo prevAReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				_DsrService.UpdatePinNo(model.Mphone, fourDigitRandomNo.ToString());
+				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(model, prevAReginfo);
+				AuditTrail auditTrail = new AuditTrail();
+				auditTrail.Who = model.UpdateBy;
+				auditTrail.WhatActionId = 4;
+				auditTrail.WhichParentMenuId = 2;
+				auditTrail.WhichMenu = "Client Profile";
+				auditTrail.InputFeildAndValue = diffList;
+				auditTrailService.InsertIntoAuditTrail(auditTrail);
+				
 
 				string messagePrefix = isUnlockRequest == true ? "Your Account Has been Unlocked. Your new Pin is " : "Your Pin has successfully been reset to ";
 
