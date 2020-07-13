@@ -17,6 +17,8 @@ namespace MFS.TransactionService.Repository
     }
     public class RateconfigMstRepository : BaseRepository<RateconfigMst>, IRateconfigMstRepository
     {
+
+        MainDbUser mainDbUser = new MainDbUser();
         
         public IEnumerable<RateconfigMst> GetRateConfigMasterList(int configId)
         {
@@ -40,7 +42,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var conn = this.GetConnection())
                 {
-                    string query = "Select " + this.GetCamelCaseColumnList(new RateconfigMst()) + ",Rateconfig_for, Telco_config from rateconfig_view";
+                    string query = "Select " + this.GetCamelCaseColumnList(new RateconfigMst()) + ",Rateconfig_for, Telco_config from"+ mainDbUser.DbUser+ "rateconfig_view";
 
                     query = configId == 0 ? query : query + " where Config_id=" + configId;
 

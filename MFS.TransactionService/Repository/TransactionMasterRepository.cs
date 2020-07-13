@@ -21,7 +21,7 @@ namespace MFS.TransactionService.Repository
     }
     public class TransactionMasterRepository : BaseRepository<GlTransMst>, ITransactionMasterRepository
     {
-       
+        MainDbUser mainDbUser = new MainDbUser();
         public dynamic GetTransactionList(string mphone, DateTime fromDate, DateTime toDate)
         {
             try
@@ -34,7 +34,7 @@ namespace MFS.TransactionService.Repository
                     dyParam.Add("UPTO_DATE", OracleDbType.Date, ParameterDirection.Input, toDate);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                    var result = SqlMapper.Query<GlTransMst>(connection, "SP_GET_GLTRANSMST_BY_MPHONE", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    var result = SqlMapper.Query<GlTransMst>(connection, mainDbUser.DbUser + "SP_GET_GLTRANSMST_BY_MPHONE", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
                     connection.Dispose();
                     return result;
@@ -55,7 +55,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    var result = connection.QueryFirstOrDefault<GlTransMst>("select * from gltransmstview where transNo = '" + transactionNumber + "'");
+                    var result = connection.QueryFirstOrDefault<GlTransMst>("select * from "+ mainDbUser.DbUser + "gltransmstview where transNo = '" + transactionNumber + "'");
                     //this.CloseConnection(connection);
                     connection.Close();
 
@@ -105,7 +105,7 @@ namespace MFS.TransactionService.Repository
                         dyParam.Add("fStatus", OracleDbType.Varchar2, ParameterDirection.Input, fStatus);
                         dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                        result = SqlMapper.Query<TblBdStatus>(connection, "SP_GET_Bank_Deposit_Status", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                        result = SqlMapper.Query<TblBdStatus>(connection, mainDbUser.DbUser + "SP_GET_Bank_Deposit_Status", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                         this.CloseConnection(connection);
                     }
 
@@ -147,7 +147,7 @@ namespace MFS.TransactionService.Repository
                         {
                             fStatus = "C";
                         }
-                        string status = connection.QueryFirstOrDefault<string>("Select status from TBL_BD_STATUS where Tranno ='" + item.Tranno + "'");
+                        string status = connection.QueryFirstOrDefault<string>("Select status from "+ mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + item.Tranno + "'");
                         if (fStatus != status)
                         {
                             return successOrErrorMsg = "MissMatch";
@@ -207,7 +207,7 @@ namespace MFS.TransactionService.Repository
                                 //parameter.Add("V_RoleName", OracleDbType.Varchar2, ParameterDirection.Input, roleName);
                                 parameter.Add("V_Status", OracleDbType.Varchar2, ParameterDirection.Input, item.Status);
 
-                                SqlMapper.Query<dynamic>(connection, "SP_Bank_Status_APPROVE", param: parameter, commandType: CommandType.StoredProcedure);
+                                SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Bank_Status_APPROVE", param: parameter, commandType: CommandType.StoredProcedure);
 
                                 this.CloseConnection(connection);
 
@@ -229,7 +229,7 @@ namespace MFS.TransactionService.Repository
                                 parameter.Add("V_Status", OracleDbType.Varchar2, ParameterDirection.Input, status);
                                 parameter.Add("V_MSG_AMT", OracleDbType.Double, ParameterDirection.Input, tranAmt);
 
-                                SqlMapper.Query<dynamic>(connection, "SP_Update_Bank_Deposit_Status", param: parameter, commandType: CommandType.StoredProcedure);
+                                SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Update_Bank_Deposit_Status", param: parameter, commandType: CommandType.StoredProcedure);
                                 successOrErrorMsg = "1";
                             }
 
@@ -260,7 +260,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("CheckBy", OracleDbType.Varchar2, ParameterDirection.Input, userName);
                     parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
 
-                    SqlMapper.Query<dynamic>(connection, "SP_EOD_Process", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_EOD_Process", param: parameter, commandType: CommandType.StoredProcedure);
 
                     //this.CloseConnection(conn);
                     connection.Close();

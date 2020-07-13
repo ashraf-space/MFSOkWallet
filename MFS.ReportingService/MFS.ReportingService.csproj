@@ -52,6 +52,7 @@
     <Compile Include="Models\BillCollection.cs" />
     <Compile Include="Models\CurrentAffairsFirst.cs" />
     <Compile Include="Models\CurrentAffairsStatement.cs" />
+    <Compile Include="Models\FundTransfer.cs" />
     <Compile Include="Models\GLStatement.cs" />
     <Compile Include="Models\KycBalance.cs" />
     <Compile Include="Models\RegistrationReport.cs" />

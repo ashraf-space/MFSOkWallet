@@ -21,11 +21,11 @@ namespace OneMFS.ReportingApiServer.Controllers
     public class TransactionController : ApiController
     {
         private readonly ITransactionService _TransactionService;
-		private readonly IKycService kycService;
-		public TransactionController(ITransactionService objTransactionService, IKycService _kycService)
+        private readonly IKycService kycService;
+        public TransactionController(ITransactionService objTransactionService, IKycService _kycService)
         {
             this._TransactionService = objTransactionService;
-			this.kycService = _kycService;
+            this.kycService = _kycService;
         }
 
         // GET api/values
@@ -66,56 +66,56 @@ namespace OneMFS.ReportingApiServer.Controllers
 				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 
-				var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
+            var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
 
-				if (clientInfo.CatId != "M")
-				{
-					return "NOTM";
-				}
-				List<AccountStatement> accountStatementList = new List<AccountStatement>();
-				accountStatementList = _TransactionService.GetAccountStatementListForClient(mphone, fromDate, toDate).ToList();
+            if (clientInfo.CatId != "M")
+            {
+                return "NOTM";
+            }
+            List<AccountStatement> accountStatementList = new List<AccountStatement>();
+            accountStatementList = _TransactionService.GetAccountStatementListForClient(mphone, fromDate, toDate).ToList();
 
-				ReportViewer reportViewer = new ReportViewer();
-				if (accountStatementList.Count() > 0)
-				{
-					//if opening balance not coming then add 
-					if (accountStatementList[0].Description != "Balance Brought Forward")
-					{
-						AccountStatement objAccountStatement = new AccountStatement();
-						objAccountStatement.TransDate = Convert.ToDateTime(fromDate);
-						objAccountStatement.Description = "BALANCE BROUGHT FORWARD";
-						objAccountStatement.DebitAmt = 0;
-						objAccountStatement.CreditAmt = 0;
-						objAccountStatement.Balance = 0;
+            ReportViewer reportViewer = new ReportViewer();
+            if (accountStatementList.Count() > 0)
+            {
+                //if opening balance not coming then add 
+                if (accountStatementList[0].Description != "Balance Brought Forward")
+                {
+                    AccountStatement objAccountStatement = new AccountStatement();
+                    objAccountStatement.TransDate = Convert.ToDateTime(fromDate);
+                    objAccountStatement.Description = "BALANCE BROUGHT FORWARD";
+                    objAccountStatement.DebitAmt = 0;
+                    objAccountStatement.CreditAmt = 0;
+                    objAccountStatement.Balance = 0;
 
-						accountStatementList.Insert(0, objAccountStatement);
-					}
-					if (accountStatementList.Count() > 1)
-					{
-						for (int i = 1; i < accountStatementList.Count(); i++)
-						{
-							if (accountStatementList[i].CreditAmt != 0)
-							{
-								accountStatementList[i].Balance = accountStatementList[i - 1].Balance + accountStatementList[i].CreditAmt;
-							}
-							if (accountStatementList[i].DebitAmt != 0)
-							{
-								accountStatementList[i].Balance = accountStatementList[i - 1].Balance - accountStatementList[i].DebitAmt;
-							}
-						}
-					}
+                    accountStatementList.Insert(0, objAccountStatement);
+                }
+                if (accountStatementList.Count() > 1)
+                {
+                    for (int i = 1; i < accountStatementList.Count(); i++)
+                    {
+                        if (accountStatementList[i].CreditAmt != 0)
+                        {
+                            accountStatementList[i].Balance = accountStatementList[i - 1].Balance + accountStatementList[i].CreditAmt;
+                        }
+                        if (accountStatementList[i].DebitAmt != 0)
+                        {
+                            accountStatementList[i].Balance = accountStatementList[i - 1].Balance - accountStatementList[i].DebitAmt;
+                        }
+                    }
+                }
 
-					double netBalance = 0;
-					netBalance = accountStatementList[accountStatementList.Count - 1].Balance;
+                double netBalance = 0;
+                netBalance = accountStatementList[accountStatementList.Count - 1].Balance;
 
-					reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAccountStatementClient.rdlc");  //Request.RequestUri("");
-					reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, accountStatementList.Count() > 1 ? accountStatementList[1].CustomerName : null));
-					ReportDataSource A = new ReportDataSource("AccountStatement", accountStatementList);
-					reportViewer.LocalReport.DataSources.Add(A);
-				}
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAccountStatementClient.rdlc");  //Request.RequestUri("");
+                reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, accountStatementList.Count() > 1 ? accountStatementList[1].CustomerName : null));
+                ReportDataSource A = new ReportDataSource("AccountStatement", accountStatementList);
+                reportViewer.LocalReport.DataSources.Add(A);
+            }
 
-				ReportUtility reportUtility = new ReportUtility();
-				MFSFileManager fileManager = new MFSFileManager();
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
 
 				return reportUtility.GenerateReport(reportViewer, model.FileType);
 			}
@@ -126,7 +126,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 		
 		}
 
-		[HttpPost]
+        [HttpPost]
         [Route("api/Transaction/GenerateAccountStatement")]
         public byte[] GenerateAccountStatement(ReportModel model)
         {
@@ -531,7 +531,7 @@ namespace OneMFS.ReportingApiServer.Controllers
             return paraList;
         }
 
-        private IEnumerable<ReportParameter> GetReportParamForTransactionDetails(string fromDate, string toDate,string OkService)
+        private IEnumerable<ReportParameter> GetReportParamForTransactionDetails(string fromDate, string toDate, string OkService)
         {
             List<ReportParameter> paraList = new List<ReportParameter>();
             paraList.Add(new ReportParameter("FromDate", fromDate));
@@ -539,6 +539,74 @@ namespace OneMFS.ReportingApiServer.Controllers
             paraList.Add(new ReportParameter("OkService", OkService));
 
             return paraList;
+        }
+
+               
+        private IEnumerable<ReportParameter> GetReportParamForFundTransfer(string fromDate, string toDate, string transactionType,string option)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("FromDate", fromDate));
+            paraList.Add(new ReportParameter("ToDate", toDate));
+            paraList.Add(new ReportParameter("TransactionType", transactionType));
+            paraList.Add(new ReportParameter("option", option));
+
+            return paraList;
+        }
+
+
+        [HttpPost]
+        [Route("api/Transaction/FundTransfer")]
+        public byte[] FundTransfer(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string tansactionType = builder.ExtractText(Convert.ToString(model.ReportOption), "tansactionType", ",");
+            string option = builder.ExtractText(Convert.ToString(model.ReportOption), "option", ",");
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+            if (fromDate == "null")
+            {
+                fromDate = DateTime.Now.AddYears(-99).ToString("yyyy/MM/dd");
+            }
+            if (toDate == "null")
+            {
+                toDate = DateTime.Now.ToString("yyyy/MM/dd");
+            }
+
+            ReportViewer reportViewer = new ReportViewer();
+
+            string fromCat = null, toCat = null;
+            if (tansactionType != "")
+            {
+                fromCat = tansactionType.Before(" TO");
+
+                toCat = tansactionType.After("TO ");
+            }
+            else
+            {
+                tansactionType = null;
+                fromCat = null;
+                toCat = null;
+            }
+
+            List<FundTransfer> FundTransferList = new List<FundTransfer>();
+            FundTransferList = _TransactionService.GetFundTransferList(tansactionType, fromCat, toCat, option, fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTFundTransfer.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForFundTransfer(fromDate, toDate, tansactionType,option));
+            ReportDataSource A = new ReportDataSource("FundTransfer", FundTransferList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
         }
     }
 }

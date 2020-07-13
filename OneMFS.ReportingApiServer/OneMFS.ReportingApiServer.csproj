@@ -257,8 +257,8 @@
       <DependentUpon>MFSDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSet\MFSDataSet.xsd">
-      <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>MFSDataSet.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Reports\DataSet\MFSDataSet.xss">
@@ -267,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionDetails.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionSummary.rdlc" />

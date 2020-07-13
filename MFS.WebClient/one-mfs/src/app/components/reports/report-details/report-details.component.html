@@ -1,83 +1,86 @@
 <mfs-pdf-viewer [src]="pdf" #mfsPdfViewer></mfs-pdf-viewer>
 <div class="p-grid">
-	<div class="p-col-12">
-		<p-card>
-			<div class="p-grid">
-				<div class="p-col-2">
-					<button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
-				</div>
-				<div class="p-col-7">
-					<h5 style="text-align:center">{{model.ReportName}}</h5>
-				</div>
-				<div class="p-col-3">
-					<p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<h6 class="report-description">
-						{{model.ReportDescription}}
-					</h6>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<div class="p-grid">
-						<div class="p-col-12">
-							<div [ngSwitch]="model.Id" *ngIf="model.Id">
-								<!--<div *ngSwitchCase="1">
-									<transaction-history-report #form></transaction-history-report>
-								</div>
-								<div *ngSwitchCase="13">
-									<transaction-history-report #form></transaction-history-report>
-								</div>-->
-								<div *ngSwitchCase="20">
-									<account-statement-report #form></account-statement-report>
-								</div>
-								<div *ngSwitchCase="41">
-									<current-affairs-statement #form></current-affairs-statement>
-								</div>
-								<div *ngSwitchCase="61">
-									<chart-of-accounts #form></chart-of-accounts>
-								</div>
-								<div *ngSwitchCase="81">
-									<eod-affairs-statement #form></eod-affairs-statement>
-								</div>
-								<div *ngSwitchCase="82">
-									<registration-report #form></registration-report>
-								</div>
-								<div *ngSwitchCase="101">
-									<app-registration-summary #form></app-registration-summary>
-								</div>
-								<div *ngSwitchCase="121">
-									<app-agent-information #form></app-agent-information>
-								</div>
-								<div *ngSwitchCase="141">
-									<app-gl-statement #form></app-gl-statement>
-								</div>
-								<div *ngSwitchCase="4">
-									<app-kyc-balance #form></app-kyc-balance>
-								</div>
-								<div *ngSwitchCase="1">
-									<app-transaction #form></app-transaction>
-								</div>
-								<div *ngSwitchCase="22">
-									<app-dpdc-desco #form></app-dpdc-desco>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
-				</div>
-			</div>
-		</p-card>
-	</div>
+    <div class="p-col-12">
+        <p-card>
+            <div class="p-grid">
+                <div class="p-col-2">
+                    <button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
+                </div>
+                <div class="p-col-7">
+                    <h5 style="text-align:center">{{model.ReportName}}</h5>
+                </div>
+                <div class="p-col-3">
+                    <p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <h6 class="report-description">
+                        {{model.ReportDescription}}
+                    </h6>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <div [ngSwitch]="model.Id" *ngIf="model.Id">
+                                <!--<div *ngSwitchCase="1">
+                                    <transaction-history-report #form></transaction-history-report>
+                                </div>
+                                <div *ngSwitchCase="13">
+                                    <transaction-history-report #form></transaction-history-report>
+                                </div>-->
+                                <div *ngSwitchCase="20">
+                                    <account-statement-report #form></account-statement-report>
+                                </div>
+                                <div *ngSwitchCase="41">
+                                    <current-affairs-statement #form></current-affairs-statement>
+                                </div>
+                                <div *ngSwitchCase="61">
+                                    <chart-of-accounts #form></chart-of-accounts>
+                                </div>
+                                <div *ngSwitchCase="81">
+                                    <eod-affairs-statement #form></eod-affairs-statement>
+                                </div>
+                                <div *ngSwitchCase="82">
+                                    <registration-report #form></registration-report>
+                                </div>
+                                <div *ngSwitchCase="101">
+                                    <app-registration-summary #form></app-registration-summary>
+                                </div>
+                                <div *ngSwitchCase="121">
+                                    <app-agent-information #form></app-agent-information>
+                                </div>
+                                <div *ngSwitchCase="141">
+                                    <app-gl-statement #form></app-gl-statement>
+                                </div>
+                                <div *ngSwitchCase="4">
+                                    <app-kyc-balance #form></app-kyc-balance>
+                                </div>
+                                <div *ngSwitchCase="1">
+                                    <app-transaction #form></app-transaction>
+                                </div>
+                                <div *ngSwitchCase="21">
+                                    <app-fund-transfer #form></app-fund-transfer>
+                                </div>
+                                <div *ngSwitchCase="22">
+                                    <app-dpdc-desco #form></app-dpdc-desco>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
+                </div>
+            </div>
+        </p-card>
+    </div>
 </div>
 <mfs-loader *ngIf="isLoading"></mfs-loader>

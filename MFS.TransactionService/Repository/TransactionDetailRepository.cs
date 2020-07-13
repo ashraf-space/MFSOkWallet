@@ -17,14 +17,14 @@ namespace MFS.TransactionService.Repository
     }
     public class TransactionDetailRepository : BaseRepository<GlTransDtl>, ITransactionDetailRepository
     {
-       
+        MainDbUser mainDbUser = new MainDbUser();
         public dynamic GetTransactionDetailList(string transactionNumber)
         {
             try
             {
                 using (var conn = this.GetConnection())
                 {
-                    var result = conn.Query<TransactionDetailView>("select * from GLTransDTLView where transNo = '" + transactionNumber + "'");
+                    var result = conn.Query<TransactionDetailView>("select * from "+ mainDbUser.DbUser+"GLTransDTLView where transNo = '" + transactionNumber + "'");
                     //this.CloseConnection(conn);
                     conn.Close();
 

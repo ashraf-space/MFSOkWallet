@@ -20,7 +20,9 @@ namespace MFS.TransactionService.Repository
     }
     public class DistributorDepositRepository : BaseRepository<TblCashEntry>, IDistributorDepositRepository
     {
-       
+
+        MainDbUser mainDbUser = new MainDbUser();
+
         public object GetCashEntryListByBranchCode(string branchCode, bool isRegistrationPermitted, double transAmtLimit)
         {
             try
@@ -33,7 +35,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("isRegistrationPermitted", OracleDbType.Int32, ParameterDirection.Input, intValue);
                     parameter.Add("transAmtLimit", OracleDbType.Double, ParameterDirection.Input, transAmtLimit);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<TblCashEntry>(connection, "SP_Get_CashEntry_ByBranchCode", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<TblCashEntry>(connection, mainDbUser.DbUser + "SP_Get_CashEntry_ByBranchCode", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -66,7 +68,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<string>(connection, "SP_Get_TransactionNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<string>(connection, mainDbUser.DbUser + "SP_Get_TransactionNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -96,7 +98,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("transNo", OracleDbType.Varchar2, ParameterDirection.Input, transNo);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<TblCashEntry>(connection, "SP_Get_DepositByTransNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<TblCashEntry>(connection, mainDbUser.DbUser+ "SP_Get_DepositByTransNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
                     connection.Close();
 
                     return result;
@@ -132,7 +134,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, cashEntry.EntryBranchCode);
                     parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, cashEntry.CheckedUser);
 
-                    SqlMapper.Query<dynamic>(connection, "SP_INSERT_TBL_CASH_ENTRY", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_INSERT_TBL_CASH_ENTRY", param: parameter, commandType: CommandType.StoredProcedure);
 
 
                     connection.Close();

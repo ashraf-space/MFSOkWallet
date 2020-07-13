@@ -32,7 +32,7 @@ namespace MFS.TransactionService.Repository
     }
     public class FundTransferRepository : BaseRepository<FundTransfer>, IFundTransferRepository
     {
-        
+        MainDbUser mainDbUser = new MainDbUser();
         public object GetGlList()
         {
             try
@@ -41,7 +41,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetGlListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetGlListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -58,7 +58,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }
@@ -71,7 +71,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<dynamic>(connection, "SP_Get_GlDetailsForRobi", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Get_GlDetailsForRobi", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -87,7 +87,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -100,7 +100,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetACListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetACListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -116,7 +116,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }
@@ -130,7 +130,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("SysCoaCode", OracleDbType.Varchar2, ParameterDirection.Input, sysCode);
                     parameter.Add("GLBalance", OracleDbType.Double, ParameterDirection.Output);
-                    SqlMapper.Query<dynamic>(connection, "SP_GET_GLBalanceBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GET_GLBalanceBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
                     var result = parameter.oracleParameters[1].Value != null ? parameter.oracleParameters[1].Value.ToString() : null;
@@ -150,7 +150,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -164,7 +164,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("mPhoneAC", OracleDbType.Varchar2, ParameterDirection.Input, mPhone);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<dynamic>(connection, "SP_GetAmountByAC", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GetAmountByAC", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -181,7 +181,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -197,7 +197,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("branchCode", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
                     parameter.Add("transAmtLimt", OracleDbType.Double, ParameterDirection.Input, transAmtLimt);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_Get_TransactionListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_Get_TransactionListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -216,7 +216,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -255,7 +255,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, fundTransferModel.TransNo);
 
                     //SqlMapper.Query<dynamic>(connection, "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
-                    SqlMapper.Query<dynamic>(connection, "SP_Approve_FundTransfer", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Approve_FundTransfer", param: parameter, commandType: CommandType.StoredProcedure);
                     connection.Close();
                     string flag = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
 
@@ -299,7 +299,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }
@@ -313,7 +313,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("transFrom", OracleDbType.Varchar2, ParameterDirection.Input, transFrom);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<VMACandGLDetails>(connection, "SP_GET_ACandGLDetailsByMphone", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<VMACandGLDetails>(connection, mainDbUser.DbUser + "SP_GET_ACandGLDetailsByMphone", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -331,7 +331,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }
@@ -353,7 +353,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, branchCashIn.BranchCode);
                     parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, branchCashIn.CheckedUser);
 
-                    SqlMapper.Query<dynamic>(connection, "SP_Insert_Portal_CashIn", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Insert_Portal_CashIn", param: parameter, commandType: CommandType.StoredProcedure);
                     connection.Close();
                     string flag = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
                     string successOrErrorMsg = null;
@@ -397,7 +397,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception e)
             {
-                
+
                 throw;
             }
         }
@@ -409,7 +409,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = "Select Status from Tbl_Portal_Cashout where Trans_no =" + "'" + tblPortalCashout.TransNo + "'";
+                    string query = "Select Status from "+ mainDbUser.DbUser+"Tbl_Portal_Cashout where Trans_no =" + "'" + tblPortalCashout.TransNo + "'";
                     string staus = connection.QueryFirstOrDefault<string>(query);
 
                     if (staus == null)
@@ -430,11 +430,11 @@ namespace MFS.TransactionService.Repository
                         if (evnt == "register")
                         {
                             //var result = SqlMapper.Query<dynamic>(connection, "SP_Branch_Cashout_Approve", param: parameter, commandType: CommandType.StoredProcedure);
-                            SqlMapper.Query(connection, "SP_Branch_Cashout_Approve", param: parameter, commandType: CommandType.StoredProcedure);
+                            SqlMapper.Query(connection, mainDbUser.DbUser + "SP_Branch_Cashout_Approve", param: parameter, commandType: CommandType.StoredProcedure);
                         }
                         else
                         {
-                            var result = SqlMapper.Query<dynamic>(connection, "SP_Branch_Cashout_Reject", param: parameter, commandType: CommandType.StoredProcedure);
+                            var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Branch_Cashout_Reject", param: parameter, commandType: CommandType.StoredProcedure);
                         }
 
 
@@ -505,7 +505,7 @@ namespace MFS.TransactionService.Repository
                 //    {
                 //        successOrErrorMsg = flag;
                 //    }
-                   
+
                 //}
                 //else
                 //{
@@ -518,7 +518,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception e)
             {
-                
+
                 throw;
             }
         }
@@ -542,7 +542,7 @@ namespace MFS.TransactionService.Repository
                     //parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input);
                     //parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input);
 
-                    SqlMapper.Query<string>(connection, "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    SqlMapper.Query<string>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
                     //string newID = parameter.<string>("V_FLAG");
                     string transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
 
@@ -554,7 +554,7 @@ namespace MFS.TransactionService.Repository
                         parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, transactionNo);
                         parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input, 3);
 
-                        SqlMapper.Query<dynamic>(connection, "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
+                        SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
                         transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
                         if (transactionNo != null)
                         {
@@ -564,7 +564,7 @@ namespace MFS.TransactionService.Repository
                             parameter.oracleParameters[8].Value = transactionNo;
                             parameter.oracleParameters[9].Value = 5;
 
-                            SqlMapper.Query<dynamic>(connection, "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
+                            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
                         }
 
 
@@ -620,7 +620,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception e)
             {
-                
+
                 throw;
             }
         }
@@ -635,7 +635,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("transNo", OracleDbType.Varchar2, ParameterDirection.Input, transNo);
                     parameter.Add("mobile", OracleDbType.Varchar2, ParameterDirection.Input, mobile);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<dynamic>(connection, "SP_GET_AmountByTransNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GET_AmountByTransNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -654,7 +654,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }
@@ -668,7 +668,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("SysCoaCode", OracleDbType.Varchar2, ParameterDirection.Input, sysCoaCode);
                     parameter.Add("GLBalance", OracleDbType.Double, ParameterDirection.Output);
                     //parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    SqlMapper.Query<dynamic>(connection, "SP_GET_GLBalanceBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GET_GLBalanceBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
                     var result = parameter.oracleParameters[1].Value != null ? parameter.oracleParameters[1].Value.ToString() : null;
@@ -689,7 +689,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -703,7 +703,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("SysCoaCode", OracleDbType.Varchar2, ParameterDirection.Input, fromSysCoaCode);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    string result = SqlMapper.Query<string>(connection, "SP_GET_GetCoaCodeBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    string result = SqlMapper.Query<string>(connection, mainDbUser.DbUser + "SP_GET_GetCoaCodeBySysCoaCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
                     //var result = parameter.oracleParameters[1].Value != null ? parameter.oracleParameters[1].Value.ToString() : null;
@@ -723,7 +723,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-               
+
                 throw;
             }
         }

@@ -16,7 +16,14 @@ namespace MFS.SecurityService.Repository
 
 	public class FeatureRepository : BaseRepository<Feature>, IFeatureRepository
 	{
-		public dynamic GetAuthFeatureList(int id)
+
+        //private static string dbuser;
+        //public FeatureRepository(MainDbUser objMainDbUser)
+        //{
+        //    dbuser = objMainDbUser.DbUser;
+        //}
+        MainDbUser mainDbUser = new MainDbUser();
+        public dynamic GetAuthFeatureList(int id)
 		{
 			using (var conn = this.GetConnection())
 			{
@@ -24,7 +31,7 @@ namespace MFS.SecurityService.Repository
 				dyParam.Add("USER_ID", OracleDbType.Int32, ParameterDirection.Input, id);
 				dyParam.Add("FEATURE_LIST", OracleDbType.RefCursor, ParameterDirection.Output);
 
-				var result = SqlMapper.Query(conn, "PR_MFS_GETUSERFEATURELIST", param: dyParam, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query(conn, mainDbUser.DbUser+ "PR_MFS_GETUSERFEATURELIST", param: dyParam, commandType: CommandType.StoredProcedure);
 				this.CloseConnection(conn);
 
 				return result;

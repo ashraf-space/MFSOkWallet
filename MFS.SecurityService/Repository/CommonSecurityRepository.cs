@@ -16,7 +16,13 @@ namespace MFS.SecurityService.Repository
         object IsProceedToController(List<string> userInfos);
     }
     public class CommonSecurityRepository : BaseRepository<ApplicationUser>, ICommonSecurityRepository
-    {      
+    {
+        //private static string dbuser;
+        //public CommonSecurityRepository(MainDbUser objMainDbUser)
+        //{
+        //    dbuser = objMainDbUser.DbUser;
+        //}
+        MainDbUser mainDbUser = new MainDbUser();
         public object IsProceedToController(List<string> userInfos)
         {
             try
@@ -27,7 +33,7 @@ namespace MFS.SecurityService.Repository
                     dyParam.Add("UID", OracleDbType.Varchar2, ParameterDirection.Input, userInfos[0]);
                     dyParam.Add("ROLE_ID", OracleDbType.Int32, ParameterDirection.Output, null, 32767);
                     dyParam.Add("LG_STATUS", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
-                    SqlMapper.Query(conn, "PR_PROCEED_LOGIN", param: dyParam, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query(conn, mainDbUser.DbUser + "PR_PROCEED_LOGIN", param: dyParam, commandType: CommandType.StoredProcedure);
                     conn.Close();
                     var roleId = dyParam.oracleParameters[1].Value.ToString();
                     var fg = dyParam.oracleParameters[2].Value.ToString();

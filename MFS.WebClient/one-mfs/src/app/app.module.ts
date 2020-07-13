@@ -191,6 +191,7 @@ import { TransactionComponent } from './components/reports/report-collection/tra
 import { AuditTrailComponent } from './components/security/audit/audit-trail/audit-trail.component';
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
 import { DpdcDescoComponent } from './components/reports/report-collection/dpdc-desco/dpdc-desco.component';
+import { FundTransferComponent } from './components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component';
 
 @NgModule({
     imports: [
@@ -379,7 +380,8 @@ import { DpdcDescoComponent } from './components/reports/report-collection/dpdc-
         TransactionComponent,
         AuditTrailComponent,
         AuditTrailDtlComponent,
-        DpdcDescoComponent
+        DpdcDescoComponent,
+        FundTransferComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

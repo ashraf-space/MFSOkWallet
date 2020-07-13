@@ -33,7 +33,8 @@ namespace MFS.TransactionService.Repository
     }
     public class DisbursementRepository : BaseRepository<TblDisburseCompanyInfo>, IDisbursementRepository
     {
-        
+        MainDbUser mainDbUser = new MainDbUser();
+
         public object GetDisbursementCompanyList()
         {
             try
@@ -43,7 +44,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
 
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<TblDisburseCompanyInfo>(connection, "SP_Get_DisbursementCompanyList", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<TblDisburseCompanyInfo>(connection, mainDbUser.DbUser + "SP_Get_DisbursementCompanyList", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -60,7 +61,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -70,7 +71,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = "Select Max(company_id) from tbl_disburse_company_info";
+                    string query = "Select Max(company_id) from" + mainDbUser.DbUser + "tbl_disburse_company_info";
                     var maxCompanyId = connection.QueryFirstOrDefault<int>(query);
 
                     return maxCompanyId;
@@ -83,7 +84,7 @@ namespace MFS.TransactionService.Repository
             catch (Exception ex)
             {
 
-				throw;
+                throw;
             }
         }
 
@@ -95,7 +96,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetDisburseCompanyDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetDisburseCompanyDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -111,7 +112,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -124,7 +125,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetDisburseTypeDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetDisburseTypeDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -140,7 +141,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -153,7 +154,7 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetDisburseAccountDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetDisburseAccountDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -169,7 +170,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -191,7 +192,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseAmtDtlMake.BrCode);
                     parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseAmtDtlMake.CheckerId);
 
-                    SqlMapper.Query<dynamic>(connection, "SP_Disburse_Amount_Posting", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disburse_Amount_Posting", param: parameter, commandType: CommandType.StoredProcedure);
                     connection.Close();
                     string flag = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
                     string successOrErrorMsg = null;
@@ -234,7 +235,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception e)
             {
-                
+
                 throw;
             }
         }
@@ -245,7 +246,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = "Select Company_name from tbl_disburse_company_info where company_Id=" + companyId;
+                    string query = "Select Company_name from " + mainDbUser.DbUser + "tbl_disburse_company_info where company_Id=" + companyId;
                     var companyName = connection.QueryFirstOrDefault<string>(query);
 
                     return companyName;
@@ -257,7 +258,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -272,7 +273,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("CompanyId", OracleDbType.Int16, ParameterDirection.Input, id);
                     parameter.Add("DisburseType", OracleDbType.Varchar2, ParameterDirection.Input, tp);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<dynamic>(connection, "SP_GetBatchNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GetBatchNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
                     connection.Close();
 
@@ -290,7 +291,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -305,7 +306,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("BatchNumber", OracleDbType.Varchar2, ParameterDirection.Input, batchno);
                     parameter.Add("CategoryId", OracleDbType.Varchar2, ParameterDirection.Input, catId);
                     parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
-                    SqlMapper.Query<dynamic>(connection, "SP_Disbursement_Process", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disbursement_Process", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
                     string successOrErrorMsg = null;
@@ -327,7 +328,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -341,7 +342,7 @@ namespace MFS.TransactionService.Repository
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("forPosting", OracleDbType.Varchar2, ParameterDirection.Input, forPosting);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetCompanyAndBatchNoDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetCompanyAndBatchNoDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
 
@@ -358,7 +359,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -369,7 +370,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = "Select * from tbl_disburse_invalid_data where BatchNo=" + "'" + batchNumber + "'";
+                    string query = "Select * from " + mainDbUser.DbUser + "tbl_disburse_invalid_data where BatchNo=" + "'" + batchNumber + "'";
                     var model = connection.QueryFirstOrDefault<dynamic>(query);
                     if (model != null)
                         return true;
@@ -385,7 +386,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -402,7 +403,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("validOrInvalid", OracleDbType.Varchar2, ParameterDirection.Input, validOrInvalid);
                     parameter.Add("forPosting", OracleDbType.Varchar2, ParameterDirection.Input, forPosting);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    result = SqlMapper.Query<TblDisburseInvalidData>(connection, "SP_getValidOrInvalidData", param: parameter, commandType: CommandType.StoredProcedure).ToList();
+                    result = SqlMapper.Query<TblDisburseInvalidData>(connection, mainDbUser.DbUser + "SP_getValidOrInvalidData", param: parameter, commandType: CommandType.StoredProcedure).ToList();
 
                     connection.Close();
 
@@ -422,7 +423,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -438,7 +439,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("processBatchNo", OracleDbType.Varchar2, ParameterDirection.Input, processBatchNo);
                     parameter.Add("totalSum", OracleDbType.Double, ParameterDirection.Input, totalSum);
                     parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
-                    SqlMapper.Query<dynamic>(connection, "SP_Disbursement_Posting", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disbursement_Posting", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
                     string successOrErrorMsg = parameter.oracleParameters[2].Value != null ? parameter.oracleParameters[2].Value.ToString() : null;
@@ -454,12 +455,12 @@ namespace MFS.TransactionService.Repository
 
                 //connection.Close();
                 //string successOrErrorMsg = parameter.oracleParameters[2].Value != null ? parameter.oracleParameters[2].Value.ToString() : null;
-               
+
                 //return successOrErrorMsg;
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -479,7 +480,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, brCode);
                     parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, checkerId);
                     parameter.Add("totalSum", OracleDbType.Double, ParameterDirection.Input, totalSum);
-                    SqlMapper.Query<dynamic>(connection, "SP_Disbursement_AllSend", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disbursement_AllSend", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
                     string flag = parameter.oracleParameters[2].Value != null ? parameter.oracleParameters[2].Value.ToString() : null;
@@ -523,7 +524,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -539,7 +540,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
                     parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, checkerId);
                     parameter.Add("totalSum", OracleDbType.Double, ParameterDirection.Input, totalSum);
-                    SqlMapper.Query<dynamic>(connection, "SP_BatchDelete", param: parameter, commandType: CommandType.StoredProcedure);
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_BatchDelete", param: parameter, commandType: CommandType.StoredProcedure);
 
                     connection.Close();
                     string successOrErrorMsg = null;
@@ -564,7 +565,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-               
+
                 throw;
             }
         }
@@ -575,7 +576,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = @"Select Mphone from reginfo where Cat_id='E' and Reg_status='P' and Mphone= " + "'" + accountNo + "'" + "";
+                    string query = @"Select Mphone from " + mainDbUser.DbUser + "reginfo where Cat_id='E' and Reg_status='P' and Mphone= " + "'" + accountNo + "'" + "";
                     var result = connection.Query<dynamic>(query).FirstOrDefault();
                     this.CloseConnection(connection);
                     return result;

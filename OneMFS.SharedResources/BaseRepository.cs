@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace OneMFS.SharedResources
 {
-    public interface IBaseRepository<T> 
+    public interface IBaseRepository<T>
     {
         T Add(T entity);
         T Update(T entity);
@@ -24,16 +24,18 @@ namespace OneMFS.SharedResources
 
     public class BaseRepository<T> : ConnectionManager
     {
-		//IDbConnection connection;
-		//public BaseRepository()
-		//{
-		//	connection = this.GetConnection();
-		//	if (connection.State == ConnectionState.Closed)
-		//	{
-		//		connection.Open();
-		//	}
-		//}
-		public T Add(T entity)
+        //IDbConnection connection;
+        //public BaseRepository()
+        //{
+        //	connection = this.GetConnection();
+        //	if (connection.State == ConnectionState.Closed)
+        //	{
+        //		connection.Open();
+        //	}
+        //}
+
+        MainDbUser mainDbUser = new MainDbUser();
+        public T Add(T entity)
         {
             try
             {
@@ -42,11 +44,11 @@ namespace OneMFS.SharedResources
                 string propertyNamesDump = "";
                 string propertyValues = "";
                 string propertyValuesDump = "";
-                string query = "INSERT INTO " + convert.ToPascalCase(entity.GetType().Name);
+                string query = "INSERT INTO " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name);
 
                 foreach (var prop in entity.GetType().GetProperties())
-                {                   
-                    if(prop.Name.ToLower() != "id" && !prop.Name.Contains("_"))
+                {
+                    if (prop.Name.ToLower() != "id" && !prop.Name.Contains("_"))
                     {
                         if (prop.GetValue(entity, null) != null)
                         {
@@ -83,7 +85,7 @@ namespace OneMFS.SharedResources
                                                 propertyValuesDump = prop.GetValue(entity, null) + ",";
                                                 break;
                                             case "DateTime":
-                                                propertyValuesDump = "TO_DATE('"+ Convert.ToDateTime(prop.GetValue(entity, null)).ToString("yyyy/MM/dd HH:mm:ss") + "', 'yyyy/mm/dd hh24:mi:ss')"  + ",";
+                                                propertyValuesDump = "TO_DATE('" + Convert.ToDateTime(prop.GetValue(entity, null)).ToString("yyyy/MM/dd HH:mm:ss") + "', 'yyyy/mm/dd hh24:mi:ss')" + ",";
                                                 break;
                                             default:
                                                 propertyValuesDump = "'" + convert.EscapeInvalidCharacter(prop.GetValue(entity, null)) + "'" + ",";
@@ -99,21 +101,21 @@ namespace OneMFS.SharedResources
                             propertyValues = propertyValues + propertyValuesDump;
                         }
                     }
-                    
+
                 }
 
                 query = query + " (" + propertyNames.TrimEnd(',') + ")" + " VALUES " + "( " + propertyValues.TrimEnd(',') + " )";
 
-                var result = ExecuteScaler(query);				
-				return entity;
+                var result = ExecuteScaler(query);
+                return entity;
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
-            
+
         }
 
         public T Update(T entity)
@@ -122,7 +124,7 @@ namespace OneMFS.SharedResources
             {
                 TextCaseConversion convert = new TextCaseConversion();
                 string whereClause = "";
-                string query = "UPDATE " + convert.ToPascalCase(entity.GetType().Name) + " SET ";
+                string query = "UPDATE " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " SET ";
 
                 foreach (var prop in entity.GetType().GetProperties())
                 {
@@ -146,7 +148,7 @@ namespace OneMFS.SharedResources
                                     query = query + " " + convert.ToPascalCase(prop.Name) + " = " + prop.GetValue(entity, null) + ",";
                                     break;
                                 case "DateTime":
-                                    query = query + " " + convert.ToPascalCase(prop.Name) + " = "+ "TO_DATE('" + Convert.ToDateTime(prop.GetValue(entity, null)).ToString("yyyy/MM/dd HH:mm:ss") + "', 'yyyy/mm/dd hh24:mi:ss')" + ",";
+                                    query = query + " " + convert.ToPascalCase(prop.Name) + " = " + "TO_DATE('" + Convert.ToDateTime(prop.GetValue(entity, null)).ToString("yyyy/MM/dd HH:mm:ss") + "', 'yyyy/mm/dd hh24:mi:ss')" + ",";
                                     break;
                                 default:
                                     if (prop.PropertyType.IsGenericType &&
@@ -187,11 +189,11 @@ namespace OneMFS.SharedResources
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
-            
+
         }
 
         public T UpdateByStringField(T entity, string stringField)
@@ -200,7 +202,7 @@ namespace OneMFS.SharedResources
             {
                 TextCaseConversion convert = new TextCaseConversion();
                 string whereClause = "";
-                string query = "UPDATE " + convert.ToPascalCase(entity.GetType().Name) + " SET ";
+                string query = "UPDATE " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " SET ";
 
                 foreach (var prop in entity.GetType().GetProperties())
                 {
@@ -208,7 +210,7 @@ namespace OneMFS.SharedResources
                     {
                         if (prop.Name.ToLower() == stringField.ToLower())
                         {
-                            whereClause = prop.PropertyType.Name == "Int32"? " WHERE "+ convert.ToPascalCase(stringField) +"= " + ""+prop.GetValue(entity, null)+"": " WHERE " + convert.ToPascalCase(stringField) + "= " + "'" + prop.GetValue(entity, null) + "'";
+                            whereClause = prop.PropertyType.Name == "Int32" ? " WHERE " + convert.ToPascalCase(stringField) + "= " + "" + prop.GetValue(entity, null) + "" : " WHERE " + convert.ToPascalCase(stringField) + "= " + "'" + prop.GetValue(entity, null) + "'";
                         }
                         else
                         {
@@ -265,9 +267,9 @@ namespace OneMFS.SharedResources
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
 
         }
@@ -278,7 +280,7 @@ namespace OneMFS.SharedResources
             {
                 TextCaseConversion convert = new TextCaseConversion();
                 string whereClause = "";
-                string query = "UPDATE " + convert.ToPascalCase(entity.GetType().Name) + " SET ";
+                string query = "UPDATE " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " SET ";
 
                 foreach (var prop in entity.GetType().GetProperties())
                 {
@@ -286,7 +288,7 @@ namespace OneMFS.SharedResources
                     {
                         if (prop.Name.ToLower() == "mphone")
                         {
-                            whereClause = " WHERE mphone=" + "'"+prop.GetValue(entity, null)+"'";
+                            whereClause = " WHERE mphone=" + "'" + prop.GetValue(entity, null) + "'";
                         }
                         else
                         {
@@ -343,9 +345,9 @@ namespace OneMFS.SharedResources
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
 
         }
@@ -366,24 +368,24 @@ namespace OneMFS.SharedResources
                     }
                 }
 
-                string query = "Select "+ selectedColumns.TrimEnd(',') + " from " + convert.ToPascalCase(entity.GetType().Name);
+                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name);
 
 
-				using (var connection = this.GetConnection())
-				{
-					var list = connection.Query<T>(query);
+                using (var connection = this.GetConnection())
+                {
+                    var list = connection.Query<T>(query);
 
-					this.CloseConnection(connection);
+                    this.CloseConnection(connection);
 
-					return list;
-				}
-					
+                    return list;
+                }
+
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -396,35 +398,36 @@ namespace OneMFS.SharedResources
                 string selectedColumns = "";
                 foreach (var prop in entity.GetType().GetProperties())
                 {
-                    if (!prop.Name.Contains("_")) {
+                    if (!prop.Name.Contains("_"))
+                    {
                         selectedColumns = selectedColumns + convert.ToPascalCase(prop.Name) + " AS " + prop.Name + ",";
                     }
                 }
 
-                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + convert.ToPascalCase(entity.GetType().Name) + " Where " + convert.ToPascalCase(identifier) + " = " + Id;
+                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " Where " + convert.ToPascalCase(identifier) + " = " + Id;
 
-				using (var connection = this.GetConnection())
-				{
-					IEnumerable<T> obj = connection.Query<T>(query);
+                using (var connection = this.GetConnection())
+                {
+                    IEnumerable<T> obj = connection.Query<T>(query);
 
-					this.CloseConnection(connection);
+                    this.CloseConnection(connection);
 
-					if (obj.Count() != 0)
-					{
-						return obj.First();
-					}
-					else
-					{
-						return entity;
-					}
-				}
-					
+                    if (obj.Count() != 0)
+                    {
+                        return obj.First();
+                    }
+                    else
+                    {
+                        return entity;
+                    }
+                }
+
             }
             catch (Exception)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -437,37 +440,37 @@ namespace OneMFS.SharedResources
                 string selectedColumns = "";
                 foreach (var prop in entity.GetType().GetProperties())
                 {
-                    if (!prop.Name.Contains("_") && prop.Name.ToLower()!= "rowid")
+                    if (!prop.Name.Contains("_") && prop.Name.ToLower() != "rowid")
                     {
                         selectedColumns = selectedColumns + convert.ToPascalCase(prop.Name) + " AS " + prop.Name + ",";
                     }
                 }
 
-                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + convert.ToPascalCase(entity.GetType().Name) + " Where "+ convert.ToPascalCase(customField) +" = '" + Id+ "'";
+                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " Where " + convert.ToPascalCase(customField) + " = '" + Id + "'";
 
-				using (var connection = this.GetConnection())
-				{
-					IEnumerable<T> obj = connection.Query<T>(query);
+                using (var connection = this.GetConnection())
+                {
+                    IEnumerable<T> obj = connection.Query<T>(query);
 
-					this.CloseConnection(connection);
+                    this.CloseConnection(connection);
 
-					if (obj.Count() != 0)
-					{
-						return obj.First();
-					}
-					else
-					{
-						return entity;
-					}
-				}
+                    if (obj.Count() != 0)
+                    {
+                        return obj.First();
+                    }
+                    else
+                    {
+                        return entity;
+                    }
+                }
 
-					
+
             }
             catch (Exception)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -486,23 +489,23 @@ namespace OneMFS.SharedResources
                     }
                 }
 
-                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + convert.ToPascalCase(entity.GetType().Name) + " Where " + convert.ToPascalCase(customField) + " = '" + Id + "'";
+                string query = "Select " + selectedColumns.TrimEnd(',') + " from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " Where " + convert.ToPascalCase(customField) + " = '" + Id + "'";
 
-				using (var connection = this.GetConnection())
-				{
-					IEnumerable<T> obj = connection.Query<T>(query);
+                using (var connection = this.GetConnection())
+                {
+                    IEnumerable<T> obj = connection.Query<T>(query);
 
-					this.CloseConnection(connection);
-					connection.Dispose();
-					return obj;
-				}
-					
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return obj;
+                }
+
             }
             catch (Exception)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -514,21 +517,21 @@ namespace OneMFS.SharedResources
                 string whereClause = "";
                 foreach (var prop in entity.GetType().GetProperties())
                 {
-                    if(prop.Name.ToLower() == "id")
+                    if (prop.Name.ToLower() == "id")
                     {
                         whereClause = " WHERE ID=" + prop.GetValue(entity, null);
                     }
                 }
-                string query = "Delete from " + convert.ToPascalCase(entity.GetType().Name) + whereClause;
+                string query = "Delete from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + whereClause;
                 var result = ExecuteScaler(query);
 
                 return true;
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -542,19 +545,19 @@ namespace OneMFS.SharedResources
                 {
                     if (prop.Name.ToLower() == customField)
                     {
-                        whereClause = " WHERE "+ convert.ToPascalCase(customField) + " = " + id;
+                        whereClause = " WHERE " + convert.ToPascalCase(customField) + " = " + id;
                     }
                 }
-                string query = "Delete from " + convert.ToPascalCase(entity.GetType().Name) + whereClause;
+                string query = "Delete from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + whereClause;
                 var result = ExecuteScaler(query);
 
                 return entity;
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
@@ -563,44 +566,44 @@ namespace OneMFS.SharedResources
             try
             {
                 TextCaseConversion convert = new TextCaseConversion();
-                string query = "Select "+label+" as Label, "+value+" as Value from " + convert.ToPascalCase(entity.GetType().Name);
+                string query = "Select " + label + " as Label, " + value + " as Value from " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name);
 
-				using (var connection = this.GetConnection())
-				{
-					var list = connection.Query<DropdownListModel>(query);
+                using (var connection = this.GetConnection())
+                {
+                    var list = connection.Query<DropdownListModel>(query);
 
-					this.CloseConnection(connection);
-					return list;
-				}					
+                    this.CloseConnection(connection);
+                    return list;
+                }
             }
             catch (Exception e)
             {
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw;
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw;
             }
         }
 
         public object ExecuteScaler(string query)
         {
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					var result = connection.Execute(query);
-					this.CloseConnection(connection);
-					connection.Dispose();
-					return result;
-				}
-					
-			}
-			catch(Exception ex)
-			{
-				//this.CloseConnection(connection);
-				//connection.Dispose();
-				throw ex;
-			}
-            
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var result = connection.Execute(query);
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //this.CloseConnection(connection);
+                //connection.Dispose();
+                throw ex;
+            }
+
         }
 
         public string GetCamelCaseColumnList(T entity)

@@ -20,6 +20,7 @@ namespace MFS.ReportingService.Service
         object GetOkServicesDDL();
         List<TransactionSummary> GetTransactionSummaryList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
+        List<FundTransfer> GetFundTransferList(string tansactionType, string fromCat, string toCat,string option, string fromDate, string toDate);
     }
 
     public class TransactionService : BaseService<AccountStatement>, ITransactionService
@@ -140,6 +141,19 @@ namespace MFS.ReportingService.Service
             try
             {
                 return _TransactionRepository.GetTransactionDetailsList(tansactionType, fromCat, toCat, dateType, fromDate, toDate, gateway);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<FundTransfer> GetFundTransferList(string tansactionType, string fromCat, string toCat,string option, string fromDate, string toDate)
+        {
+            try
+            {
+                return _TransactionRepository.GetFundTransferList(tansactionType, fromCat, toCat, option,  fromDate, toDate);
             }
             catch (Exception ex)
             {
