@@ -53,8 +53,6 @@ namespace OneMFS.ClientApiServer
             services.AddSingleton<JwtModel>(model);
 			services.AddSingleton<MainDbUser>();
 
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
             RepositoryMapper repoMapper = new RepositoryMapper();
             ServiceMapper serviceMapper = new ServiceMapper();
 

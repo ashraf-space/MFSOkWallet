@@ -17,6 +17,11 @@ namespace MFS.SecurityService.Repository
 
     public class PermissionRepository : BaseRepository<Permission>, IPermissionRepository
     {
+        private readonly string dbUser;
+        public PermissionRepository(MainDbUser objMainDbUser)
+        {
+            dbUser = objMainDbUser.DbUser;
+        }
         public IEnumerable<PermissionViewModel> GetPermissionWorklist(int roleId)
         {
 			using (var conn = this.GetConnection())

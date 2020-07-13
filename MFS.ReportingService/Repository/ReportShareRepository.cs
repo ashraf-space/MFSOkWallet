@@ -10,93 +10,97 @@ using System.Threading.Tasks;
 
 namespace MFS.ReportingService.Repository
 {
-	public interface IReportShareRepository : IBaseRepository<ReportInfo>
-	{
-		int GetReportIdByNameCat(string reportType, string reportName);
-		object SaveReportRole(int item, int id);
-		IEnumerable<dynamic> GetReportRolesById(int id);
-		object DeleteReportRole(int id);
-	}
-	public class ReportShareRepository : BaseRepository<ReportInfo>, IReportShareRepository
-	{
-		
-		public int GetReportIdByNameCat(string reportType, string reportName)
-		{
-			using (var connection = this.GetConnection())
-			{
-				string query = @"select t.id from report_info t where t.report_name = '" + reportName + "' and t.report_type = '" + reportType + "'";
+    public interface IReportShareRepository : IBaseRepository<ReportInfo>
+    {
+        int GetReportIdByNameCat(string reportType, string reportName);
+        object SaveReportRole(int item, int id);
+        IEnumerable<dynamic> GetReportRolesById(int id);
+        object DeleteReportRole(int id);
+    }
+    public class ReportShareRepository : BaseRepository<ReportInfo>, IReportShareRepository
+    {
+        private readonly string dbUser;
+        public ReportShareRepository(MainDbUser objMainDbUser)
+        {
+            dbUser = objMainDbUser.DbUser;
+        }
+        public int GetReportIdByNameCat(string reportType, string reportName)
+        {
+            using (var connection = this.GetConnection())
+            {
+                string query = @"select t.id from " + dbUser + "report_info t where t.report_name = '" + reportName + "' and t.report_type = '" + reportType + "'";
 
-				var result = connection.Query<int>(query).FirstOrDefault();
+                var result = connection.Query<int>(query).FirstOrDefault();
 
-				this.CloseConnection(connection);
-				return Convert.ToInt32(result);
-			}				
-		}
+                this.CloseConnection(connection);
+                return Convert.ToInt32(result);
+            }
+        }
 
-		public object SaveReportRole(int item, int id)
-		{
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					string query = @"insert into report_role  (report_id,role_id) values (" + id + "," + item + ")";
+        public object SaveReportRole(int item, int id)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"insert into " + dbUser + "report_role  (report_id,role_id) values (" + id + "," + item + ")";
 
-					connection.Query(query);
+                    connection.Query(query);
 
-					this.CloseConnection(connection);
-					return 1;
-				}
-					
-			}
-			catch(Exception ex)
-			{
-				throw;
-			}
-			
-		}
-		public IEnumerable<dynamic> GetReportRolesById(int id)
-		{
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					string query = @"select t.role_id from report_role t where t.report_id = " + id + "";
+                    this.CloseConnection(connection);
+                    return 1;
+                }
 
-					var result = connection.Query(query);
-					List<dynamic> roles = new List<dynamic>();
-					foreach (var item in result)
-					{
-						roles.Add(item.ROLE_ID);
-					}
-					this.CloseConnection(connection);
-					return roles;
-				}
-					
-			}
-			catch (Exception ex)
-			{
-				throw ex;
-			}
-		}
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
-		public object DeleteReportRole(int id)
-		{
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					string query = @"delete from report_role t where t.report_id = " + id + " ";
+        }
+        public IEnumerable<dynamic> GetReportRolesById(int id)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"select t.role_id from " + dbUser + "report_role t where t.report_id = " + id + "";
 
-					connection.Query(query);
+                    var result = connection.Query(query);
+                    List<dynamic> roles = new List<dynamic>();
+                    foreach (var item in result)
+                    {
+                        roles.Add(item.ROLE_ID);
+                    }
+                    this.CloseConnection(connection);
+                    return roles;
+                }
 
-					this.CloseConnection(connection);
-					return true;
-				}					
-			}
-			catch (Exception ex)
-			{
-				throw;
-			}
-		}
-	}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public object DeleteReportRole(int id)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"delete from " + dbUser + "report_role t where t.report_id = " + id + " ";
+
+                    connection.Query(query);
+
+                    this.CloseConnection(connection);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+    }
 }

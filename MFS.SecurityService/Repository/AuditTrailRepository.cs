@@ -23,7 +23,12 @@ namespace MFS.SecurityService.Repository
 
     public class AuditTrailRepository : BaseRepository<AuditTrail>, IAuditTrailRepository
     {
-		public object GetAuditTrails(DateRangeModel date, string user, string action, string menu)
+        private readonly string dbUser;
+        public AuditTrailRepository(MainDbUser objMainDbUser)
+        {
+            dbUser = objMainDbUser.DbUser;
+        }
+        public object GetAuditTrails(DateRangeModel date, string user, string action, string menu)
 		{
 			try
 			{

@@ -21,7 +21,11 @@ namespace MFS.SecurityService.Repository
 
     public class MerchantUserRepository : BaseRepository<MerchantUser>, IMerchantUserRepository
     {
-             
+        private readonly string dbUser;
+        public MerchantUserRepository(MainDbUser objMainDbUser)
+        {
+            dbUser = objMainDbUser.DbUser;
+        }
         public MerchantUser validateLogin(string userName, string password)
         {
             try
