@@ -18,7 +18,11 @@ namespace MFS.DistributionService.Repository
 	}
 	public class CustomerRepository:BaseRepository<Reginfo>,ICustomerRepository
 	{
-		
+		private readonly string dbUser;
+		public CustomerRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object GetCustomerGridList()
 		{			
 			try
@@ -27,7 +31,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "PR_GET_CUSTOMER_GRID_LIST", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"PR_GET_CUSTOMER_GRID_LIST", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
@@ -50,7 +54,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MOBLIE_NO", OracleDbType.Varchar2, ParameterDirection.Input, mPhone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_GET_CUSTOMER_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_CUSTOMER_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;

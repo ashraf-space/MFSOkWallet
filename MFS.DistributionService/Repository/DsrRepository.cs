@@ -22,8 +22,13 @@ namespace MFS.DistributionService.Repository
     }
     public class DsrRepository : BaseRepository<Reginfo>, IDsrRepository
     {
-              
-        public object GetDsrListData()
+		private readonly string dbUser;
+		public DsrRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+
+		public object GetDsrListData()
         {
             try
             {
@@ -32,7 +37,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CatType", OracleDbType.Varchar2, ParameterDirection.Input, "R");
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
@@ -58,7 +63,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("disCode", OracleDbType.Varchar2, ParameterDirection.Input, distributorCode);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_Get_DistData_ByDistCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_Get_DistData_ByDistCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -80,7 +85,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("USRPASS", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -102,7 +107,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("mobliePhone", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("fourDigitRandomNo", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
-					var result = SqlMapper.Query(connection, "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query(connection, dbUser + "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 				}
 									

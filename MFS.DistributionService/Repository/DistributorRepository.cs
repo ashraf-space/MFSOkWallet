@@ -34,7 +34,12 @@ namespace MFS.DistributionService.Repository
 	}
 	public class DistributorRepository : BaseRepository<Reginfo>, IDistributorRepository
 	{
-		
+		private readonly string dbUser;
+		public DistributorRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+
 		public object GetDistributorListData()
 		{
 			try
@@ -43,7 +48,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "PKG_ENVIORONMENT.PR_GetDistributorListData", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"PKG_ENVIORONMENT.PR_GetDistributorListData", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 
 					return result;
@@ -67,7 +72,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetDistributorListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "SP_GetDistributorListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
@@ -93,7 +98,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("ExMobileNo", OracleDbType.Varchar2, ParameterDirection.Input, ExMobileNo);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GetTotalAgentByMobileNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GetTotalAgentByMobileNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
 					this.CloseConnection(connection);
 
@@ -122,7 +127,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("BrCode", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, status);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
@@ -147,7 +152,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MoblieNo", OracleDbType.Varchar2, ParameterDirection.Input, mPhone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_GetDistributorByMphone", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GetDistributorByMphone", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -166,7 +171,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"Select Dist_code,Name from Reginfo where mphone = " + "'" + mPhone + "'" + "";
+					string query = @"Select Dist_code,Name from " + dbUser + "Reginfo where mphone = " + "'" + mPhone + "'" + "";
 					var result = connection.Query<dynamic>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -189,7 +194,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("acNo", OracleDbType.Varchar2, ParameterDirection.Input, acNo);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CompanyAndHolderName>(connection, "SP_GetCompanyAndHolderName", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<CompanyAndHolderName>(connection, dbUser + "SP_GetCompanyAndHolderName", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -211,7 +216,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("USRPASS", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -233,7 +238,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("PID", OracleDbType.Varchar2, ParameterDirection.Input, pid);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GET_DISTRIBUTOR_CODE_BY_PID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GET_DISTRIBUTOR_CODE_BY_PID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 
 					return result;
@@ -254,7 +259,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_Get_DistributorAcList", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "SP_Get_DistributorAcList", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
@@ -280,7 +285,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MoblieNo", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GET_RegInfoDetail_ByMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_RegInfoDetail_ByMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
 					this.CloseConnection(connection);
 
@@ -303,7 +308,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MoblieNo", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_RegInfo_Cashout_ByMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_RegInfo_Cashout_ByMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
 					this.CloseConnection(connection);
 
@@ -326,7 +331,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("PARENT_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, pmphhone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GET_DIST_CODE_BY_PMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GET_DIST_CODE_BY_PMPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 
 					return result;
@@ -352,7 +357,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
 					parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
 					//var result = SqlMapper.Query<string>(connection, "SP_Execute_Replacement", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
-					SqlMapper.Query(connection, "SP_Execute_Replacement", param: parameter, commandType: CommandType.StoredProcedure);
+					SqlMapper.Query(connection, dbUser + "SP_Execute_Replacement", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 
 					string flag = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
@@ -382,7 +387,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"Select mphone from Reginfo where mphone = " + "'" + mphone + "'" + "";
+					string query = @"Select mphone from " + dbUser + "Reginfo where mphone = " + "'" + mphone + "'" + "";
 
 					string result = connection.Query<string>(query).FirstOrDefault();
 
@@ -410,7 +415,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"Select mphone from Reginfo where Cat_Id = " + "'" + catId + "'" + " and Photo_Id = " + "'" + photoId + "'" + "";
+					string query = @"Select mphone from " + dbUser + "Reginfo where Cat_Id = " + "'" + catId + "'" + " and Photo_Id = " + "'" + photoId + "'" + "";
 
 				    string result =  connection.Query<string>(query).FirstOrDefault();
 

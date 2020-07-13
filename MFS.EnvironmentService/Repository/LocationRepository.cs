@@ -45,7 +45,11 @@ namespace MFS.EnvironmentService.Repository
 	}
 	public class LocationRepository : BaseRepository<Location>, ILocationRepository
 	{
-		
+		private readonly string dbUser;
+		public LocationRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object GetRegionDropdownList()
 		{
 			try
@@ -55,7 +59,7 @@ namespace MFS.EnvironmentService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_REGION", OracleDbType.RefCursor, ParameterDirection.Output);
 					parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GET_REGION", param: parameter, commandType: CommandType.StoredProcedure).ToList();
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser+"PKG_ENVIORONMENT.PR_GET_REGION", param: parameter, commandType: CommandType.StoredProcedure).ToList();
 					return result;
 				}
 
@@ -78,7 +82,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("REGION_PARENT_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_AREA_CODE", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PKG_ENVIORONMENT.PR_GET_LATEST_AREA_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PKG_ENVIORONMENT.PR_GET_LATEST_AREA_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					var areaCode = result?.CODE;
 					return areaCode?.ToString();
 				}
@@ -100,7 +104,7 @@ namespace MFS.EnvironmentService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
 					parameter.Add("CUR_AREAS", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "PKG_ENVIORONMENT.PR_GET_AREAS", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PKG_ENVIORONMENT.PR_GET_AREAS", param: parameter, commandType: CommandType.StoredProcedure);
 					return result;
 				}
 			}
@@ -120,7 +124,7 @@ namespace MFS.EnvironmentService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("AREA_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_AREA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "PKG_ENVIORONMENT.PR_GET_AREA_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PKG_ENVIORONMENT.PR_GET_AREA_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					return result;
 				}
 
@@ -148,12 +152,12 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
 					if (aLocation.IsEdit)
 					{
-						SqlMapper.Query<dynamic>(connection, "PKG_ENVIORONMENT.PR_UPDATE_AREA", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PKG_ENVIORONMENT.PR_UPDATE_AREA", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 					else
 					{
-						SqlMapper.Query<dynamic>(connection, "PKG_ENVIORONMENT.PR_SAVE_AREA", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PKG_ENVIORONMENT.PR_SAVE_AREA", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 				}
@@ -187,7 +191,7 @@ namespace MFS.EnvironmentService.Repository
 			{
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("CUR_BANKBRANCH", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GetBankBranchListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GetBankBranchListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 		}
@@ -199,7 +203,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("cur_photoIdList", OracleDbType.RefCursor, ParameterDirection.Output);
 				//var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GetPhotoIDTypeList", param: parameter, commandType: CommandType.StoredProcedure);
-				var result = SqlMapper.Query<DropdownListModel>(connection, "PKG_ENVIORONMENT.PR_GetPhotoIDTypeList", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<DropdownListModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GetPhotoIDTypeList", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 
@@ -212,7 +216,7 @@ namespace MFS.EnvironmentService.Repository
 			{
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("CUR_DIVISION", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GET_DIVISION", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GET_DIVISION", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 		}
@@ -223,7 +227,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("REGIONCODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 				parameter.Add("CUR_AREA", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GETAREABYREGIONCODE", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GETAREABYREGIONCODE", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 		}
@@ -235,7 +239,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("REGIONCODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 				parameter.Add("CUR_AREA", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GETAREABYREGIONCODE", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GETAREABYREGIONCODE", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 		}
@@ -247,7 +251,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("REGIONCODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 				parameter.Add("cur_data", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GetChildDataByParentForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PKG_ENVIORONMENT.PR_GetChildDataByParentForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}
 		}
@@ -260,7 +264,7 @@ namespace MFS.EnvironmentService.Repository
 				parameter.Add("DigitNo", OracleDbType.Int32, ParameterDirection.Input, territoryCode.Length);
 				parameter.Add("TerritoryCode", OracleDbType.Varchar2, ParameterDirection.Input, territoryCode);
 				parameter.Add("DistributorCode_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<dynamic>(connection, "pr_GenerateDistributorCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+				var result = SqlMapper.Query<dynamic>(connection, dbUser + "pr_GenerateDistributorCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 				return result;
 			}
 		}
@@ -272,7 +276,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("AREA_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 				parameter.Add("TERRITORY_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<dynamic>(connection, "PR_GENERATETERRITORYCODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+				var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GENERATETERRITORYCODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 				return result;
 			}
 		}
@@ -293,12 +297,12 @@ namespace MFS.EnvironmentService.Repository
 
 					if (aLocation.IsEdit)
 					{
-						SqlMapper.Query<dynamic>(connection, "PR_UPDATE_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PR_UPDATE_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 					else
 					{
-						SqlMapper.Query<dynamic>(connection, "PR_SAVE_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PR_SAVE_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 				}
@@ -320,7 +324,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
 					parameter.Add("CUR_TERRITORY", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_TERRITORIES", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_TERRITORIES", param: parameter, commandType: CommandType.StoredProcedure);
 					return result;
 				}					
 			}
@@ -340,7 +344,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("TERRITORY_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_TERRITORY_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_TERRITORY_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					return result;
 				}					
 			}
@@ -360,7 +364,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("AREA_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_AREA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_AREA_BY_AREA_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_AREA_BY_AREA_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					return result;
 				}
 					
@@ -377,7 +381,7 @@ namespace MFS.EnvironmentService.Repository
 			{
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("CUR_AREA", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PR_GET_AREAS", param: parameter, commandType: CommandType.StoredProcedure).ToList();
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PR_GET_AREAS", param: parameter, commandType: CommandType.StoredProcedure).ToList();
 				return result;
 			}
 				
@@ -393,7 +397,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
 					parameter.Add("CUR_CLUSTERS", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_CLUSTERS", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_CLUSTERS", param: parameter, commandType: CommandType.StoredProcedure);
 					return result;
 				}
 					
@@ -420,12 +424,12 @@ namespace MFS.EnvironmentService.Repository
 
 					if (aLocation.IsEdit)
 					{
-						SqlMapper.Query<dynamic>(connection, "PR_UPDATE_CLUSTER", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PR_UPDATE_CLUSTER", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 					else
 					{
-						SqlMapper.Query<dynamic>(connection, "PR_SAVE_CLUSTER", param: parameter, commandType: CommandType.StoredProcedure);
+						SqlMapper.Query<dynamic>(connection, dbUser + "PR_SAVE_CLUSTER", param: parameter, commandType: CommandType.StoredProcedure);
 						return HttpStatusCode.OK;
 					}
 				}
@@ -443,7 +447,7 @@ namespace MFS.EnvironmentService.Repository
 			{
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("CUR_CLUSTER", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<CustomDropDownModel>(connection, "PR_GET_TERRITORY_DDL", param: parameter, commandType: CommandType.StoredProcedure).ToList();
+				var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PR_GET_TERRITORY_DDL", param: parameter, commandType: CommandType.StoredProcedure).ToList();
 				return result;
 			}
 				
@@ -456,7 +460,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("TERRITORY_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 				parameter.Add("CLUSTER_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<dynamic>(connection, "PR_GENERTE_CLUSTER_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+				var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GENERTE_CLUSTER_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 				return result;
 			}
 				
@@ -472,7 +476,7 @@ namespace MFS.EnvironmentService.Repository
 					parameter.Add("CLUSTER_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_CLUSTER_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_CLUSTER_BY_ID", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					return result;
 				}					
 			}
@@ -490,7 +494,7 @@ namespace MFS.EnvironmentService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_CLUSTER", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "PR_GET_CLUSTERS_DDL", param: parameter, commandType: CommandType.StoredProcedure).ToList();
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "PR_GET_CLUSTERS_DDL", param: parameter, commandType: CommandType.StoredProcedure).ToList();
 					connection.Close();
 					return result;
 				}					

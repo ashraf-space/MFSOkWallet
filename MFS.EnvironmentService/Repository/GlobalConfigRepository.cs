@@ -19,7 +19,11 @@ namespace MFS.EnvironmentService.Repository
 	} 
 	public class GlobalConfigRepository : BaseRepository<GlobalConfig>, IGlobalConfigRepository
 	{
-       
+		private readonly string dbUser;
+		public GlobalConfigRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 
 		public object GetGlobalConfigs()
 		{
@@ -30,7 +34,7 @@ namespace MFS.EnvironmentService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_GLOBAL_CONFIG", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GET_GLOBAL_CONFIG", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser+"SP_GET_GLOBAL_CONFIG", param: parameter, commandType: CommandType.StoredProcedure);
 					return result;
 				}
 					

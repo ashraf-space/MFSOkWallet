@@ -7146,12 +7146,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_security_audit_audit_trail_audit_trail_component__WEBPACK_IMPORTED_MODULE_183__ = __webpack_require__(/*! ./components/security/audit/audit-trail/audit-trail.component */ "./src/app/components/security/audit/audit-trail/audit-trail.component.ts");
 /* harmony import */ var _components_security_audit_audit_trail_dtl_audit_trail_dtl_component__WEBPACK_IMPORTED_MODULE_184__ = __webpack_require__(/*! ./components/security/audit/audit-trail-dtl/audit-trail-dtl.component */ "./src/app/components/security/audit/audit-trail-dtl/audit-trail-dtl.component.ts");
 /* harmony import */ var _components_reports_report_collection_dpdc_desco_dpdc_desco_component__WEBPACK_IMPORTED_MODULE_185__ = __webpack_require__(/*! ./components/reports/report-collection/dpdc-desco/dpdc-desco.component */ "./src/app/components/reports/report-collection/dpdc-desco/dpdc-desco.component.ts");
+/* harmony import */ var _components_reports_report_collection_transaction_type_fund_transfer_fund_transfer_component__WEBPACK_IMPORTED_MODULE_186__ = __webpack_require__(/*! ./components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component */ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -7531,7 +7533,8 @@ var AppModule = /** @class */ (function () {
                 _components_reports_report_collection_transaction_type_transaction_transaction_component__WEBPACK_IMPORTED_MODULE_182__["TransactionComponent"],
                 _components_security_audit_audit_trail_audit_trail_component__WEBPACK_IMPORTED_MODULE_183__["AuditTrailComponent"],
                 _components_security_audit_audit_trail_dtl_audit_trail_dtl_component__WEBPACK_IMPORTED_MODULE_184__["AuditTrailDtlComponent"],
-                _components_reports_report_collection_dpdc_desco_dpdc_desco_component__WEBPACK_IMPORTED_MODULE_185__["DpdcDescoComponent"]
+                _components_reports_report_collection_dpdc_desco_dpdc_desco_component__WEBPACK_IMPORTED_MODULE_185__["DpdcDescoComponent"],
+                _components_reports_report_collection_transaction_type_fund_transfer_fund_transfer_component__WEBPACK_IMPORTED_MODULE_186__["FundTransferComponent"]
             ],
             providers: [
                 { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HTTP_INTERCEPTORS"], useClass: _shared_helpers__WEBPACK_IMPORTED_MODULE_8__["JwtInterceptor"], multi: true },
@@ -18818,6 +18821,146 @@ var TransactionHistoryReportComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.css":
+/*!*****************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.css ***!
+  \*****************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcmVwb3J0cy9yZXBvcnQtY29sbGVjdGlvbi90cmFuc2FjdGlvbi10eXBlL2Z1bmQtdHJhbnNmZXIvZnVuZC10cmFuc2Zlci5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.html":
+/*!******************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.html ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-group\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Transaction Type <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"tansactionTypeDDL\" placeholder=\"Select Tansaction Type\" [(ngModel)]=\"model.tansactionType\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.tansactionType==null || model.tansactionType=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Option <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"optionDDL\" placeholder=\"Select Option\" [(ngModel)]=\"model.option\" (onChange)=\"showDateRangeDiv();\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.option==null || model.option=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>       \r\n\r\n    </div>\r\n    <div *ngIf=\"isDateRangeShow\">\r\n        <div class=\"p-grid\">\r\n            <div class=\"p-col-6\">\r\n                <label for=\"float-input\" class=\"col-form-label\">From<span class=\"mandatory\">*</span></label>\r\n                <div class=\"input-group\">\r\n                    <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From\"\r\n                           name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n                           id=\"float-input\">\r\n                </div>\r\n            </div>\r\n            <div class=\"p-col-6\">\r\n                <label for=\"float-input\" class=\"col-form-label\">To<span class=\"mandatory\">*</span></label>\r\n                <div class=\"input-group\">\r\n                    <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To\"\r\n                           name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n                           (click)=\"h.toggle()\" id=\"float-input\">\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.ts":
+/*!****************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.ts ***!
+  \****************************************************************************************************************/
+/*! exports provided: FundTransferComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FundTransferComponent", function() { return FundTransferComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_report_transaction_report_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/report/transaction-report.service */ "./src/app/services/report/transaction-report.service.ts");
+/* harmony import */ var src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/mfs-utility.service */ "./src/app/services/mfs-utility.service.ts");
+/* harmony import */ var primeng_api__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primeng/api */ "./node_modules/primeng/api.js");
+/* harmony import */ var primeng_api__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primeng_api__WEBPACK_IMPORTED_MODULE_3__);
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var FundTransferComponent = /** @class */ (function () {
+    function FundTransferComponent(messageService, transactionReportService, mfsUtilityService) {
+        this.messageService = messageService;
+        this.transactionReportService = transactionReportService;
+        this.mfsUtilityService = mfsUtilityService;
+        this.isLoading = false;
+        this.isDateRangeShow = false;
+        this.model = {};
+    }
+    FundTransferComponent.prototype.ngOnInit = function () {
+        this.tansactionTypeDDL = [
+            { label: 'AC TO AC', value: 'A TO A' },
+            { label: 'AC TO GL', value: 'A TO G' },
+            { label: 'GL TO GL', value: 'G TO G' },
+            { label: 'GL TO AC', value: 'G TO A' },
+            { label: 'C TO M', value: 'C TO M' }
+        ];
+        this.optionDDL = [
+            { label: 'Cumulative', value: 'Cumulative' },
+            { label: 'Period', value: 'Period' }
+        ];
+    };
+    FundTransferComponent.prototype.showDateRangeDiv = function () {
+        if (this.model.option) {
+            if (this.model.option == 'Period') {
+                this.isDateRangeShow = true;
+            }
+            else {
+                this.isDateRangeShow = false;
+            }
+        }
+        else {
+            this.messageService.add({ severity: 'warn', summary: 'Option Empty', detail: 'Select Option First!' });
+            this.model.option = '';
+        }
+    };
+    FundTransferComponent.prototype.getReportParam = function () {
+        if (this.validate()) {
+            var obj = {};
+            obj.tansactionType = this.model.tansactionType;
+            obj.option = this.model.option;
+            if (this.model.option == "Period") {
+                obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
+                obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
+            }
+            else {
+                obj.fromDate = null;
+                obj.toDate = null;
+            }
+            return obj;
+        }
+        else {
+            var obj = {};
+            obj.isNotValidated = true;
+        }
+    };
+    FundTransferComponent.prototype.validate = function () {
+        if (this.model.option == "Period") {
+            if (!this.model.fromDate || !this.model.toDate
+                || !this.model.option || this.model.option == '0') {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            if (!this.model.option || this.model.option == '0') {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    };
+    FundTransferComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-fund-transfer',
+            template: __webpack_require__(/*! ./fund-transfer.component.html */ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.html"),
+            styles: [__webpack_require__(/*! ./fund-transfer.component.css */ "./src/app/components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component.css")]
+        }),
+        __metadata("design:paramtypes", [primeng_api__WEBPACK_IMPORTED_MODULE_3__["MessageService"], src_app_services_report_transaction_report_service__WEBPACK_IMPORTED_MODULE_1__["TransactionReportService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_2__["MfsUtilityService"]])
+    ], FundTransferComponent);
+    return FundTransferComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/reports/report-collection/transaction-type/transaction/transaction.component.css":
 /*!*************************************************************************************************************!*\
   !*** ./src/app/components/reports/report-collection/transaction-type/transaction/transaction.component.css ***!
@@ -18836,7 +18979,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-group\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Transaction Type <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"tansactionTypeDDL\" placeholder=\"Select Tansaction Type\" [(ngModel)]=\"model.tansactionType\" (onChange)=\"enableDisableService();\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.tansactionType==null || model.tansactionType=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">OK Service <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"okServicesList\" placeholder=\"Select OK Services\" [(ngModel)]=\"model.okServices\" [disabled]=\"isDisableService\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.okServices==null || model.okServices=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Date Type<span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"dateTypeDDL\" placeholder=\"Select Status\" [(ngModel)]=\"model.dateType\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" (onChange)=\"loadGLCodeNameLevel()\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.dateType==null || model.dateType=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"p-grid\">\r\n\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">From<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From\"\r\n                       name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n                       id=\"float-input\">\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">To<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To\"\r\n                       name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n                       (click)=\"h.toggle()\" id=\"float-input\">\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Date Type<span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"gatewayDDL\" placeholder=\"Select Status\" [(ngModel)]=\"model.gateway\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" (onChange)=\"loadGLCodeNameLevel()\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.gateway==null || model.gateway=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n    </div>\r\n   \r\n</div>"
+module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-group\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Transaction Type <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"tansactionTypeDDL\" placeholder=\"Select Tansaction Type\" [(ngModel)]=\"model.tansactionType\" (onChange)=\"enableDisableService();\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.tansactionType==null || model.tansactionType=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">OK Service <span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"okServicesList\" placeholder=\"Select OK Services\" [(ngModel)]=\"model.okServices\" [disabled]=\"isDisableService\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.okServices==null || model.okServices=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Date Type<span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"dateTypeDDL\" placeholder=\"Select Status\" [(ngModel)]=\"model.dateType\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" (onChange)=\"loadGLCodeNameLevel()\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.dateType==null || model.dateType=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n    </div>\r\n    <div class=\"p-grid\">\r\n\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">From<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From\"\r\n                       name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n                       id=\"float-input\">\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">To<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To\"\r\n                       name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n                       (click)=\"h.toggle()\" id=\"float-input\">\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-4\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Gateway<span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"gatewayDDL\" placeholder=\"Select Status\" [(ngModel)]=\"model.gateway\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" (onChange)=\"loadGLCodeNameLevel()\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.gateway==null || model.gateway=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n\r\n    </div>\r\n   \r\n</div>"
 
 /***/ }),
 
@@ -18992,7 +19135,7 @@ module.exports = ".report-description {\r\n    text-align: center;\r\n    font-s
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n\t<div class=\"p-col-12\">\r\n\t\t<p-card>\r\n\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t<div class=\"p-col-2\">\r\n\t\t\t\t\t<button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-7\">\r\n\t\t\t\t\t<h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t<p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<h6 class=\"report-description\">\r\n\t\t\t\t\t\t{{model.ReportDescription}}\r\n\t\t\t\t\t</h6>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t\t\t<div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">\r\n\t\t\t\t\t\t\t\t<!--<div *ngSwitchCase=\"1\">\r\n\t\t\t\t\t\t\t\t\t<transaction-history-report #form></transaction-history-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"13\">\r\n\t\t\t\t\t\t\t\t\t<transaction-history-report #form></transaction-history-report>\r\n\t\t\t\t\t\t\t\t</div>-->\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"20\">\r\n\t\t\t\t\t\t\t\t\t<account-statement-report #form></account-statement-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"41\">\r\n\t\t\t\t\t\t\t\t\t<current-affairs-statement #form></current-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"61\">\r\n\t\t\t\t\t\t\t\t\t<chart-of-accounts #form></chart-of-accounts>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"81\">\r\n\t\t\t\t\t\t\t\t\t<eod-affairs-statement #form></eod-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"82\">\r\n\t\t\t\t\t\t\t\t\t<registration-report #form></registration-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"101\">\r\n\t\t\t\t\t\t\t\t\t<app-registration-summary #form></app-registration-summary>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"121\">\r\n\t\t\t\t\t\t\t\t\t<app-agent-information #form></app-agent-information>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"141\">\r\n\t\t\t\t\t\t\t\t\t<app-gl-statement #form></app-gl-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"4\">\r\n\t\t\t\t\t\t\t\t\t<app-kyc-balance #form></app-kyc-balance>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"1\">\r\n\t\t\t\t\t\t\t\t\t<app-transaction #form></app-transaction>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"22\">\r\n\t\t\t\t\t\t\t\t\t<app-dpdc-desco #form></app-dpdc-desco>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<hr />\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"p-col-12\">\r\n\t\t\t\t\t<button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</p-card>\r\n\t</div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
+module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n    <div class=\"p-col-12\">\r\n        <p-card>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-2\">\r\n                    <button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n                </div>\r\n                <div class=\"p-col-7\">\r\n                    <h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <h6 class=\"report-description\">\r\n                        {{model.ReportDescription}}\r\n                    </h6>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <div class=\"p-grid\">\r\n                        <div class=\"p-col-12\">\r\n                            <div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">\r\n                                <!--<div *ngSwitchCase=\"1\">\r\n                                    <transaction-history-report #form></transaction-history-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"13\">\r\n                                    <transaction-history-report #form></transaction-history-report>\r\n                                </div>-->\r\n                                <div *ngSwitchCase=\"20\">\r\n                                    <account-statement-report #form></account-statement-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"41\">\r\n                                    <current-affairs-statement #form></current-affairs-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"61\">\r\n                                    <chart-of-accounts #form></chart-of-accounts>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"81\">\r\n                                    <eod-affairs-statement #form></eod-affairs-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"82\">\r\n                                    <registration-report #form></registration-report>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"101\">\r\n                                    <app-registration-summary #form></app-registration-summary>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"121\">\r\n                                    <app-agent-information #form></app-agent-information>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"141\">\r\n                                    <app-gl-statement #form></app-gl-statement>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"4\">\r\n                                    <app-kyc-balance #form></app-kyc-balance>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"1\">\r\n                                    <app-transaction #form></app-transaction>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"21\">\r\n                                    <app-fund-transfer #form></app-fund-transfer>\r\n                                </div>\r\n                                <div *ngSwitchCase=\"22\">\r\n                                    <app-dpdc-desco #form></app-dpdc-desco>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n                </div>\r\n            </div>\r\n        </p-card>\r\n    </div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
 
 /***/ }),
 

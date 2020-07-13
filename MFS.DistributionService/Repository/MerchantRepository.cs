@@ -37,7 +37,11 @@ namespace MFS.DistributionService.Repository
 	}
 	public class MerchantRepository : BaseRepository<Reginfo>, IMerchantRepository
 	{
-		
+		private readonly string dbUser;
+		public MerchantRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object GetMerchantListData()
 		{
 			try
@@ -47,7 +51,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CatType", OracleDbType.Varchar2, ParameterDirection.Input, "M");
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
@@ -73,7 +77,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("disCode", OracleDbType.Varchar2, ParameterDirection.Input, distributorCode);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_Get_DistData_ByDistCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_Get_DistData_ByDistCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -96,7 +100,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("USRPASS", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GeneratePinNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -119,7 +123,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("mobliePhone", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("fourDigitRandomNo", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
-					var result = SqlMapper.Query(connection, "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query(connection, dbUser + "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					
 				}
@@ -141,7 +145,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("cur_MerchantCodeList", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GetMerchantCodeList", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "SP_GetMerchantCodeList", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -161,7 +165,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select distinct t.bank_name as ""label"", t.bank_code as ""value"" from eft_bank t";
+					string query = @"select distinct t.bank_name as ""label"", t.bank_code as ""value"" from " + dbUser + "eft_bank t";
 
 					var result = connection.Query<CustomDropDownModel>(query);
 
@@ -184,7 +188,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select distinct t.dist_name as ""label"", t.dist_code as ""value"" from eft_bank t where t.bank_code = '" + bankCode + "'";
+					string query = @"select distinct t.dist_name as ""label"", t.dist_code as ""value"" from " + dbUser + "eft_bank t where t.bank_code = '" + bankCode + "'";
 
 					var result = connection.Query<CustomDropDownModel>(query);
 
@@ -207,7 +211,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select distinct t.branch_name as ""label"", t.branch_code as ""value"" from eft_bank t where t.bank_code = '" + eftBankCode + "' and t.dist_code = '" + eftDistCode + "'";
+					string query = @"select distinct t.branch_name as ""label"", t.branch_code as ""value"" from " + dbUser + "eft_bank t where t.bank_code = '" + eftBankCode + "' and t.dist_code = '" + eftDistCode + "'";
 
 					var result = connection.Query<CustomDropDownModel>(query);
 
@@ -231,7 +235,7 @@ namespace MFS.DistributionService.Repository
 				{
 					using (var connection = this.GetConnection())
 					{
-						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,6,6))+1 AS M_CODE FROM MERCHANT_CONFIG";
+						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,6,6))+1 AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG";
 						var result = connection.Query(query).FirstOrDefault();
 						this.CloseConnection(connection);
 						return result;
@@ -243,7 +247,7 @@ namespace MFS.DistributionService.Repository
 
 					using (var connection = this.GetConnection())
 					{
-						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,7,6))+1 || '0000' AS M_CODE FROM MERCHANT_CONFIG t where t.category = 'C'";
+						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,7,6))+1 || '0000' AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG t where t.category = 'C'";
 						var result = connection.Query(query).FirstOrDefault();
 						this.CloseConnection(connection);
 						return result;
@@ -265,7 +269,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.routing_no as ""routing_no""  from eft_bank t where t.dist_code = '" + eftDistCode + "' and t.bank_code = '" + eftBankCode + "' and t.branch_code = '" + eftBranchCode + "'";
+					string query = @"select t.routing_no as ""routing_no""  from " + dbUser + "eft_bank t where t.dist_code = '" + eftDistCode + "' and t.bank_code = '" + eftBankCode + "' and t.branch_code = '" + eftBranchCode + "'";
 					var result = connection.Query(query).FirstOrDefault();
 
 					this.CloseConnection(connection);
@@ -287,7 +291,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.mphone as ""value"", t.mphone as ""label"" from merchant_config t where t.category = 'C'";
+					string query = @"select t.mphone as ""value"", t.mphone as ""label"" from " + dbUser + "merchant_config t where t.category = 'C'";
 					var result = connection.Query<CustomDropDownModel>(query);
 
 					this.CloseConnection(connection);
@@ -309,7 +313,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select count(*) as count from merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'M'";
+					string query = @"select count(*) as count from " + dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'M'";
 					var result = connection.Query<int>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -335,7 +339,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("REGSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, "L");
 					parameter.Add("FILTEROPTION", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_GET_MERCHANT_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_MERCHANT_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -360,8 +364,7 @@ namespace MFS.DistributionService.Repository
 							 M.MERCHANT_SMS_NOTIFICATION AS ""MERCHANTSMSNOTIFICATION"",
 							 M.STATUS AS ""STATUS"", M.MAX_TRANS_AMT AS ""MAXTRANSAMT"",
 							 M.MIN_TRANS_AMT AS ""MINTRANSAMT"", M.CUSTOMER_SERVICE_CHARGE_PER ""CUSTOMERSERVICECHARGEPER""
-							 FROM MERCHANT_CONFIG M  INNER JOIN REGINFOVIEW T ON 
-							 T.MPHONE = M.MPHONE  AND M.MPHONE = '" + mPhone + "' AND T.CATID = 'M'";
+							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '" + mPhone + "' AND T.CATID = 'M'";
 					var result = connection.Query<MerchantConfig>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -381,8 +384,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.*, r.company_name from merchant_user t join reginfo
-								r on t.mobile_no = r.mphone and r.cat_id= 'M'";
+					string query = @"select t.*, r.company_name from " + dbUser + "merchant_user t join reginfo r on t.mobile_no = r.mphone and r.cat_id= 'M'";
 					var result = connection.Query<dynamic>(query).ToList();
 					this.CloseConnection(connection);
 					return result;
@@ -403,7 +405,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.* from merchant_user t where t.mphone = '" + mphone + "'";
+					string query = @"select t.* from " + dbUser + "merchant_user t where t.mphone = '" + mphone + "'";
 					var result = connection.Query<MerchantUser>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -424,8 +426,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @" SELECT T.MPHONE AS ""Value"", T.COMPANY_NAME AS ""Label"" FROM REGINFO T
-							 WHERE T.CAT_ID = 'M'";
+					string query = @" SELECT T.MPHONE AS ""Value"", T.COMPANY_NAME AS ""Label"" FROM " + dbUser + "REGINFO T WHERE T.CAT_ID = 'M'";
 					var result = connection.Query<CustomDropDownModel>(query).ToList();
 					this.CloseConnection(connection);
 					return result;

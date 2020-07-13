@@ -54,16 +54,10 @@ namespace OneMFS.EnvironmentApiServer
             });
 
             services.AddSingleton<JwtModel>(model);
+			services.AddSingleton<MainDbUser>();
+			//services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            Action<MainDbUser> objMainDbUser = (opt =>
-            {
-                opt.DbUser = " one.";
-            });
-            services.Configure(objMainDbUser);
-            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<MainDbUser>>().Value);
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            RepositoryMapper repoMapper = new RepositoryMapper();
+			RepositoryMapper repoMapper = new RepositoryMapper();
             ServiceMapper serviceMapper = new ServiceMapper();
 
             repoMapper.AddMappings(services);

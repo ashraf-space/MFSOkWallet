@@ -17,13 +17,18 @@ namespace MFS.ClientService.Repository
 
     public class CustomerReqLogRepository : BaseRepository<CustomerReqLog>, ICustomerReqLogRepository
     {
-        public void deleteRequestLog(CustomerRequest model)
+		private readonly string dbUser;
+		public CustomerReqLogRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+		public void deleteRequestLog(CustomerRequest model)
         {
 			try
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "delete from Customer_Req_Log where mphone='" + model.Mphone + "' and Request='" + model.Request + "' and status='" + model.Prev_status + "' and Gid='" + model.Gid + "'";
+					string query = "delete from " + dbUser + "Customer_Req_Log where mphone='" + model.Mphone + "' and Request='" + model.Request + "' and status='" + model.Prev_status + "' and Gid='" + model.Gid + "'";
 
 					var result = this.ExecuteScaler(query);
 
@@ -51,8 +56,7 @@ namespace MFS.ClientService.Repository
 					   t.request  as ""request"",
 					   t.mphone   as ""mphone"",
 					   t.status   as ""status""
-				  from CUSTOMER_REQ_LOG t
-				 where t.mphone = '" + mphone + "' and t.status = 'P'";
+				  from " + dbUser + "CUSTOMER_REQ_LOG t where t.mphone = '" + mphone + "' and t.status = 'P'";
 
 					var result = connection.Query<dynamic>(query);
 
@@ -75,7 +79,7 @@ namespace MFS.ClientService.Repository
 				using (var connection = this.GetConnection())
 				{
 					// string query = "update Customer_Req_Log set Status='" + model.Status + "', handled_by='" + model.HandledBy + "' where mphone='" + model.Mphone + "' and Request='" + model.Request + "' and status='" + model.Prev_status + "'";
-					string query = "update Customer_Req_Log set Status='" + model.Status + "', handled_by='" + model.HandledBy + "' where mphone='" + model.Mphone + "' and Gid='" + model.Gid + "'";
+					string query = "update " + dbUser + "Customer_Req_Log set Status='" + model.Status + "', handled_by='" + model.HandledBy + "' where mphone='" + model.Mphone + "' and Gid='" + model.Gid + "'";
 
 					var result = this.ExecuteScaler(query);
 

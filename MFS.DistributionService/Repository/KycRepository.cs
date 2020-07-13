@@ -31,15 +31,18 @@ namespace MFS.DistributionService.Repository
 	}
 	public class KycRepository : BaseRepository<Reginfo>, IKycRepository
 	{
-		
-
+		private readonly string dbUser;
+		public KycRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object CheckIsDistCodeExist(string distCode)
 		{
 			try
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "select count(*) from reginfo t where t.dist_code = '" + distCode + "' and t.cat_id = 'D'";
+					string query = "select count(*) from "+dbUser+"reginfo t where t.dist_code = '" + distCode + "' and t.cat_id = 'D'";
 					var regdate = connection.QueryFirstOrDefault<int>(query);
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -60,7 +63,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "select reg_date from reginfo where mphone = '" + mphone + "' and cat_id  = '" + category + "' ";
+					string query = "select reg_date from " + dbUser + "reginfo where mphone = '" + mphone + "' and cat_id  = '" + category + "' ";
 					var regdate = connection.QueryFirstOrDefault<DateTime>(query);
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -86,7 +89,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("mobliePhone", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("fourDigitRandomNo", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
-					var result = SqlMapper.Query(connection, "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query(connection, dbUser + "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					connection.Dispose();
 				}					
@@ -109,7 +112,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, status);
 					parameter.Add("FilterOption", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser+"SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
 
 						this.CloseConnection(connection);
 					connection.Dispose();
@@ -129,7 +132,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"Select * from RegInfoView where mphone= '" + mPhone + "' ";
+					string query = @"Select * from " + dbUser + "RegInfoView where mphone= '" + mPhone + "' ";
 
 					var result = connection.Query<Reginfo>(query).FirstOrDefault();
 
@@ -159,7 +162,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, "L");
 					parameter.Add("FilterOption", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GET_CHAINMER_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_CHAINMER_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -181,7 +184,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select count(*) as ""total"" from reginfo t where t.photo_id = '" + photoid + "' and t.cat_id = '" + type + "'";
+					string query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid + "' and t.cat_id = '" + type + "'";
 
 					var result = connection.Query<int>(query).FirstOrDefault();
 					this.CloseConnection(connection);
@@ -209,7 +212,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.oname as ""label"", t.ovalue ""value"" from occupation_list t";
+					string query = @"select t.oname as ""label"", t.ovalue ""value"" from " + dbUser + "occupation_list t";
 					var result = connection.Query<CustomDropDownModel>(query).ToList();
 
 					this.CloseConnection(connection);
@@ -234,7 +237,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("LOC_CODE", OracleDbType.Varchar2, ParameterDirection.Input, locationCode == "null" ? null : locationCode);
 					parameter.Add("CUR_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 					//parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);				
-					var result = SqlMapper.Query<dynamic>(connection, "PR_GET_DISTLOC_INFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_DISTLOC_INFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
@@ -253,7 +256,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"SELECT T.TYPE_NAME as ""value"" FROM PHOTO_ID_TYPE_LIST T WHERE T.ID = " + photoIdTypeCode + "";
+					string query = @"SELECT T.TYPE_NAME as ""value"" FROM " + dbUser + "PHOTO_ID_TYPE_LIST T WHERE T.ID = " + photoIdTypeCode + "";
 					var result = connection.Query<dynamic>(query).FirstOrDefault();
 
 					this.CloseConnection(connection);
@@ -274,7 +277,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.branchname as ""value"" from bankbranch t where t.branchcode = '" + branchCode + "'";
+					string query = @"select t.branchname as ""value"" from " + dbUser + "bankbranch t where t.branchcode = '" + branchCode + "'";
 					var result = connection.Query<dynamic>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -300,7 +303,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, status);
 					parameter.Add("FilterOption", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = await  SqlMapper.QueryAsync<dynamic>(connection, "SP_GET_REGINFO_BYOTHERS", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = await  SqlMapper.QueryAsync<dynamic>(connection, dbUser + "SP_GET_REGINFO_BYOTHERS", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -321,7 +324,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.reg_status as ""value"" from reginfo t where t.mphone= '" + mphone + "'";
+					string query = @"select t.reg_status as ""value"" from " + dbUser + "reginfo t where t.mphone= '" + mphone + "'";
 
 					var result = connection.Query<dynamic>(query).FirstOrDefault();
 

@@ -17,8 +17,12 @@ namespace MFS.SecurityService.Repository
     }
     public class ErrorLogRepository : BaseRepository<Errorlog>, IErrorLogRepository
     {
-        MainDbUser objMainDbUser = new MainDbUser();
-        public object GetErrorByFiltering(DateRangeModel date, string user)
+		private readonly string dbUser;
+		public ErrorLogRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+		public object GetErrorByFiltering(DateRangeModel date, string user)
         {
             try
             {
@@ -30,7 +34,7 @@ namespace MFS.SecurityService.Repository
                     dyParam.Add("USERID", OracleDbType.Varchar2, ParameterDirection.Input, user.Trim());
                     dyParam.Add("LOGS", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                    var result = SqlMapper.Query<dynamic>(connection, objMainDbUser.DbUser + "PR_GET_ERRORLOG_BYFILTER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_ERRORLOG_BYFILTER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
 
                     return result;

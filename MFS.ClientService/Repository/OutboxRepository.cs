@@ -18,7 +18,12 @@ namespace MFS.SecurityService.Repository
 
     public class OutboxRepository : BaseRepository<Outbox>, IOutboxRepository
     {
-        public IList<OutboxViewModel> GetOutboxList(DateTime? fromDate, DateTime? toDate, string mPhone)
+		private readonly string dbUser;
+		public OutboxRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+		public IList<OutboxViewModel> GetOutboxList(DateTime? fromDate, DateTime? toDate, string mPhone)
         {
 			try
 			{
@@ -30,7 +35,7 @@ namespace MFS.SecurityService.Repository
 					dyParam.Add("AC_NO", OracleDbType.Varchar2, ParameterDirection.Input, mPhone);
 					dyParam.Add("OUTBOX", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					IList<OutboxViewModel> result = SqlMapper.Query<OutboxViewModel>(connection, "PR_MFS_GETOUTBOXMSG", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					IList<OutboxViewModel> result = SqlMapper.Query<OutboxViewModel>(connection, dbUser+"PR_MFS_GETOUTBOXMSG", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 					this.CloseConnection(connection);
 
 					return result;

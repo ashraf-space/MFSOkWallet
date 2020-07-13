@@ -29,7 +29,11 @@ namespace MFS.DistributionService.Repository
 	}
 	public class AgentRepository : BaseRepository<Reginfo>, IAgentRepository
 	{
-		
+		private readonly string dbUser;
+		public AgentRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public IEnumerable<Reginfo> GetAllAgents()
 		{
 			try
@@ -38,7 +42,7 @@ namespace MFS.DistributionService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "PR_GET_AGENTS_GRID_LIST", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"PR_GET_AGENTS_GRID_LIST", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -60,7 +64,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("TERRITORY_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("CUR_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_GET_CLUSTERS_BY_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "SP_GET_CLUSTERS_BY_TERRITORY", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -80,7 +84,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @" SELECT code FROM location WHERE PARENT = " + "'" + code + "'" + "";
+					string query = @" SELECT code FROM " + dbUser + "location WHERE PARENT = " + "'" + code + "'" + "";
 
 					var result = connection.Query<string>(query).FirstOrDefault();
 
@@ -104,7 +108,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CLUSTER_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("AGENT_CODE_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GENERATE_AGENT_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GENERATE_AGENT_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -126,7 +130,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MOBLIE_NO", OracleDbType.Varchar2, ParameterDirection.Input, mPhone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, "SP_GET_AGENT_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_AGENT_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}				
@@ -145,7 +149,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "select * from REGINFOVIEW where catid = 'A' and distCode like '%" + cluster + "%'";
+					string query = "select * from " + dbUser + "REGINFOVIEW where catid = 'A' and distCode like '%" + cluster + "%'";
 
 					var result = connection.Query<Reginfo>(query);
 
@@ -166,7 +170,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "select * from REGINFOVIEW where catid = '" + catId + "' and pmphone='" + code + "' ";
+					string query = "select * from " + dbUser + "REGINFOVIEW where catid = '" + catId + "' and pmphone='" + code + "' ";
 
 					var result = connection.Query<Reginfo>(query);
 
@@ -192,7 +196,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("V_COMPANY_NAME", OracleDbType.Varchar2, ParameterDirection.Input, companyName);
 					parameter.Add("V_OFF_ADDR", OracleDbType.Varchar2, ParameterDirection.Input, offAddr);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GET_DIST_CODE_BY_AGENTINFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_DIST_CODE_BY_AGENTINFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -214,7 +218,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CLUSTER_CODE", OracleDbType.Varchar2, ParameterDirection.Input, code);
 					parameter.Add("AGENT_CODE_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<string>(connection, "SP_GENERATE_AGENT_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<string>(connection, dbUser + "SP_GENERATE_AGENT_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}					

@@ -18,6 +18,11 @@ namespace MFS.EnvironmentService.Repository
 	}
 	public class DistrictThanaRepository : BaseRepository<Disthana>, IDistrictThanaRepository
 	{
+		private readonly string dbUser;
+		public DistrictThanaRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object GetRegionDropdownList()
 		{
 			using (var connection = this.GetConnection())
@@ -25,7 +30,7 @@ namespace MFS.EnvironmentService.Repository
 				var parameter = new OracleDynamicParameters();
 				parameter.Add("CUR_REGION", OracleDbType.RefCursor, ParameterDirection.Output);
 				parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);
-				var result = SqlMapper.Query<Location>(connection, "PKG_ENVIORONMENT.PR_GET_REGION", param: parameter, commandType: CommandType.StoredProcedure);
+				var result = SqlMapper.Query<Location>(connection, dbUser+"PKG_ENVIORONMENT.PR_GET_REGION", param: parameter, commandType: CommandType.StoredProcedure);
 				return result;
 			}							
 		}

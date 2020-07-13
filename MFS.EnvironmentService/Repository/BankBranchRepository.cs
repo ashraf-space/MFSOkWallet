@@ -21,8 +21,12 @@ namespace MFS.EnvironmentService.Repository
 
     public class BankBranchRepository : BaseRepository<Bankbranch>, IBankBranchRepository
     {
-        
-        public object GetBankBranchDropdownList()
+		private readonly string dbUser;
+		public BankBranchRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
+		public object GetBankBranchDropdownList()
         {
             try
             {
@@ -30,7 +34,7 @@ namespace MFS.EnvironmentService.Repository
 				{
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CUR_BANKBRANCH", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "PKG_ENVIORONMENT.PR_GetBankBranchListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser+"PKG_ENVIORONMENT.PR_GetBankBranchListForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					return result;
@@ -53,7 +57,7 @@ namespace MFS.EnvironmentService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("branCode", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Bankbranch>(connection, "SP_Get_BankBranch_ByBranchCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<Bankbranch>(connection, dbUser + "SP_Get_BankBranch_ByBranchCode", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					connection.Close();
 					return result;
 				}

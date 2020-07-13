@@ -51,8 +51,8 @@ namespace OneMFS.TransactionApiServer
             });
 
             services.AddSingleton<JwtModel>(model);
-
-            RepositoryMapper repoMapper = new RepositoryMapper();
+			services.AddSingleton<MainDbUser>();
+			RepositoryMapper repoMapper = new RepositoryMapper();
             ServiceMapper serviceMapper = new ServiceMapper();
 
             repoMapper.AddMappings(services);

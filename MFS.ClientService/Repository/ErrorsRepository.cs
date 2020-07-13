@@ -16,6 +16,11 @@ namespace MFS.ClientService.Repository
 
 	public class ErrorsRepository : BaseRepository<Errors>, IErrorsRepository
 	{
+		private readonly string dbUser;
+		public ErrorsRepository(MainDbUser objMainDbUser)
+		{
+			dbUser = objMainDbUser.DbUser;
+		}
 		public object GetErrorLog()
 		{
 			try
@@ -24,7 +29,7 @@ namespace MFS.ClientService.Repository
 				{
 					var parameter = new OracleDynamicParameters();					
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, "SP_GET_ERRORLOG", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser+"SP_GET_ERRORLOG", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
