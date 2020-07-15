@@ -9206,7 +9206,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var CustomerRequestComponent = /** @class */ (function () {
-    function CustomerRequestComponent(customerRequestService, gridSettingService, authService, mfsSettingService, mfsUtilityService, messageService) {
+    function CustomerRequestComponent(customerRequestService, gridSettingService, authService, mfsSettingService, mfsUtilityService, messageService, auditTrailService) {
         var _this = this;
         this.customerRequestService = customerRequestService;
         this.gridSettingService = gridSettingService;
@@ -9214,8 +9214,10 @@ var CustomerRequestComponent = /** @class */ (function () {
         this.mfsSettingService = mfsSettingService;
         this.mfsUtilityService = mfsUtilityService;
         this.messageService = messageService;
+        this.auditTrailService = auditTrailService;
         this.showRequestAction = false;
         this.currentUserModel = {};
+        this.auditTrailModel = {};
         this.gridConfig = {};
         this.searchObj = {};
         this.model = {};
@@ -9267,8 +9269,31 @@ var CustomerRequestComponent = /** @class */ (function () {
     CustomerRequestComponent.prototype.onSearch = function () {
         this.gridConfig.dataSourcePath = this.searchObj.mphone != null ? this.mfsSettingService.clientApiServer + '/CustomerRequest/GetCustomerRequestHistory?status=' + this.searchObj.selectedStatus + '&mphone=' + this.searchObj.mphone :
             this.mfsSettingService.clientApiServer + '/CustomerRequest/GetCustomerRequestHistory?status=' + this.searchObj.selectedStatus;
+        this.insertDataToAuditTrail();
         this.child.updateDataSource();
         this.addRemoveActionColumn();
+    };
+    CustomerRequestComponent.prototype.insertDataToAuditTrail = function () {
+        var _this = this;
+        this.auditTrailModel.Who = this.currentUserModel.user.username;
+        this.auditTrailModel.WhatAction = 'SEARCH';
+        this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('SEARCH');
+        var eventLog = JSON.parse(sessionStorage.getItem('currentEvent'));
+        this.auditTrailModel.WhichMenu = eventLog.item.label.trim();
+        this.auditTrailModel.WhichParentMenu = this.currentUserModel.featureList.find(function (it) {
+            return it.FEATURENAME.includes(_this.auditTrailModel.WhichMenu);
+        }).CATEGORYNAME;
+        this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+        this.auditTrailModel.inputFeildAndValue = [{ whichFeildName: 'selectedStatus', whatValue: this.searchObj.selectedStatus }];
+        if (this.searchObj.mphone) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'mphone', whatValue: this.searchObj.mphone });
+        }
+        this.auditTrailService.insertIntoAuditTrail(this.auditTrailModel).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["first"])())
+            .subscribe(function (data) {
+            if (data) {
+            }
+        }, function (error) {
+        });
     };
     CustomerRequestComponent.prototype.onAction = function (event) {
         console.log(event);
@@ -9316,7 +9341,7 @@ var CustomerRequestComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./customer-request.component.css */ "./src/app/components/client/customer-care/customer-request/customer-request.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_services_client_customer_request_service__WEBPACK_IMPORTED_MODULE_6__["CustomerRequestService"], src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_1__["GridSettingService"], src_app_shared_services__WEBPACK_IMPORTED_MODULE_2__["AuthenticationService"],
-            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_3__["MfsSettingService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_4__["MfsUtilityService"], primeng_api__WEBPACK_IMPORTED_MODULE_8__["MessageService"]])
+            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_3__["MfsSettingService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_4__["MfsUtilityService"], primeng_api__WEBPACK_IMPORTED_MODULE_8__["MessageService"], src_app_shared_services__WEBPACK_IMPORTED_MODULE_2__["AuditTrailService"]])
     ], CustomerRequestComponent);
     return CustomerRequestComponent;
 }());
@@ -9532,16 +9557,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var MessageResendComponent = /** @class */ (function () {
-    function MessageResendComponent(outboxService, gridSettingService, authService, mfsSettingService, mfsUtilityService, messageService, confirmationService) {
+    function MessageResendComponent(outboxService, gridSettingService, authService, auditTrailService, mfsSettingService, mfsUtilityService, messageService, confirmationService) {
         var _this = this;
         this.outboxService = outboxService;
         this.gridSettingService = gridSettingService;
         this.authService = authService;
+        this.auditTrailService = auditTrailService;
         this.mfsSettingService = mfsSettingService;
         this.mfsUtilityService = mfsUtilityService;
         this.messageService = messageService;
         this.confirmationService = confirmationService;
         this.dateObj = {};
+        this.auditTrailModel = {};
         this.gridConfig = {};
         this.authService.currentUser.subscribe(function (x) {
             _this.currentUserModel = x;
@@ -9556,6 +9583,7 @@ var MessageResendComponent = /** @class */ (function () {
         var mphoneQuery = this.dateObj.mphone;
         this.gridConfig.dataSourcePath = this.mfsSettingService.clientApiServer + '/Outbox/GetOutboxList?fromDate=' + this.mfsUtilityService.renderDate(this.dateObj.fromDate, true) +
             '&ToDate=' + this.mfsUtilityService.renderDate(this.dateObj.toDate, true) + '&mphone=' + this.dateObj.mphone + '&forMessageResend=true';
+        this.insertDataToAuditTrail();
         this.child.updateDataSource();
     };
     MessageResendComponent.prototype.initialiseGridConfig = function () {
@@ -9599,6 +9627,34 @@ var MessageResendComponent = /** @class */ (function () {
             }
         });
     };
+    MessageResendComponent.prototype.insertDataToAuditTrail = function () {
+        var _this = this;
+        this.auditTrailModel.Who = this.currentUserModel.user.username;
+        this.auditTrailModel.WhatAction = 'SEARCH';
+        this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('SEARCH');
+        var eventLog = JSON.parse(sessionStorage.getItem('currentEvent'));
+        this.auditTrailModel.WhichMenu = eventLog.item.label.trim();
+        this.auditTrailModel.WhichParentMenu = this.currentUserModel.featureList.find(function (it) {
+            return it.FEATURENAME.includes(_this.auditTrailModel.WhichMenu);
+        }).CATEGORYNAME;
+        this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+        this.auditTrailModel.inputFeildAndValue = [
+            { whichFeildName: 'From Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.fromDate) },
+            { whichFeildName: 'To Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.toDate) }
+        ];
+        if (this.dateObj.mphone) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'Account No', whatValue: this.dateObj.mphone });
+        }
+        if (this.dateObj.messageBody) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'Messege Body', whatValue: this.dateObj.messageBody });
+        }
+        this.auditTrailService.insertIntoAuditTrail(this.auditTrailModel).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["first"])())
+            .subscribe(function (data) {
+            if (data) {
+            }
+        }, function (error) {
+        });
+    };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(src_app_shared_directives_generic_grid_generic_grid_component__WEBPACK_IMPORTED_MODULE_6__["GenericGridComponent"]),
         __metadata("design:type", src_app_shared_directives_generic_grid_generic_grid_component__WEBPACK_IMPORTED_MODULE_6__["GenericGridComponent"])
@@ -9610,8 +9666,14 @@ var MessageResendComponent = /** @class */ (function () {
             providers: [primeng_api__WEBPACK_IMPORTED_MODULE_8__["ConfirmationService"]],
             styles: [__webpack_require__(/*! ./message-resend.component.css */ "./src/app/components/client/customer-care/message-resend/message-resend.component.css")]
         }),
-        __metadata("design:paramtypes", [src_app_services_client_outbox_service__WEBPACK_IMPORTED_MODULE_1__["OutboxService"], src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_2__["GridSettingService"], src_app_shared_services__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"],
-            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_4__["MfsSettingService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_5__["MfsUtilityService"], primeng_api__WEBPACK_IMPORTED_MODULE_8__["MessageService"], primeng_api__WEBPACK_IMPORTED_MODULE_8__["ConfirmationService"]])
+        __metadata("design:paramtypes", [src_app_services_client_outbox_service__WEBPACK_IMPORTED_MODULE_1__["OutboxService"],
+            src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_2__["GridSettingService"],
+            src_app_shared_services__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"],
+            src_app_shared_services__WEBPACK_IMPORTED_MODULE_3__["AuditTrailService"],
+            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_4__["MfsSettingService"],
+            src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_5__["MfsUtilityService"],
+            primeng_api__WEBPACK_IMPORTED_MODULE_8__["MessageService"],
+            primeng_api__WEBPACK_IMPORTED_MODULE_8__["ConfirmationService"]])
     ], MessageResendComponent);
     return MessageResendComponent;
 }());
@@ -9638,7 +9700,7 @@ module.exports = "\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<generic-grid [gridConfig]=\"gridConfig\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-3\">\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" style=\"border:none;min-height: 70% !important; font-size: 150% !important\" pInputText placeholder=\"From\" placement=\"bottom\"\r\n                       name=\"dp\" [(ngModel)]=\"dateObj.fromDate\" ngbDatepicker #d=\"ngbDatepicker\">\r\n                <div class=\"input-group-append\">\r\n                    <button class=\"fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"d.toggle()\" type=\"button\"></button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important\" pInputText placeholder=\"To\" placement=\"bottom\"\r\n                       name=\"dp1\" [(ngModel)]=\"dateObj.toDate\" ngbDatepicker #e=\"ngbDatepicker\">\r\n                <div class=\"input-group-append\">\r\n                    <button class=\"fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"e.toggle()\" type=\"button\"></button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <p-dropdown [options]=\"messageTypeList\" [(ngModel)]=\"dateObj.messageType\" [style]=\"{display: 'grid'}\" [filter]=\"true\"></p-dropdown>\r\n        </div>\r\n        <div class=\"p-col-2\" style=\"padding-left:1%\" >\r\n            <input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important;\" pInputText placeholder=\"MPhone - Optional\" [(ngModel)]=\"dateObj.mPhone\" [disabled]=\"mPhone\">\r\n        </div>\r\n        <div class=\"p-col-1\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onDateChange()\"><i class=\"fas fa-search\" style=\"text-align:center\"></i></button>\r\n        </div>\r\n    </div>\r\n</generic-grid>"
+module.exports = "<generic-grid [gridConfig]=\"gridConfig\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-3\">\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" style=\"border:none;min-height: 70% !important; font-size: 150% !important\" pInputText placeholder=\"From\" placement=\"bottom\"\r\n                       name=\"dp\" [(ngModel)]=\"dateObj.fromDate\" ngbDatepicker #d=\"ngbDatepicker\">\r\n                <div class=\"input-group-append\">\r\n                    <button class=\"fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"d.toggle()\" type=\"button\"></button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important\" pInputText placeholder=\"To\" placement=\"bottom\"\r\n                       name=\"dp1\" [(ngModel)]=\"dateObj.toDate\" ngbDatepicker #e=\"ngbDatepicker\">\r\n                <div class=\"input-group-append\">\r\n                    <button class=\"fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"e.toggle()\" type=\"button\"></button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <p-dropdown [options]=\"messageTypeList\" [(ngModel)]=\"dateObj.messageType\" placeholder=\"Select Region\" [style]=\"{display: 'grid'}\" id=\"float-input\" [filter]=\"true\"></p-dropdown>\r\n        </div>\r\n        <div class=\"p-col-2\" style=\"padding-left:1%\" >\r\n            <input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important;\" pInputText placeholder=\"MPhone - Optional\" [(ngModel)]=\"dateObj.mPhone\" [disabled]=\"mPhone\">\r\n        </div>\r\n        <div class=\"p-col-1\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onDateChange()\"><i class=\"fas fa-search\" style=\"text-align:center\"></i></button>\r\n        </div>\r\n    </div>\r\n</generic-grid>"
 
 /***/ }),
 
@@ -9659,6 +9721,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! src/app/services/mfs-setting.service */ "./src/app/services/mfs-setting.service.ts");
 /* harmony import */ var src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/services/mfs-utility.service */ "./src/app/services/mfs-utility.service.ts");
 /* harmony import */ var src_app_shared_directives_generic_grid_generic_grid_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! src/app/shared/directives/generic-grid/generic-grid.component */ "./src/app/shared/directives/generic-grid/generic-grid.component.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9675,14 +9738,17 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var OutboxComponent = /** @class */ (function () {
-    function OutboxComponent(outboxService, gridSettingService, authService, mfsSettingService, mfsUtilityService) {
+    function OutboxComponent(outboxService, gridSettingService, authService, mfsSettingService, mfsUtilityService, auditTrailService) {
         var _this = this;
         this.outboxService = outboxService;
         this.gridSettingService = gridSettingService;
         this.authService = authService;
         this.mfsSettingService = mfsSettingService;
         this.mfsUtilityService = mfsUtilityService;
+        this.auditTrailService = auditTrailService;
+        this.auditTrailModel = {};
         this.dateObj = {};
         this.gridConfig = {};
         this.messageTypeList = [{ label: 'SMS', value: true }, { label: 'USSD/Flash', value: false }];
@@ -9711,7 +9777,34 @@ var OutboxComponent = /** @class */ (function () {
                 '&ToDate=' + this.mfsUtilityService.renderDate(this.dateObj.toDate, true) + '&forMessageResend=' + this.dateObj.messageType;
             ;
         }
+        this.insertDataToAuditTrail();
         this.child.updateDataSource();
+    };
+    OutboxComponent.prototype.insertDataToAuditTrail = function () {
+        var _this = this;
+        this.auditTrailModel.Who = this.currentUserModel.user.username;
+        this.auditTrailModel.WhatAction = 'SEARCH';
+        this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('SEARCH');
+        var eventLog = JSON.parse(sessionStorage.getItem('currentEvent'));
+        this.auditTrailModel.WhichMenu = eventLog.item.label.trim();
+        this.auditTrailModel.WhichParentMenu = this.currentUserModel.featureList.find(function (it) {
+            return it.FEATURENAME.includes(_this.auditTrailModel.WhichMenu);
+        }).CATEGORYNAME;
+        this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+        this.auditTrailModel.inputFeildAndValue = [
+            { whichFeildName: 'From Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.fromDate) },
+            { whichFeildName: 'To Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.toDate) },
+            { whichFeildName: 'Select Gateway', whatValue: this.dateObj.messageType },
+        ];
+        if (this.dateObj.mPhone) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'mphone', whatValue: this.dateObj.mPhone });
+        }
+        this.auditTrailService.insertIntoAuditTrail(this.auditTrailModel).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_7__["first"])())
+            .subscribe(function (data) {
+            if (data) {
+            }
+        }, function (error) {
+        });
     };
     OutboxComponent.prototype.initialiseGridConfig = function () {
         this.gridConfig.dataSource = [];
@@ -9756,7 +9849,7 @@ var OutboxComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./outbox.component.css */ "./src/app/components/client/customer-care/outbox/outbox.component.css")]
         }),
         __metadata("design:paramtypes", [src_app_services_client_outbox_service__WEBPACK_IMPORTED_MODULE_1__["OutboxService"], src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_2__["GridSettingService"], src_app_shared_services__WEBPACK_IMPORTED_MODULE_3__["AuthenticationService"],
-            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_4__["MfsSettingService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_5__["MfsUtilityService"]])
+            src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_4__["MfsSettingService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_5__["MfsUtilityService"], src_app_shared_services__WEBPACK_IMPORTED_MODULE_3__["AuditTrailService"]])
     ], OutboxComponent);
     return OutboxComponent;
 }());

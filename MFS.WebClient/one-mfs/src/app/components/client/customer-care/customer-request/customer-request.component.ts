@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { OutboxService } from 'src/app/services/client/outbox.service';
 import { GridSettingService } from 'src/app/services/grid-setting.service';
-import { AuthenticationService } from 'src/app/shared/_services';
+import { AuthenticationService, AuditTrailService } from 'src/app/shared/_services';
 import { MfsSettingService } from 'src/app/services/mfs-setting.service';
 import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 import { GenericGridComponent } from 'src/app/shared/directives/generic-grid/generic-grid.component';
@@ -24,9 +24,9 @@ export class CustomerRequestComponent implements OnInit {
     actionList: any;
     model: any;
     currentUserModel: any = {};
-
+    auditTrailModel: any = {};
     constructor(private customerRequestService: CustomerRequestService, private gridSettingService: GridSettingService, private authService: AuthenticationService
-        , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private messageService: MessageService,) {
+        , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private messageService: MessageService, private auditTrailService: AuditTrailService) {
         this.gridConfig = {};
         this.searchObj = {};
         this.model = {};
@@ -88,10 +88,34 @@ export class CustomerRequestComponent implements OnInit {
     onSearch() {
         this.gridConfig.dataSourcePath = this.searchObj.mphone != null ? this.mfsSettingService.clientApiServer + '/CustomerRequest/GetCustomerRequestHistory?status=' + this.searchObj.selectedStatus + '&mphone=' + this.searchObj.mphone : 
             this.mfsSettingService.clientApiServer + '/CustomerRequest/GetCustomerRequestHistory?status=' + this.searchObj.selectedStatus;
+        this.insertDataToAuditTrail();
         this.child.updateDataSource();
         this.addRemoveActionColumn();
     }
+    insertDataToAuditTrail() {
+        this.auditTrailModel.Who = this.currentUserModel.user.username;
+        this.auditTrailModel.WhatAction = 'SEARCH';
+        this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('SEARCH');
+        var eventLog = JSON.parse(sessionStorage.getItem('currentEvent'));
+        this.auditTrailModel.WhichMenu = eventLog.item.label.trim();
+        this.auditTrailModel.WhichParentMenu = this.currentUserModel.featureList.find(it => {
+            return it.FEATURENAME.includes(this.auditTrailModel.WhichMenu);
+        }).CATEGORYNAME;
+        this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+        this.auditTrailModel.inputFeildAndValue = [{ whichFeildName: 'selectedStatus', whatValue: this.searchObj.selectedStatus }];
+        if (this.searchObj.mphone) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'mphone', whatValue: this.searchObj.mphone })
+        }
+        this.auditTrailService.insertIntoAuditTrail(this.auditTrailModel).pipe(first())
+            .subscribe(
+                data => {
+                    if (data) {
+                    }
+                },
+                error => {
 
+                });
+    }
     onAction(event) {
         console.log(event);
         this.model = event;
