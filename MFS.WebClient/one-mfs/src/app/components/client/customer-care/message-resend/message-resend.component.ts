@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { OutboxService } from 'src/app/services/client/outbox.service';
 import { GridSettingService } from 'src/app/services/grid-setting.service';
-import { AuthenticationService } from 'src/app/shared/_services';
+import { AuthenticationService, AuditTrailService} from 'src/app/shared/_services';
 import { MfsSettingService } from 'src/app/services/mfs-setting.service';
 import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 import { GenericGridComponent } from 'src/app/shared/directives/generic-grid/generic-grid.component';
@@ -21,11 +21,16 @@ export class MessageResendComponent implements OnInit {
     @ViewChild(GenericGridComponent) child: GenericGridComponent;
 
     dateObj: any = {};
-
-    constructor(private outboxService: OutboxService, private gridSettingService: GridSettingService, private authService: AuthenticationService
-        , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private messageService: MessageService, private confirmationService: ConfirmationService) {
+    auditTrailModel: any = {};
+    constructor(private outboxService: OutboxService,
+        private gridSettingService: GridSettingService,
+        private authService: AuthenticationService,
+        private auditTrailService: AuditTrailService,
+        private mfsSettingService: MfsSettingService,
+        private mfsUtilityService: MfsUtilityService,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService) {
         this.gridConfig = {};
-
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
         });
@@ -41,7 +46,7 @@ export class MessageResendComponent implements OnInit {
         var mphoneQuery = this.dateObj.mphone;  
         this.gridConfig.dataSourcePath = this.mfsSettingService.clientApiServer + '/Outbox/GetOutboxList?fromDate=' + this.mfsUtilityService.renderDate(this.dateObj.fromDate, true) +
             '&ToDate=' + this.mfsUtilityService.renderDate(this.dateObj.toDate, true) + '&mphone=' + this.dateObj.mphone + '&forMessageResend=true'; 
-
+        this.insertDataToAuditTrail();
         this.child.updateDataSource();
     }
 
@@ -79,7 +84,7 @@ export class MessageResendComponent implements OnInit {
                 this.outboxService.resendMessage(event).pipe(first())
                     .subscribe(
                         data => {
-                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Message Resend Successfully' });
+                            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Message Resend Successfully' });                          
                             this.child.updateDataSource();
                         },
                         error => {
@@ -90,6 +95,36 @@ export class MessageResendComponent implements OnInit {
                 this.messageService.add({ severity: 'info', summary: 'Rejected', detail: 'You have rejected' });                
             }
         });
+    }
+    insertDataToAuditTrail() {
+        this.auditTrailModel.Who = this.currentUserModel.user.username;
+        this.auditTrailModel.WhatAction = 'SEARCH';
+        this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('SEARCH');
+        var eventLog = JSON.parse(sessionStorage.getItem('currentEvent'));
+        this.auditTrailModel.WhichMenu = eventLog.item.label.trim();
+        this.auditTrailModel.WhichParentMenu = this.currentUserModel.featureList.find(it => {
+            return it.FEATURENAME.includes(this.auditTrailModel.WhichMenu);
+        }).CATEGORYNAME;
+        this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+        this.auditTrailModel.inputFeildAndValue = [
+            { whichFeildName: 'From Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.fromDate) },
+            { whichFeildName: 'To Date', whatValue: this.mfsUtilityService.renderDate(this.dateObj.toDate) }           
+        ];
+        if (this.dateObj.mphone) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'Account No', whatValue: this.dateObj.mphone })
+        }
+        if (this.dateObj.messageBody) {
+            this.auditTrailModel.inputFeildAndValue.push({ whichFeildName: 'Messege Body', whatValue: this.dateObj.messageBody })
+        }
+        this.auditTrailService.insertIntoAuditTrail(this.auditTrailModel).pipe(first())
+            .subscribe(
+                data => {
+                    if (data) {
+                    }
+                },
+                error => {
+
+                });
     }
 
 }

@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="p-col-3">
-            <p-dropdown [options]="messageTypeList" [(ngModel)]="dateObj.messageType" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
+            <p-dropdown [options]="messageTypeList" [(ngModel)]="dateObj.messageType" placeholder="Select Region" [style]="{display: 'grid'}" id="float-input" [filter]="true"></p-dropdown>
         </div>
         <div class="p-col-2" style="padding-left:1%" >
             <input class="form-control" style="border:none; min-height: 70% !important;font-size: 150% !important;" pInputText placeholder="MPhone - Optional" [(ngModel)]="dateObj.mPhone" [disabled]="mPhone">
