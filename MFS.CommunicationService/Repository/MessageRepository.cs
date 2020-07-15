@@ -9,11 +9,12 @@ namespace MFS.CommunicationService.Repository
 {
 	public class MessageRepository : ConnectionManager
 	{
-		private readonly string dbUser;
-		public MessageRepository(MainDbUser objMainDbUser)
-		{
-			dbUser = objMainDbUser.DbUser;
-		}
+		//private readonly string dbUser;
+		//public MessageRepository(MainDbUser objMainDbUser)
+		//{
+		//	dbUser = objMainDbUser.DbUser;
+		//}
+		private readonly MainDbUser mainDbUser = new MainDbUser();
 		public MessageRepository()
 		{			
 		}
@@ -30,7 +31,7 @@ namespace MFS.CommunicationService.Repository
 					dyParam.Add("V_MSGSTRING", OracleDbType.Varchar2, ParameterDirection.Input, model.MessageString);
 					dyParam.Add("V_FORCE", OracleDbType.Varchar2, ParameterDirection.Input, model.Force);
 
-					var result = SqlMapper.Query(connection, dbUser+"PROC_SEND_MESSAGE", param: dyParam, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query(connection, mainDbUser.DbUser+"PROC_SEND_MESSAGE", param: dyParam, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 
 					return result;
