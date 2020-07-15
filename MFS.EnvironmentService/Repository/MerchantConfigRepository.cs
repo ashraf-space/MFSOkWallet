@@ -15,29 +15,33 @@ namespace MFS.EnvironmentService.Repository
 
     public interface IMerchantConfigRepository : IBaseRepository<MerchantConfig>
     {
-        
+
         object GetMerchantConfigListForDDL();
         object GetMerchantConfigDetails(string mphone);
-		object GetParentInfoByChildMcode(string mcode);
-		object GetAllMerchant();
-	}
+        object GetParentInfoByChildMcode(string mcode);
+        object GetAllMerchant();
+    }
 
     public class MerchantConfigRepository : BaseRepository<MerchantConfig>, IMerchantConfigRepository
     {
-              
+        private readonly string dbUser;
+        public MerchantConfigRepository(MainDbUser objMainDbUser)
+        {
+            dbUser = objMainDbUser.DbUser;
+        }
         public object GetMerchantConfigListForDDL()
         {
             try
             {
-				using (var connection = this.GetConnection())
-				{
-					var parameter = new OracleDynamicParameters();
-					parameter.Add("CUR_MerchantConfig", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<CustomDropDownModel>(connection, "SP_Get_MerchantConfigForDDL", param: parameter, commandType: CommandType.StoredProcedure);
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("CUR_MerchantConfig", OracleDbType.RefCursor, ParameterDirection.Output);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, dbUser + "SP_Get_MerchantConfigForDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
-					this.CloseConnection(connection);
-					return result;
-				}					
+                    this.CloseConnection(connection);
+                    return result;
+                }
             }
             catch (Exception e)
             {
@@ -50,17 +54,17 @@ namespace MFS.EnvironmentService.Repository
         {
             try
             {
-				using (var connection = this.GetConnection())
-				{
-					var parameter = new OracleDynamicParameters();
-					parameter.Add("MOBLIENO", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
-					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<MerchantConfig>(connection, "SP_GET_MERCHANTCONFIGDETAILS", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("MOBLIENO", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+                    parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+                    var result = SqlMapper.Query<MerchantConfig>(connection, dbUser + "SP_GET_MERCHANTCONFIGDETAILS", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 
-					this.CloseConnection(connection);
-					return result;
-				}
-					
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
             }
             catch (Exception)
             {
@@ -69,25 +73,25 @@ namespace MFS.EnvironmentService.Repository
             }
         }
 
-		public object GetParentInfoByChildMcode(string mcode)
-		{
-			using (var connection = this.GetConnection())
-			{
-				string query = @"select t.mphone from merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'C'";
-				var result = connection.Query<string>(query).FirstOrDefault();
-				this.CloseConnection(connection);
-				return result;
-			}
+        public object GetParentInfoByChildMcode(string mcode)
+        {
+            using (var connection = this.GetConnection())
+            {
+                string query = @"select t.mphone from "+ dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'C'";
+                var result = connection.Query<string>(query).FirstOrDefault();
+                this.CloseConnection(connection);
+                return result;
+            }
 
-				
-		}
 
-		public object GetAllMerchant()
-		{
+        }
 
-			using (var connection = this.GetConnection())
-			{
-				string query = @"SELECT T.MPHONE       AS MPHONE,
+        public object GetAllMerchant()
+        {
+
+            using (var connection = this.GetConnection())
+            {
+                string query = @"SELECT T.MPHONE       AS MPHONE,
 								T.NAME         AS NAME,
 								T.REG_DATE     AS REGDATE,
 								T.DIST_CODE    AS DISTCODE,
@@ -96,16 +100,14 @@ namespace MFS.EnvironmentService.Repository
 								T.OFF_ADDR     AS OFFADDR,
 								T.PHOTO_ID     AS PHOTOID,
 								T.REG_STATUS   AS REGSTATUS 
-									FROM REGINFO T
-										INNER JOIN MERCHANT_CONFIG M
-											ON T.MPHONE = M.MPHONE AND T.CAT_ID = 'M'";
+									FROM "+ dbUser +"REGINFO T INNER JOIN "+ dbUser + "MERCHANT_CONFIG M ON T.MPHONE = M.MPHONE AND T.CAT_ID = 'M'";
 
-				var result = connection.Query(query);
+                var result = connection.Query(query);
 
-				this.CloseConnection(connection);
-				return result;
-			}
-				
-		}
-	}
+                this.CloseConnection(connection);
+                return result;
+            }
+
+        }
+    }
 }

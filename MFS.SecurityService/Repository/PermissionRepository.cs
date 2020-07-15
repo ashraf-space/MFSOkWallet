@@ -24,17 +24,17 @@ namespace MFS.SecurityService.Repository
         }
         public IEnumerable<PermissionViewModel> GetPermissionWorklist(int roleId)
         {
-			using (var conn = this.GetConnection())
-			{
-				var dyParam = new OracleDynamicParameters();
-				dyParam.Add("FEATURE_LIST", OracleDbType.RefCursor, ParameterDirection.Output);
-				dyParam.Add("ROLEID", OracleDbType.Int32, ParameterDirection.Input, roleId);
+            using (var conn = this.GetConnection())
+            {
+                var dyParam = new OracleDynamicParameters();
+                dyParam.Add("FEATURE_LIST", OracleDbType.RefCursor, ParameterDirection.Output);
+                dyParam.Add("ROLEID", OracleDbType.Int32, ParameterDirection.Input, roleId);
 
-				var result = SqlMapper.Query<PermissionViewModel>(conn, "PR_MFS_GETPERMISSIONWORKLIST", param: dyParam, commandType: CommandType.StoredProcedure);
-				this.CloseConnection(conn);
-				return result;
-			}
-				
+                var result = SqlMapper.Query<PermissionViewModel>(conn, dbUser + "PR_MFS_GETPERMISSIONWORKLIST", param: dyParam, commandType: CommandType.StoredProcedure);
+                this.CloseConnection(conn);
+                return result;
+            }
+
         }
     }
 }
