@@ -48,7 +48,7 @@ namespace MFS.ReportingService.Service
 		{
 			try
 			{
-				return this._TransactionRepository.GetAccountStatementList(mphone, fromDate, toDate);
+				return this._TransactionRepository.GetAccountStatementListForClient(mphone, fromDate, toDate);
 			}
 			catch (Exception)
 			{

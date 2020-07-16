@@ -131,7 +131,7 @@ namespace MFS.ReportingService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = @"Select * "+ dbUser + "from RegInfoView where mphone= '" + mphone + "' ";
+                    string query = @"Select * from " + dbUser + "RegInfoView where mphone= '" + mphone + "' ";
 
                     var result = connection.Query<Reginfo>(query).FirstOrDefault();
 
