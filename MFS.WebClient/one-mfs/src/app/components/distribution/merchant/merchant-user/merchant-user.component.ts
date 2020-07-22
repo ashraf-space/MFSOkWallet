@@ -89,6 +89,7 @@ export class MerchantUserComponent implements OnInit {
             if (this.entityId) {
                 this.merchantUserModel.updateBy = this.currentUserModel.user.username;
             }
+            this.merchantUserModel.plainPassword = this.merchantUserModel.password;
             this.merchantService.onMerchantUserSave(this.merchantUserModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {

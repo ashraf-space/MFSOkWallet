@@ -384,7 +384,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.*, r.company_name from " + dbUser + "merchant_user t join reginfo r on t.mobile_no = r.mphone and r.cat_id= 'M'";
+					string query = @"select t.*, r.company_name from " + dbUser + "merchant_user t join " + dbUser + "reginfo r on t.mobile_no = r.mphone and r.cat_id= 'M'";
 					var result = connection.Query<dynamic>(query).ToList();
 					this.CloseConnection(connection);
 					return result;

@@ -14,10 +14,11 @@ namespace MFS.SecurityService.Repository
     public interface IMerchantUserRepository : IBaseRepository<MerchantUser>
     {
         MerchantUser validateLogin(string userName, string password);
-        string GetTransAmtLimit(string createUser);
-        object IsProceedToController(List<string> userInfos);
-        object GetAppUserListDdl();
-    }
+		object GetRegInfoByMphone(string mobileNo);
+		//string GetTransAmtLimit(string createUser);
+		//object IsProceedToController(List<string> userInfos);
+		//object GetAppUserListDdl();
+	}
 
     public class MerchantUserRepository : BaseRepository<MerchantUser>, IMerchantUserRepository
     {
@@ -26,15 +27,38 @@ namespace MFS.SecurityService.Repository
         {
             dbUser = objMainDbUser.DbUser;
         }
-        public MerchantUser validateLogin(string userName, string password)
+
+		public dynamic GetRegInfoByMphone(string mobileNo)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"Select * from " + dbUser + "RegInfoView where mphone= '" + mobileNo + "' ";
+
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public MerchantUser validateLogin(string userName, string password)
         {
             try
             {
                 using (var conn = this.GetConnection())
                 {
                     var dyParam = new OracleDynamicParameters();
-                    dyParam.Add("UNAME", OracleDbType.Varchar2, ParameterDirection.Input, userName);
-                    dyParam.Add("PWD", OracleDbType.Varchar2, ParameterDirection.Input, password);
+                    dyParam.Add("UACC", OracleDbType.Varchar2, ParameterDirection.Input, userName);
+					//dyParam.Add("UNAME", OracleDbType.Varchar2, ParameterDirection.Input, userName);
+					dyParam.Add("PWD", OracleDbType.Varchar2, ParameterDirection.Input, password);
                     dyParam.Add("LOGIN_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     IList<MerchantUser> result = SqlMapper.Query<MerchantUser>(conn, dbUser + "PR_VALIDATELOGIN_CLIENT", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
@@ -42,7 +66,7 @@ namespace MFS.SecurityService.Repository
 
                     if (result.Count == 0)
                     {
-                        MerchantUser obj = conn.QueryFirstOrDefault<MerchantUser>("Select " + this.GetCamelCaseColumnList(new MerchantUser()) + " from " + dbUser + "Application_User where username='" + userName + "'");
+                        MerchantUser obj = conn.QueryFirstOrDefault<MerchantUser>("Select " + this.GetCamelCaseColumnList(new MerchantUser()) + " from " + dbUser + "MERCHANT_USER where mobile_no='" + userName + "'");
                         obj.Is_validated = false;
                         return obj;
                     }
@@ -60,69 +84,69 @@ namespace MFS.SecurityService.Repository
 
         }
 
-        public string GetTransAmtLimit(string createUser)
-        {
-            try
-            {
-                using (var conn = this.GetConnection())
-                {
-                    var parameter = new OracleDynamicParameters();
-                    parameter.Add("createUser", OracleDbType.Varchar2, ParameterDirection.Input, createUser);
-                    parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-                    var result = SqlMapper.Query<string>(conn, dbUser + "SP_Get_TransAmtLimitByUser", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
-                    conn.Close();
-                    return result;
-                }
+        //public string GetTransAmtLimit(string createUser)
+        //{
+        //    try
+        //    {
+        //        using (var conn = this.GetConnection())
+        //        {
+        //            var parameter = new OracleDynamicParameters();
+        //            parameter.Add("createUser", OracleDbType.Varchar2, ParameterDirection.Input, createUser);
+        //            parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+        //            var result = SqlMapper.Query<string>(conn, dbUser + "SP_Get_TransAmtLimitByUser", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+        //            conn.Close();
+        //            return result;
+        //        }
 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
 
-        }
+        //}
 
-        public object IsProceedToController(List<string> userInfos)
-        {
-            try
-            {
-                using (var conn = this.GetConnection())
-                {
-                    var dyParam = new OracleDynamicParameters();
-                    dyParam.Add("V_WHO", OracleDbType.Varchar2, ParameterDirection.Input, userInfos[0]);
-                    dyParam.Add("ROLE_ID", OracleDbType.Int32, ParameterDirection.Output, null, 32767);
-                    dyParam.Add("FORCE_LG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
-                    SqlMapper.Query(conn, dbUser + "PR_PROCEED_LOGIN", param: dyParam, commandType: CommandType.StoredProcedure);
-                    conn.Close();
-                    var roleId = dyParam.oracleParameters[1].Value.ToString();
-                    var fg = dyParam.oracleParameters[2].Value.ToString();
-                    return Tuple.Create(roleId, fg);
-                }
+        //public object IsProceedToController(List<string> userInfos)
+        //{
+        //    try
+        //    {
+        //        using (var conn = this.GetConnection())
+        //        {
+        //            var dyParam = new OracleDynamicParameters();
+        //            dyParam.Add("V_WHO", OracleDbType.Varchar2, ParameterDirection.Input, userInfos[0]);
+        //            dyParam.Add("ROLE_ID", OracleDbType.Int32, ParameterDirection.Output, null, 32767);
+        //            dyParam.Add("FORCE_LG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
+        //            SqlMapper.Query(conn, dbUser + "PR_PROCEED_LOGIN", param: dyParam, commandType: CommandType.StoredProcedure);
+        //            conn.Close();
+        //            var roleId = dyParam.oracleParameters[1].Value.ToString();
+        //            var fg = dyParam.oracleParameters[2].Value.ToString();
+        //            return Tuple.Create(roleId, fg);
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
 
-        public object GetAppUserListDdl()
-        {
-            try
-            {
-                using (var connection = this.GetConnection())
-                {
-                    string query = @"select t.username as ""label"", t.id ""value"" from " + dbUser + "application_user t";
-                    var result = connection.Query<CustomDropDownModel>(query).ToList();
-                    this.CloseConnection(connection);
-                    connection.Dispose();
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
+        //public object GetAppUserListDdl()
+        //{
+        //    try
+        //    {
+        //        using (var connection = this.GetConnection())
+        //        {
+        //            string query = @"select t.username as ""label"", t.id ""value"" from " + dbUser + "application_user t";
+        //            var result = connection.Query<CustomDropDownModel>(query).ToList();
+        //            this.CloseConnection(connection);
+        //            connection.Dispose();
+        //            return result;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

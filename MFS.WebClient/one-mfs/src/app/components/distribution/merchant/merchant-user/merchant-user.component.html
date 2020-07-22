@@ -10,16 +10,16 @@
 					<label for="float-input input-lg" class=" col-form-label-dd">Merchant Mobile No<span class="mandatory">*</span></label>
 					<!--<p-inputMask type="text" mask="01999999999" [style]="{'width':'100%'}" [(ngModel)]="merchantUserModel.mphone" (change)="checkMerchantUserAlreadyExist()"
 								 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>-->
-					<p-dropdown [options]="merchantList" [(ngModel)]="merchantUserModel.mphone" placeholder="Please Select"
+					<p-dropdown [options]="merchantList" [(ngModel)]="merchantUserModel.mobileNo" placeholder="Please Select"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 								(onChange)="checkMerchantUserAlreadyExist()"
 								id="float-input"></p-dropdown>
-					<p-message *ngIf="(merchantUserModel.mphone == null || merchantUserModel.mphone == '') && error" severity="error" text="Cannot be left blank"></p-message>
+					<p-message *ngIf="(merchantUserModel.mobileNo == null || merchantUserModel.mobileNo == '') && error" severity="error" text="Cannot be left blank"></p-message>
 				</div>
 
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">User Id<span class="mandatory">*</span></label>
-					<input type="text" class="form-control" [(ngModel)]="merchantUserModel.mphone" [readonly]="true"
+					<input type="text" class="form-control" [(ngModel)]="merchantUserModel.mobileNo" [readonly]="true"
 						   pInputText id="float-input">
 				</div>
 

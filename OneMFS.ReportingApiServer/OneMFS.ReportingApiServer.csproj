@@ -269,6 +269,8 @@
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransactionSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransaction.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionDetails.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionSummary.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTKycBalance.rdlc" />

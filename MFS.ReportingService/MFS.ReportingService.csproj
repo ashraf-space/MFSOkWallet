@@ -55,6 +55,8 @@
     <Compile Include="Models\FundTransfer.cs" />
     <Compile Include="Models\GLStatement.cs" />
     <Compile Include="Models\KycBalance.cs" />
+    <Compile Include="Models\MerchantTransaction.cs" />
+    <Compile Include="Models\MerchantTransactionSummary.cs" />
     <Compile Include="Models\RegistrationReport.cs" />
     <Compile Include="Models\RegistrationSummary.cs" />
     <Compile Include="Models\ReportInfo.cs" />

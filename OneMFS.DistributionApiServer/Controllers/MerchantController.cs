@@ -342,10 +342,13 @@ namespace OneMFS.DistributionApiServer.Controllers
 				}
 				else
 				{
+					dynamic reginfoModel = _MerchantUserService.GetRegInfoByMphone(model.MobileNo);
+					model.Name = reginfoModel.NAME;
+					model.BranchCode = reginfoModel.BRANCH_CODE;
 					model = generateSecuredCredentials(model);
 					model = _MerchantUserService.Add(model);
 
-					string messagePrefix = ", Your Account Has been Created on OK Wallet Admin Application. Your username is " + model.Username + " and password is " + model.PlainPassword;
+					string messagePrefix = ", Your Account Has been Created on OK Wallet Admin Application. Your username is " + model.MobileNo + " and password is " + model.PlainPassword;
 
 					MessageModel messageModel = new MessageModel()
 					{
@@ -371,7 +374,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				StringBuilderService stringBuilderService = new StringBuilderService();
-				model.PlainPassword = stringBuilderService.CreateRandomPassword();
+				model.PlainPassword = model.PlainPassword;
 				model.Md5Password = stringBuilderService.GenerateMD5Hash(model.PlainPassword);
 				model.Sha1Password = stringBuilderService.GenerateSha1Hash(model.PlainPassword);
 				model.SecurityStamp = Guid.NewGuid().ToString();

@@ -20,11 +20,11 @@ export class FundTransferComponent implements OnInit {
 
     ngOnInit() {
         this.tansactionTypeDDL = [
-            { label: 'AC TO AC', value: 'A TO A' },
-            { label: 'AC TO GL', value: 'A TO G' },
-            { label: 'GL TO GL', value: 'G TO G' },
-            { label: 'GL TO AC', value: 'G TO A' },
-            { label: 'C TO M', value: 'C TO M' }
+            { label: 'AC TO AC', value: 'AC TO AC' },
+            { label: 'AC TO GL', value: 'AC TO GL' },
+            { label: 'GL TO GL', value: 'GL TO GL' },
+            { label: 'GL TO AC', value: 'GL TO AC' },
+            { label: 'C TO M', value: 'PAY' }
         ];
         this.optionDDL = [
             { label: 'Cumulative', value: 'Cumulative' },

@@ -13,6 +13,7 @@ namespace MFS.ReportingService.Service
     {
         List<AccountStatement> GetAccountStatementList(string mphone, string fromDate, string toDate);
 		List<AccountStatement> GetAccountStatementListForClient(string mphone, string fromDate, string toDate);
+		List<MerchantTransaction> GetMerchantTransactionReport(string mphone, string fromDate, string toDate);
 		List<CurrentAffairsStatement> CurrentAffairsStatement(string date, string CurrentOrEOD);
         List<CurrentAffairsStatement> GetChartOfAccounts();
         object GetGetGlCoaCodeNameLevelDDL(string assetType);
@@ -20,8 +21,9 @@ namespace MFS.ReportingService.Service
         object GetOkServicesDDL();
         List<TransactionSummary> GetTransactionSummaryList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
-        List<FundTransfer> GetFundTransferList(string tansactionType, string fromCat, string toCat,string option, string fromDate, string toDate);
-    }
+        List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
+		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
+	}
 
     public class TransactionService : BaseService<AccountStatement>, ITransactionService
     {
@@ -48,7 +50,7 @@ namespace MFS.ReportingService.Service
 		{
 			try
 			{
-				return this._TransactionRepository.GetAccountStatementListForClient(mphone, fromDate, toDate);
+				return this._TransactionRepository.GetAccountStatementList(mphone, fromDate, toDate);
 			}
 			catch (Exception)
 			{
@@ -59,7 +61,20 @@ namespace MFS.ReportingService.Service
 
 		}
 
-		public List<CurrentAffairsStatement> CurrentAffairsStatement(string date, string CurrentOrEOD)
+        public List<MerchantTransaction> GetMerchantTransactionReport(string mphone, string fromDate, string toDate)
+        {
+            try
+            {
+                return this._TransactionRepository.GetMerchantTransactionReport(mphone, fromDate, toDate);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<CurrentAffairsStatement> CurrentAffairsStatement(string date, string CurrentOrEOD)
         {
             try
             {
@@ -149,11 +164,11 @@ namespace MFS.ReportingService.Service
             }
         }
 
-        public List<FundTransfer> GetFundTransferList(string tansactionType, string fromCat, string toCat,string option, string fromDate, string toDate)
+        public List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate)
         {
             try
             {
-                return _TransactionRepository.GetFundTransferList(tansactionType, fromCat, toCat, option,  fromDate, toDate);
+                return _TransactionRepository.GetFundTransferList(tansactionType,  option,  fromDate, toDate);
             }
             catch (Exception ex)
             {
@@ -161,5 +176,18 @@ namespace MFS.ReportingService.Service
                 throw;
             }
         }
-    }
+
+		public List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate)
+		{
+			try
+			{
+				return this._TransactionRepository.MerchantTransactionSummaryReport(mphone, fromDate, toDate);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+	}
 }

@@ -34,10 +34,10 @@ export class MerchantUserListComponent implements OnInit {
         this.gridConfig.hasEditState = true;
         //this.gridConfig.entityField = 'MPHONE';        
         this.gridConfig.columnList = [
-            { field: 'MPHONE', header: 'Merchant AC No', width: '10%' },
-            { field: 'COMPANY_NAME', header: 'Merchant Name', width: '30%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'USER_ID', header: 'LogIn Id', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'STATUS', header: 'STATUS', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getStatusTemplateForRowData() },
+            { field: 'MOBILE_NO', header: 'Merchant AC No', width: '40%' },
+            { field: 'COMPANY_NAME', header: 'Merchant Name', width: '40%', filter: this.gridSettingService.getDefaultFilterable() }
+            //{ field: 'USER_ID', header: 'LogIn Id', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            //{ field: 'STATUS', header: 'STATUS', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getStatusTemplateForRowData() },
             //{ field: 'MPHONE', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() }
         ];
 

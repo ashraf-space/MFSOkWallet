@@ -23,6 +23,7 @@ export class ClientProfileComponent implements OnInit {
     @Input() model: any;
     entityId: any;
     isDetailMode: boolean = false;
+    isEditAllow: boolean = false;
     isLoading: boolean = false;
     showCloseModal: boolean = false;
     showBlackModal: boolean = false;

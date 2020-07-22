@@ -212,6 +212,34 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="MerchantTransfer" msprop:Generator_TableClassName="MerchantTransferDataTable" msprop:Generator_TableVarName="tableMerchantTransfer" msprop:Generator_RowChangedName="MerchantTransferRowChanged" msprop:Generator_TablePropName="MerchantTransfer" msprop:Generator_RowDeletingName="MerchantTransferRowDeleting" msprop:Generator_RowChangingName="MerchantTransferRowChanging" msprop:Generator_RowEvHandlerName="MerchantTransferRowChangeEventHandler" msprop:Generator_RowDeletedName="MerchantTransferRowDeleted" msprop:Generator_RowClassName="MerchantTransferRow" msprop:Generator_UserTableName="MerchantTransfer" msprop:Generator_RowEvArgName="MerchantTransferRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransactionDate" msprop:Generator_ColumnVarNameInTable="columnTransactionDate" msprop:Generator_ColumnPropNameInRow="TransactionDate" msprop:Generator_ColumnPropNameInTable="TransactionDateColumn" msprop:Generator_UserColumnName="TransactionDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransactionTime" msprop:Generator_ColumnVarNameInTable="columnTransactionTime" msprop:Generator_ColumnPropNameInRow="TransactionTime" msprop:Generator_ColumnPropNameInTable="TransactionTimeColumn" msprop:Generator_UserColumnName="TransactionTime" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantName" msprop:Generator_ColumnVarNameInTable="columnMerchantName" msprop:Generator_ColumnPropNameInRow="MerchantName" msprop:Generator_ColumnPropNameInTable="MerchantNameColumn" msprop:Generator_UserColumnName="MerchantName" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantCode" msprop:Generator_ColumnVarNameInTable="columnMerchantCode" msprop:Generator_ColumnPropNameInRow="MerchantCode" msprop:Generator_ColumnPropNameInTable="MerchantCodeColumn" msprop:Generator_UserColumnName="MerchantCode" type="xs:string" minOccurs="0" />
+              <xs:element name="TransactionId" msprop:Generator_ColumnVarNameInTable="columnTransactionId" msprop:Generator_ColumnPropNameInRow="TransactionId" msprop:Generator_ColumnPropNameInTable="TransactionIdColumn" msprop:Generator_UserColumnName="TransactionId" type="xs:string" minOccurs="0" />
+              <xs:element name="TransAmt" msprop:Generator_ColumnVarNameInTable="columnTransAmt" msprop:Generator_ColumnPropNameInRow="TransAmt" msprop:Generator_ColumnPropNameInTable="TransAmtColumn" msprop:Generator_UserColumnName="TransAmt" type="xs:double" minOccurs="0" />
+              <xs:element name="TransFrom" msprop:Generator_ColumnVarNameInTable="columnTransFrom" msprop:Generator_ColumnPropNameInRow="TransFrom" msprop:Generator_ColumnPropNameInTable="TransFromColumn" msprop:Generator_UserColumnName="TransFrom" type="xs:string" minOccurs="0" />
+              <xs:element name="BalanceType" msprop:Generator_ColumnVarNameInTable="columnBalanceType" msprop:Generator_ColumnPropNameInRow="BalanceType" msprop:Generator_ColumnPropNameInTable="BalanceTypeColumn" msprop:Generator_UserColumnName="BalanceType" type="xs:string" minOccurs="0" />
+              <xs:element name="AvailableBalance" msprop:Generator_ColumnVarNameInTable="columnAvailableBalance" msprop:Generator_ColumnPropNameInRow="AvailableBalance" msprop:Generator_ColumnPropNameInTable="AvailableBalanceColumn" msprop:Generator_UserColumnName="AvailableBalance" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="MerchantTransferSummary" msprop:Generator_TableClassName="MerchantTransferSummaryDataTable" msprop:Generator_TableVarName="tableMerchantTransferSummary" msprop:Generator_TablePropName="MerchantTransferSummary" msprop:Generator_RowDeletingName="MerchantTransferSummaryRowDeleting" msprop:Generator_RowChangingName="MerchantTransferSummaryRowChanging" msprop:Generator_RowEvHandlerName="MerchantTransferSummaryRowChangeEventHandler" msprop:Generator_RowDeletedName="MerchantTransferSummaryRowDeleted" msprop:Generator_UserTableName="MerchantTransferSummary" msprop:Generator_RowChangedName="MerchantTransferSummaryRowChanged" msprop:Generator_RowEvArgName="MerchantTransferSummaryRowChangeEvent" msprop:Generator_RowClassName="MerchantTransferSummaryRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransactionDate" msprop:Generator_ColumnVarNameInTable="columnTransactionDate" msprop:Generator_ColumnPropNameInRow="TransactionDate" msprop:Generator_ColumnPropNameInTable="TransactionDateColumn" msprop:Generator_UserColumnName="TransactionDate" type="xs:string" minOccurs="0" />
+              <xs:element name="TransactionTime" msprop:Generator_ColumnVarNameInTable="columnTransactionTime" msprop:Generator_ColumnPropNameInRow="TransactionTime" msprop:Generator_ColumnPropNameInTable="TransactionTimeColumn" msprop:Generator_UserColumnName="TransactionTime" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantName" msprop:Generator_ColumnVarNameInTable="columnMerchantName" msprop:Generator_ColumnPropNameInRow="MerchantName" msprop:Generator_ColumnPropNameInTable="MerchantNameColumn" msprop:Generator_UserColumnName="MerchantName" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantCode" msprop:Generator_ColumnVarNameInTable="columnMerchantCode" msprop:Generator_ColumnPropNameInRow="MerchantCode" msprop:Generator_ColumnPropNameInTable="MerchantCodeColumn" msprop:Generator_UserColumnName="MerchantCode" type="xs:string" minOccurs="0" />
+              <xs:element name="TransactionId" msprop:Generator_ColumnVarNameInTable="columnTransactionId" msprop:Generator_ColumnPropNameInRow="TransactionId" msprop:Generator_ColumnPropNameInTable="TransactionIdColumn" msprop:Generator_UserColumnName="TransactionId" type="xs:string" minOccurs="0" />
+              <xs:element name="NoOfTrans" msprop:Generator_ColumnVarNameInTable="columnNoOfTrans" msprop:Generator_ColumnPropNameInRow="NoOfTrans" msprop:Generator_ColumnPropNameInTable="NoOfTransColumn" msprop:Generator_UserColumnName="NoOfTrans" type="xs:string" minOccurs="0" />
+              <xs:element name="TransAmt" msprop:Generator_ColumnVarNameInTable="columnTransAmt" msprop:Generator_ColumnPropNameInRow="TransAmt" msprop:Generator_ColumnPropNameInTable="TransAmtColumn" msprop:Generator_UserColumnName="TransAmt" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

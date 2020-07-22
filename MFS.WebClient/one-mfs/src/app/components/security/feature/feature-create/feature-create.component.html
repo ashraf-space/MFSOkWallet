@@ -21,7 +21,7 @@
                 </div>
                 <div class="p-col-6">
                     <div class="form-group row">
-                        <label for="regDate" class="col-sm-2 col-form-label single-line">Category</label>
+                        <label for="regDate" class="col-sm-2 col-form-label single-line">Category <span class="mandatory">*</span></label>
                         <div class="col-sm-10">
                             <p-dropdown [options]="featureCategoryList" [(ngModel)]="featureModel.categoryId" placeholder="Select Category" [showClear]="true" [style]="{display: 'grid'}"></p-dropdown>
                             <p-message *ngIf="(featureModel.categoryId==null || featureModel.categoryId=='') && error " severity="error" text="Cannot be left blank"></p-message>

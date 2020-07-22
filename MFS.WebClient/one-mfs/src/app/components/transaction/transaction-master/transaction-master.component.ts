@@ -62,7 +62,8 @@ export class TransactionMasterComponent implements OnInit {
             { field: 'transTo', header: 'To', width: '9%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'payAmt', header: 'Amount ( SC + Amt )', width: '9%', filter: this.gridSettingService.getDefaultNumberFilterable(0,100000), template: this.gridSettingService.getMoneyTemplateForRowData() },
             { field: 'schargeAmt', header: 'Service Charge', width: '8%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getMoneyTemplateForRowData()},
-            { field: 'particular', header: 'Event', width: '32%', filter: this.gridSettingService.getDefaultFilterable() }
+            { field: 'particular', header: 'Event', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'billno', header: 'Biller Id', width: '12%', filter: this.gridSettingService.getDefaultFilterable() }
         ];
 
         if (this.mPhone) {
