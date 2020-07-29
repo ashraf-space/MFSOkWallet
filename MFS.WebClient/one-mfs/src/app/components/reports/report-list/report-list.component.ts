@@ -58,7 +58,7 @@ export class ReportListComponent implements OnInit {
 
             this.gridConfig.columnList.push({ field: 'Id', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() });
 
-            this.gridConfig.dataSourcePath = this.mfsSettingService.reportingApiServer + '/ReportInfo/GetReportInfoList';
+            this.gridConfig.dataSourcePath = this.mfsSettingService.reportingApiServer + '/ReportInfo/GetReportConfigList';
             this.gridConfig.autoUpdateDataSource = true;
         }
     }

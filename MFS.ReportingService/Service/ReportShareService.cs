@@ -14,6 +14,7 @@ namespace MFS.ReportingService.Service
 		object SaveReportInfo(ReportInfo reportInfo, bool isEditMode, string evnt);
 		object GetReportConfigById(int id);
 		string GetCategoryNameById(string accCategory);
+		List<ReportInfo> GetReportListByRole(IEnumerable<ReportInfo> reportInfos, string role);
 	}
 	public class ReportShareService : BaseService<ReportInfo>, IReportShareService
 	{
@@ -103,6 +104,29 @@ namespace MFS.ReportingService.Service
 			{
 				return "GP-Mobicash Agent";
 			}
+		}
+
+		public List<ReportInfo> GetReportListByRole(IEnumerable<ReportInfo> reportInfos, string role)
+		{
+			var roleInfo = role.Split(',').ToList();
+			var roleId = roleInfo[1];
+			List<ReportInfo> reportInfosByList = new List<ReportInfo>();
+
+			foreach(var item in reportInfos)
+			{
+				if (IsRoleExist(item.Roles,roleId))
+				{
+					reportInfosByList.Add(item);
+				}
+			}
+			return reportInfosByList;
+		}
+
+		private bool IsRoleExist(string roles, string roleId)
+		{
+			var reportRole = roles.Split(',').Select(int.Parse).ToList();
+			return reportRole.Contains(Convert.ToInt32(roleId));
+			
 		}
 	}
 }

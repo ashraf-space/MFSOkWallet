@@ -197,8 +197,9 @@ export class AppComponent implements OnInit {
         this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('VISIT')
         this.auditTrailModel.WhichMenu = event.item.label.trim();
         this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(it => {
-            return it.FEATURENAME.includes(this.auditTrailModel.WhichMenu);
+            return it.FEATURENAME.trim() === this.auditTrailModel.WhichMenu;
         }).CATEGORYNAME;
+       
         this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
         sessionStorage.setItem('currentEvent', JSON.stringify(event));
 

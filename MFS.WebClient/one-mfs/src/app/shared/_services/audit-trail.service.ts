@@ -43,7 +43,7 @@ export class AuditTrailService {
             case 'Distribution':
                 whichParentMenuId = 3;
                 break;
-            case 'Enviornment':
+            case 'Environment':
                 whichParentMenuId = 4;
                 break;
             case 'Merchant':

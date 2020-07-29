@@ -6758,7 +6758,7 @@ var AppComponent = /** @class */ (function () {
         this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('VISIT');
         this.auditTrailModel.WhichMenu = event.item.label.trim();
         this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(function (it) {
-            return it.FEATURENAME.includes(_this.auditTrailModel.WhichMenu);
+            return it.FEATURENAME.trim() === _this.auditTrailModel.WhichMenu;
         }).CATEGORYNAME;
         this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
         sessionStorage.setItem('currentEvent', JSON.stringify(event));
@@ -19601,7 +19601,7 @@ var ReportListComponent = /** @class */ (function () {
             this.gridConfig.createStateUrl = '/report/config/';
             this.gridConfig.hasEditState = true;
             this.gridConfig.columnList.push({ field: 'Id', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() });
-            this.gridConfig.dataSourcePath = this.mfsSettingService.reportingApiServer + '/ReportInfo/GetReportInfoList';
+            this.gridConfig.dataSourcePath = this.mfsSettingService.reportingApiServer + '/ReportInfo/GetReportConfigList';
             this.gridConfig.autoUpdateDataSource = true;
         }
     };
@@ -30550,7 +30550,7 @@ var MfsUtilityService = /** @class */ (function () {
             { label: 'Dashboard', value: 'Dashboard' },
             { label: 'Client', value: 'Client' },
             { label: 'Distribution', value: 'Distribution' },
-            { label: 'Enviornment', value: 'Enviornment' },
+            { label: 'Environment', value: 'Environment' },
             { label: 'Reports', value: 'Reports' },
             { label: 'Merchant', value: 'Merchant' },
             { label: 'Settings', value: 'Settings' },
@@ -32773,7 +32773,7 @@ var AuditTrailService = /** @class */ (function () {
             case 'Distribution':
                 whichParentMenuId = 3;
                 break;
-            case 'Enviornment':
+            case 'Environment':
                 whichParentMenuId = 4;
                 break;
             case 'Merchant':

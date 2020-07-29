@@ -86,7 +86,7 @@ export class MfsUtilityService {
             { label: 'Dashboard', value: 'Dashboard' },
             { label: 'Client', value: 'Client' },
             { label: 'Distribution', value: 'Distribution' },
-            { label: 'Enviornment', value: 'Enviornment' },
+            { label: 'Environment', value: 'Environment' },
             { label: 'Reports', value: 'Reports' },
             { label: 'Merchant', value: 'Merchant' },
             { label: 'Settings', value: 'Settings' },

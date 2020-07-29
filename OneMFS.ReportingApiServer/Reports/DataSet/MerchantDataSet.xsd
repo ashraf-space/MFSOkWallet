@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MerchantDataSet" targetNamespace="http://tempuri.org/MerchantDataSet.xsd" xmlns:mstns="http://tempuri.org/MerchantDataSet.xsd" xmlns="http://tempuri.org/MerchantDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="MerchantDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="MerchantDataSet" msprop:Generator_UserDSName="MerchantDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="OutletDetailsTransaction" msprop:Generator_TableClassName="OutletDetailsTransactionDataTable" msprop:Generator_TableVarName="tableOutletDetailsTransaction" msprop:Generator_RowChangedName="OutletDetailsTransactionRowChanged" msprop:Generator_TablePropName="OutletDetailsTransaction" msprop:Generator_RowDeletingName="OutletDetailsTransactionRowDeleting" msprop:Generator_RowChangingName="OutletDetailsTransactionRowChanging" msprop:Generator_RowEvHandlerName="OutletDetailsTransactionRowChangeEventHandler" msprop:Generator_RowDeletedName="OutletDetailsTransactionRowDeleted" msprop:Generator_RowClassName="OutletDetailsTransactionRow" msprop:Generator_UserTableName="OutletDetailsTransaction" msprop:Generator_RowEvArgName="OutletDetailsTransactionRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransTime" msprop:Generator_ColumnVarNameInTable="columnTransTime" msprop:Generator_ColumnPropNameInRow="TransTime" msprop:Generator_ColumnPropNameInTable="TransTimeColumn" msprop:Generator_UserColumnName="TransTime" type="xs:string" minOccurs="0" />
+              <xs:element name="TransFrom" msprop:Generator_ColumnVarNameInTable="columnTransFrom" msprop:Generator_ColumnPropNameInRow="TransFrom" msprop:Generator_ColumnPropNameInTable="TransFromColumn" msprop:Generator_UserColumnName="TransFrom" type="xs:string" minOccurs="0" />
+              <xs:element name="TransId" msprop:Generator_ColumnVarNameInTable="columnTransId" msprop:Generator_ColumnPropNameInRow="TransId" msprop:Generator_ColumnPropNameInTable="TransIdColumn" msprop:Generator_UserColumnName="TransId" type="xs:string" minOccurs="0" />
+              <xs:element name="OutletName" msprop:Generator_ColumnVarNameInTable="columnOutletName" msprop:Generator_ColumnPropNameInRow="OutletName" msprop:Generator_ColumnPropNameInTable="OutletNameColumn" msprop:Generator_UserColumnName="OutletName" type="xs:string" minOccurs="0" />
+              <xs:element name="OutletId" msprop:Generator_ColumnVarNameInTable="columnOutletId" msprop:Generator_ColumnPropNameInRow="OutletId" msprop:Generator_ColumnPropNameInTable="OutletIdColumn" msprop:Generator_UserColumnName="OutletId" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantAccNo" msprop:Generator_ColumnVarNameInTable="columnMerchantAccNo" msprop:Generator_ColumnPropNameInRow="MerchantAccNo" msprop:Generator_ColumnPropNameInTable="MerchantAccNoColumn" msprop:Generator_UserColumnName="MerchantAccNo" type="xs:string" minOccurs="0" />
+              <xs:element name="TransAmt" msprop:Generator_ColumnVarNameInTable="columnTransAmt" msprop:Generator_ColumnPropNameInRow="TransAmt" msprop:Generator_ColumnPropNameInTable="TransAmtColumn" msprop:Generator_UserColumnName="TransAmt" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OutletSummaryTransaction" msprop:Generator_TableClassName="OutletSummaryTransactionDataTable" msprop:Generator_TableVarName="tableOutletSummaryTransaction" msprop:Generator_TablePropName="OutletSummaryTransaction" msprop:Generator_RowDeletingName="OutletSummaryTransactionRowDeleting" msprop:Generator_RowChangingName="OutletSummaryTransactionRowChanging" msprop:Generator_RowEvHandlerName="OutletSummaryTransactionRowChangeEventHandler" msprop:Generator_RowDeletedName="OutletSummaryTransactionRowDeleted" msprop:Generator_UserTableName="OutletSummaryTransaction" msprop:Generator_RowChangedName="OutletSummaryTransactionRowChanged" msprop:Generator_RowEvArgName="OutletSummaryTransactionRowChangeEvent" msprop:Generator_RowClassName="OutletSummaryTransactionRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="OutletName" msprop:Generator_ColumnVarNameInTable="columnOutletName" msprop:Generator_ColumnPropNameInRow="OutletName" msprop:Generator_ColumnPropNameInTable="OutletNameColumn" msprop:Generator_UserColumnName="OutletName" type="xs:string" minOccurs="0" />
+              <xs:element name="OutletId" msprop:Generator_ColumnVarNameInTable="columnOutletId" msprop:Generator_ColumnPropNameInRow="OutletId" msprop:Generator_ColumnPropNameInTable="OutletIdColumn" msprop:Generator_UserColumnName="OutletId" type="xs:string" minOccurs="0" />
+              <xs:element name="MerchantAccNo" msprop:Generator_ColumnVarNameInTable="columnMerchantAccNo" msprop:Generator_ColumnPropNameInRow="MerchantAccNo" msprop:Generator_ColumnPropNameInTable="MerchantAccNoColumn" msprop:Generator_UserColumnName="MerchantAccNo" type="xs:string" minOccurs="0" />
+              <xs:element name="NoOfTrans" msprop:Generator_ColumnVarNameInTable="columnNoOfTrans" msprop:Generator_ColumnPropNameInRow="NoOfTrans" msprop:Generator_ColumnPropNameInTable="NoOfTransColumn" msprop:Generator_UserColumnName="NoOfTrans" type="xs:int" minOccurs="0" />
+              <xs:element name="TransAmt" msprop:Generator_ColumnVarNameInTable="columnTransAmt" msprop:Generator_ColumnPropNameInRow="TransAmt" msprop:Generator_ColumnPropNameInTable="TransAmtColumn" msprop:Generator_UserColumnName="TransAmt" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
