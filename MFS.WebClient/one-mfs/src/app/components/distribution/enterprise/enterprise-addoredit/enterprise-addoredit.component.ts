@@ -288,9 +288,12 @@ export class EnterpriseAddoreditComponent implements OnInit {
     }
 
     SaveEnterprise(event): any {
-
+       
         if (this.isEditMode) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
+        }
+        else {
+            this.regInfoModel.entryBy = this.currentUserModel.user.username; 
         }
         //if (event != 'reject') {
         //    this.regInfoModel.entryBy = this.currentUserModel.user.username;

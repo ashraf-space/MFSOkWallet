@@ -28,9 +28,12 @@ namespace MFS.DistributionService.Service
 		object ClientClose(string remarks, Reginfo reginfo);
 		object AddRemoveLien(string remarks, Reginfo reginfo);
 		object CheckPinStatus(string mphone);
-		object InsertModelToAuditTrail(object model, string who, int parentMenuId, int actionId, string menu);
-		object InsertUpdatedModelToAuditTrail(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu);
+		object InsertModelToAuditTrail(object model, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null);
+		object InsertUpdatedModelToAuditTrail(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null);
 		object BlackListClient(string remarks, Reginfo reginfo);
+		object InsertUpdatedModelToAuditTrailForUpdateKyc(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null);
+		object GetBalanceInfoByMphone(string mphone);
+		void StatusChangeBasedOnDemand(string mphone, string demand,string updateBy ,string remarks=null);
 	}
 	public class KycService : BaseService<Reginfo>, IKycService
 	{
@@ -114,45 +117,96 @@ namespace MFS.DistributionService.Service
 		{
 			try
 			{
-				if(reginfo.Status == "C")
+				string demand = null;
+				if (reginfo.Status == "C")
 				{
-					reginfo.Status = "A";
+					//reginfo.Status = "A";
+					demand = "ACC_ACTIVE";
 				}
 				else
 				{
-					reginfo.Status = "C";
+					//reginfo.Status = "C";
+					demand = "ACC_CLOSE";
 				}
 				Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
-			
-				reginfo.Remarks = remarks;
-				AuditTrail auditTrail = new AuditTrail();
-				auditTrail.Who = reginfo.UpdateBy;
-				auditTrail.WhatActionId = 4;
-				auditTrail.WhichParentMenuId = 2;
-				auditTrail.WhichMenu = "Client Profile";
-				auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
-			{
-				new AuditTrialFeild
-				{
-					WhichFeildName = "Status",
-					WhichValue= prevRegInfo.Status,
-					WhatValue = reginfo.Status
-				}
-			};
-				auditTrailService.InsertIntoAuditTrail(auditTrail);
-				return _repository.UpdateRegInfo(reginfo);
+				_repository.StatusChangeBasedOnDemand(reginfo.Mphone,demand,reginfo.UpdateBy,remarks);
+				var currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
+				AuditTrailForClientCLose(prevRegInfo, currentReginfo, remarks);				
+				//_repository.UpdateRegInfo(reginfo);
+
+				return currentReginfo;
 			}
 			catch (Exception e)
 			{
 				throw e;
-			}			
+			}
 		}
 
-		public object AddRemoveLien(string remarks, Reginfo reginfo)
+		private void AuditTrailForClientCLose(Reginfo prevRegInfo, Reginfo currentReginfo,string remarks)
 		{
-			reginfo.LienM = 0;
-			reginfo.Remarks = remarks;
-			return _repository.UpdateRegInfo(reginfo);
+			currentReginfo.Remarks = remarks;
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = currentReginfo.UpdateBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 2;
+			auditTrail.WhichMenu = "Client Profile";
+			auditTrail.WhichId = currentReginfo.Mphone;
+			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevRegInfo);
+			auditTrail.InputFeildAndValue = diffList;
+			if (currentReginfo.Status == "C")
+			{
+				auditTrail.Response = "Close Performed Successfully";
+			}
+			else
+			{
+				auditTrail.Response = "Active Performed Successfully";
+			}
+
+			//auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
+			//{
+			//	new AuditTrialFeild
+			//	{
+			//		WhichFeildName = "Status",
+			//		WhichValue= prevRegInfo.Status,
+			//		WhatValue = reginfo.Status
+			//	}
+			//};
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
+		}
+
+		public object AddRemoveLien(string remarks, Reginfo prevReginfo)
+		{
+			//reginfo.LienM = 0;
+			//reginfo.Remarks = remarks;
+
+			_repository.AddOrRemoveLien(prevReginfo, remarks);
+			Reginfo currentRegInfo = (Reginfo)_repository.GetRegInfoByMphone(prevReginfo.Mphone);
+
+			currentRegInfo.Remarks = remarks;
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = currentRegInfo.UpdateBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 2;
+			auditTrail.WhichMenu = "Client Profile";
+			auditTrail.WhichId = prevReginfo.Mphone;
+			auditTrail.Response = "Lien Performed Successfully";
+			auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
+			{
+				new AuditTrialFeild
+				{
+					WhichFeildName = "LienM",
+					WhichValue= prevReginfo.LienM.ToString(),
+					WhatValue = currentRegInfo.LienM.ToString()
+				},
+				new AuditTrialFeild
+				{
+					WhichFeildName = "Remarks",
+					WhichValue= prevReginfo.Remarks,
+					WhatValue = currentRegInfo.Remarks
+				}
+			};
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
+			return currentRegInfo;
 		}
 
 		public async Task<object> GetRegInfoListByOthersBranchCode(string branchCode, string catId, string status, string filterId)
@@ -165,7 +219,7 @@ namespace MFS.DistributionService.Service
 			return _repository.CheckPinStatus(mphone);
 		}
 
-		public object InsertModelToAuditTrail(object model, string who, int parentMenuId, int actionId, string menu)
+		public object InsertModelToAuditTrail(object model, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null)
 		{
 			try
 			{
@@ -174,18 +228,20 @@ namespace MFS.DistributionService.Service
 				auditTrail.WhichParentMenuId = parentMenuId;
 				auditTrail.WhatActionId = actionId;
 				auditTrail.WhichMenu = menu;
+				auditTrail.WhichId = whichId;
+				auditTrail.Response = response;
 				auditTrail.InputFeildAndValue = auditTrailService.GetAuditTrialFeildBySingleObject(model);
 				auditTrailService.InsertIntoAuditTrail(auditTrail);
 				return true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw ex;
 			}
-			
+
 		}
 
-		public object InsertUpdatedModelToAuditTrail(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu)
+		public object InsertUpdatedModelToAuditTrail(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null)
 		{
 			try
 			{
@@ -194,11 +250,13 @@ namespace MFS.DistributionService.Service
 				auditTrail.WhichParentMenuId = parentMenuId;
 				auditTrail.WhatActionId = actionId;
 				auditTrail.WhichMenu = menu;
+				auditTrail.WhichId = whichId;
+				auditTrail.Response = response;
 				auditTrail.InputFeildAndValue = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentModel, prevModel);
 				auditTrailService.InsertIntoAuditTrail(auditTrail);
 				return true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw ex;
 			}
@@ -208,38 +266,82 @@ namespace MFS.DistributionService.Service
 		{
 			try
 			{
+				string demand=null;
 				if (reginfo.BlackList == "Y")
 				{
-					reginfo.BlackList = "N";
+					//reginfo.BlackList = "N";
+					demand = "OPT_BLACK";
 				}
 				else
 				{
-					reginfo.BlackList = "Y";
+					//reginfo.BlackList = "Y";
+					demand = "PUT_BLACK";
 				}
-				Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
-
-				reginfo.Remarks = remarks;
-				AuditTrail auditTrail = new AuditTrail();
-				auditTrail.Who = reginfo.UpdateBy;
-				auditTrail.WhatActionId = 4;
-				auditTrail.WhichParentMenuId = 2;
-				auditTrail.WhichMenu = "Client Profile";
-				auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
-			{
-				new AuditTrialFeild
-				{
-					WhichFeildName = "BlackList",
-					WhichValue= prevRegInfo.Status,
-					WhatValue = reginfo.Status
-				}
-			};
-				auditTrailService.InsertIntoAuditTrail(auditTrail);
-				return _repository.UpdateRegInfo(reginfo);
+				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand,reginfo.UpdateBy,remarks);
+				var currentReginfo = AuditTrailForBlackListClient(reginfo, remarks);				
+				return currentReginfo;
 			}
 			catch (Exception e)
 			{
 				throw e;
 			}
+		}
+
+		private object AuditTrailForBlackListClient(Reginfo previousReginfo,string remarks)
+		{
+			Reginfo currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(previousReginfo.Mphone);
+			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, previousReginfo);
+			previousReginfo.Remarks = remarks;
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = currentReginfo.UpdateBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 2;
+			auditTrail.WhichMenu = "Client Profile";
+			auditTrail.WhichId = previousReginfo.Mphone;
+			auditTrail.Response = "Black List Performed Successfully";
+			auditTrail.InputFeildAndValue = diffList;
+			//auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
+			//{
+			//	new AuditTrialFeild
+			//	{
+			//		WhichFeildName = "BlackList",
+			//		WhichValue= previousReginfo.BlackList,
+			//		WhatValue = currentReginfo.BlackList
+			//	}
+			//};
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
+			return currentReginfo;
+		}
+
+		public object InsertUpdatedModelToAuditTrailForUpdateKyc(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null)
+		{
+			try
+			{
+				AuditTrail auditTrail = new AuditTrail();
+				auditTrail.Who = who;
+				auditTrail.WhichParentMenuId = parentMenuId;
+				auditTrail.WhatActionId = actionId;
+				auditTrail.WhichMenu = menu;
+				auditTrail.WhichId = whichId;
+				auditTrail.Response = response;
+				auditTrail.InputFeildAndValue = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObjectForUpdateKyc(currentModel, prevModel);
+				auditTrailService.InsertIntoAuditTrail(auditTrail);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public object GetBalanceInfoByMphone(string mphone)
+		{
+			return _repository.GetBalanceInfoByMphone(mphone);
+		}
+
+		public void StatusChangeBasedOnDemand(string mphone, string demand,string updateBy ,string remarks = null)
+		{
+			 _repository.StatusChangeBasedOnDemand(mphone, demand,updateBy,remarks);
 		}
 	}
 }

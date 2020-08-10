@@ -24,6 +24,7 @@ namespace OneMFS.ReportingApiServer.IOMapper
 			kernel.Bind<IBillCollectionRepository>().To<BillCollectionRepository>();
 			kernel.Bind<IChildMerchantRepository>().To<ChildMerchantRepository>();
 			kernel.Bind<IChainMerchantRepository>().To<ChainMerchantRepository>();
+			kernel.Bind<IAuditTrailRepository>().To<AuditTrailRepository>();
 			
 		}
 	}

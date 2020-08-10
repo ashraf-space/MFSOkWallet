@@ -51,6 +51,7 @@
     <Compile Include="Models\AgentInformation.cs" />
     <Compile Include="Models\BillCollection.cs" />
     <Compile Include="Models\ChildMerchantTransaction.cs" />
+    <Compile Include="Models\CompanyDisbursementUpload.cs" />
     <Compile Include="Models\CurrentAffairsFirst.cs" />
     <Compile Include="Models\CurrentAffairsStatement.cs" />
     <Compile Include="Models\FundTransfer.cs" />

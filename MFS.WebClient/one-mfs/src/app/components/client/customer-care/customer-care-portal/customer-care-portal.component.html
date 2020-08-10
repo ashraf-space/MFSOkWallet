@@ -45,7 +45,7 @@
     <app-outbox></app-outbox>
 </div>
 <div *ngIf="!isHomeActive && !switchCaseLoading">
-    <app-client-profile [model]="activeCaseDetails"></app-client-profile>
+    <app-client-profile [model]="activeCaseDetails" [isCustomerCare]="true"></app-client-profile>
 </div>
 
 <app-generic-modal [initiateModal]="showAgentLocation" [header]="'Agent Location'" [hideConfirm]="true" (onDestroy)="showAgentLocation=false">

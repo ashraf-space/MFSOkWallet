@@ -323,10 +323,17 @@ export class MerchantAddoreditComponent implements OnInit {
                 .subscribe(
                     data => {
                         window.history.back();
-                        if (this.isEditMode)
+                        if (this.isEditMode) {
                             this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant updated' });
-                        else
+                        }
+                        else if
+                            (this.isRegistrationPermitted && this.isEditMode) {
+                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
+                        }
+                        else {
                             this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant added' });
+
+                        }
                     },
                     error => {
                         console.log(error);

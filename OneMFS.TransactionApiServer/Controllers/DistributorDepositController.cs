@@ -66,7 +66,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 
                         //Insert into audit trial audit and detail
                         cashEntry.Status = "default";//insert for only audit trail
-                        _auditTrailService.InsertModelToAuditTrail(cashEntry, cashEntry.CreateUser, 9, 3, "Distributor Deposit");
+                        _auditTrailService.InsertModelToAuditTrail(cashEntry, cashEntry.CreateUser, 9, 3, "Distributor Deposit",cashEntry.AcNo,"Saved Successfully!");
                     }
                     catch (Exception)
                     {
@@ -91,7 +91,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                             cashEntry.Status = "default";//insert for only audit trail
                             TblCashEntry prevModel = _distributorDepositService.GetDestributorDepositByTransNo(cashEntry.TransNo);
                             prevModel.Status = "default";//insert for only audit trail
-                            _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.UpdateUser, 9, 4, "Distributor Deposit");
+                            _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.UpdateUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Updated Successfully!");
                         }
                         catch (Exception ex)
                         {
@@ -112,7 +112,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                         //Insert into audit trial audit and detail
                         TblCashEntry prevModel = _distributorDepositService.GetDestributorDepositByTransNo(cashEntry.TransNo);
                         prevModel.Status = "default";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.UpdateUser, 9, 4, "Distributor Deposit");
+                        prevModel.CheckedUser = "";
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.CheckedUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Approved Successfully!");
 
 
                         return successOrErrorMsg;
@@ -126,7 +127,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                         //Insert into audit trial audit and detail
                         TblCashEntry prevModel = _distributorDepositService.GetDestributorDepositByTransNo(cashEntry.TransNo);
                         prevModel.Status = "default";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.UpdateUser, 9, 4, "Distributor Deposit");
+                        prevModel.CheckedUser = "";
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.CheckedUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Pass to Maker Successfully!");
 
                         return true;
                     }

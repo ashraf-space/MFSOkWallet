@@ -71,12 +71,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 					//int fourDigitRandomNo = new Random().Next(1000, 9999);                  
 					try
 					{
 						_DsrService.Add(regInfo);
-						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "DSR");
+						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "DSR",regInfo.Mphone, "Save successfully");
 					}
 					catch (Exception)
 					{
@@ -95,8 +95,9 @@ namespace OneMFS.DistributionApiServer.Controllers
 					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR");
-						return _DsrService.UpdateRegInfo(regInfo);
+						_DsrService.UpdateRegInfo(regInfo);
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR",regInfo.Mphone, "Update successfully");
+						return Ok();
 
 					}
 					else
@@ -107,8 +108,10 @@ namespace OneMFS.DistributionApiServer.Controllers
 							regInfo.RegStatus = "P";
 							int fourDigitRandomNo = new Random().Next(1000, 9999);
 							regInfo.AuthoDate = System.DateTime.Now;
-							regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "R");
+							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "R");
+							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_DsrService.UpdateRegInfo(regInfo);
+							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR", regInfo.Mphone, "Register successfully");
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()

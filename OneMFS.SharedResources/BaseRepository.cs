@@ -279,16 +279,18 @@ namespace OneMFS.SharedResources
             try
             {
                 TextCaseConversion convert = new TextCaseConversion();
+				string mPhone = null;
                 string whereClause = "";
                 string query = "UPDATE " + mainDbUser.DbUser + convert.ToPascalCase(entity.GetType().Name) + " SET ";
 
                 foreach (var prop in entity.GetType().GetProperties())
                 {
-                    if (prop.GetValue(entity, null) != null && !prop.Name.Contains("_"))
+                    if (prop.GetValue(entity, null) != null && !prop.Name.Contains("_") && isUpdateAllowToThisFeild(prop.Name.ToString()))
                     {
                         if (prop.Name.ToLower() == "mphone")
                         {
-                            whereClause = " WHERE mphone=" + "'" + prop.GetValue(entity, null) + "'";
+							mPhone = prop.GetValue(entity, null).ToString();
+							whereClause = " WHERE mphone=" + "'" + prop.GetValue(entity, null) + "'";
                         }
                         else
                         {
@@ -337,11 +339,18 @@ namespace OneMFS.SharedResources
                         }
                     }
                 }
+				if (mPhone != null)
+				{
+					query = query.TrimEnd(',') + whereClause;
 
-                query = query.TrimEnd(',') + whereClause;
-
-                var result = ExecuteScaler(query);
-                return entity;
+					var result = ExecuteScaler(query);
+					return entity;
+				}
+				else
+				{
+					return entity;
+				}
+                
             }
             catch (Exception e)
             {
@@ -352,7 +361,79 @@ namespace OneMFS.SharedResources
 
         }
 
-        public IEnumerable<T> GetAll(T entity)
+		private bool isUpdateAllowToThisFeild(string columnName)
+		{
+			if(columnName.ToUpper().Trim() == "LIENM".Trim())
+			{
+				return false;
+			}
+			else if(columnName.ToUpper().Trim() == "DISTCODE".Trim())
+			{
+				return false;
+			}
+			else if(columnName.ToUpper().Trim() == "ACTYPECODE".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "REGDATE".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "PINNO".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "PINSTATUS".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "CATID".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "REGSOURCE".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "SCHARGEPER".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "ENTRYBY".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "PMPHONE".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "ENTRYDATE".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "BALANCEM".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "BALANCEC".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "LIENM".Trim())
+			{
+				return false;
+			}
+			else if (columnName.ToUpper().Trim() == "STATUS".Trim())
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		public IEnumerable<T> GetAll(T entity)
         {
             try
             {

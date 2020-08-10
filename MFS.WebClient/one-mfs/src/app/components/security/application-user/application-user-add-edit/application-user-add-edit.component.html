@@ -60,7 +60,7 @@
 				<div class="p-col-3">
 					<br />
 					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.tranAmtLimit" pInputText id="float-input" [disabled]="!hasEditPermission" pKeyFilter="num">
+						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.tranAmtLimit" pInputText pKeyFilter="money" id="float-input" [disabled]="!hasEditPermission">
 						<label for="float-input input-lg" class="col-form-label">Transaction Amount Limit</label>
 					</span>
 				</div>

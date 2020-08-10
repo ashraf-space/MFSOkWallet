@@ -24,7 +24,8 @@ namespace OneMFS.ReportingApiServer.IOMapper
 			kernel.Bind<IBillCollectionService>().To<BillCollectionService>();
 			kernel.Bind<IChildMerchantService>().To<ChildMerchantService>();
 			kernel.Bind<IChainMerchantService>().To<ChainMerchantService>();
-			
-		}
+			kernel.Bind<IAuditTrailService>().To<AuditTrailService>();
+
+        }
 	}
 }

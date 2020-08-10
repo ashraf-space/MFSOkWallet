@@ -7,6 +7,12 @@ import { MfsSettingService } from '../mfs-setting.service';
   providedIn: 'root'
 })
 export class KycService {
+    getBalanceInfoByMphone(entity: any) {
+        return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/getBalanceInfoByMphone?mphone=' + entity)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
    
     
     constructor(private http: HttpClient, private environment: MfsSettingService) {

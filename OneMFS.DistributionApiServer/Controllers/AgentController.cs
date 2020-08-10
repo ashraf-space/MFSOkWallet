@@ -17,11 +17,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 {
 	[Authorize]
 	[Produces("application/json")]
-    [Route("api/Agent")]
-    public class AgentController : Controller
-    {
-	    private readonly IAgentService _service;
-	    private readonly IDsrService _dsrService;
+	[Route("api/Agent")]
+	public class AgentController : Controller
+	{
+		private readonly IAgentService _service;
+		private readonly IDsrService _dsrService;
 		private readonly IKycService _kycService;
 		private IErrorLogService errorLogService;
 		public AgentController(IAgentService service, IDsrService dsrService, IKycService kycService, IErrorLogService _errorLogService)
@@ -31,39 +31,39 @@ namespace OneMFS.DistributionApiServer.Controllers
 			this._kycService = kycService;
 			this.errorLogService = _errorLogService;
 		}
-	    [HttpGet]
-	    [Route("GetAgents")]
+		[HttpGet]
+		[Route("GetAgents")]
 		public IEnumerable<Reginfo> GetAgents()
-	    {
-		    var result = _service.GetAllAgents();
-		    return result;
-	    }
+		{
+			var result = _service.GetAllAgents();
+			return result;
+		}
 		[ApiGuardAuth]
 		[HttpPost]
 		[Route("SaveAgent")]
-	    public object Save(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
-	    {
+		public object SaveAgent(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		{
 			try
 			{
 				if (isEditMode != true)
-				{				
-					int fourDigitRandomNo = new Random().Next(1000, 9999);				
+				{
+					int fourDigitRandomNo = new Random().Next(1000, 9999);
 					try
 					{
 						regInfo.CatId = "A";
 						regInfo.PinStatus = "N";
 						regInfo.AcTypeCode = 1;
 						regInfo.RegSource = "P";
-						regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 						_service.Add(regInfo);
-						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Agent");
-						return true;
+						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Agent", regInfo.Mphone, "Save successfully");
+						return Ok();
 					}
 					catch (Exception ex)
 					{
 
 						throw;
-					}						
+					}
 				}
 				else
 				{
@@ -71,11 +71,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor");
-						return _service.UpdateRegInfo(regInfo);
+						_service.UpdateRegInfo(regInfo);
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Agent", regInfo.Mphone, "Update successfully");
+						return Ok();
 
 					}
-					
+
 					else
 					{
 						var checkStatus = _kycService.CheckPinStatus(regInfo.Mphone);
@@ -85,10 +86,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 							regInfo.RegStatus = "P";
 							regInfo.AuthoDate = System.DateTime.Now;
-							regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "A");
+							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "A");
 
 							_service.UpdateRegInfo(regInfo);
+							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_dsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
+							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Agent", regInfo.Mphone);							
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
 							{
@@ -98,24 +101,25 @@ namespace OneMFS.DistributionApiServer.Controllers
 								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 							});
 
-							return true;
+							return Ok();
 						}
 						else
 						{
-							return true;
+							return Ok();
 						}
-						
-					}				
+
+					}
 				}
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				throw ex;
 			}
 		}
 		[HttpGet]
 		[Route("GetclusterByTerritoryCode")]
-	    public object GetclusterByTerritoryCode(string code)
+		public object GetclusterByTerritoryCode(string code)
 		{
 			try
 			{
@@ -129,13 +133,13 @@ namespace OneMFS.DistributionApiServer.Controllers
 		}
 		[HttpGet]
 		[Route("GenerateAgentCode")]
-	    public object GenerateAgentCode(string code)
+		public object GenerateAgentCode(string code)
 		{
 			try
 			{
 				return _service.GenerateAgentCode(code);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
@@ -143,23 +147,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 		[ApiGuardAuth]
 		[HttpGet]
 		[Route("GetAgentByMobilePhone")]
-	    public object GetAgentByMobilePhone(string mPhone)
+		public object GetAgentByMobilePhone(string mPhone)
 		{
 			try
 			{
 				//throw new ApplicationException();
 				return _service.GetAgentByMobilePhone(mPhone);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
 
-        [HttpGet]
-        [Route("GetAgentListByClusterCode")]
-        public object GetAgentListByClusterCode(string cluster = null)
-        {
+		[HttpGet]
+		[Route("GetAgentListByClusterCode")]
+		public object GetAgentListByClusterCode(string cluster = null)
+		{
 			try
 			{
 				return _service.GetAgentListByClusterCode(cluster);
@@ -172,7 +176,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 		}
 		[HttpGet]
 		[Route("GetAgentListByParent")]
-	    public object GetAgentListByParent(string code, string catId)
+		public object GetAgentListByParent(string code, string catId)
 		{
 			try
 			{

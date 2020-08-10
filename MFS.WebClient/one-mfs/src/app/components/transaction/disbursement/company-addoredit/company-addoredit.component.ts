@@ -37,6 +37,7 @@ export class CompanyAddoreditComponent implements OnInit {
         }
         else {
             this.isLoading = true;
+            this.tblDisburseCompanyInfoModel.entry_user = this.currentUserModel.user.username;
             this.disbursementService.save(this.tblDisburseCompanyInfoModel).pipe(first())
                 .subscribe(
                     data => {
@@ -66,6 +67,8 @@ export class CompanyAddoreditComponent implements OnInit {
             && (!this.tblDisburseCompanyInfoModel.remAcc || this.tblDisburseCompanyInfoModel.remAcc.trim().length === 0)
             && (!this.tblDisburseCompanyInfoModel.cabAcc || this.tblDisburseCompanyInfoModel.cabAcc.trim().length === 0)
             && (!this.tblDisburseCompanyInfoModel.catAcc || this.tblDisburseCompanyInfoModel.catAcc.trim().length === 0)
+            && (!this.tblDisburseCompanyInfoModel.incAcc || this.tblDisburseCompanyInfoModel.incAcc.trim().length === 0)
+            && (!this.tblDisburseCompanyInfoModel.eftAcc || this.tblDisburseCompanyInfoModel.eftAcc.trim().length === 0)
             && (!this.tblDisburseCompanyInfoModel.rwdAcc || this.tblDisburseCompanyInfoModel.rwdAcc.trim().length === 0)) {
             this.isActionDisabled = true;
             this.isShow = true;
@@ -88,6 +91,8 @@ export class CompanyAddoreditComponent implements OnInit {
                             this.tblDisburseCompanyInfoModel.remAcc = null;
                             this.tblDisburseCompanyInfoModel.cabAcc = null;
                             this.tblDisburseCompanyInfoModel.catAcc = null;
+                            this.tblDisburseCompanyInfoModel.incAcc = null;
+                            this.tblDisburseCompanyInfoModel.eftAcc = null;
                             this.tblDisburseCompanyInfoModel.rwdAcc = null;
                         }
                         else {

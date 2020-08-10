@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MfsUtilityService {
+   
     
     searchModelOptionList: any;
     searchModelCriteriaList: any;
@@ -155,6 +156,12 @@ export class MfsUtilityService {
 
     getMobileNoRegExp(): RegExp {
         return /^(?:\+88|01)?(?:\d{11}|\d{13})$/;
+    }
+    getAlphabetsWithSpaceEegExp(): RegExp {
+        return /^[a-zA-Z ]*$/;
+    }
+    getEmailRegExp(): RegExp {
+        return /\S+@\S+\.\S+/;
     }
     checkPhotoIdLength(photoId: any, photoIdTypeCode: any): any {
         if (photoId.length && photoId.length != 0) {

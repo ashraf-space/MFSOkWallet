@@ -14,7 +14,7 @@ namespace MFS.TransactionService.Service
         object GetDisbursementCompanyList();
         object GetMaxCompanyId();
         object getDisburseCompanyList();
-        object getDisburseNameCodeList();
+        object getDisburseNameCodeList();       
         object DataInsertToTransMSTandDTL(TblDisburseAmtDtlMake objTblDisburseAmtDtlMake);
         object GetCompnayNameById(int companyId);
         object GetDisburseTypeList();
@@ -24,7 +24,7 @@ namespace MFS.TransactionService.Service
         bool checkProcess(string batchno);
         List<TblDisburseInvalidData> getValidOrInvalidData(string processBatchNo, string validOrInvalid,string forPosting);
         string SendToPostingLevel(string processBatchNo,double totalSum);
-        object AllSend(string processBatchNo,string brCode,string checkerId,double totalSum);
+        string AllSend(string processBatchNo,string brCode,string checkerId,double totalSum);
         object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
     }
@@ -80,6 +80,7 @@ namespace MFS.TransactionService.Service
                 throw;
             }
         }
+        
 
         public object DataInsertToTransMSTandDTL(TblDisburseAmtDtlMake objTblDisburseAmtDtlMake)
         {
@@ -183,7 +184,7 @@ namespace MFS.TransactionService.Service
             }
         }
 
-        public object AllSend(string processBatchNo,string brCode, string checkerId,double totalSum)
+        public string AllSend(string processBatchNo,string brCode, string checkerId,double totalSum)
         {
             try
             {

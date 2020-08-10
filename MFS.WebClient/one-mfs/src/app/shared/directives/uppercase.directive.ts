@@ -13,9 +13,9 @@ export class UppercaseDirective {
         //this.word = $event.target.value;
         //this.value = this.word[0].toUpperCase() + this.word.substr(1).toLowerCase();
         this.value = $event.target.value;
-        const arrStr = this.value.toLowerCase().split(' ');
-        const word = arrStr.map((str) => (str.charAt(0).toUpperCase() + str.slice(1))).join(' ');
-
+        //const arrStr = this.value.toLowerCase().split(' ');
+        //const word = arrStr.map((str) => (str.charAt(0).toUpperCase() + str.slice(1))).join(' ');
+        const word = this.value.toUpperCase();
         this.ngModelChange.emit(word);
     }
 }

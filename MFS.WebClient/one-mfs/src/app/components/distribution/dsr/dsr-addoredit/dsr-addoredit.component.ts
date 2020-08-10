@@ -389,10 +389,17 @@ export class DsrAddoreditComponent implements OnInit {
                         //console.log(data);
                         //this.router.navigateByUrl('./');
                         window.history.back();
-                        if (this.isEditMode)
+                        if (this.isEditMode) {
                             this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'DSR updated' });
-                        else
+                        }
+                        else if
+                            (this.isRegistrationPermitted && this.isEditMode) {
+                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Agent Registered' });
+                        }
+                        else {
                             this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'DSR added' });
+                        }
+                            
                     },
                     error => {
                         console.log(error);

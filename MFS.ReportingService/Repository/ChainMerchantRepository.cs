@@ -15,6 +15,7 @@ namespace MFS.ReportingService.Repository
     {
         List<OutletDetailsTransaction> GetOutletDetailsTransactionList(string chainMerchantCode,string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
         List<OutletSummaryTransaction> GetOutletSummaryTransactionList(string chainMerchantCode, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
+        List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
     }
     public class ChainMerchantRepository:BaseRepository<OutletDetailsTransaction>,IChainMerchantRepository
 	{
@@ -44,7 +45,7 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                    result = SqlMapper.Query<OutletDetailsTransaction>(connection, "RPT_OutletDetailsTransaction", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    result = SqlMapper.Query<OutletDetailsTransaction>(connection, "RPT_OUTLETDETAILSTRANSACTION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
                 }
             }
@@ -75,7 +76,39 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                    result = SqlMapper.Query<OutletSummaryTransaction>(connection, "RPT_OutletSummaryTransaction", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    result = SqlMapper.Query<OutletSummaryTransaction>(connection, "RPT_OUTLETSUMMARYTRANSACTION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+        public List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType)
+        {
+            List<OutletSummaryTransaction> result = new List<OutletSummaryTransaction>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("CHAINMERCHANTCODE", OracleDbType.Varchar2, ParameterDirection.Input, chainMerchantCode);
+                    dyParam.Add("CHAINMERCHANTNO", OracleDbType.Varchar2, ParameterDirection.Input, chainMerchantNo);
+                    dyParam.Add("OUTLETACCNO", OracleDbType.Varchar2, ParameterDirection.Input, outletAccNo);
+                    dyParam.Add("OUTLETCODE", OracleDbType.Varchar2, ParameterDirection.Input, outletCode);
+                    dyParam.Add("REPORTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, reportType);
+                    dyParam.Add("REPORTVIEWTYPE", OracleDbType.Varchar2, ParameterDirection.Input, reportViewType);
+                    dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(outletAccNo));
+                    dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<OutletSummaryTransaction>(connection, "RPT_OutletToParentTransSummary", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
                 }
             }

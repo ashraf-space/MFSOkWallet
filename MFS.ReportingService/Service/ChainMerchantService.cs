@@ -13,6 +13,7 @@ namespace MFS.ReportingService.Service
     {
         List<OutletDetailsTransaction> GetOutletDetailsTransactionList(string chainMerchantCode,string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
         List<OutletSummaryTransaction> GetOutletSummaryTransactionList(string chainMerchantCode, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
+        List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
     }
     public class ChainMerchantService:BaseService<OutletDetailsTransaction>,IChainMerchantService 
 	{
@@ -40,6 +41,19 @@ namespace MFS.ReportingService.Service
             try
             {
                 return _chainMerchantRepository.GetOutletSummaryTransactionList( chainMerchantCode,  outletAccNo,  outletCode,  reportType,  reportViewType,  fromDate,  toDate,  dateType);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType)
+        {
+            try
+            {
+                return _chainMerchantRepository.GetOutletToParentTransSummaryList( chainMerchantCode,  chainMerchantNo,  outletAccNo,  outletCode,  reportType,  reportViewType,  fromDate,  toDate,  dateType);
             }
             catch (Exception ex)
             {

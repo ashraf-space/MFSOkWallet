@@ -62,7 +62,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label third-line">Transfer Amount<span class="mandatory">*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pKeyFilter="int" (change)="GetTransactionDetailsByPayAmount();">
+                            <input type="text" class="form-control" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pInputText pKeyFilter="money" (change)="GetTransactionDetailsByPayAmount();">
                         </div>
                     </div>
                 </div>

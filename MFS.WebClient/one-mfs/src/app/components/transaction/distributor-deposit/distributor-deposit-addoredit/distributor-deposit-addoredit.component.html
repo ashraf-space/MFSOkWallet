@@ -71,7 +71,7 @@
                     <div class="form-group row">
                         <label for="Amount" class="col-sm-3 col-form-label">Amount<span class="mandatory">*</span></label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" maxlength="9" [(ngModel)]="cashEntryModel.amount" id="Amount" pKeyFilter="int" (change)="GetAmountInWords();" [disabled]="isRegistrationPermitted">
+                            <input type="text" class="form-control" maxlength="9" [(ngModel)]="cashEntryModel.amount" id="Amount" pInputText pKeyFilter="money" (change)="GetAmountInWords();" [disabled]="isRegistrationPermitted">
                             <p-message *ngIf="(cashEntryModel.amount==null || cashEntryModel.amount=='' || cashEntryModel.amount == '0') && error " severity="error" text="Cannot be left blank"></p-message>
                         </div>
                     </div>

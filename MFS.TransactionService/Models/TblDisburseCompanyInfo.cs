@@ -18,9 +18,14 @@ namespace MFS.TransactionService.Models
         public string CabAcc { get; set; }
         public string CatAcc { get; set; }
         public string RwdAcc { get; set; }
+        public string IncAcc { get; set; }
+        public string EftAcc { get; set; }
+
 
 
         //for non mapped purpose
         public double bala_nce { get; set; }
+        public string entry_user { get; set; }
+        public string enterprize_AccCode { get; set; }
     }
 }

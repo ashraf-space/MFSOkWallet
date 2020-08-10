@@ -39,10 +39,11 @@ export class CompanyListComponent implements OnInit {
         this.gridConfig.columnList = [
             { field: 'companyId', header: 'ID', width: '5%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'companyName', header: 'Company Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'enterprize_AccCode', header: 'Enterprise Acc Code', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'bala_nce', header: 'Balance', width: '10%',style:'text-align:right', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'address', header: 'Address', width: '40%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'phone', header: 'Phone', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'fax', header: 'Fax', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getYesNoTemplateForRowData() }
+            { field: 'fax', header: 'Fax', width: '5%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getYesNoTemplateForRowData() }
         ];
 
     };

@@ -9,6 +9,7 @@ using OneMFS.SharedResources.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -138,7 +139,7 @@ namespace MFS.DistributionService.Service
 					regInfo.CatId = "M";
 					regInfo.RegSource = "P";
 					regInfo.AcTypeCode = 1;
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 					regInfo.SelectedCycleWeekDay = string.Join(",", regInfo._SelectedCycleWeekDay);
 					MerchantConfig merchantConfig = new MerchantConfig();
 					merchantConfig.Mcode = regInfo._Mcode;
@@ -147,9 +148,10 @@ namespace MFS.DistributionService.Service
 					try
 					{
 						_merchantConfigService.Add(merchantConfig);
+						_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Merchant Config", merchantConfig.Mphone, "Save successfully");
 						_MerchantRepository.Add(regInfo);
-						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant");
-						_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Merchant");
+						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
+
 					}
 					catch (Exception)
 					{
@@ -157,7 +159,7 @@ namespace MFS.DistributionService.Service
 						throw;
 					}
 
-					return true;
+					return HttpStatusCode.OK;
 
 				}
 				else
@@ -170,8 +172,9 @@ namespace MFS.DistributionService.Service
 						}
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant");
-						return _MerchantRepository.UpdateRegInfo(regInfo);
+						_MerchantRepository.UpdateRegInfo(regInfo);
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Merchant updated");
+						return HttpStatusCode.OK;
 					}
 					else
 					{
@@ -181,10 +184,10 @@ namespace MFS.DistributionService.Service
 							regInfo.RegStatus = "P";
 							regInfo.PinStatus = "Y";
 							regInfo.AuthoDate = System.DateTime.Now;
-							regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
-
+							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
+							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_MerchantRepository.UpdateRegInfo(regInfo);
-
+							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
 							int fourDigitRandomNo = new Random().Next(1000, 9999);
 							_MerchantRepository.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
@@ -202,7 +205,7 @@ namespace MFS.DistributionService.Service
 						{
 							return true;
 						}
-						
+
 					}
 
 				}
@@ -281,7 +284,7 @@ namespace MFS.DistributionService.Service
 					regInfo.CatId = "M";
 					regInfo.Mphone = regInfo.EftAccNo;
 					regInfo.AcTypeCode = 1;
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 					MerchantConfig merchantConfig = new MerchantConfig();
 					merchantConfig.Mcode = regInfo._OutletCode;
 					merchantConfig.Category = "M";
@@ -289,7 +292,9 @@ namespace MFS.DistributionService.Service
 					try
 					{
 						_merchantConfigService.Add(merchantConfig);
+						_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Merchant Config", merchantConfig.Mphone, "Merchant Added");
 						_MerchantRepository.Add(regInfo);
+						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
 					}
 					catch (Exception ex)
 					{
@@ -305,17 +310,20 @@ namespace MFS.DistributionService.Service
 					if (evnt == "edit")
 					{
 						regInfo.UpdateDate = System.DateTime.Now;
-						return _MerchantRepository.UpdateRegInfo(regInfo);
+						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_MerchantRepository.UpdateRegInfo(regInfo);
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Merchant updated");
+						return HttpStatusCode.OK;
 					}
 					else
 					{
 						regInfo.RegStatus = "P";
 						regInfo.PinStatus = "Y";
 						regInfo.AuthoDate = System.DateTime.Now;
-						regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
-
+						//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
+						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_MerchantRepository.UpdateRegInfo(regInfo);
-
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
 						int fourDigitRandomNo = new Random().Next(1000, 9999);
 						_MerchantRepository.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 						MessageService service = new MessageService();

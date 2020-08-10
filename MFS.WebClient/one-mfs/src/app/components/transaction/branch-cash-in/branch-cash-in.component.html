@@ -36,7 +36,7 @@
             <div class="form-group row">
                 <label for="name" class="col-sm-2 col-form-label single-line">Cash In Amount <span class="mandatory">*</span></label>
                 <div class="col-sm-6">
-                    <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pKeyFilter="int" [(ngModel)]="branchCashInModel.cashInAmount" (change)="GetAmountInWords();" [disabled]="isEnableCashInAmt">
+                    <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="branchCashInModel.cashInAmount" (change)="GetAmountInWords();" [disabled]="isEnableCashInAmt">
                     <p-message *ngIf="(branchCashInModel.cashInAmount==null || branchCashInModel.cashInAmount==''|| branchCashInModel.cashInAmount=='0') && error " severity="error" text="Cannot be left blank"></p-message>
                 </div>
             </div>

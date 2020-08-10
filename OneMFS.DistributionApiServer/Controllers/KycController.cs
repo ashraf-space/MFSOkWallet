@@ -148,15 +148,19 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				var prevModel = kycService.GetRegInfoByMphone(reginfo.Mphone);
+				object currentReginfo = null;
+				reginfo.UpdateDate = System.DateTime.Now;
 				if (prevModel != null)
 				{
-					kycService.InsertUpdatedModelToAuditTrail(reginfo, prevModel, reginfo.UpdateBy, 3, 4, "Distributor");
+					currentReginfo = kycService.UpdetKyc(reginfo);
+					kycService.InsertUpdatedModelToAuditTrailForUpdateKyc(reginfo, prevModel, reginfo.UpdateBy, 3, 4, "Distributor", reginfo.Mphone, "Update successfully");
 				}
-				return kycService.UpdetKyc(reginfo);
+				return currentReginfo;
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				throw ex;
 			}
 
 		}
@@ -194,6 +198,20 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				return kycService.GetBranchNameByCode(branchCode);
+
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+		[HttpGet]
+		[Route("GetBalanceInfoByMphone")]
+		public object GetBalanceInfoByMphone(string mphone)
+		{
+			try
+			{
+				return kycService.GetBalanceInfoByMphone(mphone);
 
 			}
 			catch (Exception ex)
@@ -243,8 +261,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				throw ex;
 			}
 
 		}

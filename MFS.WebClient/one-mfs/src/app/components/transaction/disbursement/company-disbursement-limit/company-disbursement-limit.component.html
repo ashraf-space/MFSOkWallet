@@ -20,13 +20,13 @@
             <div class="p-grid">
                 <div class="p-col-6">
                     <label for="float-input input-lg" class="col-form-label-dd">Amount<span class="mandatory">*</span></label>
-                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.amountCr">
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.amountCr" pInputText pKeyFilter="money">
                     <p-message *ngIf="(tblDisburseAmtDtlMakeModel.amountCr==null || tblDisburseAmtDtlMakeModel.amountCr=='') && error " severity="error" text="Cannot be left blank"></p-message>
                 </div>
 
                 <div class="p-col-6">
                     <label for="float-input input-lg" class="col-form-label-dd">Ref No<span class="mandatory">*</span></label>
-                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.refNo">
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseAmtDtlMakeModel.refNo" pInputText pKeyFilter="money">
                     <p-message *ngIf="(tblDisburseAmtDtlMakeModel.refNo==null || tblDisburseAmtDtlMakeModel.refNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
                 </div>
 

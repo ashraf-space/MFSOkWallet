@@ -28,6 +28,9 @@ namespace MFS.DistributionService.Repository
 		object GetBranchNameByCode(string branchCode);
 		Task<object> GetRegInfoListByOthersBranchCode(string branchCode, string catId, string status, string roleId);
 		object CheckPinStatus(string mphone);
+		object GetBalanceInfoByMphone(string mphone);
+		void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks=null);		
+		void AddOrRemoveLien(Reginfo reginfo, string remarks);
 	}
 	public class KycRepository : BaseRepository<Reginfo>, IKycRepository
 	{
@@ -340,6 +343,78 @@ namespace MFS.DistributionService.Repository
 			catch (Exception ex)
 			{
 				throw ex;
+			}
+		}
+
+		public object GetBalanceInfoByMphone(string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var parameter = new OracleDynamicParameters();
+					parameter.Add("MOBLIENO", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_BLNC_INFO_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					this.CloseConnection(connection);
+					return result;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks)
+		{
+			try
+			{
+				if (mphone != null)
+				{					
+					using (var connection = this.GetConnection())
+					{
+						var parameter = new OracleDynamicParameters();
+						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+						parameter.Add("ON_DEMAND", OracleDbType.Varchar2, ParameterDirection.Input, demand);
+						parameter.Add("V_REMARKS", OracleDbType.Varchar2, ParameterDirection.Input, remarks);
+						parameter.Add("V_UPDATEBY", OracleDbType.Varchar2, ParameterDirection.Input, updateBy);
+						var result = SqlMapper.Query(connection, dbUser + "SP_CHNG_STATUS_ON_DEMAND", param: parameter, commandType: CommandType.StoredProcedure);
+						this.CloseConnection(connection);
+					}
+
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public void AddOrRemoveLien(Reginfo reginfo, string remarks)
+		{
+			try
+			{
+				if (reginfo.Mphone != null)
+				{
+					using (var connection = this.GetConnection())
+					{
+						var parameter = new OracleDynamicParameters();
+						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, reginfo.Mphone);						
+						parameter.Add("V_REMARKS", OracleDbType.Varchar2, ParameterDirection.Input, remarks);
+						parameter.Add("V_UPDATEBY", OracleDbType.Varchar2, ParameterDirection.Input, reginfo.UpdateBy);
+						var result = SqlMapper.Query(connection, dbUser + "SP_ADD_REMV_LIEN", param: parameter, commandType: CommandType.StoredProcedure);
+						this.CloseConnection(connection);
+					}
+
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
 			}
 		}
 	}

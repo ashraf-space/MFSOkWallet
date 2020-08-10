@@ -268,10 +268,17 @@ export class ChainMerchantAddoreditComponent implements OnInit {
                 .subscribe(
                     data => {
                         window.history.back();
-                        if (this.isEditMode)
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant updated' });
-                        else
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant added' });
+                        if (this.isEditMode) {
+                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant Updated' });
+
+                        }
+                        else if
+                            (this.isRegistrationPermitted && this.isEditMode) {
+                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant Added' });
+                        }
                     },
                     error => {
                         console.log(error);

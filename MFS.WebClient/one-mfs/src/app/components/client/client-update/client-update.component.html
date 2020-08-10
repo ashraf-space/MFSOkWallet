@@ -7,53 +7,53 @@
 	</div>
 	<div class="p-col-6">
 		<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Account Number </label>
-		<input id="float-input" type="text" class="form-control" [readonly]="true" pInputText [(ngModel)]="model.mphone">
+		<input id="float-input" type="text" class="form-control" [readonly]="true" pInputText [(ngModel)]="regInfoModel.mphone">
 
 	</div>
 	<div class="p-col-6">
 		<label for="float-input input-lg" class="col-form-label">Client Name <span class="mandatory">*</span></label>
-		<input type="text" class="form-control" [(ngModel)]="model.name" uppercase pInputText id="float-input">
+		<input type="text" class="form-control" [(ngModel)]="regInfoModel.name" uppercase pInputText id="float-input">
 	</div>
 	<div class="p-col-4">
 		<span class="ui-float-label ">
-			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.spouseName">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="regInfoModel.spouseName">
 			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Spouse Name </label>
 		</span>
 	</div>
 	<div class="p-col-4">
 		<span class="ui-float-label ">
-			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.fatherName">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="regInfoModel.fatherName">
 			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Fathers Name </label>
 		</span>
 	</div>
 	<div class="p-col-4">
 		<span class="ui-float-label ">
-			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.motherName">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="regInfoModel.motherName">
 			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Mothers Name </label>
 		</span>
 	</div>
 	<div class="p-col-6">
 		<br />
 		<span class="ui-float-label ">
-			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.monthlyIncome">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="regInfoModel.monthlyIncome">
 			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Monthly Income </label>
 		</span>
 	</div>
-	<div *ngIf="model.catId == 'C'" class="p-col-6">
+	<div *ngIf="regInfoModel.catId == 'C'" class="p-col-6">
 		<label for="float-input input-lg" class="col-form-label-dd"> Occupation</label>
-		<p-dropdown [options]="occupationList" placeholder="Select Occupation" [(ngModel)]="model.occupation"
+		<p-dropdown [options]="occupationList" placeholder="Select Occupation" [(ngModel)]="regInfoModel.occupation"
 					[filter]="true" filterBy="label,value.name"
 					[style]="{display: 'grid'}" [disabled]="isRegPermit"></p-dropdown>
 		<!--<br />
 		<span class="ui-float-label ">
-			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.occupation">
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="regInfoModel.occupation">
 			<label for="float-input input-lg" class="col-form-label"><i class='fa fa-search'></i> Occupation </label>
 		</span>-->
 	</div>
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.conMob"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.conMob"
 				   [pKeyFilter]="positveNumber" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Customer Mobile No</label>
 		</span>
@@ -61,7 +61,7 @@
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.conPhone"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.conPhone"
 				   [pKeyFilter]="positveNumber" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Customer Phone</label>
 		</span>
@@ -69,14 +69,14 @@
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.secondConName" pInputText id="float-input">
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.secondConName" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Second Contact Name</label>
 		</span>
 	</div>
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.secondConMob"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.secondConMob"
 				   [pKeyFilter]="positveNumber" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Second Contact Mobile</label>
 		</span>
@@ -84,14 +84,14 @@
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.thirdConName" pInputText id="float-input">
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConName" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Third Contact Name</label>
 		</span>
 	</div>
 	<div class="p-col-2">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.thirdConMob"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConMob"
 				   [pKeyFilter]="positveNumber" pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Third Contact Mobile</label>
 		</span>
@@ -99,7 +99,7 @@
 	<div class="p-col-6">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.offAddr"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.offAddr"
 				   pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Official Address</label>
 		</span>
@@ -107,7 +107,7 @@
 	<div class="p-col-6">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.preAddr"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.preAddr"
 				   pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Present Address</label>
 		</span>
@@ -115,7 +115,7 @@
 	<div class="p-col-12">
 		<br />
 		<span class="ui-float-label ">
-			<input type="text" class="form-control" [(ngModel)]="model.perAddr"
+			<input type="text" class="form-control" [(ngModel)]="regInfoModel.perAddr"
 				   pInputText id="float-input">
 			<label for="float-input input-lg" class="col-form-label"> Permanent Address</label>
 		</span>

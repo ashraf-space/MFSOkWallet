@@ -56,6 +56,8 @@ export class CustomerAddoreditComponent implements OnInit {
     customeNumberInput: any;
     date = new Date();
     occupationList: any;
+    alphabetsWithSpace: any;
+    emailRegx: any;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -68,6 +70,8 @@ export class CustomerAddoreditComponent implements OnInit {
         private ngbDatepickerConfig: NgbDatepickerConfig,
         private kycService: KycService) {
         this.customeNumberInput = this.mfsUtilityService.getPositiveWholeNumberRegExp();
+        this.alphabetsWithSpace = this.mfsUtilityService.getAlphabetsWithSpaceEegExp();
+        this.emailRegx = this.mfsUtilityService.getEmailRegExp();
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -125,7 +129,8 @@ export class CustomerAddoreditComponent implements OnInit {
             { label: 'Islam', value: 'Islam' },
             { label: 'Hinduism', value: 'Hinduism' },
             { label: 'Chritianity', value: 'Chritianity' },
-            { label: 'Buddhism', value: 'Buddhism' }
+            { label: 'Buddhism', value: 'Buddhism' },
+            { label: 'Other', value: 'Other' }
         ];
 
         this.relationList = [
@@ -480,6 +485,9 @@ export class CustomerAddoreditComponent implements OnInit {
        
         if (this.isEditMode) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
+        }
+        if (this.isEditMode && this.isRegPermit) {
+            this.regInfoModel.authoBy = this.currentUserModel.user.username;
         }
         if (event != 'reject') {
             this.regInfoModel.entryBy = this.currentUserModel.user.username;

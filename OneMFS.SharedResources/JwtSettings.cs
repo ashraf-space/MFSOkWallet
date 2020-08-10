@@ -11,7 +11,7 @@ namespace OneMFS.SharedResources
             JwtModel model = new JwtModel();
             model.Key = "MFS@Db(LTD/Am!N@12345)oblOkW@lL3t";
             model.Audience = "MfsAudience";
-            model.MinutesToExpiration = 60;
+            model.MinutesToExpiration = 240;
             return model;
         }
     }

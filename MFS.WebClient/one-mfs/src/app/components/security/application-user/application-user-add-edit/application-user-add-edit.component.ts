@@ -113,6 +113,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
             this.error = false;
             this.msgs = [];
 
+            this.applicationUserModel.createdBy = this.currentUserModel.user.username;
             this.applicationUserService.save(this.applicationUserModel).pipe(first())
                 .subscribe(
                 data => {

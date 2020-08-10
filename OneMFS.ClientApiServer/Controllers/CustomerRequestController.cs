@@ -76,6 +76,8 @@ namespace OneMFS.ClientApiServer.Controllers
 					auditTrail.WhatActionId = 3;
 					auditTrail.WhichParentMenuId = 2;
 					auditTrail.WhichMenu = "Client Profile";
+					auditTrail.WhichId = model.Mphone;
+					auditTrail.Response = "Success! Request Generated Successfully";
 					auditTrail.InputFeildAndValue = auditTrailService.GetAuditTrialFeildBySingleObject(model);
 					auditTrailService.InsertIntoAuditTrail(auditTrail);
 					return customerReqLogService.Add(reqModel);

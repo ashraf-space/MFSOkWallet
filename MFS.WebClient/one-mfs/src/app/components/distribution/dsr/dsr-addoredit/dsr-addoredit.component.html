@@ -29,7 +29,7 @@
 							<br />
 							<span class="ui-float-label">
 								<input autocomplete="off"  class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
-									   [(ngModel)]="regDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+									   [(ngModel)]="regDate" ngbDatepicker #d="ngbDatepicker" >
 								<label for="float-input input-lg">Reg Date<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regDate.year==null || regInfoModel.year=='') && error " severity="error" text="Cannot be left blank"></p-message>

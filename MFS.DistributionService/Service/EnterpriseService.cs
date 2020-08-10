@@ -44,13 +44,13 @@ namespace MFS.DistributionService.Service
 					aReginfo.PinStatus = "N";
 					aReginfo.AcTypeCode = 1;
 					aReginfo.RegSource = "P";
-					aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
+					//aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
 			
 					try
 					{
 						enterpriseRepository.Add(aReginfo);
 						kycService.UpdatePinNo(aReginfo.Mphone, fourDigitRandomNo.ToString());
-						kycService.InsertModelToAuditTrail(aReginfo, aReginfo.EntryBy, 3, 3, "Enterprise");
+						kycService.InsertModelToAuditTrail(aReginfo, aReginfo.EntryBy, 3, 3, "Enterprise",aReginfo.Mphone, "Save successfully");
 						MessageService service = new MessageService();
 						//service.SendMessage(new MessageModel()
 						//{
@@ -82,19 +82,18 @@ namespace MFS.DistributionService.Service
 					{
 						aReginfo.UpdateDate = System.DateTime.Now;
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
-						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Enterprise");
 						enterpriseRepository.UpdateRegInfo(aReginfo);
+						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Enterprise", "Update successfully");		
 						return HttpStatusCode.OK;
 					}
 					else
 					{
-						aReginfo.RegStatus = "P";
-						
-						
+						aReginfo.RegStatus = "P";						
 						aReginfo.AuthoDate = System.DateTime.Now;
-						aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "E");
-						enterpriseRepository.UpdateRegInfo(aReginfo);						
-
+						//aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "E");
+						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						enterpriseRepository.UpdateRegInfo(aReginfo);
+						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Enterprise", "Register successfully");
 						MessageService service = new MessageService();
 						//service.SendMessage(new MessageModel()
 						//{

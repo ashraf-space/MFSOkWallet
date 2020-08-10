@@ -134,7 +134,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 					string distCode = regInfo.DistCode.Substring(0, 6);
 					var isDistCodeExist = _kycService.CheckIsDistCodeExist(distCode);				
 					if (Convert.ToInt32(isDistCodeExist) == 1)
@@ -147,7 +147,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 						try
 						{
 							_distributorService.Add(regInfo);
-							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Distributor");
+							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Distributor",regInfo.Mphone, "Save successfully");
+							return Ok();
 						}
 						catch (Exception ex)
 						{
@@ -163,8 +164,9 @@ namespace OneMFS.DistributionApiServer.Controllers
 					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor");
-						return _distributorService.UpdateRegInfo(regInfo);
+						_distributorService.UpdateRegInfo(regInfo);
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor",regInfo.Mphone, "Update successfully");
+						return Ok();
 
 					}
 					else
@@ -176,8 +178,10 @@ namespace OneMFS.DistributionApiServer.Controllers
 							int fourDigitRandomNo = new Random().Next(1000, 9999);
 
 							regInfo.AuthoDate = System.DateTime.Now;
-							regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "D");
+							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "D");
+							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_distributorService.UpdateRegInfo(regInfo);
+							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
@@ -283,40 +287,34 @@ namespace OneMFS.DistributionApiServer.Controllers
 				};
 
 				string body;
-				Reginfo obj;
+				string demand=null;
+				Reginfo reginfo;
 
 				if (status == "D")
 				{
-					dormantAccService.DeleteByCustomField(dormantModel.Mphone, "Mphone", new DormantAcc());
-					obj = _distributorService.SingleOrDefaultByCustomField(dormantModel.Mphone, "Mphone", new Reginfo());
-					obj.Status = "A";
-					obj.Remarks = remarks;
+					//dormantAccService.DeleteByCustomField(dormantModel.Mphone, "Mphone", new DormantAcc());
+					reginfo = _distributorService.SingleOrDefaultByCustomField(dormantModel.Mphone, "Mphone", new Reginfo());
+					//obj.Status = "A";
+					demand = "REVOKE_DORMANT";
+					reginfo.Remarks = remarks;
 					body = "Dear User, Your account has successfully been revoked from dormant status.";
 				}
 				else
 				{
-					dormantAccService.Add(dormantModel);
-					obj = _distributorService.SingleOrDefaultByCustomField(dormantModel.Mphone, "Mphone", new Reginfo());
-					obj.Status = "D";
-					obj.Remarks = remarks;
+					//dormantAccService.Add(dormantModel);
+					reginfo = _distributorService.SingleOrDefaultByCustomField(dormantModel.Mphone, "Mphone", new Reginfo());
+					//obj.Status = "D";
+					demand = "INVOKE_DORMANT";
+					reginfo.Remarks = remarks;
 					body = "Dear User, Your account has been put to dormant status.";
 				}
 				messageModel.MessageBody = body;
-
-				Reginfo prevAReginfo = (Reginfo) _kycService.GetRegInfoByMphone(dormantModel.Mphone);
-				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(obj, prevAReginfo);
-				AuditTrail auditTrail = new AuditTrail();
-				auditTrail.Who = dormantModel._ActionBy;
-				auditTrail.WhatActionId = 4;
-				auditTrail.WhichParentMenuId = 2;
-				auditTrail.WhichMenu = "Client Profile";
-				auditTrail.InputFeildAndValue = diffList;
-				auditTrailService.InsertIntoAuditTrail(auditTrail);
-				var ret = _distributorService.UpdateByStringField(obj, "Mphone");
+				//var ret = _distributorService.UpdateRegInfo(reginfo);
+				_kycService.StatusChangeBasedOnDemand(dormantModel.Mphone, demand,reginfo.UpdateBy,remarks);
+				var currentReginfo = AuditTrailForAddRemoveDormant(dormantModel, reginfo, status);
 				MessageService messageService = new MessageService();
 				messageService.SendMessage(messageModel);
-
-				return ret;
+				return currentReginfo;
 			}
 			catch (Exception ex)
 			{
@@ -324,6 +322,30 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 			}
 		}
+
+		private object AuditTrailForAddRemoveDormant(DormantAcc dormantModel, Reginfo prevReginfo, string status)
+		{
+			Reginfo currentReginfo = (Reginfo)_kycService.GetRegInfoByMphone(dormantModel.Mphone);
+			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevReginfo);
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = dormantModel._ActionBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 2;
+			auditTrail.WhichMenu = "Client Profile";
+			auditTrail.WhichId = dormantModel.Mphone;
+			if (status == "D")
+			{
+				auditTrail.Response = "Revoked from Dormant Successfully";
+			}
+			else
+			{
+				auditTrail.Response = "Dormant Perform Successfully";
+			}
+			auditTrail.InputFeildAndValue = diffList;
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
+			return currentReginfo;
+		}
+
 		[ApiGuardAuth]
 		[HttpPost]
 		[Route("PinReset")]
@@ -335,15 +357,31 @@ namespace OneMFS.DistributionApiServer.Controllers
 				Reginfo prevAReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				_DsrService.UpdatePinNo(model.Mphone, fourDigitRandomNo.ToString());
 				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(model, prevAReginfo);
-				AuditTrail auditTrail = new AuditTrail();
-				auditTrail.Who = model.UpdateBy;
-				auditTrail.WhatActionId = 4;
-				auditTrail.WhichParentMenuId = 2;
-				auditTrail.WhichMenu = "Client Profile";
-				auditTrail.InputFeildAndValue = diffList;
-				auditTrailService.InsertIntoAuditTrail(auditTrail);
-				
-
+				if (!isUnlockRequest)
+				{
+					AuditTrail auditTrail = new AuditTrail();
+					auditTrail.Who = model.UpdateBy;
+					auditTrail.WhatActionId = 4;
+					auditTrail.WhichParentMenuId = 2;
+					auditTrail.WhichMenu = "Client Profile";
+					auditTrail.InputFeildAndValue = diffList;
+					auditTrail.WhichId = model.Mphone;
+					auditTrail.Response = "Success! Pin Reset Successfully";
+					auditTrailService.InsertIntoAuditTrail(auditTrail);
+				}
+				else
+				{
+					AuditTrail auditTrail = new AuditTrail();
+					auditTrail.Who = model.UpdateBy;
+					auditTrail.WhatActionId = 4;
+					auditTrail.WhichParentMenuId = 2;
+					auditTrail.WhichMenu = "Client Profile";
+					auditTrail.InputFeildAndValue = diffList;
+					auditTrail.WhichId = model.Mphone;
+					auditTrail.Response = "Success! Account Unlocked Successfully";
+					auditTrailService.InsertIntoAuditTrail(auditTrail);
+				}
+								
 				string messagePrefix = isUnlockRequest == true ? "Your Account Has been Unlocked. Your new Pin is " : "Your Pin has successfully been reset to ";
 
 				MessageModel messageModel = new MessageModel()

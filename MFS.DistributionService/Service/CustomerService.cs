@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
@@ -43,13 +44,13 @@ namespace MFS.DistributionService.Service
 					aReginfo.PinStatus = "N";
 					aReginfo.AcTypeCode = 2;
 					aReginfo.RegSource = "P";
-					aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
+					//aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
 
 					try
 					{
 						_customerRepository.Add(aReginfo);
 						kycService.UpdatePinNo(aReginfo.Mphone, fourDigitRandomNo.ToString());
-						kycService.InsertModelToAuditTrail(aReginfo, aReginfo.EntryBy, 3, 3, "Customer");
+						kycService.InsertModelToAuditTrail(aReginfo, aReginfo.EntryBy, 3, 3, "Customer",aReginfo.Mphone, "Save successfully");
 						MessageService service = new MessageService();
 						service.SendMessage(new MessageModel()
 						{
@@ -65,7 +66,7 @@ namespace MFS.DistributionService.Service
 						throw;
 					}
 
-					return true;
+					return HttpStatusCode.OK;
 
 				}
 				else
@@ -74,14 +75,18 @@ namespace MFS.DistributionService.Service
 					{
 						aReginfo.UpdateDate = System.DateTime.Now;
 						aReginfo.RegStatus = "R";
-						return _customerRepository.UpdateRegInfo(aReginfo);
+						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						_customerRepository.UpdateRegInfo(aReginfo);
+						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Reject successfully");
+						return HttpStatusCode.OK;
 					}
 					else if (evnt == "edit")
 					{
 						aReginfo.UpdateDate = System.DateTime.Now;
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
-						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer");				
-						return _customerRepository.UpdateRegInfo(aReginfo);
+						_customerRepository.UpdateRegInfo(aReginfo);
+						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer",aReginfo.Mphone, "Update successfully");				
+						return HttpStatusCode.OK;
 
 					}
 					else
@@ -92,9 +97,10 @@ namespace MFS.DistributionService.Service
 						{
 							aReginfo.RegStatus = "P";
 							aReginfo.AuthoDate = System.DateTime.Now;
-							aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "C");
+							//aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "C");
+							var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 							_customerRepository.UpdateRegInfo(aReginfo);
-
+							kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Register successfully");
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
 							{
@@ -103,11 +109,11 @@ namespace MFS.DistributionService.Service
 								MessageBody = "Dear Customer, Your OK wallet has been Activated successfully. For query, please call at OBL Call Centre: 16269, "
 							});
 
-							return true;
+							return HttpStatusCode.OK;
 						}
 						else
 						{
-							return true;
+							return HttpStatusCode.OK;
 						}
 						
 					}

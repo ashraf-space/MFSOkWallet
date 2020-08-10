@@ -15,6 +15,7 @@ export class ClientUpdateComponent implements OnInit {
     @Input() model: any;
     occupationList: any;
     currentUserModel: any = {};
+    regInfoModel: any = {};
     positveNumber: RegExp;
     constructor(private kycService: KycService,
         private authService: AuthenticationService,
@@ -25,11 +26,28 @@ export class ClientUpdateComponent implements OnInit {
         });
         this.positveNumber = this.mfsUtilityService.getPositiveWholeNumberRegExp();
     }
-
+    ngOnChanges() {
+        if (this.model.mphone) {
+            this.regInfoModel.mphone = this.model.mphone;
+            this.regInfoModel.name = this.model.name;
+            this.regInfoModel.spouseName = this.model.spouseName;
+            this.regInfoModel.fatherName = this.model.fatherName;
+            this.regInfoModel.motherName = this.model.motherName;
+            this.regInfoModel.monthlyIncome = this.model.monthlyIncome;
+            this.regInfoModel.occupation = this.model.occupation;
+            this.regInfoModel.conMob = this.model.conMob;
+            this.regInfoModel.conPhone = this.model.conPhone;
+            this.regInfoModel.secondConName = this.model.secondConName;
+            this.regInfoModel.secondConMob = this.model.secondConMob;
+            this.regInfoModel.thirdConName = this.model.thirdConName;
+            this.regInfoModel.thirdConMob = this.model.thirdConMob;
+            this.regInfoModel.offAddr = this.model.offAddr;
+            this.regInfoModel.preAddr = this.model.preAddr;
+            this.regInfoModel.perAddr = this.model.perAddr;
+        }      
+    }
     ngOnInit() {
-        //if (this.model.catId === 'C') {
-        //    this.getOccupationList();
-        //}    
+        
         this.getOccupationList();
     }
 
@@ -46,8 +64,8 @@ export class ClientUpdateComponent implements OnInit {
             );
     }
     onSave() {
-        this.model.updateBy = this.currentUserModel.user.username;
-        this.kycService.updetKyc(this.model).pipe(first())
+        this.regInfoModel.updateBy = this.currentUserModel.user.username;
+        this.kycService.updetKyc(this.regInfoModel).pipe(first())
             .subscribe(
                 data => {
                     if (data) {

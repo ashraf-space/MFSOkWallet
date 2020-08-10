@@ -12,19 +12,19 @@
 			<app-authorize-button [type]="'detail-edit'" *ngIf="isDetailMode" (onButtonClick)="openModal('edit')"></app-authorize-button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
-			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('black')">Black Listed {{blackListed}} <i class="far fa-lightbulb"></i></button>
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode  || isHidefromCustomerCare" (click)="openModal('black')">Black Listed {{blackListed}} <i class="far fa-lightbulb"></i></button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
-			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('close')">Client {{closeStatus}} <i class="far fa-lightbulb"></i></button>
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode  || isHidefromCustomerCare" (click)="openModal('close')">Client {{closeStatus}} <i class="far fa-lightbulb"></i></button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
-			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('dormant')">{{dormantStatus}} Dormant <i class="far fa-lightbulb"></i></button>
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode || isHidefromCustomerCare" (click)="openModal('dormant')">{{dormantStatus}} Dormant <i class="far fa-lightbulb"></i></button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('generate-request')">Request <i class="far fa-bell"></i></button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('lien')">Un-Lien <i class="fab fa-modx"></i></button>
+			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="true" (click)="openModal('lien')">Un-Lien <i class="fab fa-modx"></i></button>
 		</div>
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('pin-reset')">Pin Reset <i class="fas fa-sync"></i></button>
@@ -340,7 +340,7 @@
 	<mfs-client-update [model]="model"></mfs-client-update>
 </app-generic-modal>
 
-<app-generic-modal [initiateModal]="showBlackModal" [header]="'Black List Client'" (onDestroy)="showBlackModal=false" (onConfirm)="blackListClient()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showBlackModal">
+<app-generic-modal [initiateModal]="showBlackModal" [header]="'Black List Client'" (onDestroy)="showBlackModal=false" (onConfirm)="blackListClient()" [disableConfirm]="remarks=='' || disableButton" *ngIf="showBlackModal">
 	<div style="margin-bottom:2rem">
 		<div class="p-grid">
 			<div class="p-col-3">
@@ -356,7 +356,7 @@
 	</div>
 </app-generic-modal>
 
-<app-generic-modal [initiateModal]="showCloseModal" [header]="'Close  Client'" (onDestroy)="showCloseModal=false" (onConfirm)="closeClient()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showCloseModal">
+<app-generic-modal [initiateModal]="showCloseModal" [header]="'Close  Client'" (onDestroy)="showCloseModal=false" (onConfirm)="closeClient()" [disableConfirm]="remarks=='' || disableButton" *ngIf="showCloseModal">
 	<div style="margin-bottom:2rem">
 		<div class="p-grid">
 			<div class="p-col-3">
@@ -372,7 +372,7 @@
 	</div>
 </app-generic-modal>
 
-<app-generic-modal [initiateModal]="showDormantModal" [header]="'Dormant Configuration'" (onDestroy)="showDormantModal=false" (onConfirm)="addRemoveDormant()" [disableConfirm]="remarks=='' && disableButton== true" *ngIf="showDormantModal">
+<app-generic-modal [initiateModal]="showDormantModal" [header]="'Dormant Configuration'" (onDestroy)="showDormantModal=false" (onConfirm)="addRemoveDormant()" [disableConfirm]="remarks=='' || disableButton" *ngIf="showDormantModal">
 	<div style="margin-bottom:2rem">
 		<div class="p-grid">
 			<div class="p-col-3">
@@ -388,7 +388,7 @@
 	</div>
 </app-generic-modal>
 
-<app-generic-modal [initiateModal]="showGenerateRequestModal" [header]="'Generate Request'" (onDestroy)="showGenerateRequestModal=false" (onConfirm)="addNewRequest()" [disableConfirm]="(requestModel.request=='' && disableButton== true)|| !requestModel.request" *ngIf="showGenerateRequestModal">
+<app-generic-modal [initiateModal]="showGenerateRequestModal" [header]="'Generate Request'" (onDestroy)="showGenerateRequestModal=false" (onConfirm)="addNewRequest()" [disableConfirm]="(requestModel.request=='' || disableButton)|| !requestModel.request" *ngIf="showGenerateRequestModal">
 	<div style="margin-bottom:5.5rem;">
 		<div class="p-grid">
 			<div class="p-col-12">
@@ -432,7 +432,7 @@
 		</div>
 	</div>
 </app-generic-modal>
-<app-generic-modal [initiateModal]="showLienModal" [header]="'Lien Configuration'" (onDestroy)="showLienModal=false" (onConfirm)="addRemoveLien()" [disableConfirm]="remarks==''" *ngIf="showLienModal">
+<app-generic-modal [initiateModal]="showLienModal" [header]="'Lien Configuration'" (onDestroy)="showLienModal=false" (onConfirm)="addRemoveLien()" [disableConfirm]="remarks=='' || disableButton" *ngIf="showLienModal">
 	<div style="margin-bottom:2rem">
 		<p-card [style]="{'margin-bottom':'20px'}">
 			<div class="p-grid">

@@ -14,36 +14,36 @@
 							<br />
 							<span class="ui-float-label ">
 								<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="regInfoModel.mphone" (change)="checkMphoneAlreadyExist()"
-								             placeholder="01xxxxxxxxx"  id="float-input"  pKeyFilter="int"></p-inputMask>
-								<label  for="float-input input-lg" class="col-form-label">Customer AC No<span class="mandatory">*</span></label>
+											 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
+								<label for="float-input input-lg" class="col-form-label">Customer AC No<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
 
 						</div>
-						
+
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control form-input" [(ngModel)]="regInfoModel.formSerial" 
-									   pInputText [pKeyFilter]="customeNumberInput" id="float-input"/>
+								<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="regInfoModel.formSerial"
+									   pInputText [pKeyFilter]="customeNumberInput" id="float-input" />
 								<label for="FormSerialNo" class="col-form-label">Form SL No</label>
 							</span>
 						</div>
-					
+
 					</div>
 
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  class="form-control"  placement="top"
-								       name="dp" #regDateControl="ngModel" [(ngModel)]="regDate" [readonly]="true"
-								       ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" pInputText id="float-input">
+								<input autocomplete="off" class="form-control" placement="top"
+									   name="dp" #regDateControl="ngModel" [(ngModel)]="regDate" [readonly]="true"
+									   ngbDatepicker #d="ngbDatepicker"  pInputText id="float-input">
 								<label for="regDate" class="col-form-label">Reg Date<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regDate.year==null || regInfoModel.year=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
-										
+
 					</div>
 
 				</div>
@@ -61,7 +61,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.name" uppercase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.name" uppercase [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Customer Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error" severity="error"
@@ -70,7 +70,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label">
-								<input autocomplete="off"  class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
+								<input autocomplete="off" class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
 									   [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
 								<label for="float-input input-lg" class="col-form-label">Date Of Birth <span class="mandatory">*</span></label>
 							</span>
@@ -89,7 +89,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.fatherName" uppercase pInputText id="float-input">
+								<input autocomplete="off" autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.fatherName" uppercase [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Father's Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.fatherName==null || regInfoModel.fatherName=='') && error "
@@ -98,7 +98,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.motherName" uppercase pInputText id="float-input">
+								<input autocomplete="off" autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.motherName" [pKeyFilter]="alphabetsWithSpace" uppercase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Mother's Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.motherName==null || regInfoModel.motherName=='') && error "
@@ -107,11 +107,11 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.spouseName" uppercase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.spouseName" [pKeyFilter]="alphabetsWithSpace" uppercase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Spouse Name</label>
 							</span>
 						</div>
-						<div class="p-col-4">
+						<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
 								<p-dropdown [options]="religeonList" [(ngModel)]="regInfoModel.religion" [disabled]="isRegPermit"
@@ -119,19 +119,28 @@
 								<label for="float-input input-lg" class="col-form-label"> Religion</label>
 							</span>
 						</div>
-						<div class="p-col-4">
+						<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.nationality" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.nationality" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Nationality</label>
 							</span>
 						</div>
-						<div class="p-col-4">
+						<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.monthlyIncome" pInputText id="float-input" pKeyFilter="num">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.monthlyIncome" pInputText id="float-input" pKeyFilter="num">
 								<label for="float-input input-lg" class="col-form-label"> Monthly Income</label>
 							</span>
+						</div>
+						<div class="p-col-3">
+							<label for="float-input input-lg" class="col-form-label-dd">Email</label>
+							<input type="text" autocomplete="off" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" id="email" name="email" [(ngModel)]="regInfoModel.email" #emailref="ngModel">
+							<div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">
+								<div [hidden]="!emailref.errors?.pattern">
+									Invalid pattern
+								</div>
+							</div>
 						</div>
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label-dd"> Photo ID Type<span class="mandatory">*</span></label>
@@ -143,7 +152,7 @@
 						<div class="p-col-4" *ngIf="!isRegPermit">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" name="photoId" [(ngModel)]="regInfoModel.photoId" pInputText id="float-input" (change)="checkPhotoIdLength()" [pKeyFilter]="customeNumberInput">
+								<input autocomplete="off" type="text" class="form-control" name="photoId" [(ngModel)]="regInfoModel.photoId" pInputText id="float-input" (change)="checkPhotoIdLength()">
 								<label for="float-input input-lg" class="col-form-label"> Photo ID No<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.photoId==null || regInfoModel.photoId=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -153,14 +162,14 @@
 						<div class="p-col-3" *ngIf="isRegPermit">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" name="photoId" [(ngModel)]="regInfoModel.photoId" pInputText id="float-input" (change)="checkPhotoIdLength()" [pKeyFilter]="customeNumberInput">
+								<input autocomplete="off" type="text" class="form-control" name="photoId" [(ngModel)]="regInfoModel.photoId" pInputText id="float-input" (change)="checkPhotoIdLength()" [pKeyFilter]="customeNumberInput">
 								<label for="float-input input-lg" class="col-form-label"> Photo ID No<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.photoId==null || regInfoModel.photoId=='') && error " severity="error" text="Cannot be left blank"></p-message>
 							<p-message *ngIf="formValidation.photoId" severity="error" text="Invalid NID"></p-message>
 
 						</div>
-						<div class="p-col-1" *ngIf="isRegPermit">							
+						<div class="p-col-1" *ngIf="isRegPermit">
 							<label class="col-form-label-dd">Is Verified?</label>
 							<!--<p-triStateCheckbox [(ngModel)]="isNidVerified" ></p-triStateCheckbox>-->
 							<p-toggleButton [(ngModel)]="isNidVerified"></p-toggleButton>
@@ -179,7 +188,7 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.conMob"
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.conMob"
 									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Customer Mobile No</label>
 							</span>
@@ -187,7 +196,7 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.conPhone"
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.conPhone"
 									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Customer Phone</label>
 							</span>
@@ -195,14 +204,14 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.secondConName" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.secondConName" [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Second Contact Name</label>
 							</span>
 						</div>
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.secondConMob"
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.secondConMob"
 									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Second Contact Mobile</label>
 							</span>
@@ -210,14 +219,14 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConName" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConName" [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Third Contact Name</label>
 							</span>
 						</div>
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConMob"
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.thirdConMob"
 									   [pKeyFilter]="customeNumberInput" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Third Contact Mobile</label>
 							</span>
@@ -263,6 +272,7 @@
 								<label for="float-input input-lg" class="col-form-label"> Present Address</label>
 							</span>
 						</div>
+
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
@@ -281,33 +291,33 @@
 		<div *ngIf="activeIndex==2">
 			<p-card [style]="{'margin-bottom':'20px'}">
 				<div class="form-group">
-					<h6 class="form-header">Nominee Information</h6>					
+					<h6 class="form-header">Nominee Information</h6>
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" uppercase pInputText id="float-input"
+								<input autocomplete="off" type="text" class="form-control" uppercase pInputText [pKeyFilter]="alphabetsWithSpace" id="float-input"
 									   [(ngModel)]="regInfoModel.firstNomineeName">
 								<label for="NomineeName" class="col-form-label">Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.firstNomineeName==null || regInfoModel.firstNomineeName=='')  && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
-						
+
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" pInputText id="float-input"
-								       [(ngModel)]="regInfoModel.nomineeConNo" [pKeyFilter]="customeNumberInput" >
-								<label for="NomineeContactNo" class="col-form-label ">Nominee Contact No</label>							
+								<input autocomplete="off" type="text" class="form-control" pInputText id="float-input"
+									   [(ngModel)]="regInfoModel.nomineeConNo" [pKeyFilter]="customeNumberInput">
+								<label for="NomineeContactNo" class="col-form-label ">Nominee Contact No</label>
 							</span>
-						</div>						
+						</div>
 					</div>
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control"  pInputText id="float-input"[(ngModel)]="regInfoModel.firstNomineeAge"
-								       [pKeyFilter]="customeNumberInput">
+								<input autocomplete="off" type="text" class="form-control" pInputText id="float-input" [(ngModel)]="regInfoModel.firstNomineeAge"
+									   [pKeyFilter]="customeNumberInput">
 								<label for="NomineeAge" class="col-form-label">Age</label>
 							</span>
 						</div>
@@ -315,31 +325,31 @@
 							<br />
 							<span class="ui-float-label ">
 								<p-dropdown [options]="relationList" [(ngModel)]="regInfoModel.relationFirstNominee"
-								            [disabled]="isRegPermit" [filter]="true" filterBy="label,value.name" 
+											[disabled]="isRegPermit" [filter]="true" filterBy="label,value.name"
 											[style]="{display: 'grid'}"></p-dropdown>
 								<label for="Relation" class="col-form-label ">Relation</label>
 							</span>
-						
+
 						</div>
-						
+
 					</div>
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.partOfFirst" [disabled]="true"
-								       pInputText id="float-input" [pKeyFilter]="customeNumberInput">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.partOfFirst" [disabled]="true"
+									   pInputText id="float-input" [pKeyFilter]="customeNumberInput">
 								<label for="Ratio" class="col-form-label">Ratio</label>
 							</span>
 						</div>
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" pInputText uppercase id="float-input" [(ngModel)]="regInfoModel.firstNomineeAddress">
+								<input autocomplete="off" type="text" class="form-control" pInputText uppercase id="float-input" [(ngModel)]="regInfoModel.firstNomineeAddress">
 								<label for="NomineeAddress" class="col-form-label ">Address</label>
 							</span>
 						</div>
-						
+
 					</div>
 				</div>
 
@@ -356,26 +366,26 @@
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.introAcNo" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.introAcNo" pInputText id="float-input">
 								<label for="introducerMobile" class="col-form-label">Intro Mobile</label>
 							</span>
 						</div>
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" uppercase [(ngModel)]="regInfoModel.introName"
-								       pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" uppercase [pKeyFilter]="alphabetsWithSpace" [(ngModel)]="regInfoModel.introName"
+									   pInputText id="float-input">
 								<label for="introducerName" class="col-form-label">Intro Name</label>
 							</span>
 						</div>
-						
+
 					</div>
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.introOccupation"
-								       pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.introOccupation"
+									   pInputText id="float-input">
 								<label for="introOccupation" class="col-form-label">Occcupation Name </label>
 							</span>
 						</div>
@@ -383,11 +393,11 @@
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.introAddr"
-								       pInputText uppercase id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.introAddr"
+									   pInputText uppercase id="float-input">
 								<label for="introducerAddress" class="col-form-label">Intro Address</label>
 							</span>
-						</div>				
+						</div>
 					</div>
 				</div>
 			</p-card>
@@ -406,14 +416,14 @@
 										[style]="{display: 'grid'}"></p-dropdown>
 							<p-message *ngIf="(regInfoModel.branchCode==null || regInfoModel.branchCode=='') && error "
 									   severity="error" text="Cannot be left blank"></p-message>
-						</div>												
+						</div>
 					</div>
-					
+
 					<div class="p-grid">
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" uppercase [(ngModel)]="regInfoModel.accountName"
+								<input autocomplete="off" type="text" class="form-control" uppercase [(ngModel)]="regInfoModel.accountName"
 									   pInputText id="float-input">
 								<label for="AccountName" class="col-form-label">Account Name</label>
 							</span>
@@ -421,11 +431,11 @@
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo"
-								       pInputText id="float-input" [pKeyFilter]="customeNumberInput">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo"
+									   pInputText id="float-input" [pKeyFilter]="customeNumberInput">
 								<label for="AccountNo" class="col-form-label ">Account No</label>
 							</span>
-						</div>					
+						</div>
 					</div>
 				</div>
 

@@ -37,13 +37,16 @@ export class CompanyDisbursementLimitComponent implements OnInit {
 
     ngOnInit() {
         this.getDisburseCompanyList();
-        this.disburseTypeList = [
-            { label: 'Salary', value: 'SAL' },
-            { label: 'Remittance', value: 'REM' },
-            { label: 'Cash Back', value: 'CAB' },
-            { label: 'Customer Activation', value: 'CAT' },
-            { label: 'Reward', value: 'RWD' }
-        ];
+        this.getDisburseTypeList();
+        //this.disburseTypeList = [
+        //    { label: 'Salary', value: 'SAL' },
+        //    { label: 'Remittance', value: 'REM' },
+        //    { label: 'Cash Back', value: 'CAB' },
+        //    { label: 'Customer Activation', value: 'CAT' },
+        //    { label: 'Reward', value: 'RWD' },
+        //    { label: 'Remittance Incentive', value: 'INC' },
+        //    { label: 'EFT Inward', value: 'EFT' }
+        //];
         this.getDisburseNameCodeList();
         this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
     }
@@ -65,6 +68,18 @@ export class CompanyDisbursementLimitComponent implements OnInit {
             .subscribe(
                 data => {
                     this.disburseCompanyList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getDisburseTypeList(): any {
+        this.disbursementService.getDisburseTypeList()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.disburseTypeList = data;
                 },
                 error => {
                     console.log(error);

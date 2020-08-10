@@ -83,8 +83,10 @@ export class AuditTrailComponent implements OnInit {
         this.gridConfig.columnList = [
             { field: 'who', header: 'User Name', width: '10%' },
             { field: 'when', header: 'When Date', width: '10%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getDateTemplateForRowData()  },
-            { field: 'action', header: 'Action', width: '10%', filter: this.gridSettingService.getDefaultDateFilterable()},
-            { field: 'menu', header: 'Menu', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'action', header: 'Action', width: '5%', filter: this.gridSettingService.getDefaultDateFilterable()},
+            { field: 'menu', header: 'Menu', width: '5%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'whichId', header: 'which Id', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'response', header: 'Response', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'id', header: 'id', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'id', header: 'View', width: '5%', isCustomAction: true, customActionIcon: 'fas fa-info-circle', filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'id', disableValue: null}
         ];

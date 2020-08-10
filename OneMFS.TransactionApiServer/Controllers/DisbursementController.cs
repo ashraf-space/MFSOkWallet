@@ -37,13 +37,16 @@ namespace OneMFS.TransactionApiServer.Controllers
         private readonly IDisburseAmtDtlMakeService _disburseAmtDtlMakeService;
         private readonly IDistributorDepositService _distributorDepositService;
         private readonly IErrorLogService errorLogService;
+        private readonly IAuditTrailService _auditTrailService;
         public DisbursementController(IDisbursementService disbursementService, IDisburseAmtDtlMakeService objDisburseAmtDtlMakeService,
-            IDistributorDepositService objDistributorDepositService, IErrorLogService _errorLogService)
+            IDistributorDepositService objDistributorDepositService, IErrorLogService _errorLogService,
+            IAuditTrailService objAuditTrailService)
         {
             this._disbursementService = disbursementService;
             this._disburseAmtDtlMakeService = objDisburseAmtDtlMakeService;
             this._distributorDepositService = objDistributorDepositService;
             this.errorLogService = _errorLogService;
+            this._auditTrailService = objAuditTrailService;
         }
 
         [HttpGet]
@@ -84,6 +87,9 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 tblDisburseCompanyInfo.CompanyId = Convert.ToInt16(_disbursementService.GetMaxCompanyId()) + 1;
                 _disbursementService.Add(tblDisburseCompanyInfo);
+
+                //Insert into audit trial audit and detail
+                _auditTrailService.InsertModelToAuditTrail(tblDisburseCompanyInfo, tblDisburseCompanyInfo.entry_user, 10, 3, "Disbursement Company", tblDisburseCompanyInfo.CompanyId.ToString(), "Saved Successfully!");
             }
             catch (Exception ex)
             {
@@ -147,6 +153,9 @@ namespace OneMFS.TransactionApiServer.Controllers
                 tblDisburseAmtDtlMake.GlCode = "2020212";
                 tblDisburseAmtDtlMake.Status = "M";
                 _disburseAmtDtlMakeService.Add(tblDisburseAmtDtlMake);
+
+                //Insert into audit trial audit and detail
+                _auditTrailService.InsertModelToAuditTrail(tblDisburseAmtDtlMake, tblDisburseAmtDtlMake.MakerId, 10, 3, "Company Disbursement Limit", tblDisburseAmtDtlMake.CompanyId.ToString(), "Saved Successfully!");
             }
             catch (Exception ex)
             {
@@ -257,7 +266,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-           
+
         }
 
         [ApiGuardAuth]
@@ -283,10 +292,13 @@ namespace OneMFS.TransactionApiServer.Controllers
                     objTblDisburseAmtDtlMake.CheckTime = System.DateTime.Now;
 
                     var successOrErrorMsg = _disbursementService.DataInsertToTransMSTandDTL(objTblDisburseAmtDtlMake);
-                    //if (successOrErrorMsg.ToString() == "1")
-                    //{
-                    //    _fundTransferService.UpdateByStringField(objTblDisburseAmtDtlMake, "TransNo");
-                    //}
+                    if (successOrErrorMsg.ToString() == "1")
+                    {
+                        //Insert into audit trial audit and detail
+                        TblDisburseAmtDtlMake prevModel = _disburseAmtDtlMakeService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "Tranno", new TblDisburseAmtDtlMake());
+                        prevModel.Status = "M";//insert for only audit trail
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(objTblDisburseAmtDtlMake, prevModel, objTblDisburseAmtDtlMake.CheckerId, 10, 4, "Disburse Amount Posting", objTblDisburseAmtDtlMake.CompanyId.ToString(), "Approved Successfully!");
+                    }
                     return successOrErrorMsg;
 
                 }
@@ -294,7 +306,13 @@ namespace OneMFS.TransactionApiServer.Controllers
                 {
                     objTblDisburseAmtDtlMake.Status = "R";
                     objTblDisburseAmtDtlMake.CheckTime = System.DateTime.Now;
-                    _disburseAmtDtlMakeService.UpdateByStringField(objTblDisburseAmtDtlMake, "TransNo");
+                    _disburseAmtDtlMakeService.UpdateByStringField(objTblDisburseAmtDtlMake, "Tranno");
+
+                    //Insert into audit trial audit and detail
+                    TblDisburseAmtDtlMake prevModel = _disburseAmtDtlMakeService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "Tranno", new TblDisburseAmtDtlMake());
+                    prevModel.Status = "M";//insert for only audit trail
+                    _auditTrailService.InsertUpdatedModelToAuditTrail(objTblDisburseAmtDtlMake, prevModel, objTblDisburseAmtDtlMake.CheckerId, 10, 4, "Disburse Amount Posting", objTblDisburseAmtDtlMake.CompanyId.ToString(), "Rejected Successfully!");
+
                     return true;
                 }
                 else
@@ -411,15 +429,35 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         [HttpGet]
         [Route("AllSend")]
-        public object AllSend(string processBatchNo, string brCode, string checkerId, double totalSum)
+        public string AllSend(string processBatchNo, string brCode, string checkerId, double totalSum)
         {
             try
             {
-                return _disbursementService.AllSend(processBatchNo, brCode, checkerId, totalSum);
+                string result = null;
+                result = _disbursementService.AllSend(processBatchNo, brCode, checkerId, totalSum);
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (result == "1")
+                {
+                    response = "All Send Successfully!";
+                }
+                else
+                {
+                    response = result;
+                }
+                DisbursementPostingAudit objDisbursementPostingAudit = new DisbursementPostingAudit();
+                objDisbursementPostingAudit.BatchNo = processBatchNo;
+                objDisbursementPostingAudit.BrCode = brCode;
+                objDisbursementPostingAudit.CheckerId = checkerId;
+                objDisbursementPostingAudit.TotalSum = totalSum;
+                _auditTrailService.InsertModelToAuditTrail(objDisbursementPostingAudit, objDisbursementPostingAudit.CheckerId, 10, 3, "Disbursement Posting", objDisbursementPostingAudit.BatchNo, response);
+
+                return result;
             }
             catch (Exception ex)
             {
-                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
             }
         }
 
@@ -429,7 +467,28 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                return _disbursementService.BatchDelete(processBatchNo, brCode, checkerId, totalSum);
+                string result = null;
+                result = _disbursementService.BatchDelete(processBatchNo, brCode, checkerId, totalSum).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (result == "SUCCESS")
+                {
+                    response = "Batch Deleted Successfully!";
+                }
+                else
+                {
+                    response = result;
+                }
+                DisbursementPostingAudit objDisbursementPostingAudit = new DisbursementPostingAudit();
+                objDisbursementPostingAudit.BatchNo = processBatchNo;
+                objDisbursementPostingAudit.BrCode = brCode;
+                objDisbursementPostingAudit.CheckerId = checkerId;
+                objDisbursementPostingAudit.TotalSum = totalSum;
+                _auditTrailService.InsertModelToAuditTrail(objDisbursementPostingAudit, objDisbursementPostingAudit.CheckerId, 10, 3, "Disbursement Posting", objDisbursementPostingAudit.BatchNo, "Batch Deleted Successfully!");
+
+
+                return result;
             }
             catch (Exception ex)
             {

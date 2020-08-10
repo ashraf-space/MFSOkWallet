@@ -18,6 +18,7 @@ namespace MFS.SecurityService.Models
         public string Pstatus { get; set; }
         public string BranchCode { get; set; }
         public DateTime? LockDt { get; set; }
+        public string CreatedBy { get; set; }
         public string UserSesId { get; set; }
         public string EmailId { get; set; }
         public string MobileNo { get; set; }

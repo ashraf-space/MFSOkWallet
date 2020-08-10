@@ -1,6 +1,8 @@
 ﻿using ExcelDataReader;
 using MFS.DistributionService.Models;
 using MFS.DistributionService.Service;
+using MFS.ReportingService.Models;
+using MFS.SecurityService.Service;
 using MFS.TransactionService.Models;
 using MFS.TransactionService.Service;
 using Newtonsoft.Json;
@@ -23,14 +25,16 @@ namespace OneMFS.ReportingApiServer.Controllers
         private readonly ITblDisburseTmpService _TblDisburseTmpService;
         private readonly IDistributorService _distributorService;
         private readonly IAgentService _agentService;
+        private readonly IAuditTrailService _auditTrailService;
 
         //public ExcelUploadController(ITblDisburseTmpService objTblDisburseTmpService, IDistributorService objDstributorService) : base()
         public ExcelUploadController(ITblDisburseTmpService objTblDisburseTmpService,
-            IDistributorService objDstributorService, IAgentService objAgentService) : base()
+            IDistributorService objDstributorService, IAgentService objAgentService, IAuditTrailService objAuditTrailService) : base()
         {
             this._TblDisburseTmpService = objTblDisburseTmpService;
             this._distributorService = objDstributorService;
             this._agentService = objAgentService;
+            _auditTrailService = objAuditTrailService;
         }
         //[Route("UploadExcel")]
 
@@ -71,36 +75,50 @@ namespace OneMFS.ReportingApiServer.Controllers
                 bool isUploaded = false;
                 int lastRow = finalRecords.Rows.Count - 1;
                 double disburseTotal = Convert.ToDouble(finalRecords.Rows[lastRow][2]);
-                if (disburseTotal > amount)
+                if (disburseTotal > 0)
                 {
-                    isUploaded = false;
-                    message = "Disbursed total amount is greater than company total.";
-                }
-                else
-                {
-
-                    for (int i = 1; i < finalRecords.Rows.Count - 1; i++)
+                    if (disburseTotal > amount)
                     {
-                        TblDisburseTmp objTblDisburseTmp = new TblDisburseTmp();
-                        objTblDisburseTmp.AcNo = finalRecords.Rows[i][1].ToString();
-                        objTblDisburseTmp.Amount = Convert.ToDouble(finalRecords.Rows[i][2]);
-                        objTblDisburseTmp.MakerId = makerId.ToString();
-                        objTblDisburseTmp.Batchno = batchno.ToString();
-                        objTblDisburseTmp.Sl = Convert.ToInt16(finalRecords.Rows[i][0]);
-                        objTblDisburseTmp.OrganizationId = organizationId;
-
-                        _TblDisburseTmpService.Add(objTblDisburseTmp);
-                    }
-                    isUploaded = true;
-                    if (isUploaded)
-                    {
-                        message = "Excel file has been successfully uploaded";
+                        isUploaded = false;
+                        message = "Disbursed total amount is greater than company total.";
                     }
                     else
                     {
-                        message = "Excel file uploaded has fiald";
+
+                        for (int i = 1; i < finalRecords.Rows.Count - 1; i++)
+                        {
+                            TblDisburseTmp objTblDisburseTmp = new TblDisburseTmp();
+                            objTblDisburseTmp.AcNo = finalRecords.Rows[i][1].ToString();
+                            objTblDisburseTmp.Amount = Convert.ToDouble(finalRecords.Rows[i][2]);
+                            objTblDisburseTmp.MakerId = makerId.ToString();
+                            objTblDisburseTmp.Batchno = batchno.ToString();
+                            objTblDisburseTmp.Sl = Convert.ToInt16(finalRecords.Rows[i][0]);
+                            objTblDisburseTmp.OrganizationId = organizationId;
+
+                            _TblDisburseTmpService.Add(objTblDisburseTmp);
+                        }
+                        isUploaded = true;
+                        if (isUploaded)
+                        {
+                            message = "Excel file has been successfully uploaded";
+                            //Insert into audit trial audit and detail
+                            CompanyDisbursementUpload objCompanyDisbursementUpload = new CompanyDisbursementUpload();
+                            objCompanyDisbursementUpload.CompanyId = organizationId;
+                            objCompanyDisbursementUpload.BatchNo = batchno;
+                            objCompanyDisbursementUpload.MakerId = makerId;
+                            _auditTrailService.InsertModelToAuditTrail(objCompanyDisbursementUpload, objCompanyDisbursementUpload.MakerId, 10, 3, "Disbursement Process", objCompanyDisbursementUpload.CompanyId.ToString(), "Uploaded Successfully!");
+                        }
+                        else
+                        {
+                            message = "Excel file uploaded has fiald";
+                        }
                     }
                 }
+                else
+                {
+                    message = "Disbursed total amount must be greater than 0.";
+                }
+               
 
 
 

@@ -487,7 +487,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         _fundTransferService.Add(fundTransferModel);
 
                         //Insert into audit trial audit and detail
-                        _auditTrailService.InsertModelToAuditTrail(fundTransferModel, fundTransferModel.EntryUser, 9, 3, "Fund Entry (" + fundTransferModel.Hotkey + ")");
+                        _auditTrailService.InsertModelToAuditTrail(fundTransferModel, fundTransferModel.EntryUser, 9, 3, "Fund Entry (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo,"Saved Successfully!");
 
                     }
                     catch (Exception)
@@ -523,26 +523,30 @@ namespace OneMFS.TransactionApiServer.Controllers
                     {
                         //FundTransfer objFundTransfer = new FundTransfer();
                         branchCashIn.TransNo = _distributorDepositService.GetTransactionNo();
-                        var successOrErrorMsg = _fundTransferService.saveBranchCashIn(branchCashIn);
+                        string successOrErrorMsg = _fundTransferService.saveBranchCashIn(branchCashIn).ToString();
 
-                        //Insert into audit trial audit and detail                      
-                        _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In");
+                        if (successOrErrorMsg == "1")
+                        {
+                            //Insert into audit trial audit and detail                      
+                            _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In", branchCashIn.Mphone, "Save Successfully!");
+                        }
+                       
 
                         return successOrErrorMsg;
 
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
 
-                        throw;
+                        return "Something Error";
                     }
 
-                    return true;
+                   
 
                 }
                 else
                 {
-                    return true;
+                    return "Something Error";
                 }
             }
             catch (Exception ex)
@@ -601,9 +605,10 @@ namespace OneMFS.TransactionApiServer.Controllers
                         }
 
                         //Insert into audit trial audit and detail
+                        string response = successOrErrorMsg.ToString() == "1" ? "Approved Successfully!" : successOrErrorMsg.ToString();
                         FundTransfer prevModel = _fundTransferService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "TransNo", new FundTransfer());
                         prevModel.Status = "M";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")");
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo,response);
 
 
                         return successOrErrorMsg;
@@ -616,9 +621,10 @@ namespace OneMFS.TransactionApiServer.Controllers
                         _fundTransferService.UpdateByStringField(fundTransferModel, "TransNo");
 
                         //Insert into audit trial audit and detail
+                        string response = successOrErrorMsg.ToString() == "1" ? "Rejected Successfully!" : successOrErrorMsg.ToString();
                         FundTransfer prevModel = _fundTransferService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "TransNo", new FundTransfer());
                         prevModel.Status = "M";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")");
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")",fundTransferModel.TransNo,response);
 
                         return true;
                     }
@@ -683,14 +689,31 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                var successOrErrorMsg = _fundTransferService.AproveOrRejectBranchCashout(tblPortalCashout, evnt);
-                //Insert into audit trial audit and detail                      
-                _auditTrailService.InsertModelToAuditTrail(tblPortalCashout, tblPortalCashout.CheckBy, 9, 3, "Brach Cash Out");
+                string successOrErrorMsg = _fundTransferService.AproveOrRejectBranchCashout(tblPortalCashout, evnt).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (successOrErrorMsg == "1")
+                {
+                    if (evnt == "register")
+                        response = "Cashout approved successfully";
+                    else
+                        response = "Reject successfully";
+                }
+                else if(successOrErrorMsg == "Failed")
+                {
+                    response = "Failed";
+                }
+                else
+                {
+                    response = "Not rejected";
+                }
+                _auditTrailService.InsertModelToAuditTrail(tblPortalCashout, tblPortalCashout.CheckBy, 9, 3, "Brach Cash Out",tblPortalCashout.Mphone,response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)
             {
-                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
             }
         }
 

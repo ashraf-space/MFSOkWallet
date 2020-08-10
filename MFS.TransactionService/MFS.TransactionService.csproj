@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BranchCashIn.cs" />
+    <Compile Include="Models\DisbursementPostingAudit.cs" />
     <Compile Include="Models\FundTransfer.cs" />
     <Compile Include="Models\GlCoa.cs" />
     <Compile Include="Models\GlTransDtl.cs" />

@@ -21,6 +21,7 @@ import { KycService } from '../../../services/distribution/kyc.service'
 export class ClientProfileComponent implements OnInit {
 
     @Input() model: any;
+    @Input() isCustomerCare: boolean = false;
     entityId: any;
     isDetailMode: boolean = false;
     isEditAllow: boolean = false;
@@ -40,8 +41,9 @@ export class ClientProfileComponent implements OnInit {
     requestList: any;
     requestModel: any;
     actionList: any;
-    disableButton: boolean = true;
+    disableButton: boolean = false;
     blackListed: any;
+    isHidefromCustomerCare: boolean = false;
     constructor(private outboxService: OutboxService, private gridSettingService: GridSettingService, private authService: AuthenticationService
         , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private distributorService: DistributorService
         , private agentService: AgentService, private router: Router, private route: ActivatedRoute, private messageService: MessageService,
@@ -57,7 +59,7 @@ export class ClientProfileComponent implements OnInit {
             { label: 'Open', value: 'O', icon: 'far fa-clock' },
             { label: 'Close', value: 'C', icon: 'fas fa-times' },
             { label: 'Resolved', value: 'Y', icon: 'fas fa-check' },
-            { label: 'On Process', value: 'P', icon:'fa fa-spinner'}
+            { label: 'On Process', value: 'P', icon: 'fa fa-spinner' }
         ];
     }
 
@@ -74,10 +76,13 @@ export class ClientProfileComponent implements OnInit {
             this.dormantModel.mphone = this.model.mphone;
             this.dormantStatus = this.model.status == 'D' ? 'Revoke' : 'Invoke';
             this.closeStatus = this.model.status == 'C' ? 'Open' : 'Close';
-            this.blackListed = this.model.blackList == 'Y' ? 'No': 'Yes';
+            this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
+        }
+        if (this.isCustomerCare) {
+            this.isHidefromCustomerCare = true;
         }
     }
-    ngOnChanges() { 
+    ngOnChanges() {
         if (this.model) {
             this.dormantModel.catId = this.model.catId;
             this.dormantModel.mphone = this.model.mphone;
@@ -116,6 +121,7 @@ export class ClientProfileComponent implements OnInit {
                         this.getClientDistLocationInfo();
                         this.getPhotoIdTypeByCode();
                         this.getBranchNameByCode();
+                        this.getBalanceInfoByMphone(entity);
                         this.isLoading = false;
                         this.dormantStatus = data.status == 'D' ? 'Revoke' : 'Invoke';
                         this.closeStatus = data.status == 'C' ? 'Open' : 'Close';
@@ -123,11 +129,30 @@ export class ClientProfileComponent implements OnInit {
                         this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
                         this.dormantModel.catId = data.catId;
                         this.dormantModel.mphone = data.mphone;
-                    }                   
+                    }
                 },
                 error => {
                     console.log(error);
                 });
+    }
+    getBalanceInfoByMphone(entity) {
+        this.isLoading = true;
+        this.kycService.getBalanceInfoByMphone(entity).pipe(first())
+            .subscribe(
+                data => {
+                    this.isLoading = false;
+                    if (data) {
+                        this.model.balanceM = data.balanceM;
+                        this.model.lienM = data.lienM;
+                        this.model.balanceC = data.balanceC;
+                        this.model.lienC = data.lienC;
+                    }
+                },
+                error => {
+                    this.isLoading = false;
+                    console.log(error);
+                });
+        this.isLoading = false;
     }
     getBranchNameByCode() {
         this.isLoading = true;
@@ -137,7 +162,7 @@ export class ClientProfileComponent implements OnInit {
                     this.isLoading = false;
                     if (data) {
                         this.model.branchName = data.value;
-                    }                   
+                    }
                 },
                 error => {
                     this.isLoading = false;
@@ -153,7 +178,7 @@ export class ClientProfileComponent implements OnInit {
                     this.isLoading = false;
                     if (data) {
                         this.model.photoIdType = data.value;
-                    }                    
+                    }
                 },
                 error => {
                     this.isLoading = false;
@@ -174,7 +199,7 @@ export class ClientProfileComponent implements OnInit {
                         this.model.region = data.region;
                         this.model.area = data.area;
                         this.model.territory = data.territory;
-                    }                    
+                    }
                 },
                 error => {
                     this.isLoading = false;
@@ -229,11 +254,11 @@ export class ClientProfileComponent implements OnInit {
                     }
                 });
                 break;
-            case 'lien':                               
+            case 'lien':
                 this.model.updateBy = this.currentUserModel.user.username;
                 this.showLienModal = true;
                 break;
-            case 'close':               
+            case 'close':
                 this.model.updateBy = this.currentUserModel.user.username;
                 this.showCloseModal = true;
                 break;
@@ -249,7 +274,12 @@ export class ClientProfileComponent implements OnInit {
         this.kycService.clientClose(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Close Successfully' });
+                    if (data) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                    }
                     if (!this.model) {
                         this.isLoading = true;
                         this.getProfileDetails(this.entityId);
@@ -258,7 +288,7 @@ export class ClientProfileComponent implements OnInit {
                         this.isLoading = true;
                         this.getProfileDetails(this.model.mphone);
                     }
-                    this.disableButton = false;                  
+                    this.disableButton = false;
                     this.showCloseModal = false;
                 },
                 error => {
@@ -269,7 +299,13 @@ export class ClientProfileComponent implements OnInit {
         this.kycService.addRemoveLien(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Operation Successfully' });
+                    if (data) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                    }
+
                     if (!this.model) {
                         this.isLoading = true;
                         this.getProfileDetails(this.entityId);
@@ -286,11 +322,17 @@ export class ClientProfileComponent implements OnInit {
     }
     addRemoveDormant() {
         this.disableButton = true;
-        this.distributorService.addRemoveDormant(this.dormantModel, this.model.status, this.remarks).pipe(first())        
+        this.distributorService.addRemoveDormant(this.dormantModel, this.model.status, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Dormant Invoke or Revoked Successfully' });
-                    
+                    if (data) {
+                        this.isLoading = false;
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                    }
+
                     if (!this.model) {
                         this.isLoading = true;
                         this.getProfileDetails(this.entityId);
@@ -301,6 +343,7 @@ export class ClientProfileComponent implements OnInit {
                     }
                     this.disableButton = false;
                     this.showDormantModal = false;
+                    this.isLoading = false;
                 },
                 error => {
                     console.log(error);
@@ -312,9 +355,14 @@ export class ClientProfileComponent implements OnInit {
         this.customerRequestService.save(this.requestModel).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Request Generated Successfully' });
-                    this.disableButton = false;
-                    this.showGenerateRequestModal = false;
+                    if (data) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Request Generated Successfully' });
+                        this.disableButton = false;
+                        this.showGenerateRequestModal = false;
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                    }
                 },
                 error => {
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
@@ -325,7 +373,12 @@ export class ClientProfileComponent implements OnInit {
         this.distributorService.pinReset(this.model).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Pin Reset Successfully' });
+                    if (data) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Pin Reset Successfully' });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                    }
                 },
                 error => {
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: error });

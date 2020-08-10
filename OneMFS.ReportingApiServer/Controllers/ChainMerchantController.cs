@@ -40,6 +40,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 
 
             string chainMerchantCode = "1811050000040000";
+            string chainMerchantNo = "01841700736";
             string outletAccNo = null;
             string outletCode = null;
             string reportType = "OSTR";
@@ -73,20 +74,16 @@ namespace OneMFS.ReportingApiServer.Controllers
                 reportViewer.LocalReport.DataSources.Add(A);
             }
 
-            //else if (reportType == "OTPTR")
-            //{
-            //    List<TransactionSummary> transactionSummaryList = new List<TransactionSummary>();
-            //    transactionSummaryList = _TransactionService.GetTransactionSummaryList(tansactionType, fromCat, toCat, dateType, fromDate, toDate, gateway).ToList();
+            else if (reportType == "OTPTR")
+            {
+                List<OutletSummaryTransaction> OutletToParentSummaryTransactionList = new List<OutletSummaryTransaction>();
+                OutletToParentSummaryTransactionList = _chainMerchantService.GetOutletToParentTransSummaryList(chainMerchantCode, chainMerchantNo, outletAccNo, outletCode, reportType, reportViewType, fromDate, toDate, dateType).ToList();
 
-
-
-            //    reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTTransactionSummary.rdlc");  //Request.RequestUri("");
-            //    reportViewer.LocalReport.SetParameters(GetReportParamForTransactionSummary(fromDate, toDate));
-            //    ReportDataSource A = new ReportDataSource("TransactionSummary", transactionSummaryList);
-            //    reportViewer.LocalReport.DataSources.Add(A);
-
-
-            //}
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOutletSummaryTransaction.rdlc");  //Request.RequestUri("");
+                reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType));
+                ReportDataSource A = new ReportDataSource("OutletSummaryTransaction", OutletToParentSummaryTransactionList);
+                reportViewer.LocalReport.DataSources.Add(A);
+            }
             //else //if (reportType == "DSR")
             //{
             //    List<TransactionSummary> transactionSummaryList = new List<TransactionSummary>();
@@ -121,13 +118,13 @@ namespace OneMFS.ReportingApiServer.Controllers
         private IEnumerable<ReportParameter> RptParamForOutletSummaryTransaction(string fromDate, string toDate,string chainMerchantCode, string reportViewType)
         {
             List<ReportParameter> paramList = new List<ReportParameter>();
-            paramList.Add(new ReportParameter("MerchantNumber", "MerchantNumberFromUI"));
+			paramList.Add(new ReportParameter("FromDate", fromDate));
+			paramList.Add(new ReportParameter("ToDate", toDate));
+			paramList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+			paramList.Add(new ReportParameter("MerchantNumber", "MerchantNumberFromUI"));
             paramList.Add(new ReportParameter("MerchantName", "MerchantNameFromUI"));
             paramList.Add(new ReportParameter("MerchantCode", chainMerchantCode));
-            paramList.Add(new ReportParameter("ReportViewType", reportViewType));
-            paramList.Add(new ReportParameter("FromDate", fromDate));
-            paramList.Add(new ReportParameter("Todate", toDate));
-            paramList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+            paramList.Add(new ReportParameter("ReportViewType", reportViewType));                              
             return paramList;
         }
     }

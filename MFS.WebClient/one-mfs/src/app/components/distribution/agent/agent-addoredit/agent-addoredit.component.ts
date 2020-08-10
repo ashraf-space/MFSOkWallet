@@ -583,6 +583,9 @@ export class AgentAddoreditComponent implements OnInit {
         if (this.isEditMode) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }
+        if (this.isEditMode && this.isRegPermit) {
+            this.regInfoModel.authoBy = this.currentUserModel.user.username;
+        }
         if (this.regInfoModel.distCode != "" || this.regInfoModel.branchName != "") {
             this.agentService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(

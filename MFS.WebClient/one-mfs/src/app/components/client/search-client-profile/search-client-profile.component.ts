@@ -39,6 +39,7 @@ export class SearchClientProfileComponent implements OnInit {
                         this.getClientDistLocationInfo();
                         this.getPhotoIdTypeByCode();
                         this.getBranchNameByCode();
+                        this.getBalanceInfoByMphone();
                         this.insertDataToAuditTrail();
                     }
                     else {
@@ -49,6 +50,21 @@ export class SearchClientProfileComponent implements OnInit {
                 error => {
                     console.log(error);
                 });
+    }
+    getBalanceInfoByMphone() {       
+        this.kycService.getBalanceInfoByMphone(this.searchModel.mphone).pipe(first())
+            .subscribe(
+                data => {                  
+                    if (data) {
+                        this.searchModel.result.balanceM = data.balanceM;
+                        this.searchModel.result.lienM = data.lienM;
+                        this.searchModel.result.balanceC = data.balanceC;
+                        this.searchModel.result.lienC = data.lienC;
+                    }
+                },
+                error => {                  
+                    console.log(error);
+                });       
     }
     insertDataToAuditTrail() {
         this.auditTrailModel.Who = this.currentUserModel.user.username;
