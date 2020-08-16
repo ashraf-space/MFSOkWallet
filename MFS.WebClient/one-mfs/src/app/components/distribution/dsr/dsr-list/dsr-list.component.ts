@@ -68,7 +68,8 @@ export class DsrListComponent implements OnInit {
             this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Agent/GetAgentListByParent?code=' + this.distributor.mphone + '&CatId=R';
         }
         else {
-            this.gridConfig.columnList.push({ field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' });
+            //this.gridConfig.columnList.push({ field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' });
+            this.gridConfig.columnList.push({ field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone()});
             //this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetRegInfoListByCatIdBranchCode?BranchCode=' + this.currentUserModel.user.branchCode + '&CatId=R';
             this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetRegInfoListByCatIdBranchCode?BranchCode=' + this.currentUserModel.user.branchCode + '&CatId=R' + '&filterId=';
 

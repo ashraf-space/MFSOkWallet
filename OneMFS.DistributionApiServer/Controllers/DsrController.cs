@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
@@ -61,7 +62,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 		[ApiGuardAuth]
 		[HttpPost]
 		[Route("Save")]
-		public object Save(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		public object SaveDsr(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
 		{
 			try
 			{
@@ -78,26 +79,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 						_DsrService.Add(regInfo);
 						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "DSR",regInfo.Mphone, "Save successfully");
 					}
-					catch (Exception)
+					catch (Exception) 
 					{
-
-						throw;
+						return HttpStatusCode.BadRequest;
 					}
 					//_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
-
-
-					return true;
+					return HttpStatusCode.OK;
 
 				}
 				else
 				{
 					if (evnt == "edit")
-					{
+					{						
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_DsrService.UpdateRegInfo(regInfo);
 						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR",regInfo.Mphone, "Update successfully");
-						return Ok();
+						return HttpStatusCode.OK;
 
 					}
 					else
@@ -121,11 +119,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 								MessageBody = "Congratulations! Your OK wallet has been opened successfully." + " Your Pin is "
 								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 							});
-							return true;
+							return HttpStatusCode.OK;
 						}
 						else
 						{
-							return true;
+							return HttpStatusCode.OK;
 						}
 						
 					}
@@ -134,7 +132,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 

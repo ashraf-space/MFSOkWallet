@@ -621,10 +621,9 @@ namespace OneMFS.TransactionApiServer.Controllers
                         _fundTransferService.UpdateByStringField(fundTransferModel, "TransNo");
 
                         //Insert into audit trial audit and detail
-                        string response = successOrErrorMsg.ToString() == "1" ? "Rejected Successfully!" : successOrErrorMsg.ToString();
                         FundTransfer prevModel = _fundTransferService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "TransNo", new FundTransfer());
                         prevModel.Status = "M";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")",fundTransferModel.TransNo,response);
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")",fundTransferModel.TransNo, "Rejected Successfully!");
 
                         return true;
                     }

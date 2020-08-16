@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 using MFS.SecurityService.Service;
 using MFS.SecurityService.Models;
 using System.Reflection;
+using System.Net;
+
 namespace OneMFS.DistributionApiServer.Controllers
 {
 	[Authorize]
@@ -244,8 +246,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 
 		}
@@ -262,7 +264,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			catch (Exception ex)
 			{
 				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-				throw ex;
+				return HttpStatusCode.BadRequest;
 			}
 
 		}

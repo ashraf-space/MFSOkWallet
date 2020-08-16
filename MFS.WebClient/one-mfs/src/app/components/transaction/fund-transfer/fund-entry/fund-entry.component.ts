@@ -39,6 +39,7 @@ export class FundEntryComponent implements OnInit {
     transAmtLimit: any;
     GLBalance: any;
     isLoading: boolean = false;
+    isSaveDisable = true;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private authService: AuthenticationService, private messageService: MessageService) {
@@ -176,6 +177,13 @@ export class FundEntryComponent implements OnInit {
                 data => {
                     this.isLoading = false;
                     this.vMTransactionDetailList = data;
+
+                    if (data[0].glCode != '') {
+                        this.isSaveDisable = false;
+                    }
+                    else {
+                        this.isSaveDisable = true;
+                    }
                 },
                 error => {
                     console.log(error);
@@ -250,7 +258,7 @@ export class FundEntryComponent implements OnInit {
                             setTimeout(() => {
                                 this.isLoading = false;
                                 location.reload();
-                            }, 100);
+                            }, 5000);
                             //window.history.back();
                         },
                         error => {

@@ -154,7 +154,7 @@ export class DisbursePostingComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 100);
+                        }, 5000);
                     },
                     error => {
                         console.log(error);
@@ -185,7 +185,7 @@ export class DisbursePostingComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 50);
+                        }, 5000);
                     },
                     error => {
                         console.log(error);

@@ -41,6 +41,7 @@ export class FundEntryActoacComponent implements OnInit {
     fromHolderName: string = null;
     toHolderName: any;
     isLoading: boolean = false;
+    isSaveDisable = true;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private messageService: MessageService, private authService: AuthenticationService) {
@@ -206,6 +207,13 @@ export class FundEntryActoacComponent implements OnInit {
                     this.fromAC = data[0].coaDesc;
                     this.toAC = data[1].coaDesc;
 
+                    if (data[0].acNo != '') {
+                        this.isSaveDisable = false;
+                    }
+                    else {
+                        this.isSaveDisable = true;
+                    }
+
                 },
                 error => {
                     console.log(error);
@@ -250,7 +258,7 @@ export class FundEntryActoacComponent implements OnInit {
                             setTimeout(() => {
                                 this.isLoading = false;
                                 location.reload();
-                            }, 100);
+                            }, 5000);
                             //window.history.back();
                         },
                         error => {

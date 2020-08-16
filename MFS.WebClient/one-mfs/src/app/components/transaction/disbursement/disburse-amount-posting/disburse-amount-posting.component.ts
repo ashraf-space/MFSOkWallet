@@ -130,7 +130,7 @@ export class DisburseAmountPostingComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 100);//1000ms=1sec
+                        }, 5000);//1000ms=1sec
                         
 
                     },

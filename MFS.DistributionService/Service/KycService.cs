@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using MFS.DistributionService.Models;
@@ -127,18 +128,18 @@ namespace MFS.DistributionService.Service
 				{
 					//reginfo.Status = "C";
 					demand = "ACC_CLOSE";
-				}
+				}				
 				Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
 				_repository.StatusChangeBasedOnDemand(reginfo.Mphone,demand,reginfo.UpdateBy,remarks);
 				var currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
 				AuditTrailForClientCLose(prevRegInfo, currentReginfo, remarks);				
 				//_repository.UpdateRegInfo(reginfo);
 
-				return currentReginfo;
+				return HttpStatusCode.OK;
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				throw e;
+				throw ex;
 			}
 		}
 
@@ -190,21 +191,21 @@ namespace MFS.DistributionService.Service
 			auditTrail.WhichMenu = "Client Profile";
 			auditTrail.WhichId = prevReginfo.Mphone;
 			auditTrail.Response = "Lien Performed Successfully";
-			auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
-			{
-				new AuditTrialFeild
-				{
-					WhichFeildName = "LienM",
-					WhichValue= prevReginfo.LienM.ToString(),
-					WhatValue = currentRegInfo.LienM.ToString()
-				},
-				new AuditTrialFeild
-				{
-					WhichFeildName = "Remarks",
-					WhichValue= prevReginfo.Remarks,
-					WhatValue = currentRegInfo.Remarks
-				}
-			};
+			//auditTrail.InputFeildAndValue = new List<AuditTrialFeild>
+			//{
+			//	new AuditTrialFeild
+			//	{
+			//		WhichFeildName = "LienM",
+			//		WhichValue= prevReginfo.LienM.ToString(),
+			//		WhatValue = currentRegInfo.LienM.ToString()
+			//	},
+			//	new AuditTrialFeild
+			//	{
+			//		WhichFeildName = "Remarks",
+			//		WhichValue= prevReginfo.Remarks,
+			//		WhatValue = currentRegInfo.Remarks
+			//	}
+			//};
 			auditTrailService.InsertIntoAuditTrail(auditTrail);
 			return currentRegInfo;
 		}
@@ -265,7 +266,7 @@ namespace MFS.DistributionService.Service
 		public object BlackListClient(string remarks, Reginfo reginfo)
 		{
 			try
-			{
+			{				
 				string demand=null;
 				if (reginfo.BlackList == "Y")
 				{
@@ -278,8 +279,8 @@ namespace MFS.DistributionService.Service
 					demand = "PUT_BLACK";
 				}
 				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand,reginfo.UpdateBy,remarks);
-				var currentReginfo = AuditTrailForBlackListClient(reginfo, remarks);				
-				return currentReginfo;
+				var currentReginfo = AuditTrailForBlackListClient(reginfo, remarks);
+				return HttpStatusCode.OK;
 			}
 			catch (Exception e)
 			{

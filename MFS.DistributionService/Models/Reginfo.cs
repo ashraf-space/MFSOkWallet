@@ -18,7 +18,7 @@ namespace MFS.DistributionService.Models
 		//public double? BalanceM { get; set; }
 		//public double? BalanceC { get; set; }
 		//No Update----
-		public decimal? LienM { get; set; }
+		//public decimal? LienM { get; set; }
 		//public int? LienC { get; set; }
 		public int? AcTypeCode { get; set; }
 		public string DistCode { get; set; }

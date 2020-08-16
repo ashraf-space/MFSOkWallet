@@ -38,6 +38,7 @@ export class FundEntryGltoacComponent implements OnInit {
     toHolderName: any;
     GLBalance: any;
     isLoading: boolean = false;
+    isSaveDisable = true;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private messageService: MessageService, private authService: AuthenticationService) {
@@ -210,6 +211,13 @@ export class FundEntryGltoacComponent implements OnInit {
                     this.fundTransferModel.toSysCoaCode = data[1].glSysCoaCode;
                     this.toAC = data[1].coaDesc;
 
+                    if (data[0].glCode != '') {
+                        this.isSaveDisable = false;
+                    }
+                    else {
+                        this.isSaveDisable = true;
+                    }
+
                 },
                 error => {
                     console.log(error);
@@ -278,7 +286,7 @@ export class FundEntryGltoacComponent implements OnInit {
                             setTimeout(() => {
                                 this.isLoading = false;
                                 location.reload();
-                            }, 100);
+                            }, 5000);
                             //window.history.back();
                         },
                         error => {

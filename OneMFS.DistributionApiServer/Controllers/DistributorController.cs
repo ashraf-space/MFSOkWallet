@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
@@ -124,7 +125,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 		[ApiGuardAuth]
 		[HttpPost]
 		[Route("Save")]
-		public object Save(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		public object SaveDistributor(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
 		{
 			try
 			{
@@ -148,25 +149,25 @@ namespace OneMFS.DistributionApiServer.Controllers
 						{
 							_distributorService.Add(regInfo);
 							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Distributor",regInfo.Mphone, "Save successfully");
-							return Ok();
+							return HttpStatusCode.OK;
 						}
 						catch (Exception ex)
 						{
 
-							return ex.ToString();
+							return HttpStatusCode.BadRequest;
 						}
 					}
-					return true;
+					return HttpStatusCode.OK;
 				}
 				else
 				{
 					if (evnt == "edit")
-					{
+					{						
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_distributorService.UpdateRegInfo(regInfo);
 						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor",regInfo.Mphone, "Update successfully");
-						return Ok();
+						return HttpStatusCode.OK;
 
 					}
 					else
@@ -192,11 +193,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 							});
 
-							return true;
+							return HttpStatusCode.OK;
 						}
 						else
 						{
-							return true;
+							return HttpStatusCode.OK;
 						}
 						
 					}
@@ -205,8 +206,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 		[ApiGuardAuth]
@@ -288,8 +289,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 				string body;
 				string demand=null;
-				Reginfo reginfo;
-
+				Reginfo reginfo;				
 				if (status == "D")
 				{
 					//dormantAccService.DeleteByCustomField(dormantModel.Mphone, "Mphone", new DormantAcc());
@@ -314,12 +314,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 				var currentReginfo = AuditTrailForAddRemoveDormant(dormantModel, reginfo, status);
 				MessageService messageService = new MessageService();
 				messageService.SendMessage(messageModel);
-				return currentReginfo;
+				return HttpStatusCode.OK;
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-
+			 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 

@@ -152,7 +152,16 @@ export class DistributorAddoreditComponent implements OnInit {
         this.regInfoModel.partOfFirst = 100;
 
     }
+    validateDatepicker(event) {
+        if (this.dateOfBirth) {
+            var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
 
+            if (!validate) {
+                //this.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
+                this.dateOfBirth = null;
+            }
+        }
+    }
     getDistributorByMphone(): any {
         this.isLoading = true;
         this.distributionService.GetDistributorByMphone(this.entityId)
@@ -390,13 +399,19 @@ export class DistributorAddoreditComponent implements OnInit {
             this.distributionService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        window.history.back();
-                        if (this.isEditMode && !this.isRegistrationPermitted)
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Distributor updated' });
-                        else if (this.isEditMode && this.isRegistrationPermitted)
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Distributor registerd' });
-                        else
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Distributor added' });
+                        if (data === 200) {
+                            window.history.back();
+                            if (this.isEditMode && !this.isRegistrationPermitted)
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Distributor updated: ' + this.regInfoModel.mphone });
+                            else if (this.isEditMode && this.isRegistrationPermitted)
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Distributor registerd: ' + this.regInfoModel.mphone });
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Distributor added: ' + this.regInfoModel.mphone });
+                            }
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
+                        }
                     },
                     error => {
                         console.log(error);
@@ -516,7 +531,7 @@ export class DistributorAddoreditComponent implements OnInit {
             this.regInfoModel.mphone = '';
             this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Mobiel No', closable: true });
         }
-       
+
     }
 
     updateDate(value) {

@@ -118,4 +118,4 @@
 </div>
 
 <!--<app-generic-form-action [isEditMode]="isEditMode" (onSave)="saveMerchant($event)" (onDelete)="onDeleteMerchant($event)"></app-generic-form-action>-->
-<app-generic-form-action [isEditMode]="isEditMode" (onSave)="saveFundTransferEntry($event)"></app-generic-form-action>
+<app-generic-form-action [isEditMode]="isEditMode" (onSave)="saveFundTransferEntry($event)" [disableAction]="isSaveDisable"></app-generic-form-action>

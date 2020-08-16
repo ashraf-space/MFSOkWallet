@@ -142,6 +142,16 @@ export class DsrAddoreditComponent implements OnInit {
         }
         this.regInfoModel.partOfFirst = 100;
     }
+    validateDatepicker(event) {
+        if (this.dateOfBirth) {
+            var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
+
+            if (!validate) {
+                //this.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
+                this.dateOfBirth = null;
+            }
+        }
+    }
     getDsrByMphone(): any {
         this.isLoading = true;
         this.distributorService.GetDistributorByMphone(this.entityId)
@@ -386,20 +396,22 @@ export class DsrAddoreditComponent implements OnInit {
             this.dsrService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        //console.log(data);
-                        //this.router.navigateByUrl('./');
-                        window.history.back();
-                        if (this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'DSR updated' });
-                        }
-                        else if
-                            (this.isRegistrationPermitted && this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Agent Registered' });
+                        if (data === 200) {
+                            window.history.back();
+                            if (this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'DSR updated: ' + this.regInfoModel.mphone });
+                            }
+                            else if
+                                (this.isRegistrationPermitted && this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Agent Registered: ' + this.regInfoModel.mphone });
+                            }
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'DSR added: ' + this.regInfoModel.mphone });
+                            }
                         }
                         else {
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'DSR added' });
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
-                            
                     },
                     error => {
                         console.log(error);

@@ -129,12 +129,15 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label">
-								<input autocomplete="off"  class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
+								<input autocomplete="off" class="form-control" placement="down" pInputText id="float-input"
+									   (change)="validateDatepicker($event)"
 									   [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
 								<label for="float-input input-lg">Date Of Birth <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(dateOfBirth.year==null || dateOfBirth.year=='') && error" severity="error"
 									   text="Cannot be left blank"></p-message>
+							<p-message *ngIf="(dateOfBirth.year==null || dateOfBirth.year=='')" severity="error"
+									   text="Please Input Valid Date  [yyyy-mm-dd]"></p-message>
 						</div>
 						<div class="p-col-4">
 							<br />

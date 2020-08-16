@@ -144,7 +144,7 @@ export class FundTransferGltoacComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 100);
+                        }, 5000);
                         //window.history.back();
 
                     },

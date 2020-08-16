@@ -77,6 +77,7 @@ export class ClientProfileComponent implements OnInit {
             this.dormantStatus = this.model.status == 'D' ? 'Revoke' : 'Invoke';
             this.closeStatus = this.model.status == 'C' ? 'Open' : 'Close';
             this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
+            this.getBalanceInfoByMphone(this.model.mphone);
         }
         if (this.isCustomerCare) {
             this.isHidefromCustomerCare = true;
@@ -96,7 +97,12 @@ export class ClientProfileComponent implements OnInit {
         this.kycService.blackListClient(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                    if (data === 200) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', sticky: true, detail: 'Action Performed Successfully: ' + this.model.mphone });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', sticky: true, detail: 'Action Performed Failed in: ' + this.model.mphone });
+                    }
                     if (!this.model) {
                         this.isLoading = true;
                         this.getProfileDetails(this.entityId);
@@ -274,11 +280,11 @@ export class ClientProfileComponent implements OnInit {
         this.kycService.clientClose(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    if (data) {
-                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                    if (data === 200) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', sticky: true, detail: 'Action Performed Successfully in: ' + this.model.mphone });
                     }
                     else {
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                        this.messageService.add({ severity: 'error', summary: 'Error', sticky: true, detail: 'Action Performed Failed in: ' + this.model.mphone });
                     }
                     if (!this.model) {
                         this.isLoading = true;
@@ -325,12 +331,12 @@ export class ClientProfileComponent implements OnInit {
         this.distributorService.addRemoveDormant(this.dormantModel, this.model.status, this.remarks).pipe(first())
             .subscribe(
                 data => {
-                    if (data) {
+                    if (data === 200) {
                         this.isLoading = false;
-                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully' });
+                        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Action Performed Successfully in: ' + this.dormantModel.mphone });
                     }
                     else {
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed in: ' + this.dormantModel.mphone });
                     }
 
                     if (!this.model) {

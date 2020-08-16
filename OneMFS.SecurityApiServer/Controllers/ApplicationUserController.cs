@@ -24,12 +24,15 @@ namespace OneMFS.SecurityApiServer.Controllers
 		public IApplicationUserService usersService;
 		public IMerchantUserService merchantUsersService;
 		private IErrorLogService errorLogService;
-		public ApplicationUserController(IMerchantUserService _merchantUserService,IErrorLogService _errorLogService, IApplicationUserService _usersService)
+        private readonly IAuditTrailService _auditTrailService;
+        public ApplicationUserController(IMerchantUserService _merchantUserService,IErrorLogService _errorLogService,
+            IApplicationUserService _usersService, IAuditTrailService objAuditTrailService)
 		{
 			usersService = _usersService;
 			errorLogService = _errorLogService;
 			merchantUsersService = _merchantUserService;
-		}
+            _auditTrailService = objAuditTrailService;
+        }
 
 		[HttpGet]
 		[Route("GetAllApplicationUserList")]
@@ -61,8 +64,16 @@ namespace OneMFS.SecurityApiServer.Controllers
 			{
 				if (model.Id != 0)
 				{
-					return usersService.Update(model);
-				}
+					 usersService.Update(model);
+
+                    //Insert into audit trial audit and detail
+
+                    ApplicationUser prevModel = usersService.SingleOrDefault(model.Id, new ApplicationUser());
+                    //prevModel.Status = "default";//insert for only audit trail
+                    _auditTrailService.InsertUpdatedModelToAuditTrail(model, prevModel, model.CreatedBy, 7, 4, "Application User", model.Username, "Updated Successfully!");
+
+                    return model;
+                }
 				else
 				{
 					model = generateSecuredCredentials(model);
@@ -80,7 +91,10 @@ namespace OneMFS.SecurityApiServer.Controllers
 					MessageService messageService = new MessageService();
 					messageService.SendMessage(messageModel);
 
-					return model;
+                    //Insert into audit trial audit and detail                   
+                    _auditTrailService.InsertModelToAuditTrail(model, model.CreatedBy, 7, 3, "Application User", model.Username, "Saved Successfully!");
+
+                    return model;
 				}
 
 			}

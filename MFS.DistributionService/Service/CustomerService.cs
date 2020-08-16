@@ -60,10 +60,10 @@ namespace MFS.DistributionService.Service
 							+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 						});
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
 
-						throw;
+						throw ex;
 					}
 
 					return HttpStatusCode.OK;
@@ -81,7 +81,7 @@ namespace MFS.DistributionService.Service
 						return HttpStatusCode.OK;
 					}
 					else if (evnt == "edit")
-					{
+					{						
 						aReginfo.UpdateDate = System.DateTime.Now;
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						_customerRepository.UpdateRegInfo(aReginfo);
@@ -123,7 +123,7 @@ namespace MFS.DistributionService.Service
 			catch (Exception ex)
 			{
 
-				throw;
+				throw ex;
 			}
 		}
 

@@ -46,7 +46,7 @@ export class CompanyAddoreditComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 100);
+                        }, 5000);
                     },
                     error => {
                         console.log(error);

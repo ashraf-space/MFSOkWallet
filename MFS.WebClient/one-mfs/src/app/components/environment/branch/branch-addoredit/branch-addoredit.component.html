@@ -5,7 +5,7 @@
             <div class="form-group row">
                 <label for="BranchCode" class="col-sm-2 col-form-label">Branch Code <span class="mandatory">*</span></label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control form-input" id="BranchCode" placeholder="Branch Code" [(ngModel)]="bankBranchModel.branchcode">
+                    <input type="text" class="form-control form-input" [disabled]="isEditMode" id="BranchCode" placeholder="Branch Code" [(ngModel)]="bankBranchModel.branchcode">
                     <p-message *ngIf="(bankBranchModel.branchcode==null || bankBranchModel.branchcode=='') && error " severity="error" text="Field is requird"></p-message>
                 </div>               
             </div>

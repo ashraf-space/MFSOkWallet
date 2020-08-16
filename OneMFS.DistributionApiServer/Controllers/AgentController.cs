@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
@@ -57,23 +58,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 						//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 						_service.Add(regInfo);
 						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Agent", regInfo.Mphone, "Save successfully");
-						return Ok();
+						return HttpStatusCode.OK;
 					}
 					catch (Exception ex)
 					{
 
-						throw;
+						return HttpStatusCode.BadRequest;
 					}
 				}
 				else
 				{
 					if (evnt == "edit")
-					{
+					{						
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_service.UpdateRegInfo(regInfo);
 						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Agent", regInfo.Mphone, "Update successfully");
-						return Ok();
+						return HttpStatusCode.OK;
 
 					}
 
@@ -101,11 +102,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 							});
 
-							return Ok();
+							return HttpStatusCode.OK;
 						}
 						else
 						{
-							return Ok();
+							return HttpStatusCode.OK;
 						}
 
 					}
@@ -114,7 +115,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			catch (Exception ex)
 			{
 				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-				throw ex;
+				return HttpStatusCode.BadRequest;
 			}
 		}
 		[HttpGet]

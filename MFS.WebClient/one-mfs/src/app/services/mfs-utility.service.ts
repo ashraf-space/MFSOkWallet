@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MfsUtilityService {
-   
-    
+
     searchModelOptionList: any;
     searchModelCriteriaList: any;
     mTypeList: any;
@@ -74,8 +73,8 @@ export class MfsUtilityService {
             { label: 'Monday', value: 'mon' },
             { label: 'Tuesday', value: 'tue' },
             { label: 'Wednesday', value: 'wed' },
-            { label: 'Thursday', value: 'thu' },         
-            { label: 'Friday', value: 'fri' }            
+            { label: 'Thursday', value: 'thu' },
+            { label: 'Friday', value: 'fri' }
         ];
         this.actionList = [
             { label: 'ADD', value: 'ADD' },
@@ -94,7 +93,7 @@ export class MfsUtilityService {
             { label: 'Tools', value: 'Tools' },
             { label: 'Transaction', value: 'Transaction' },
             { label: 'Process', value: 'Process' }
-            
+
         ];
     }
 
@@ -105,7 +104,7 @@ export class MfsUtilityService {
             index++;
         });
 
-        return list; 
+        return list;
     }
 
     getCustomerTypeList() {
@@ -133,12 +132,12 @@ export class MfsUtilityService {
         return dateObject;
     }
 
-    GetFormattedDate(date: any) {        
+    GetFormattedDate(date: any) {
         //if (date.month < 12) {
         //    date.month = date.month + 1;
         //}
 
-        return date.year + "/" +  date.month + "/" + date.day;
+        return date.year + "/" + date.month + "/" + date.day;
     };
 
     getFullDateByMonthParam(dateParam: any = 0, monthParam: any = 1): any {
@@ -218,5 +217,43 @@ export class MfsUtilityService {
     }
     getParentMenuList(): any {
         return this.parentMenuList;
+    }
+    validateDatePickerInput(dateOfBirth: any): any {
+        if (dateOfBirth.day) {
+            if (+dateOfBirth.day > 30) {
+                return false;
+            }
+            else if (+dateOfBirth.month > 12) {
+                return false;
+            }
+            else if (+dateOfBirth.year < 1000) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        if (!dateOfBirth.day) {
+            if (dateOfBirth.includes("-")) {
+                var splitDate = dateOfBirth.split("-");
+            }
+            else {
+                return false;
+            }                     
+            if (+splitDate[0] < 1000) {
+                return false;
+            }
+            else if (+splitDate[1] > 12) {
+                return false;
+            }
+            else if (+splitDate[2] > 31) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
     }
 }

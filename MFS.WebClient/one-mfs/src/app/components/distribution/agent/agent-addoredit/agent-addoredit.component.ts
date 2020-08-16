@@ -57,6 +57,7 @@ export class AgentAddoreditComponent implements OnInit {
     customeNumberInput: any;
     formValidation: any;
     mobileNoRegEx: RegExp;
+    dobRegEx: RegExp;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -154,6 +155,17 @@ export class AgentAddoreditComponent implements OnInit {
         }
         this.regInfoModel.partOfFirst = 100;
     }
+
+    validateDatepicker(event) {
+        if (this.dateOfBirth) {
+            var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
+
+            if (!validate) {
+                //this.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
+                this.dateOfBirth = null;
+            }
+        }
+    }
     checkMphoneAlreadyExist(): any {
         if (this.regInfoModel.mphone.toString().substring(0, 2) == "01" && this.regInfoModel.mphone.toString().substring(0, 3) != "012") {
             this.agentService.GetAgentByMobilePhone(this.regInfoModel.mphone)
@@ -179,7 +191,7 @@ export class AgentAddoreditComponent implements OnInit {
             this.regInfoModel.mphone = '';
             this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Mobiel No', closable: true });
         }
-        
+
     }
     //checkMphoneAlreadyExist(): any {
     //    this.distributionService.GetDistributorByMphone(this.regInfoModel.mphone)
@@ -590,20 +602,26 @@ export class AgentAddoreditComponent implements OnInit {
             this.agentService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        window.history.back();
-                        if (this.isEditMode && !this.isRegPermit) {
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Agent Updated' });
+                        if (data === 200) {
+                            window.history.back();
+                            if (this.isEditMode && !this.isRegPermit) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Agent Updated: ' + this.regInfoModel.mphone });
+                            }
+                            else if (this.isRegPermit && this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully' + this.regInfoModel.mphone, sticky: true, detail: 'Agent Registered: ' + this.regInfoModel.mphone});
+                            }
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully' + this.regInfoModel.mphone, sticky: true, detail: 'Agent added: ' + this.regInfoModel.mphone });
+                            }
                         }
-                        else if
-                            (this.isRegPermit && this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Agent Registered' });
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
-                        else
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Agent added' });
+                        
                     },
                     error => {
                         console.log(error);
-                        this.messageService.add({ severity: 'error', summary: 'Erros Occured', detail: error, closable: true });
+                        this.messageService.add({ severity: 'error', summary: 'Erros Occured', sticky: true, detail: error, closable: true });
                     });
         }
     }

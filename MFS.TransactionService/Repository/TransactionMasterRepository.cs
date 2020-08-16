@@ -18,6 +18,7 @@ namespace MFS.TransactionService.Repository
         dynamic GetBankDepositStatus(DateTime fromDate, DateTime toDate, string balanceType, string roleName);
         object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList);
         object ExecuteEOD(DateTime todayDate, string userName);
+        TblBdStatus GetBankDepositStatusByTransNo(string tranno);
     }
     public class TransactionMasterRepository : BaseRepository<GlTransMst>, ITransactionMasterRepository
     {
@@ -279,6 +280,23 @@ namespace MFS.TransactionService.Repository
                 throw;
             }
 
+        }
+
+        public TblBdStatus GetBankDepositStatusByTransNo(string tranno)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    return connection.QueryFirstOrDefault<TblBdStatus>("Select * from " + mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + tranno + "'");
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

@@ -38,6 +38,7 @@ export class FundEntryActoglComponent implements OnInit {
     transAmtLimit: any;
     fromHolderName: string = null;
     isLoading: boolean = false;
+    isSaveDisable = true;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private messageService: MessageService, private authService: AuthenticationService) {
@@ -207,6 +208,14 @@ export class FundEntryActoglComponent implements OnInit {
                     this.fundTransferModel.fromSysCoaCode = data[0].glSysCoaCode;
                     this.fromAC = data[0].coaDesc;
 
+                    if (data[0].acNo != '') {
+                        this.isSaveDisable = false;
+                    }
+                    else {
+                        this.isSaveDisable = true;
+                    }
+                  
+
                 },
                 error => {
                     console.log(error);
@@ -252,7 +261,7 @@ export class FundEntryActoglComponent implements OnInit {
                             setTimeout(() => {
                                 this.isLoading = false;
                                 location.reload();
-                            }, 100);
+                            }, 5000);
                             //window.history.back();
                         },
                         error => {

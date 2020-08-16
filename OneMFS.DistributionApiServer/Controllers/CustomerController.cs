@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.DistributionService.Models;
@@ -51,7 +52,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			catch (Exception ex)
 			{
 				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-				throw ex;
+				return HttpStatusCode.BadRequest;
 
 			}
 

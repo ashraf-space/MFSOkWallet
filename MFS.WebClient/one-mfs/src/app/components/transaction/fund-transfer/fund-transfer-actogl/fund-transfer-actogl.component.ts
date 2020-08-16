@@ -141,7 +141,7 @@ export class FundTransferActoglComponent implements OnInit {
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
-                        }, 100);
+                        }, 5000);
 
                         //this.router.navigateByUrl('../fund-transfer/fund-transfer-gltogl');
 

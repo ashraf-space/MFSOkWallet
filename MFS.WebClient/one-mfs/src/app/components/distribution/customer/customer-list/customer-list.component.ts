@@ -52,7 +52,9 @@ export class CustomerListComponent implements OnInit {
             { field: 'name', header: 'Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'photoId', header: 'Photo Id No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'mphone', header: 'Details', width: '7%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() },
-            { field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' }
+            ////{ field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' }
+            { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone()}
+
         ];
     };
 

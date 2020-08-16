@@ -152,7 +152,7 @@ export class CustomerAddoreditComponent implements OnInit {
         this.regInfoModel.nationality = 'Bangladeshi';
         this.entityId = this.route.snapshot.paramMap.get('id');
         if (this.entityId) {
-            this.isEditMode = true;           
+            this.isEditMode = true;
             this.GetCustomerByMphone();
             this.isRegPermit = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
             if (this.isRegPermit) {
@@ -168,6 +168,16 @@ export class CustomerAddoreditComponent implements OnInit {
             this.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         }
         this.regInfoModel.partOfFirst = 100;
+    }
+    validateDatepicker(event) {
+        if (this.dateOfBirth) {
+            var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
+
+            if (!validate) {
+                //this.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
+                this.dateOfBirth = null;
+            }
+        }
     }
     checkMphoneAlreadyExist(): any {
         //var mobileNo: string = this.regInfoModel.mphone;
@@ -482,7 +492,7 @@ export class CustomerAddoreditComponent implements OnInit {
         else {
             this.regInfoModel.photoidValidation = 'N';
         }
-       
+
         if (this.isEditMode) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }
@@ -496,24 +506,29 @@ export class CustomerAddoreditComponent implements OnInit {
             this.customerService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        window.history.back();
-                        if (event == 'reject') {
-                            this.messageService.add({ severity: 'error', summary: 'Reject successfully', detail: 'Customer approval rejected' });
-                        }
+                        if (data === 200) {
+                            window.history.back();
+                            if (event == 'reject') {
+                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.regInfoModel.mphone });
+                            }
 
-                        else if (this.isEditMode && !this.isRegPermit) {
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Customer Updated' });
+                            else if (this.isEditMode && !this.isRegPermit) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Customer Updated: '+ this.regInfoModel.mphone });
+                            }
+                            else if (this.isRegPermit && this.isRegPermit) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Customer Registered: ' + this.regInfoModel.mphone });
+                            }
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Customer added: ' + this.regInfoModel.mphone });
+                            }
                         }
-                        else if
-                            (this.isRegPermit && this.isRegPermit) {
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Customer Registered' });
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
-                        else
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Customer added' });
                     },
                     error => {
                         console.log(error);
-                        this.messageService.add({ severity: 'error', summary: 'Erros Occured', detail: error, closable: false });
+                        this.messageService.add({ severity: 'error', summary: 'Erros Occured', sticky: true, detail: error, closable: false });
                     });
         }
     }

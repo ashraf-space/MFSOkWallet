@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
     auditTrailModel: any = {};
     userActivity;
     userInactive: Subject<any> = new Subject();
+    currentMenu: any;
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
         private auditTrailService: AuditTrailService,
         private userIdle: UserIdleService
     ) {
-        
+
         this.authenticationService.currentUser.subscribe(x => {
             this.currentUser = x;
             this.generateLeftMenu();
@@ -88,7 +89,7 @@ export class AppComponent implements OnInit {
         this.changePasswordModel = {};
         this.searchGridConfig = {};
         this.setTimeout();
-        this.userInactive.subscribe((res) => {            
+        this.userInactive.subscribe((res) => {
             //console.log('Reset');
         });
         this.userIdle.startWatching();
@@ -131,7 +132,18 @@ export class AppComponent implements OnInit {
         this.userActivity = setTimeout(() => this.userInactive.next(undefined), 300000);
         this.userIdle.resetTimer();
     }
+    reloadPage() {
+        if (this.currentMenu) {           
+            this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(it => {
+                return it.FEATURENAME.trim() === this.currentMenu;
+            }).CATEGORYNAME;
 
+            this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
+            if (this.auditTrailModel.WhichParentMenuId === 9) {
+                location.reload();
+            }
+        }
+    }
     @HostListener('window:mousemove') refreshUserState() {
         //console.log('refreshUserState');
         clearTimeout(this.userActivity);
@@ -152,7 +164,7 @@ export class AppComponent implements OnInit {
                 command: (event) => {
                     this.display = false;
                     //this.insertIntoAuditTrail(event);
-               }
+                }
             }
         ];
 
@@ -165,8 +177,9 @@ export class AppComponent implements OnInit {
                     this.menuObj = {
                         label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, routerLink: [obj.FEATURELINK],
                         command: (event) => {
-                            this.display = false;
+                            this.display = false;                           
                             this.insertIntoAuditTrail(event);
+                            this.setCurrentMenu(event);
                         }
                     };
                     menuCategory.items.push(this.menuObj);
@@ -180,6 +193,7 @@ export class AppComponent implements OnInit {
                             command: (event) => {
                                 this.display = false;
                                 this.insertIntoAuditTrail(event);
+                                this.setCurrentMenu(event);
                             }
                         }]
                     };
@@ -189,17 +203,19 @@ export class AppComponent implements OnInit {
             });
         }
     }
-
+    setCurrentMenu(event) {
+        this.currentMenu = event.item.label.trim();   
+    }
     insertIntoAuditTrail(event) {
 
         this.auditTrailModel.Who = this.currentUser.user.username;
         this.auditTrailModel.WhatAction = 'VISIT';
         this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('VISIT')
-        this.auditTrailModel.WhichMenu = event.item.label.trim();
+        this.auditTrailModel.WhichMenu = event.item.label.trim();      
         this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(it => {
             return it.FEATURENAME.trim() === this.auditTrailModel.WhichMenu;
         }).CATEGORYNAME;
-       
+
         this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
         sessionStorage.setItem('currentEvent', JSON.stringify(event));
 

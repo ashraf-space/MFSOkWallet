@@ -164,13 +164,13 @@ export class BankDepositStatusComponent implements OnInit {
                             else if (event == 'register')
                                 this.messageService.add({ severity: 'success', summary: 'Approved successfully', detail: 'Bank deposit status approved' });
                             else
-                                this.messageService.add({ severity: 'success', summary: 'Pass to maker successfully', detail: 'Depositor cash entry passed' });
+                                this.messageService.add({ severity: 'success', summary: 'Pass successfully', detail: 'Bank deposit status passed' });
                         }
 
 
                         setTimeout(() => {
                             location.reload();
-                        }, 100);
+                        }, 5000);
                     },
                     error => {
                         console.log(error);
@@ -216,11 +216,11 @@ export class BankDepositStatusComponent implements OnInit {
                                         else if (event == 'register')
                                             this.messageService.add({ severity: 'success', summary: 'Approved successfully', detail: 'Bank deposit status approved' });
                                         else
-                                            this.messageService.add({ severity: 'success', summary: 'Pass to maker successfully', detail: 'Depositor cash entry passed' });
+                                            this.messageService.add({ severity: 'success', summary: 'Pass successfully', detail: 'Bank deposit status passed' });
 
                                         setTimeout(() => {
                                             location.reload();
-                                        }, 100);
+                                        }, 5000);
                                     },
                                     error => {
                                         console.log(error);
