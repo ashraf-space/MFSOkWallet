@@ -334,13 +334,18 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByOutlet.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByTd.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBranchCashinCashout.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChildMerchantTransaction.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransaction.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransactionSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTChildOutletDailySummaryTrans.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTOutletDetailsTransaction.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTOutletDailySummaryTrans.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTOutletSummaryTransaction.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionDetails.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTTransactionSummary.rdlc" />

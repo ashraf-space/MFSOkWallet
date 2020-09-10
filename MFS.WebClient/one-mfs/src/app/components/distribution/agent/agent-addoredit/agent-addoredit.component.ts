@@ -38,7 +38,7 @@ export class AgentAddoreditComponent implements OnInit {
     photoIDTypeList: any;
     bankBranchList: any;
     selectedTerritory: string = "0";
-    selectedCluster: string;
+    selectedCluster: string = "0";
     clusterList: any;
     distCode: string;
     currentUserModel: any = {};
@@ -58,6 +58,8 @@ export class AgentAddoreditComponent implements OnInit {
     formValidation: any;
     mobileNoRegEx: RegExp;
     dobRegEx: RegExp;
+    alphabetsWithSpace: any;
+    checkedAsPresent: boolean = false;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -78,6 +80,7 @@ export class AgentAddoreditComponent implements OnInit {
         this.formValidation = {};
         this.positveNumber = this.mfsUtilityService.getPositiveWholeNumberRegExp();
         this.mobileNoRegEx = this.mfsUtilityService.getMobileNoRegExp();
+        this.alphabetsWithSpace = this.mfsUtilityService.getAlphabetsWithSpaceEegExp();
     }
 
     ngOnInit() {
@@ -155,7 +158,15 @@ export class AgentAddoreditComponent implements OnInit {
         }
         this.regInfoModel.partOfFirst = 100;
     }
+    sameAsPresent() {
+        if (this.checkedAsPresent) {
+            this.regInfoModel.preAddr = this.regInfoModel.perAddr;
+        }
+        else {
+            this.regInfoModel.preAddr = '';
+        }
 
+    }
     validateDatepicker(event) {
         if (this.dateOfBirth) {
             var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
@@ -477,7 +488,7 @@ export class AgentAddoreditComponent implements OnInit {
                     if (!this.regInfoModel.mphone ||
                         !this.regDate.year ||
                         !this.DistributorCode ||
-                        (this.selectedCluster == '0')) {
+                        !this.selectedCluster || this.selectedCluster == '0') {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
                         this.error = true;
@@ -494,7 +505,7 @@ export class AgentAddoreditComponent implements OnInit {
                     if (!this.regInfoModel.mphone ||
                         !this.regDate.year ||
                         !this.DistributorCode ||
-                        !this.selectedCluster ||
+                        !this.selectedCluster || this.selectedCluster == '0' ||
                         !this.regInfoModel.companyName ||
                         !this.regInfoModel.name ||
                         !this.regInfoModel.conMob ||
@@ -523,7 +534,7 @@ export class AgentAddoreditComponent implements OnInit {
                     if (!this.regInfoModel.mphone ||
                         !this.regDate.year ||
                         !this.DistributorCode ||
-                        !this.selectedCluster ||
+                        !this.selectedCluster || this.selectedCluster == '0' ||
                         !this.regInfoModel.companyName ||
                         !this.regInfoModel.name ||
                         !this.regInfoModel.conMob ||
@@ -535,8 +546,7 @@ export class AgentAddoreditComponent implements OnInit {
                         !this.regInfoModel.locationCode ||
                         !this.regInfoModel.perAddr ||
                         !this.dateOfBirth.year ||
-                        !this.regInfoModel.tradeLicenseNo ||
-                        !this.regInfoModel.firstNomineeName
+                        !this.regInfoModel.tradeLicenseNo                       
                     ) {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
@@ -553,7 +563,7 @@ export class AgentAddoreditComponent implements OnInit {
                     if (!this.regInfoModel.mphone ||
                         !this.regDate.year ||
                         !this.DistributorCode ||
-                        !this.selectedCluster ||
+                        !this.selectedCluster || this.selectedCluster == '0' ||
                         !this.regInfoModel.companyName ||
                         !this.regInfoModel.name ||
                         !this.regInfoModel.conMob ||
@@ -565,7 +575,7 @@ export class AgentAddoreditComponent implements OnInit {
                         !this.dateOfBirth.year ||
                         !this.regInfoModel.locationCode ||
                         !this.regInfoModel.perAddr ||
-                        !this.regInfoModel.tradeLicenseNo ||
+                        !this.regInfoModel.tradeLicenseNo ||                     
                         !this.regInfoModel.branchCode) {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
@@ -589,14 +599,17 @@ export class AgentAddoreditComponent implements OnInit {
 
 
     SaveAgent(event): any {
-        this.regInfoModel.entryBy = this.currentUserModel.user.username;
+        //this.regInfoModel.entryBy = this.currentUserModel.user.username;
         this.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.regDate);
         this.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.dateOfBirth);
-        if (this.isEditMode) {
+        if (this.isEditMode && !this.isRegPermit) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }
         if (this.isEditMode && this.isRegPermit) {
             this.regInfoModel.authoBy = this.currentUserModel.user.username;
+        }
+        if (event === 'save') {
+            this.regInfoModel.entryBy = this.currentUserModel.user.username;           
         }
         if (this.regInfoModel.distCode != "" || this.regInfoModel.branchName != "") {
             this.agentService.save(this.regInfoModel, this.isEditMode, event).pipe(first())

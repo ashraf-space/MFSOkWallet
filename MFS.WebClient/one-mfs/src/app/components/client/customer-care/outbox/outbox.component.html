@@ -3,7 +3,7 @@
         <div class="p-col-3">
             <div class="input-group">
                 <input class="form-control" style="border:none;min-height: 70% !important; font-size: 150% !important" pInputText placeholder="From" placement="bottom"
-                       name="dp" [(ngModel)]="dateObj.fromDate" ngbDatepicker #d="ngbDatepicker">
+                       name="dp" [(ngModel)]="dateObj.fromDate" [readonly]="true" ngbDatepicker #d="ngbDatepicker">
                 <div class="input-group-append">
                     <button class="fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block" (click)="d.toggle()" type="button"></button>
                 </div>
@@ -12,7 +12,7 @@
         <div class="p-col-3">
             <div class="input-group">
                 <input class="form-control" style="border:none; min-height: 70% !important;font-size: 150% !important" pInputText placeholder="To" placement="bottom"
-                       name="dp1" [(ngModel)]="dateObj.toDate" ngbDatepicker #e="ngbDatepicker">
+                       name="dp1" [(ngModel)]="dateObj.toDate" [readonly]="true" ngbDatepicker #e="ngbDatepicker">
                 <div class="input-group-append">
                     <button class="fa fa-calendar btn btn-blue btn-sm btn-reverse btn-block" (click)="e.toggle()" type="button"></button>
                 </div>

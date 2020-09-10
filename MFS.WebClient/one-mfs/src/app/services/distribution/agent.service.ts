@@ -7,7 +7,7 @@ import { MfsSettingService } from '../mfs-setting.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AgentService {
+export class AgentService {      
     
     constructor(private http: HttpClient, private environment: MfsSettingService) {
 
@@ -68,5 +68,20 @@ export class AgentService {
                 return distCode;
             }));
     }
+
+    GetAgentPhoneCodeListByCluster(selectedCluster: string): any {
+        return this.http.get<any>(this.environment.distributionApiServer + '/agent/GetAgentPhoneCodeListByCluster?cluster=' + selectedCluster)
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    ExecuteAgentReplace(exMobileNo: any, newMobileNo: any, exCluster: any, newCluster: any, entryBy: any, AgentPhoneCodeModel: any): any {
+        return this.http.post<any>(this.environment.distributionApiServer + '/agent/ExecuteAgentReplace?exMobileNo=' + exMobileNo + '&newMobileNo=' + newMobileNo + '&exCluster=' + exCluster + ' &newCluster=' + newCluster + '&entryBy=' + entryBy, AgentPhoneCodeModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    } 
+   
 
 }

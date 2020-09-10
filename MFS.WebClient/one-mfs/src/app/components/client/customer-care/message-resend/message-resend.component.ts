@@ -63,7 +63,7 @@ export class MessageResendComponent implements OnInit {
         this.gridConfig.entityField = 'mphone';
         this.gridConfig.hasCustomContent = true;
         this.gridConfig.showUniversalFilter = false;
-
+        this.gridConfig.showExport = false;
         this.gridConfig.columnList = [
             { field: 'mphone', header: 'A/C #', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'name', header: 'Name', width: '7%', filter: this.gridSettingService.getDefaultFilterable() },

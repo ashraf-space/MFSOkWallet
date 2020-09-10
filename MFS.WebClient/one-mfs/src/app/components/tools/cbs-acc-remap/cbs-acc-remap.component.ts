@@ -310,8 +310,8 @@ export class CbsAccRemapComponent implements OnInit {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Already Exist',
-                            detail: 'This account is already exist',
-                            closable: true
+                            detail: 'This CBS account is already exist',
+                            sticky: true
                         });
                     }
                     else if (data === 'PE') {
@@ -320,7 +320,7 @@ export class CbsAccRemapComponent implements OnInit {
                             severity: 'warn',
                             summary: 'Pending Exist',
                             detail: 'Please resolved the pending issue',
-                            closable: true
+                            sticky: true
                         });
                     }
                     else if (data === 'MCC') {
@@ -329,7 +329,7 @@ export class CbsAccRemapComponent implements OnInit {
                             severity: 'error',
                             summary: 'Missmatched CBS class',
                             detail: 'Please select authorized cbs class account',
-                            closable: true
+                            sticky: true
                         });
                     }
                     else if (data === 'MMCAMA') {
@@ -337,8 +337,8 @@ export class CbsAccRemapComponent implements OnInit {
                         this.messageService.add({
                             severity: 'error',
                             summary: 'Missmatched mobile number',
-                            detail: 'CBS Account mobile no and ok wallet mobile no should be same',
-                            closable: true
+                            detail: 'CBS Account mobile no and ok wallet mobile number should be same',
+                            sticky: true
                         });
                     }
                     else if (data === 'EACCM3') {
@@ -347,7 +347,7 @@ export class CbsAccRemapComponent implements OnInit {
                             severity: 'error',
                             summary: 'Exceed limit for mapping',
                             detail: 'Please Inactive a existing account for remapping new account',
-                            closable: true
+                            sticky: true
                         });
                     }
                     else if (data === 500) {
@@ -358,7 +358,7 @@ export class CbsAccRemapComponent implements OnInit {
                             severity: 'error',
                             summary: 'Not Found',
                             detail: 'No cbs accont found',
-                            closable: true
+                            sticky: true
                         });
                     }
 

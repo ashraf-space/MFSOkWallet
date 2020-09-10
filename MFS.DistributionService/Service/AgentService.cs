@@ -16,10 +16,12 @@ namespace MFS.DistributionService.Service
 		object GenerateAgentCode(string code);
 		object GetAgentByMobilePhone(string mPhone);
         object GetAgentListByClusterCode(string cluster);
-		object GetAgentListByParent(string code, string catId);
+        object GetAgentPhoneCodeListByCluster(string cluster);
+        object GetAgentListByParent(string code, string catId);
 		object GetDistCodeByAgentInfo(string territoryCode, string companyName, string offAddr);
 
         string GenerateAgentCodeAsString(string code);
+        string ExecuteAgentReplace(string newMobileNo, string exCluster, string newCluster, AgentPhoneCode item);
     }
 
 	public class AgentService:BaseService<Reginfo>,IAgentService
@@ -64,7 +66,12 @@ namespace MFS.DistributionService.Service
             return _repository.GetAgentListByClusterCode(cluster);
         }
 
-		public object GetAgentListByParent(string code, string catId)
+        public object GetAgentPhoneCodeListByCluster(string cluster)
+        {
+            return _repository.GetAgentPhoneCodeListByCluster(cluster);
+        }
+
+        public object GetAgentListByParent(string code, string catId)
 		{
 			return _repository.GetAgentListByParent(code, catId);
 		}
@@ -72,5 +79,19 @@ namespace MFS.DistributionService.Service
 		{
 			return _repository.GetDistCodeByAgentInfo(territoryCode, companyName, offAddr);
 		}
-	}
+
+        public string ExecuteAgentReplace(string newMobileNo, string exCluster, string newCluster, AgentPhoneCode item)
+        {
+            try
+            {
+                return _repository.ExecuteAgentReplace(newMobileNo, exCluster,  newCluster,  item);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+    }
 }

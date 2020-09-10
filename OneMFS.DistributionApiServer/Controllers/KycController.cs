@@ -40,7 +40,15 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				if (filterId == "O")
 				{
-					return await kycService.GetRegInfoListByOthersBranchCode(branchCode, catId, status, filterId);
+					var userCode = kycService.GetUserBranchCodeByUserId(Request.Headers["UserInfo"].ToString());
+					if (userCode.ToString() == "0000")
+					{
+						return await kycService.GetRegInfoListByOthersBranchCode(branchCode, catId, status, filterId);
+					}
+					else
+					{
+						return new List<dynamic>();
+					}
 				}
 				else
 				{
@@ -271,6 +279,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 		[ApiGuardAuth]
 		[HttpPost]
+		[Route("OnReleaseBindDevice")]
+		public object OnReleaseBindDevice([FromBody] Reginfo reginfo)
+		{
+			try
+			{
+				kycService.OnReleaseBindDevice(reginfo.Mphone, reginfo.UpdateBy);
+				return HttpStatusCode.OK;
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
+			}
+
+		}
+		[ApiGuardAuth]
+		[HttpPost]
 		[Route("AddRemoveLien")]
 		public object AddRemoveLien(string remarks, [FromBody] Reginfo reginfo)
 		{
@@ -282,6 +307,20 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 
+			}
+		}
+		[ApiGuardAuth]
+		[HttpGet]
+		[Route("GetCustomerByMphone")]
+		public object GetCustomerByMphone(string mphone, string catId)
+		{
+			try
+			{
+				return kycService.GetCustomerByMphone(mphone, catId);
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
 	}

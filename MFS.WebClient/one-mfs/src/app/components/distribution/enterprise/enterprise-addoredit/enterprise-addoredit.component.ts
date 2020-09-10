@@ -305,17 +305,17 @@ export class EnterpriseAddoreditComponent implements OnInit {
                         window.history.back();
                         if (data === 200) {
                             if (event == 'reject') {
-                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', detail: 'Customer approval rejected' });
+                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', detail: 'Enterprise approval rejected' });
                             }
                             else if (this.isEditMode && !this.isRegPermit) {
-                                this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Customer Updated' });
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Enterprise Updated' });
                             }
                             else if
                                 (this.isRegPermit && this.isRegPermit) {
-                                this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Customer Registered' });
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Enterprise Registered' });
                             }
                             else
-                                this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Customer added' });
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Enterprise added' });
 
                         }
                         else {

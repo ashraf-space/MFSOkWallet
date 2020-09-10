@@ -9,7 +9,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class DistributorService {
-    
 
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
 
@@ -166,6 +165,13 @@ export class DistributorService {
             .pipe(map(data => {
                 return data;
             }))
+    }
+
+    getRegionDetailsByMobileNo(mobileNo: any): any {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/GetRegionDetailsByMobileNo?mobileNo=' + mobileNo)
+            .pipe(map(data => {
+                return data;
+            }));
     }
 
 }

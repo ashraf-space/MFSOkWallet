@@ -34,12 +34,12 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string catType = builder.ExtractText(Convert.ToString(model.ReportOption), "catType", ",");
 			string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
 
-			decimal TotalPaymentSum=0;
-			decimal TotalVatSum=0;
-			decimal TotalServChrgSum=0;
-			decimal VatOnChrgSum=0;
-			decimal NetServFeeSum=0;
-			decimal ClientSum=0;
+			decimal TotalPaymentSum = 0;
+			decimal TotalVatSum = 0;
+			decimal TotalServChrgSum = 0;
+			decimal VatOnChrgSum = 0;
+			decimal NetServFeeSum = 0;
+			decimal ClientSum = 0;
 			decimal RevStampAmountSum = 0;
 			List<BillCollection> dpdcDescoReportsList = billCollectionService.GetDpdcDescoReport(utility, fromDate, toDate, gateway, dateType, catType);
 			if (dpdcDescoReportsList.Count() > 0)
@@ -111,5 +111,43 @@ namespace OneMFS.ReportingApiServer.Controllers
 		}
 
 
+
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/BillCollection/CreditPaymentReport")]
+		public byte[] CreditPaymentReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+			List<CreditCardReport> creditCardReports = new List<CreditCardReport>();
+			creditCardReports = billCollectionService.GetCreditPaymentReport(transNo, fromDate, toDate);
+			
+			ReportViewer reportViewer = new ReportViewer();
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTCreditCardInfo.rdlc");  //Request.RequestUri("");
+			reportViewer.LocalReport.SetParameters(GetCreditPaymentReportParameter(fromDate,toDate,transNo));
+			ReportDataSource A = new ReportDataSource("CreditCardReport", creditCardReports);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
+		}
+
+		private IEnumerable<ReportParameter> GetCreditPaymentReportParameter(string fromDate, string toDate, string transNo)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("transNo", transNo));
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
+		}
 	}
 }

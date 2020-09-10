@@ -20,6 +20,8 @@ export class CompanyAddoreditComponent implements OnInit {
     isShow: boolean = true;
     isActionDisabled: boolean = true;
     accountNo: string = "";
+    TargetCatTypeList: any;
+
     constructor(private disbursementService: disbursementService, private messageService: MessageService, private route: ActivatedRoute, private authService: AuthenticationService) {
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
@@ -27,10 +29,21 @@ export class CompanyAddoreditComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.TargetCatTypeList = [
+            { label: 'Distributor', value: 'D' },
+            { label: 'Agent', value: 'A' },
+            { label: 'Customer', value: 'C' },
+            { label: 'Merchant', value: 'M' },
+            { label: 'Any', value: '' }
+        ];
     }
     companySave() {
 
-        if (!this.tblDisburseCompanyInfoModel.companyName || !this.tblDisburseCompanyInfoModel.address || !this.tblDisburseCompanyInfoModel.phone) {
+        if (!this.tblDisburseCompanyInfoModel.companyName
+            || !this.tblDisburseCompanyInfoModel.address
+            //|| !this.tblDisburseCompanyInfoModel.targetCatId || this.tblDisburseCompanyInfoModel.targetCatId == ''
+            || !this.tblDisburseCompanyInfoModel.phone) {
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
             this.error = true;
@@ -42,7 +55,7 @@ export class CompanyAddoreditComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Disburse company info added' });
-                       
+
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();

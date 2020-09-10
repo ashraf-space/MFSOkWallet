@@ -15,16 +15,12 @@ namespace MFS.DistributionService.Models
 		public string CatId { get; set; } //No Update
 		public string Status { get; set; }
 		public string RegStatus { get; set; }
-		//public double? BalanceM { get; set; }
-		//public double? BalanceC { get; set; }
-		//No Update----
-		//public decimal? LienM { get; set; }
-		//public int? LienC { get; set; }
+		
 		public int? AcTypeCode { get; set; }
-		public string DistCode { get; set; }
-		//public string AcMaintainCharge { get; set; }
+		public string DistCode { get; set; }	
 		public string Pmphone { get; set; }
 		public string Name { get; set; }
+		public string LastName { get; set; }
 		public string Gender { get; set; }
 		public string FatherName { get; set; }
 		public string MotherName { get; set; }
@@ -77,15 +73,7 @@ namespace MFS.DistributionService.Models
 		public string DsrMphone { get; set; }
 		public string TradeLicenseNo { get; set; }
 		public string LocationCode { get; set; }
-		//public int? DailyCashinCount { get; set; }
-		//public int? DailyCashinAmt { get; set; }
-		//public int? MonthlyCashinCount { get; set; }
-		//public int? MonthlyCashinAmt { get; set; }
-		//public int? DailyCashoutCount { get; set; }
-		//public int? DailyCashoutAmt { get; set; }
-		//public int? MonthlyCashoutCount { get; set; }
-		//public int? MonthlyCashoutAmt { get; set; }
-		//public DateTime? LastTransDate { get; set; }
+		
 		//public string Particular { get; set; }
 
 		public string EntryBy { get; set; }
@@ -105,20 +93,10 @@ namespace MFS.DistributionService.Models
 		public string IntroAddr { get; set; }
 		public string NomineeConNo { get; set; }
 		public string EmergencyConNo { get; set; }
-		//public int? SameDailyCashinCount { get; set; }
-		//public int? SameDailyCashinAmt { get; set; }
-		//public int? SameMonthlyCashinCount { get; set; }
-		//public int? SameMonthlyCashinAmt { get; set; }
-		//public int? SameDailyCashoutCount { get; set; }
-		//public int? SameDailyCashoutAmt { get; set; }
-		// public int? SameMonthlyCashoutCount { get; set; }
-		//public int? SameMonthlyCashoutAmt { get; set; }
-		//public string Ppmphone { get; set; }
+		
 		public string RejectReason { get; set; }
 		public string KycStatus { get; set; }
-		public string CbsCustId { get; set; }
-		//public string DeviceId { get; set; }
-		//public string DeviceOtp { get; set; }
+		public string CbsCustId { get; set; }		
 		public string PhotoidValidation { get; set; }
 		public string MType { get; set; }
 		public string MAreaType { get; set; }
@@ -130,9 +108,7 @@ namespace MFS.DistributionService.Models
 		public string EftDistCode { get; set; }
 		public string EftBranchCode { get; set; }
 		public string EftRoutingNo { get; set; }
-		public string SettlementCycle { get; set; }
-		//public int? SchargePer { get; set; }
-		//public string OptCode { get; set; }
+		public string SettlementCycle { get; set; }		
 		public string RegSource { get; set; }
 		public string Email { get; set; }
 		public string Referral { get; set; }

@@ -116,7 +116,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                             prevModel.Status = "N";
                             _auditTrailService.InsertUpdatedModelToAuditTrail(item, prevModel, item.SomId, 9, 4, "Bank Deposit Status", item.Tranno, response);
                         }
-                        else if (roleName == "Financial Maker")
+                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
                         {
                             item.MakerId = userName;
                             if (evnt == "reject")

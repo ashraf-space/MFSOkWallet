@@ -47,6 +47,7 @@ export class DsrAddoreditComponent implements OnInit {
     showDuplicateMsg: boolean = false;
     formValidation: any;
     isLoading: boolean = false;
+    checkedAsPresent: boolean = false;
     constructor(private distributorService: DistributorService,
         private dsrService: DsrService,
         private router: Router,
@@ -63,7 +64,7 @@ export class DsrAddoreditComponent implements OnInit {
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
         });
-
+        this.formValidation = {};
     }
 
     ngOnInit() {
@@ -141,6 +142,15 @@ export class DsrAddoreditComponent implements OnInit {
             this.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         }
         this.regInfoModel.partOfFirst = 100;
+    }
+    sameAsPresent() {
+        if (this.checkedAsPresent) {
+            this.regInfoModel.preAddr = this.regInfoModel.perAddr;
+        }
+        else {
+            this.regInfoModel.preAddr = '';
+        }
+
     }
     validateDatepicker(event) {
         if (this.dateOfBirth) {
@@ -252,7 +262,7 @@ export class DsrAddoreditComponent implements OnInit {
 
     onStepAhead(event) {
         this.showDuplicateMsg = false;
-        if (this.activeIndex < 3) {
+        if (this.activeIndex < 4) {
             //this.activeIndex++;
             this.validation(event);
         }
@@ -289,8 +299,7 @@ export class DsrAddoreditComponent implements OnInit {
                         !this.regInfoModel.photoIdTypeCode ||
                         !this.regInfoModel.photoId ||
                         !this.regInfoModel.conMob ||
-                        !this.regInfoModel.offAddr ||
-                        !this.regInfoModel.tradeLicenseNo ||
+                        !this.regInfoModel.offAddr ||                       
                         !this.selectedDivision ||
                         !this.selectedDistrict ||
                         !this.regInfoModel.locationCode ||
@@ -319,8 +328,7 @@ export class DsrAddoreditComponent implements OnInit {
                         !this.regInfoModel.photoIdTypeCode ||
                         !this.regInfoModel.photoId ||
                         !this.regInfoModel.conMob ||
-                        !this.regInfoModel.offAddr ||
-                        !this.regInfoModel.tradeLicenseNo ||
+                        !this.regInfoModel.offAddr ||                      
                         !this.selectedDivision ||
                         !this.selectedDistrict ||
                         !this.regInfoModel.locationCode ||
@@ -331,8 +339,7 @@ export class DsrAddoreditComponent implements OnInit {
                         !this.DistributorCode ||
                         !this.selectedRegion || this.selectedRegion == '0' ||
                         !this.selectedArea || this.selectedArea == '0' ||
-                        !this.selectedTerritory || this.selectedTerritory == '0' ||
-                        !this.regInfoModel.firstNomineeName) {
+                        !this.selectedTerritory || this.selectedTerritory == '0' ) {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
                         this.error = true;
@@ -347,7 +354,7 @@ export class DsrAddoreditComponent implements OnInit {
 
             case 3:
                 {
-                    if (!this.regInfoModel.branchCode || this.regInfoModel.branchCode == "0" ||
+                    if (!this.regInfoModel.branchCode ||
                         !this.regInfoModel.companyName ||
                         !this.regInfoModel.name ||
                         !this.regInfoModel.photoIdTypeCode ||
@@ -367,6 +374,9 @@ export class DsrAddoreditComponent implements OnInit {
                         !this.selectedTerritory || this.selectedTerritory == '0') {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                        if (this.regInfoModel.branchCode) {
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                        }
                         this.error = true;
                         break;
                     } else {
@@ -382,15 +392,18 @@ export class DsrAddoreditComponent implements OnInit {
     saveDSR(event): any {
         this.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.regDate);
         this.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.dateOfBirth);
-        if (!this.isEditMode) {
-            this.regInfoModel.entryBy = this.currentUserModel.user.username;
-        }
+        //if (!this.isEditMode) {
+        //    this.regInfoModel.entryBy = this.currentUserModel.user.username;
+        //}
 
         if (this.isEditMode && !this.isRegistrationPermitted) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }
         if (this.isEditMode && this.isRegistrationPermitted) {
             this.regInfoModel.authoBy = this.currentUserModel.user.username;
+        }
+        if (event === 'save') {
+            this.regInfoModel.entryBy = this.currentUserModel.user.username;           
         }
         if (this.regInfoModel.distCode != "" || this.regInfoModel.branchName != "") {
             this.dsrService.save(this.regInfoModel, this.isEditMode, event).pipe(first())

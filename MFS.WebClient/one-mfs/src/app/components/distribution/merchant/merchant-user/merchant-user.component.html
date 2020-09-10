@@ -55,6 +55,13 @@
 								[disabled]="isRegistrationPermitted"
 								id="float-input"></p-dropdown>
 				</div>
+				<div class="p-col-6">
+					<label for="float-input input-lg" class=" col-form-label-dd">Merchant Type</label>
+					<p-dropdown [options]="merchantTypeList" [(ngModel)]="merchantUserModel.mtype" placeholder="Please Select"
+								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+								[disabled]="isRegistrationPermitted"
+								id="float-input"></p-dropdown>
+				</div>
 			</div>
 
 		</div>

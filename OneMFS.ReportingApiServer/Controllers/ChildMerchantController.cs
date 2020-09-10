@@ -19,10 +19,12 @@ namespace OneMFS.ReportingApiServer.Controllers
 	{
 		private readonly IChildMerchantService childMerchantService;
 		private readonly IKycService kycService;
-		public ChildMerchantController(IChildMerchantService childMerchantService, IKycService kycService)
+		private readonly IChainMerchantService chainMerchantService;		
+		public ChildMerchantController( IChildMerchantService childMerchantService,IKycService kycService, IChainMerchantService _chainMerchantService)
 		{
 			this.childMerchantService = childMerchantService;
 			this.kycService = kycService;
+			this.chainMerchantService = _chainMerchantService;			
 		}
 		[HttpPost]
 		[Route("api/ChildMerchant/OutletDetailsTransReport")]
@@ -31,10 +33,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			try
 			{
 				StringBuilderService builder = new StringBuilderService();
-				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", "}");
+				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", ",");
 				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
-
+				string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
 				var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
 
 				if (clientInfo.CatId != "M")
@@ -82,10 +84,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			try
 			{
 				StringBuilderService builder = new StringBuilderService();
-				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", "}");
+				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", ",");
 				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
-
+				string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
 				var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
 
 				if (clientInfo.CatId != "M")
@@ -133,5 +135,108 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return paraList;
 		}
 
+
+		[HttpPost]
+		[Route("api/ChildMerchant/OutletSumTransReportByOutlet")]
+		public object OutletSumTransReportByOutlet(ReportModel model)
+		{
+			try
+			{
+				StringBuilderService builder = new StringBuilderService();
+				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", ",");
+				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+				string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
+				//var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
+				var childMerchantCode = chainMerchantService.GetChainMerchantCodeByMphone(mphone);
+				
+				
+				List <OutletSummaryTransaction> merchantTransactionList = new List<OutletSummaryTransaction>();
+				
+				merchantTransactionList = childMerchantService.ChainMerTransSummReportByOutlet(mphone, childMerchantCode, fromDate, toDate,dateType).ToList();
+
+				string merchantName = merchantTransactionList[0].OutletName;
+				string merchantCode = merchantTransactionList[0].OutletId;
+				ReportViewer reportViewer = new ReportViewer();
+
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTChainMerTranSumByOutlet.rdlc");
+				reportViewer.LocalReport.SetParameters(GetReportParameterOutletSumTransReportByOutlet(mphone, fromDate, toDate, merchantName, merchantCode));
+				ReportDataSource A = new ReportDataSource("OutletSummaryTransaction", merchantTransactionList);
+				reportViewer.LocalReport.DataSources.Add(A);
+
+
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		private IEnumerable<ReportParameter> GetReportParameterOutletSumTransReportByOutlet(string mphone, string fromDate, string toDate,string merchantName, string merchantCode)
+		{			
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			paraList.Add(new ReportParameter("MerchantNumber", mphone));
+			paraList.Add(new ReportParameter("FromDate", fromDate));
+			paraList.Add(new ReportParameter("ToDate", toDate));
+			paraList.Add(new ReportParameter("MerchantName", merchantName));
+			paraList.Add(new ReportParameter("MerchantCode", merchantCode));
+			paraList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+			return paraList;
+		}
+
+		[HttpPost]
+		[Route("api/ChildMerchant/DailySumReport")]
+		public object DailySumReport(ReportModel model)
+		{
+			try
+			{
+				StringBuilderService builder = new StringBuilderService();
+				string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", ",");
+				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+				string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
+				//var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
+				var childMerchantCode = chainMerchantService.GetChainMerchantCodeByMphone(mphone);
+
+
+				List<OutletDailySummaryTransaction> merchantTransactionList = new List<OutletDailySummaryTransaction>();
+
+				merchantTransactionList = childMerchantService.ChildMerDailySumReport(mphone, childMerchantCode, fromDate, toDate, dateType).ToList();
+
+				string merchantName = merchantTransactionList[0].OutletName;
+				string merchantCode = merchantTransactionList[0].OutletId;
+				ReportViewer reportViewer = new ReportViewer();
+
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTChildOutletDailySummaryTrans.rdlc");
+				reportViewer.LocalReport.SetParameters(GetReportParameterDailySumReport(mphone, fromDate, toDate, merchantName, merchantCode));
+				ReportDataSource A = new ReportDataSource("OutletDailyTransaction", merchantTransactionList);
+				reportViewer.LocalReport.DataSources.Add(A);
+
+
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+		private IEnumerable<ReportParameter> GetReportParameterDailySumReport(string mphone, string fromDate, string toDate,string merchantName, string chainMerchantCode)
+		{
+			List<ReportParameter> paramList = new List<ReportParameter>();
+			paramList.Add(new ReportParameter("FromDate", fromDate));
+			paramList.Add(new ReportParameter("ToDate", toDate));
+			paramList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+			paramList.Add(new ReportParameter("MerchantNumber", mphone));
+			paramList.Add(new ReportParameter("MerchantName", merchantName));
+			paramList.Add(new ReportParameter("MerchantCode", chainMerchantCode));			
+			return paramList;
+		}
 	}
 }

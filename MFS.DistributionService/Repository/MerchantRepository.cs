@@ -405,7 +405,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.* from " + dbUser + "merchant_user t where t.mphone = '" + mphone + "'";
+					string query = @"select t.* from " + dbUser + "merchant_user t where t.mobile_no = '" + mphone + "'";
 					var result = connection.Query<MerchantUser>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;

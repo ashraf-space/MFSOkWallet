@@ -250,10 +250,12 @@ export class ChainMerchantAddoreditComponent implements OnInit {
 
     saveMerchant(event): any {
         this.showDuplicateMsg = false;
-        if (!this.isEditMode) {
+        //if (!this.isEditMode) {
+        //    this.regInfoModel.entryBy = this.currentUserModel.user.username;
+        //}
+        if (event === 'save') {
             this.regInfoModel.entryBy = this.currentUserModel.user.username;
         }
-
         if (this.isEditMode && !this.isRegistrationPermitted) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }

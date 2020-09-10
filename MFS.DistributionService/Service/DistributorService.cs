@@ -28,6 +28,7 @@ namespace MFS.DistributionService.Service
         object ExecuteReplace(DistributorReplace distributorReplace);
         bool IsExistsByMpohne(string mphone);
         bool IsExistsByCatidPhotoId(string catId, string photoId);
+        object GetRegionDetailsByMobileNo(string mobileNo);
     }
     public class DistributorService : BaseService<Reginfo>,IDistributorService
     {
@@ -194,6 +195,19 @@ namespace MFS.DistributionService.Service
             try
             {
                 return _distributorRepository.IsExistsByCatidPhotoId( catId,  photoId);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetRegionDetailsByMobileNo(string mobileNo)
+        {
+            try
+            {
+                return _distributorRepository.GetRegionDetailsByMobileNo(mobileNo);
             }
             catch (Exception ex)
             {

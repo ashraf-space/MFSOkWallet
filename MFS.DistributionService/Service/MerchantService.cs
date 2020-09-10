@@ -139,8 +139,11 @@ namespace MFS.DistributionService.Service
 					regInfo.CatId = "M";
 					regInfo.RegSource = "P";
 					regInfo.AcTypeCode = 1;
-					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
-					regInfo.SelectedCycleWeekDay = string.Join(",", regInfo._SelectedCycleWeekDay);
+					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					if (regInfo.SelectedCycleWeekDay != null)
+					{
+						regInfo.SelectedCycleWeekDay = string.Join(",", regInfo._SelectedCycleWeekDay);
+					}					
 					MerchantConfig merchantConfig = new MerchantConfig();
 					merchantConfig.Mcode = regInfo._Mcode;
 					merchantConfig.Category = regInfo._MCategory;
@@ -173,7 +176,8 @@ namespace MFS.DistributionService.Service
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_MerchantRepository.UpdateRegInfo(regInfo);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Merchant updated");
+						var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Merchant updated");
 						return HttpStatusCode.OK;
 					}
 					else
@@ -187,7 +191,8 @@ namespace MFS.DistributionService.Service
 							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
 							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_MerchantRepository.UpdateRegInfo(regInfo);
-							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
+							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
 							int fourDigitRandomNo = new Random().Next(1000, 9999);
 							_MerchantRepository.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
@@ -198,12 +203,12 @@ namespace MFS.DistributionService.Service
 								MessageBody = "Congratulations! Your OK wallet has been opened successfully." + " Your Pin is "
 								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 							});
-							return true;
+							return HttpStatusCode.OK;
 
 						}
 						else
 						{
-							return true;
+							return HttpStatusCode.OK;
 						}
 
 					}
@@ -213,7 +218,7 @@ namespace MFS.DistributionService.Service
 			catch (Exception)
 			{
 
-				throw;
+				return HttpStatusCode.BadRequest;
 			}
 		}
 

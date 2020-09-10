@@ -7,6 +7,7 @@ import { MfsSettingService } from '../mfs-setting.service';
   providedIn: 'root'
 })
 export class KycService {
+    
     getBalanceInfoByMphone(entity: any) {
         return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/getBalanceInfoByMphone?mphone=' + entity)
             .pipe(map(model => {
@@ -75,6 +76,13 @@ export class KycService {
     }
     blackListClient(actionModel: any, remarks: string) {
         return this.http.post(this.environment.distributionApiServer + '/Kyc/blackListClient?remarks=' + remarks, actionModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    onReleaseBindDevice(model: any) {
+        return this.http.post(this.environment.distributionApiServer + '/Kyc/OnReleaseBindDevice', model)
             .pipe(map(model => {
                 return model;
             }))

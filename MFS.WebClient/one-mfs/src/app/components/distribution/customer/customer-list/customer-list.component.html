@@ -1,1 +1,10 @@
-<generic-grid [gridConfig]="gridConfig"></generic-grid>
+<generic-grid [gridConfig]="gridConfig">
+	<div *ngIf="isAllowUser" class="p-grid">
+		<div class="p-col-3">
+			<input class="form-control" style="border:none; min-height: 70% !important;font-size: 150% !important" (change)="onCustomerSearch()" placeholder="OK Account No" [(ngModel)]="regInfoModel.mphone" pInputText>
+		</div>
+		<div class="p-col-3">
+			<button type="button"  class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onCustomerSearch()"><i class="fas fa-search"></i></button>
+		</div>
+	</div>
+</generic-grid>

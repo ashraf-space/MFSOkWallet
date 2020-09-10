@@ -20,6 +20,7 @@ namespace MFS.TransactionService.Models
         public string RwdAcc { get; set; }
         public string IncAcc { get; set; }
         public string EftAcc { get; set; }
+        public string TargetCatId { get; set; }
 
 
 

@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MFS.SecurityService.Service;
 using MFS.TransactionService.Models;
 using MFS.TransactionService.Repository;
 using OneMFS.SharedResources;
@@ -23,7 +24,7 @@ namespace MFS.TransactionService.Service
 		object CheckIsAccountValid(string mblNo, string accNo);
 		object GetPendingCbsAccounts(string branchCode);
 		object CheckAccountValidityByCount(string mblNo);
-		object SaveRemapCbsAccount(BatchUpdateModel model);
+		//object SaveRemapCbsAccount(BatchUpdateModel model);
 		object SaveActionPendingCbsAccounts(BatchUpdateModel model);
 		object GetMappedAccountByMblNo(string mblNo);
 		object CheckAccNoIsMappedByMblNo(string mblAcc, string accno);
@@ -35,10 +36,11 @@ namespace MFS.TransactionService.Service
 	public class ToolService : BaseService<MtCbsinfo>, IToolService
 	{
 		private IToolsRepository _repository;
-
-		public ToolService(IToolsRepository repository)
+		private readonly IAuditTrailService auditTrailService;
+		public ToolService(IToolsRepository repository, IAuditTrailService _auditTrailService)
 		{
 			_repository = repository;
+			auditTrailService = _auditTrailService;
 		}
 
 		public object GetMappedAccountInfoByMphone(string mphone)
@@ -219,41 +221,41 @@ namespace MFS.TransactionService.Service
 			return _repository.CheckAccountValidityByCount(mblNo);
 		}
 
-		public object SaveRemapCbsAccount(BatchUpdateModel model)
-		{
-			StringBuilderService builder = new StringBuilderService();
-			var cbsInfosList = ConvertBatchUpdateModelToMtCbsinfoModel(model);
-			string inactiveCbsAccountNo = null;
-			foreach (var mtCbsinfo in cbsInfosList)
-			{
-				if (mtCbsinfo.MakeStatus == "I")
-				{
-					inactiveCbsAccountNo = mtCbsinfo.Accno;
-				}
-			}
+		//public object SaveRemapCbsAccount(BatchUpdateModel model)
+		//{
+		//	StringBuilderService builder = new StringBuilderService();
+		//	var cbsInfosList = ConvertBatchUpdateModelToMtCbsinfoModel(model);
+		//	string inactiveCbsAccountNo = null;
+		//	foreach (var mtCbsinfo in cbsInfosList)
+		//	{
+		//		if (mtCbsinfo.MakeStatus == "I")
+		//		{
+		//			inactiveCbsAccountNo = mtCbsinfo.Accno;
+		//		}
+		//	}
 
-			int inactiveCbsAccStatus = _repository.InactiveCbsAccountByAccountNo(inactiveCbsAccountNo);
-			if (inactiveCbsAccStatus == 1)
-			{
-				var mtCbsinfo = ConvertBatchUpdateParameterToMtCbsinfoModel(model);
-				try
-				{
-					if (mtCbsinfo.MakeStatus == "A")
-					{
-						_repository.Add(mtCbsinfo);
-					}
-					return HttpStatusCode.OK;
-				}
-				catch (Exception e)
-				{
-					return HttpStatusCode.InternalServerError;
-				}
-			}
-			else
-			{
-				return HttpStatusCode.InternalServerError;
-			}
-		}
+		//	int inactiveCbsAccStatus = _repository.InactiveCbsAccountByAccountNo(inactiveCbsAccountNo);
+		//	if (inactiveCbsAccStatus == 1)
+		//	{
+		//		var mtCbsinfo = ConvertBatchUpdateParameterToMtCbsinfoModel(model);
+		//		try
+		//		{
+		//			if (mtCbsinfo.MakeStatus == "A")
+		//			{
+		//				_repository.Add(mtCbsinfo);
+		//			}
+		//			return HttpStatusCode.OK;
+		//		}
+		//		catch (Exception e)
+		//		{
+		//			return HttpStatusCode.InternalServerError;
+		//		}
+		//	}
+		//	else
+		//	{
+		//		return HttpStatusCode.InternalServerError;
+		//	}
+		//}
 
 		public List<MtCbsinfo> ConvertBatchUpdateModelToMtCbsinfoModelForCheck(BatchUpdateModel model)
 		{
@@ -294,35 +296,19 @@ namespace MFS.TransactionService.Service
 
 				foreach (MtCbsinfo mtcbsinfo in mtcbsinfos)
 				{
-					if (mtcbsinfo.CheckStatus != null)
-					{
-
-						if (mtcbsinfo.CheckStatus == "Y")
-						{
-							mtcbsinfo.Status = mtcbsinfo.MakeStatus;
-							_repository.UpdateByStringField(mtcbsinfo, "Accno");
-						}
-						//else if(mtcbsinfo.CheckStatus == "N")
-						//{
-						//	string checkStatus = _repository.CheckStatusByAcc(mtcbsinfo.Accno).ToString();
-						//	if (checkStatus == "A")
-						//	{
-						//		mtcbsinfo.Status = "A";
-						//		_repository.UpdateByStringField(mtcbsinfo, "Accno");
-						//	}						
-						//}
-						else
-						{
-							_repository.UpdateByStringField(mtcbsinfo, "Accno");
-						}
-
+					if (mtcbsinfo.CheckStatus != null && mtcbsinfo.CheckStatus != "P")
+					{						
+						var cbsInfoPrev = _repository.GetMappedAccountByAccNo(mtcbsinfo.Accno);						
+						_repository.ChekCbsAccuntByAccNo(mtcbsinfo);
+						var cbsInfoCurrent = _repository.GetMappedAccountByAccNo(mtcbsinfo.Accno);
+						auditTrailService.InsertUpdatedModelToAuditTrail(cbsInfoCurrent, cbsInfoPrev, mtcbsinfo.CheckBy, 8, 4, "Acc Mapping Check", mtcbsinfo.Mphone, "Successfully Checked");						
 					}
 				}
 				return HttpStatusCode.OK;
 			}
 			catch (Exception ex)
 			{
-				return HttpStatusCode.InternalServerError;
+				throw;
 
 			}
 		}
@@ -344,19 +330,13 @@ namespace MFS.TransactionService.Service
 
 			string inactiveCbsAccountNo = string.Empty;
 			int count=0;
-			int countPending = 0;
-			//foreach(var item in cbsInfosList)
-			//{
-			//	if(item.MakeStatus == "A")
-			//	{
-			//		countPending++;
-			//	}
-			//}
+			int countPending = 0;			
 			foreach (var item in cbsInfosList)
 			{
 				if(item.Status == null && item.MakeStatus == "A")
 				{
 					_repository.Add(item);
+					auditTrailService.InsertModelToAuditTrail(item,item.MakeBy,8,3,"Customer Acc Mapping",item.Mphone,"Mapped Suucessful");
 				}
 				if((item.Status != item.MakeStatus) && item.Status != null)
 				{
@@ -373,7 +353,11 @@ namespace MFS.TransactionService.Service
 
 						if (count <= 1 && count+countPending<=2)
 						{
-							_repository.ActiveCbsAccountByAccountNo(item.Accno);
+							var cbsInfoPrev = _repository.GetMappedAccountByAccNo(item.Accno);
+							_repository.ActiveCbsAccountByAccountNo(item.Accno,item.MakeBy,item.Ubranch);
+							var cbsInfoCurrent = _repository.GetMappedAccountByAccNo(item.Accno);
+							auditTrailService.InsertUpdatedModelToAuditTrail(cbsInfoCurrent, cbsInfoPrev, item.MakeBy, 8, 4, "Customer Acc Mapping", item.Mphone, "Successfully Map or Remapped");
+
 						}
 						else
 						{
@@ -382,7 +366,10 @@ namespace MFS.TransactionService.Service
 					}
 					else
 					{
-						_repository.InactiveCbsAccountByAccountNo(item.Accno);
+						var cbsInfoPrev = _repository.GetMappedAccountByAccNo(item.Accno);
+						_repository.InactiveCbsAccountByAccountNo(item.Accno,item.MakeBy,item.Ubranch);
+						var cbsInfoCurrent = _repository.GetMappedAccountByAccNo(item.Accno);
+						auditTrailService.InsertUpdatedModelToAuditTrail(cbsInfoCurrent, cbsInfoPrev, item.MakeBy, 8, 4, "Customer Acc Mapping", item.Mphone, "Successfully Map or Remapped");
 					}
 				}
 				

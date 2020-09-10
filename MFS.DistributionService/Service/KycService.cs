@@ -27,6 +27,7 @@ namespace MFS.DistributionService.Service
 		object GetPhotoIdTypeByCode(string photoIdTypeCode);
 		object GetBranchNameByCode(string branchCode);
 		object ClientClose(string remarks, Reginfo reginfo);
+		object GetUserBranchCodeByUserId(string userInfos);
 		object AddRemoveLien(string remarks, Reginfo reginfo);
 		object CheckPinStatus(string mphone);
 		object InsertModelToAuditTrail(object model, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null);
@@ -34,7 +35,9 @@ namespace MFS.DistributionService.Service
 		object BlackListClient(string remarks, Reginfo reginfo);
 		object InsertUpdatedModelToAuditTrailForUpdateKyc(object currentModel, object prevModel, string who, int parentMenuId, int actionId, string menu, string whichId = null, string response = null);
 		object GetBalanceInfoByMphone(string mphone);
-		void StatusChangeBasedOnDemand(string mphone, string demand,string updateBy ,string remarks=null);
+		void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks = null);
+		object GetCustomerByMphone(string mphone, string catId);
+		void OnReleaseBindDevice(string mphone, string updateBy);
 	}
 	public class KycService : BaseService<Reginfo>, IKycService
 	{
@@ -128,11 +131,11 @@ namespace MFS.DistributionService.Service
 				{
 					//reginfo.Status = "C";
 					demand = "ACC_CLOSE";
-				}				
+				}
 				Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
-				_repository.StatusChangeBasedOnDemand(reginfo.Mphone,demand,reginfo.UpdateBy,remarks);
+				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand, reginfo.UpdateBy, remarks);
 				var currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
-				AuditTrailForClientCLose(prevRegInfo, currentReginfo, remarks);				
+				AuditTrailForClientCLose(prevRegInfo, currentReginfo, remarks);
 				//_repository.UpdateRegInfo(reginfo);
 
 				return HttpStatusCode.OK;
@@ -143,7 +146,7 @@ namespace MFS.DistributionService.Service
 			}
 		}
 
-		private void AuditTrailForClientCLose(Reginfo prevRegInfo, Reginfo currentReginfo,string remarks)
+		private void AuditTrailForClientCLose(Reginfo prevRegInfo, Reginfo currentReginfo, string remarks)
 		{
 			currentReginfo.Remarks = remarks;
 			AuditTrail auditTrail = new AuditTrail();
@@ -266,8 +269,8 @@ namespace MFS.DistributionService.Service
 		public object BlackListClient(string remarks, Reginfo reginfo)
 		{
 			try
-			{				
-				string demand=null;
+			{
+				string demand = null;
 				if (reginfo.BlackList == "Y")
 				{
 					//reginfo.BlackList = "N";
@@ -278,7 +281,9 @@ namespace MFS.DistributionService.Service
 					//reginfo.BlackList = "Y";
 					demand = "PUT_BLACK";
 				}
-				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand,reginfo.UpdateBy,remarks);
+				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand, reginfo.UpdateBy, remarks);
+				demand = "INVOKE_DORMANT";
+				_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand, reginfo.UpdateBy, remarks);
 				var currentReginfo = AuditTrailForBlackListClient(reginfo, remarks);
 				return HttpStatusCode.OK;
 			}
@@ -288,7 +293,7 @@ namespace MFS.DistributionService.Service
 			}
 		}
 
-		private object AuditTrailForBlackListClient(Reginfo previousReginfo,string remarks)
+		private object AuditTrailForBlackListClient(Reginfo previousReginfo, string remarks)
 		{
 			Reginfo currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(previousReginfo.Mphone);
 			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, previousReginfo);
@@ -340,9 +345,42 @@ namespace MFS.DistributionService.Service
 			return _repository.GetBalanceInfoByMphone(mphone);
 		}
 
-		public void StatusChangeBasedOnDemand(string mphone, string demand,string updateBy ,string remarks = null)
+		public void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks = null)
 		{
-			 _repository.StatusChangeBasedOnDemand(mphone, demand,updateBy,remarks);
+			_repository.StatusChangeBasedOnDemand(mphone, demand, updateBy, remarks);
+		}
+
+		public object GetUserBranchCodeByUserId(string userInfos)
+		{
+			var userInfo = userInfos.Split(',');
+			return _repository.GetUserBranchCodeByUserId(userInfo[0]);
+		}
+
+		public object GetCustomerByMphone(string mphone, string catId)
+		{
+			return _repository.GetCustomerByMphone(mphone, catId);
+		}
+
+		public void OnReleaseBindDevice(string mphone, string updateBy)
+		{
+			Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(mphone);
+			_repository.OnReleaseBindDevice(mphone, updateBy);
+			Reginfo currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(mphone);
+			AuditTrailForReleaseBindDevice(prevRegInfo, currentReginfo);
+		}
+
+		private void AuditTrailForReleaseBindDevice(Reginfo prevRegInfo, Reginfo currentReginfo)
+		{
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = currentReginfo.UpdateBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 2;
+			auditTrail.WhichMenu = "Client Profile";
+			auditTrail.WhichId = currentReginfo.Mphone;
+			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevRegInfo);
+			auditTrail.InputFeildAndValue = diffList;
+			auditTrail.Response = "Release Performed Successfully";
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
 		}
 	}
 }

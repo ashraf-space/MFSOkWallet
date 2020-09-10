@@ -51,7 +51,7 @@ export class DistributorAddoreditComponent implements OnInit {
     dateOfBirth: any = {};
     error: boolean = false;
     showDuplicateMsg: boolean = false;
-
+    checkedAsPresent: boolean = false;
 
     constructor(private distributionService: DistributorService,
         private router: Router,
@@ -161,6 +161,15 @@ export class DistributorAddoreditComponent implements OnInit {
                 this.dateOfBirth = null;
             }
         }
+    }
+    sameAsPresent() {
+        if (this.checkedAsPresent) {
+            this.regInfoModel.preAddr = this.regInfoModel.perAddr;
+        }
+        else {
+            this.regInfoModel.preAddr = '';
+        }
+
     }
     getDistributorByMphone(): any {
         this.isLoading = true;
@@ -335,8 +344,7 @@ export class DistributorAddoreditComponent implements OnInit {
                         !this.dateOfBirth.year ||
                         !this.selectedRegion || this.selectedRegion == '0' ||
                         !this.selectedArea || this.selectedArea == '0' ||
-                        !this.selectedTerritory || this.selectedTerritory == '0' ||
-                        !this.regInfoModel.firstNomineeName) {
+                        !this.selectedTerritory || this.selectedTerritory == '0') {
                         this.msgs = [];
                         this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
                         this.error = true;
@@ -386,7 +394,10 @@ export class DistributorAddoreditComponent implements OnInit {
         this.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.regDate);
         this.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.dateOfBirth);
 
-        if (!this.isEditMode) {
+        //if (!this.isEditMode) {
+        //    this.regInfoModel.entryBy = this.currentUserModel.user.username;
+        //}
+        if (event === 'save') {
             this.regInfoModel.entryBy = this.currentUserModel.user.username;
         }
         if (this.isEditMode && !this.isRegistrationPermitted) {

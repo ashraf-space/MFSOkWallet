@@ -427,6 +427,10 @@ namespace OneMFS.SharedResources
 			{
 				return false;
 			}
+			else if (columnName.ToUpper().Trim() == "BLACKLIST".Trim())
+			{
+				return false;
+			}
 			else
 			{
 				return true;

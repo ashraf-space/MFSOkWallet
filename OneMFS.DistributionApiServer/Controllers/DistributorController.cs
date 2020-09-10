@@ -135,7 +135,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.EntryDate = System.DateTime.Now;
 					string distCode = regInfo.DistCode.Substring(0, 6);
 					var isDistCodeExist = _kycService.CheckIsDistCodeExist(distCode);				
 					if (Convert.ToInt32(isDistCodeExist) == 1)
@@ -166,7 +167,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_distributorService.UpdateRegInfo(regInfo);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor",regInfo.Mphone, "Update successfully");
+						var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Distributor",regInfo.Mphone, "Update successfully");
 						return HttpStatusCode.OK;
 
 					}
@@ -182,8 +184,10 @@ namespace OneMFS.DistributionApiServer.Controllers
 							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "D");
 							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_distributorService.UpdateRegInfo(regInfo);
-							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
+							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
+							//_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
 							{
@@ -310,7 +314,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 				}
 				messageModel.MessageBody = body;
 				//var ret = _distributorService.UpdateRegInfo(reginfo);
-				_kycService.StatusChangeBasedOnDemand(dormantModel.Mphone, demand,reginfo.UpdateBy,remarks);
+				_kycService.StatusChangeBasedOnDemand(dormantModel.Mphone, demand,dormantModel._ActionBy,remarks);
 				var currentReginfo = AuditTrailForAddRemoveDormant(dormantModel, reginfo, status);
 				MessageService messageService = new MessageService();
 				messageService.SendMessage(messageModel);
@@ -354,9 +358,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				int fourDigitRandomNo = new Random().Next(1000, 9999);
+				model.UpdateDate = DateTime.Now;
 				Reginfo prevAReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				_DsrService.UpdatePinNo(model.Mphone, fourDigitRandomNo.ToString());
-				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(model, prevAReginfo);
+				_distributorService.UpdateRegInfo(model);
+				Reginfo currentReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
+				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevAReginfo);
 				if (!isUnlockRequest)
 				{
 					AuditTrail auditTrail = new AuditTrail();
@@ -388,17 +395,18 @@ namespace OneMFS.DistributionApiServer.Controllers
 				{
 					Mphone = model.Mphone,
 					MessageId = "999",
-					MessageBody = "Dear User, " + messagePrefix + fourDigitRandomNo.ToString() + ". Thank you for using OKwallet."
+					MessageBody = "Dear User, " + messagePrefix + fourDigitRandomNo.ToString() + ". Thank you for using OKWallet."
 				};
 
 				MessageService messageService = new MessageService();
 				messageService.SendMessage(messageModel);
 
-				return messageModel;
+				return HttpStatusCode.OK;
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 
@@ -473,5 +481,21 @@ namespace OneMFS.DistributionApiServer.Controllers
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
-	}
+
+        [HttpGet]
+        [Route("GetRegionDetailsByMobileNo")]
+        public object GetRegionDetailsByMobileNo(string mobileNo)
+        {
+            try
+            {
+                return _distributorService.GetRegionDetailsByMobileNo(mobileNo);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+    }
 }

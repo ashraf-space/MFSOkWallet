@@ -1,21 +1,27 @@
-import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
+import { Directive, EventEmitter, ElementRef, HostListener, Output } from '@angular/core';
 
 @Directive({
     selector: '[ngModel][uppercase]'
 })
 export class UppercaseDirective {
 
-  constructor() { }
-    @Output() ngModelChange: EventEmitter<any> = new EventEmitter();
-    value: any;
-    word: any;
-    @HostListener('input', ['$event']) onInputChange($event) {
-        //this.word = $event.target.value;
-        //this.value = this.word[0].toUpperCase() + this.word.substr(1).toLowerCase();
-        this.value = $event.target.value;
-        //const arrStr = this.value.toLowerCase().split(' ');
-        //const word = arrStr.map((str) => (str.charAt(0).toUpperCase() + str.slice(1))).join(' ');
-        const word = this.value.toUpperCase();
-        this.ngModelChange.emit(word);
+    lastValue: string;
+
+    constructor(public ref: ElementRef) { }
+
+    @HostListener('input', ['$event']) onInput($event) {
+        var start = $event.target.selectionStart;
+        var end = $event.target.selectionEnd;
+        $event.target.value = $event.target.value.toUpperCase();
+        $event.target.setSelectionRange(start, end);
+        $event.preventDefault();
+
+        if (!this.lastValue || (this.lastValue && $event.target.value.length > 0 && this.lastValue !== $event.target.value)) {
+            this.lastValue = this.ref.nativeElement.value = $event.target.value;
+            // Propagation
+            const evt = document.createEvent('HTMLEvents');
+            evt.initEvent('input', false, true);
+            event.target.dispatchEvent(evt);
+        }
     }
 }

@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AgentReplace.cs" />
+    <Compile Include="Models\BalanceInfo.cs" />
     <Compile Include="Models\CompanyAndHolderName.cs" />
     <Compile Include="Models\DistributorReplace.cs" />
     <Compile Include="Models\DormantAcc.cs" />

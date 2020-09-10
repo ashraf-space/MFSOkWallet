@@ -345,24 +345,24 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                string part = companyName.Substring(0, companyName.IndexOf('('));
-                string catId = null;
-                if (part == "Merchant Payment Settlement ")
-                {
-                    catId = "M";
-                }
-                else if (part == "Distributor commission for customer acquisition ")
-                {
-                    catId = "D";
-                }
-                else if (part == "Agent commission for customer acquisition ")
-                {
-                    catId = "A";
-                }
-                else
-                {
-                    catId = "C";
-                }
+                string onlyCompanyName = companyName.Substring(0, companyName.IndexOf('(')).TrimEnd();
+                string catId = _disbursementService.GetTargetCatIdByCompany(onlyCompanyName);
+                //if (part == "Merchant Payment Settlement ")
+                //{
+                //    catId = "M";
+                //}
+                //else if (part == "Distributor commission for customer acquisition ")
+                //{
+                //    catId = "D";
+                //}
+                //else if (part == "Agent commission for customer acquisition ")
+                //{
+                //    catId = "A";
+                //}
+                //else
+                //{
+                //    catId = "C";
+                //}
                 return _disbursementService.Process(batchno, catId);
             }
             catch (Exception ex)

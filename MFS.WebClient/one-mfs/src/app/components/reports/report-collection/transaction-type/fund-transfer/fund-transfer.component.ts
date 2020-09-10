@@ -4,9 +4,9 @@ import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-fund-transfer',
-  templateUrl: './fund-transfer.component.html',
-  styleUrls: ['./fund-transfer.component.css']
+    selector: 'app-fund-transfer',
+    templateUrl: './fund-transfer.component.html',
+    styleUrls: ['./fund-transfer.component.css']
 })
 export class FundTransferComponent implements OnInit {
     model: any;
@@ -14,7 +14,8 @@ export class FundTransferComponent implements OnInit {
     tansactionTypeDDL: any;
     optionDDL: any;
     isDateRangeShow: boolean = false;
-    constructor(private messageService: MessageService,private transactionReportService: TransactionReportService, private mfsUtilityService: MfsUtilityService) {
+    error: boolean = false;
+    constructor(private messageService: MessageService, private transactionReportService: TransactionReportService, private mfsUtilityService: MfsUtilityService) {
         this.model = {};
     }
 
@@ -35,10 +36,10 @@ export class FundTransferComponent implements OnInit {
     showDateRangeDiv() {
         if (this.model.option) {
             if (this.model.option == 'Period') {
-                this.isDateRangeShow = true;               
-            }            
+                this.isDateRangeShow = true;
+            }
             else {
-                this.isDateRangeShow = false;     
+                this.isDateRangeShow = false;
             }
         }
         else {
@@ -70,7 +71,7 @@ export class FundTransferComponent implements OnInit {
 
     validate(): any {
         if (this.model.option == "Period") {
-            if (!this.model.fromDate || !this.model.toDate                
+            if (!this.model.fromDate || !this.model.toDate
                 || !this.model.option || this.model.option == '0') {
                 return false;
             }

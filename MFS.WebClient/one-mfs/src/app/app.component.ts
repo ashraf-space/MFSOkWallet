@@ -108,17 +108,17 @@ export class AppComponent implements OnInit {
                 icon: 'far fa-life-ring',
                 items: [
                     {
-                        label: ' Password', icon: 'fas fa-key', command: (event) => {
+                        label: ' Change Password', icon: 'fas fa-key', command: (event) => {
                             this.firstTimeChange = false;
                             this.promptChangePassword();
                         }
                     },
-                    {
-                        label: ' Search', icon: 'fas fa-search', command: (event) => {
-                            this.firstTimeChange = false;
-                            this.initiateGlobalSearch();
-                        }
-                    },
+                    //{
+                    //    label: ' Search', icon: 'fas fa-search', command: (event) => {
+                    //        this.firstTimeChange = false;
+                    //        this.initiateGlobalSearch();
+                    //    }
+                    //},
                     {
                         label: ' Sign Out ', icon: 'fas fa-sign-out-alt', command: (event) => {
                             this.logout();
@@ -139,7 +139,7 @@ export class AppComponent implements OnInit {
             }).CATEGORYNAME;
 
             this.auditTrailModel.WhichParentMenuId = this.auditTrailService.getWhichParentMenuId(this.auditTrailModel.WhichParentMenu);
-            if (this.auditTrailModel.WhichParentMenuId === 9) {
+            if (this.auditTrailModel.WhichParentMenuId === 9 || this.auditTrailModel.WhichParentMenuId === 10) {
                 location.reload();
             }
         }

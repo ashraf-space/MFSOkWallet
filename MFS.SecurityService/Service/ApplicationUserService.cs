@@ -15,7 +15,8 @@ namespace MFS.SecurityService.Service
         string GetTransAmtLimit(string createUser);
 		object IsProceedToController(List<string> userInfos);
 		object GetAppUserListDdl();
-	}
+        object GetAllApplicationUserList();
+    }
 
     public class ApplicationUserService : BaseService<ApplicationUser>, IApplicationUserService
     {
@@ -48,7 +49,14 @@ namespace MFS.SecurityService.Service
             if (authUserModel.User.Is_validated)
             {
                 authUserModel.IsAuthenticated = true;
-                authUserModel.FeatureList = featureService.GetAuthFeatureList(authUserModel.User.Id);
+				if(authUserModel.User.Pstatus == "Y")
+				{
+					authUserModel.FeatureList = featureService.GetAuthFeatureList(authUserModel.User.Id);
+				}
+				else
+				{
+					authUserModel.FeatureList = new List<dynamic>();
+				}
                 authUserModel.BearerToken = Guid.NewGuid().ToString();
             }
             else
@@ -91,5 +99,11 @@ namespace MFS.SecurityService.Service
 		{
 			return usersRepo.GetAppUserListDdl();
 		}
-	}
+
+        public object GetAllApplicationUserList()
+        {
+            return usersRepo.GetAllApplicationUserList();
+        }
+
+    }
 }

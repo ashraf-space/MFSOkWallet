@@ -29,8 +29,11 @@ namespace MFS.DistributionService.Repository
 		Task<object> GetRegInfoListByOthersBranchCode(string branchCode, string catId, string status, string roleId);
 		object CheckPinStatus(string mphone);
 		object GetBalanceInfoByMphone(string mphone);
-		void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks=null);		
+		void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks = null);
 		void AddOrRemoveLien(Reginfo reginfo, string remarks);
+		object GetUserBranchCodeByUserId(string v);
+		object GetCustomerByMphone(string mphone, string catId);
+		void OnReleaseBindDevice(string mphone, string updateBy);
 	}
 	public class KycRepository : BaseRepository<Reginfo>, IKycRepository
 	{
@@ -45,13 +48,13 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = "select count(*) from "+dbUser+"reginfo t where t.dist_code = '" + distCode + "' and t.cat_id = 'D'";
+					string query = "select count(*) from " + dbUser + "reginfo t where t.dist_code = '" + distCode + "' and t.cat_id = 'D'";
 					var regdate = connection.QueryFirstOrDefault<int>(query);
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return regdate;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
@@ -72,15 +75,15 @@ namespace MFS.DistributionService.Repository
 					connection.Dispose();
 					return Convert.ToDateTime(regdate);
 				}
-					
+
 			}
-			catch(Exception ex)
-			{				
+			catch (Exception ex)
+			{
 				throw ex;
 			}
-			
 
-			
+
+
 		}
 
 		public void UpdatePinNo(string mphone, string fourDigitRandomNo)
@@ -95,10 +98,10 @@ namespace MFS.DistributionService.Repository
 					var result = SqlMapper.Query(connection, dbUser + "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
 					connection.Dispose();
-				}					
+				}
 			}
 			catch (Exception ex)
-			{				
+			{
 				throw ex;
 			}
 		}
@@ -110,21 +113,30 @@ namespace MFS.DistributionService.Repository
 				using (var connection = this.GetConnection())
 				{
 					var parameter = new OracleDynamicParameters();
+					dynamic result;
 					parameter.Add("CatType", OracleDbType.Varchar2, ParameterDirection.Input, catId);
 					parameter.Add("BrCode", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, status);
 					parameter.Add("FilterOption", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, dbUser+"SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					if (catId == "C")
+					{
+						result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_Get_RegInfo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					}
+					else
+					{
+						result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_REGINFO_HEADOFFICE", param: parameter, commandType: CommandType.StoredProcedure);
 
-						this.CloseConnection(connection);
+					}
+
+					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
 				}
-				
+
 			}
 			catch (Exception ex)
-			{				
+			{
 				throw ex;
 			}
 		}
@@ -142,13 +154,13 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
-				}					
+				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw ex;
 			}
-			
+
 
 
 		}
@@ -169,16 +181,16 @@ namespace MFS.DistributionService.Repository
 
 					this.CloseConnection(connection);
 					connection.Dispose();
-					return result;					
+					return result;
 				}
-					
+
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				throw ex; 
+				throw ex;
 			}
-			
-			
+
+
 		}
 
 		public object CheckNidValid(string photoid, string type)
@@ -200,11 +212,11 @@ namespace MFS.DistributionService.Repository
 					{
 						return true;
 					}
-				}					
+				}
 
 			}
 			catch (Exception ex)
-			{				
+			{
 				throw ex;
 			}
 		}
@@ -221,7 +233,7 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;
-				}					
+				}
 			}
 			catch (Exception ex)
 			{
@@ -245,7 +257,7 @@ namespace MFS.DistributionService.Repository
 					connection.Dispose();
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
@@ -266,7 +278,7 @@ namespace MFS.DistributionService.Repository
 					connection.Dispose();
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
@@ -286,7 +298,7 @@ namespace MFS.DistributionService.Repository
 					connection.Dispose();
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
@@ -306,17 +318,17 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("RegStatus", OracleDbType.Varchar2, ParameterDirection.Input, status);
 					parameter.Add("FilterOption", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = await  SqlMapper.QueryAsync<dynamic>(connection, dbUser + "SP_GET_REGINFO_BYOTHERS", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = await SqlMapper.QueryAsync<dynamic>(connection, dbUser + "SP_GET_REGINFO_BYOTHERS", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					connection.Dispose();
 
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
-			{				
+			{
 				throw ex;
 			}
 		}
@@ -338,7 +350,7 @@ namespace MFS.DistributionService.Repository
 					var values = details[Heading[0]];
 					return values;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
@@ -355,7 +367,7 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("MOBLIENO", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<dynamic>(connection, dbUser + "SP_GET_BLNC_INFO_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<BalanceInfo>(connection, dbUser + "SP_GET_BLNC_INFO_BY_MPHONE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -372,7 +384,7 @@ namespace MFS.DistributionService.Repository
 			try
 			{
 				if (mphone != null)
-				{					
+				{
 					using (var connection = this.GetConnection())
 					{
 						var parameter = new OracleDynamicParameters();
@@ -402,10 +414,80 @@ namespace MFS.DistributionService.Repository
 					using (var connection = this.GetConnection())
 					{
 						var parameter = new OracleDynamicParameters();
-						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, reginfo.Mphone);						
+						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, reginfo.Mphone);
 						parameter.Add("V_REMARKS", OracleDbType.Varchar2, ParameterDirection.Input, remarks);
 						parameter.Add("V_UPDATEBY", OracleDbType.Varchar2, ParameterDirection.Input, reginfo.UpdateBy);
 						var result = SqlMapper.Query(connection, dbUser + "SP_ADD_REMV_LIEN", param: parameter, commandType: CommandType.StoredProcedure);
+						this.CloseConnection(connection);
+					}
+
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public object GetUserBranchCodeByUserId(string userId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.branch_code as ""branch_code"" from one.application_user t where t.id =" + Convert.ToInt32(userId) + "";
+
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					var Heading = ((IDictionary<string, object>)result).Keys.ToArray();
+					var details = ((IDictionary<string, object>)result);
+					var values = details[Heading[0]];
+					return values;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public object GetCustomerByMphone(string mphone, string catId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"Select * from " + dbUser + "RegInfoView where mphone= '" + mphone + "' and CatId = '" + catId + "'";
+
+					var result = connection.Query<Reginfo>(query).ToList();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public void OnReleaseBindDevice(string mphone, string updateBy)
+		{
+			try
+			{
+				if (mphone != null)
+				{
+					using (var connection = this.GetConnection())
+					{
+						var parameter = new OracleDynamicParameters();
+						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);						
+						parameter.Add("V_UPDATEBY", OracleDbType.Varchar2, ParameterDirection.Input, updateBy);
+						var result = SqlMapper.Query(connection, dbUser + "SP_RELEASE_DEVICE", param: parameter, commandType: CommandType.StoredProcedure);
 						this.CloseConnection(connection);
 					}
 

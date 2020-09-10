@@ -120,22 +120,22 @@
                     </div>
                 </div>
                 <div class="p-grid">
-                    <div class="p-col-4">
-                        <span class="ui-float-label ">
-                            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.dateOfBirth" [disabled]="!searchModel.result.dateOfBirth" (change)="verify('dob')">
-                            <label for="float-input input-lg">Date of Birth [ yyyy-mm-dd ]</label>
-                        </span>
-                    </div>
+					<div class="p-col-4">		
+						<span class="ui-float-label ">
+							<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.dateOfBirth" [disabled]="!searchModel.result.dateOfBirth" (change)="verify('dob')">
+							<label for="float-input input-lg">Date of Birth [ yyyy-mm-dd ]</label>
+						</span>
+					</div>
                     <div class="p-col-4">
                         <span class="ui-float-label ">
                             <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.conMob" [disabled]="!searchModel.result.conMob" (change)="verify('con-mob')">
-                            <label for="float-input input-lg">Second Contact Number</label>
+                            <label for="float-input input-lg">Contact Number</label>
                         </span>
                     </div>
                     <div class="p-col-4">
                         <span class="ui-float-label ">
                             <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="verification.photoId" [disabled]="!searchModel.result.photoId" (change)="verify('photo-id')">
-                            <label for="float-input input-lg">{{searchModel.result.photoIdTypeCode | photoId}}</label>
+                            <label for="float-input input-lg">Varification Id {{searchModel.result.photoIdTypeCode | photoId}}</label>
                         </span>
                     </div>
                     <div class="p-col-12">
@@ -146,7 +146,7 @@
             <div class="p-col-4">
                 <br />
                 <!--remove the disabled property from the below line-->
-                <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="addCase()" style="margin-top: 3.2em;" [disabled]="!verification.verified"><i class="fas fa-map-pin"></i>  Pin Details</button>
+                <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="addCase()" style="margin-top: 3.2em;" [disabled]="!verification.verified"><i class="fas fa-map-pin"></i>Click Here</button>
                 <br />
                 <div style="text-align:center">
                     <p-message *ngIf="!verification.verified" severity="error" text="Warning! Profile Not Verified"></p-message>

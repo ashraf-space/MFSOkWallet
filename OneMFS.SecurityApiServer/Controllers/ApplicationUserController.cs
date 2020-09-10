@@ -40,8 +40,10 @@ namespace OneMFS.SecurityApiServer.Controllers
 		{
 			try
 			{
-				return usersService.GetAll(new ApplicationUser());
-			}
+                //return usersService.GetAll(new ApplicationUser());
+                return usersService.GetAllApplicationUserList();
+
+            }
 			catch (Exception ex)
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());

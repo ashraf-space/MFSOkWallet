@@ -79,7 +79,11 @@ export class BranchCashOutComponent implements OnInit {
                                 this.messageService.add({ severity: 'error', summary: 'Not rejected', detail: data });
                             }
 
-                        window.history.back();
+                        //window.history.back();
+                        setTimeout(() => {
+                            this.isLoading = false;
+                            location.reload();
+                        }, 20000);
                     },
                     error => {
                         console.log(error);
@@ -91,8 +95,9 @@ export class BranchCashOutComponent implements OnInit {
 
 
     getReginfoCashoutByMphone(): any {
-        this.isLoading = true;
-        if (this.tblPortalCashoutModel.mphone != '') {
+       
+        if (this.tblPortalCashoutModel.mphone.length == 11) {
+            this.isLoading = true;
             this.branchCashInService.getReginfoCashoutByMphone(this.tblPortalCashoutModel.mphone)
                 .pipe(first())
                 .subscribe(
@@ -127,7 +132,12 @@ export class BranchCashOutComponent implements OnInit {
                             //this.GetAmountInWords();
                             this.isActionDisabled = true;
 
-                            this.messageService.add({ severity: 'warn', summary: 'Data not found', detail: 'Data not found for this account!' });
+                            this.messageService.add({ severity: 'warn', sticky: true, summary: 'Provide a valid OK Wallet Number', detail: 'Please collect a valid OK Wallet Number from account holder and provide in OK Wallet Number field!' });
+
+                            //setTimeout(() => {
+                            //    this.isLoading = false;
+                            //    location.reload();
+                            //}, 30000);
                         }
 
 
@@ -135,9 +145,14 @@ export class BranchCashOutComponent implements OnInit {
                     },
                     error => {
                         console.log(error);
+                        this.isLoading = false;
                     }
                 );
         }
+        else {
+            this.tblPortalCashoutModel.mphone = this.tblPortalCashoutModel.mphone;
+        }
+
 
     }
 
@@ -167,7 +182,9 @@ export class BranchCashOutComponent implements OnInit {
                                 this.tblPortalCashoutModel.amount = 0;
                                 this.GetAmountInWords();
                                 this.isActionDisabled = true;
-                                this.messageService.add({ severity: 'warn', summary: 'Exceed Limit', detail: 'Limit Amount :' + this.transAmtLimit });
+                                this.messageService.add({ severity: 'warn', sticky: true, summary: 'Exceed Limit', detail: 'Limit Amount :' + this.transAmtLimit });
+
+                               
                             }
                         }
                         else {
@@ -175,7 +192,12 @@ export class BranchCashOutComponent implements OnInit {
                             this.tblPortalCashoutModel.amount = 0;
                             this.GetAmountInWords();
                             this.isActionDisabled = true;
-                            this.messageService.add({ severity: 'warn', summary: 'Data not found', detail: 'Data not found for this Trans No!' });
+                            this.messageService.add({ severity: 'warn', sticky: true, summary: 'Provide a valid OK Wallet Number and transaction ID', detail: 'Please collect a valid transaction ID from account holder and provide in trasaction ID field!' });
+
+                            //setTimeout(() => {
+                            //    this.isLoading = false;
+                            //    //location.reload();
+                            //}, 30000);
                         }
 
 
@@ -191,7 +213,7 @@ export class BranchCashOutComponent implements OnInit {
             this.tblPortalCashoutModel.transNo = '';
 
 
-            this.messageService.add({ severity: 'warn', summary: 'Invalid', detail: 'Account No or Trans No is invalid!' });
+            this.messageService.add({ severity: 'warn', sticky: true, summary: 'Invalid', detail: 'Account No or Trans No is invalid!' });
         }
 
 

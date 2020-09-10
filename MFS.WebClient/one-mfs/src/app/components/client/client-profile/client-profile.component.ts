@@ -44,6 +44,8 @@ export class ClientProfileComponent implements OnInit {
     disableButton: boolean = false;
     blackListed: any;
     isHidefromCustomerCare: boolean = false;
+    showPinResetModal: boolean = false;
+    isKycExecutive: boolean = false;
     constructor(private outboxService: OutboxService, private gridSettingService: GridSettingService, private authService: AuthenticationService
         , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private distributorService: DistributorService
         , private agentService: AgentService, private router: Router, private route: ActivatedRoute, private messageService: MessageService,
@@ -69,12 +71,13 @@ export class ClientProfileComponent implements OnInit {
             this.model = {};
             this.entityId = this.route.snapshot.paramMap.get('id');
             this.isDetailMode = true;
+            this.checkIsKycSales();
             this.getProfileDetails(this.entityId);
         }
         else {
             this.dormantModel.catId = this.model.catId;
             this.dormantModel.mphone = this.model.mphone;
-            this.dormantStatus = this.model.status == 'D' ? 'Revoke' : 'Invoke';
+            this.dormantStatus = this.model.status == 'D' ? 'Release' : 'Make';
             this.closeStatus = this.model.status == 'C' ? 'Open' : 'Close';
             this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
             this.getBalanceInfoByMphone(this.model.mphone);
@@ -88,12 +91,24 @@ export class ClientProfileComponent implements OnInit {
             this.dormantModel.catId = this.model.catId;
             this.dormantModel.mphone = this.model.mphone;
             this.closeStatus = this.model.status == 'C' ? 'Open' : 'Close';
-            this.dormantStatus = this.model.status == 'D' ? 'Revoke' : 'Invoke';
+            this.dormantStatus = this.model.status == 'D' ? 'Release' : 'Make';
             this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
+            this.checkIsKycSales();
+        }
+    }
+
+    checkIsKycSales() {
+        if (this.currentUserModel.user.role_Name.trim() === 'KYC Sales Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'KYC Sales Checker'.trim() ||
+            this.currentUserModel.user.role_Name.trim() === 'Sales Executive'.trim()) {
+            this.isKycExecutive = true;
+        }
+        else {
+            this.isKycExecutive = false;
         }
     }
     blackListClient() {
         this.disableButton = true;
+        this.model.updateBy = this.currentUserModel.user.username;
         this.kycService.blackListClient(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
@@ -235,12 +250,27 @@ export class ClientProfileComponent implements OnInit {
                 this.showGenerateRequestModal = true;
                 break;
             case 'pin-reset':
+                //this.confirmationService.confirm({
+                //    message: 'Are you sure that you want to reset pin?',
+                //    header: 'Confirmation',
+                //    icon: 'pi pi-exclamation-triangle',
+                //    accept: () => {
+                //        this.onPinReset();
+                //    },
+                //    reject: () => {
+                //        this.messageService.add({ severity: 'info', summary: 'Rejected', detail: 'Action Rejected' });
+                //    }
+                //});
+                this.model.updateBy = this.currentUserModel.user.username;
+                this.showPinResetModal = true;
+                break;
+            case 'release-bind':
                 this.confirmationService.confirm({
-                    message: 'Are you sure that you want to reset pin?',
+                    message: 'Are you sure that you want release bind the Device?',
                     header: 'Confirmation',
                     icon: 'pi pi-exclamation-triangle',
                     accept: () => {
-                        this.onPinReset();
+                        this.onReleaseBindDevice();
                     },
                     reject: () => {
                         this.messageService.add({ severity: 'info', summary: 'Rejected', detail: 'Action Rejected' });
@@ -275,8 +305,33 @@ export class ClientProfileComponent implements OnInit {
             default:
         }
     }
+    onReleaseBindDevice() {      
+        this.model.updateBy = this.currentUserModel.user.username;
+        this.kycService.onReleaseBindDevice(this.model).pipe(first())
+            .subscribe(
+                data => {
+                    if (data === 200) {
+                        this.messageService.add({ severity: 'success', summary: 'Success', sticky: true, detail: 'Release Performed Successfully in: ' + this.model.mphone });
+                    }
+                    else {
+                        this.messageService.add({ severity: 'error', summary: 'Error', sticky: true, detail: 'Release Performed Failed in: ' + this.model.mphone });
+                    }
+                    if (!this.model) {
+                        this.isLoading = true;
+                        this.getProfileDetails(this.entityId);
+                    }
+                    else {
+                        this.isLoading = true;
+                        this.getProfileDetails(this.model.mphone);
+                    }                    
+                },
+                error => {
+                    console.log(error);
+                });
+    }
     closeClient() {
         this.disableButton = true;
+        this.model.updateBy = this.currentUserModel.user.username;
         this.kycService.clientClose(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
@@ -302,6 +357,7 @@ export class ClientProfileComponent implements OnInit {
                 });
     }
     addRemoveLien() {
+        this.model.updateBy = this.currentUserModel.user.username;
         this.kycService.addRemoveLien(this.model, this.remarks).pipe(first())
             .subscribe(
                 data => {
@@ -358,6 +414,7 @@ export class ClientProfileComponent implements OnInit {
 
     addNewRequest() {
         this.disableButton = true;
+        this.model.updateBy = this.currentUserModel.user.username;
         this.customerRequestService.save(this.requestModel).pipe(first())
             .subscribe(
                 data => {
@@ -376,22 +433,40 @@ export class ClientProfileComponent implements OnInit {
     }
 
     onPinReset() {
+        this.isLoading = true;
+        this.disableButton = true;
+        this.model.updateBy = this.currentUserModel.user.username;
+        this.model.remarks = this.remarks;
         this.distributorService.pinReset(this.model).pipe(first())
             .subscribe(
                 data => {
-                    if (data) {
+                    if (data === 200) {
+                        this.isLoading = false;
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Success! Pin Reset Successfully' });
                     }
                     else {
                         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Action Performed Failed' });
                     }
+                    if (!this.model) {
+                        this.isLoading = true;
+                        this.getProfileDetails(this.entityId);
+                    }
+                    else {
+                        this.isLoading = true;
+                        this.getProfileDetails(this.model.mphone);
+                    }
+                    this.disableButton = false;
+                    this.showPinResetModal = false;
+                    this.isLoading = false;
                 },
                 error => {
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
+                    this.isLoading = false;
                 });
     }
 
     accountUnlock() {
+        this.model.updateBy = this.currentUserModel.user.username;
         this.distributorService.accountUnlock(this.model).pipe(first())
             .subscribe(
                 data => {

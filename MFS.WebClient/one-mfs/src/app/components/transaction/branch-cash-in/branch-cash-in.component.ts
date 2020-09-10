@@ -76,8 +76,9 @@ export class BranchCashInComponent implements OnInit {
 
 
     getDetailsByMphone(): any {      
-        //console.log(this.branchCashInModel.mphone.length);
-        if (this.branchCashInModel.mphone != null) {
+        
+        //if (this.branchCashInModel.mphone != null) {
+        if (this.branchCashInModel.mphone.length == 11) {
             this.isLoading = true;
             this.branchCashInService.getDetailsByMphone(this.branchCashInModel.mphone)
                 .pipe(first())
@@ -90,7 +91,7 @@ export class BranchCashInComponent implements OnInit {
                             this.branchCashInModel.status = data.STATUS;
                             this.branchCashInModel.regStatus = data.REGSTATUS;
 
-                            if (this.branchCashInModel.regStatus == "Logical" && this.branchCashInModel.category!='Customer') {
+                            if (this.branchCashInModel.regStatus == "Logical" && this.branchCashInModel.category != 'Customer') {
                                 this.isEnableCashInAmt = true;
                                 this.branchCashInModel.cashInAmount = '';
                                 this.amountInWords = '';
@@ -115,6 +116,9 @@ export class BranchCashInComponent implements OnInit {
                         console.log(error);
                     }
                 );
+        }
+        else {
+            this.branchCashInModel.mphone = this.branchCashInModel.mphone;
         }
 
         if (this.branchCashInModel.mphone.toString().length == 11 && this.branchCashInModel.cashInAmount > 0) {

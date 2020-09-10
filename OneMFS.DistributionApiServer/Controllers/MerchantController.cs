@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
@@ -68,7 +69,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 		[ApiGuardAuth]
 		[HttpPost]
         [Route("Save")]
-        public object Save(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+        public object SaveMerchant(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
         {
 			try
 			{
@@ -76,7 +77,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 
@@ -360,13 +362,14 @@ namespace OneMFS.DistributionApiServer.Controllers
 					MessageService messageService = new MessageService();
 					messageService.SendMessage(messageModel);
 
-					return model;
+					return HttpStatusCode.OK;
 				}
 
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 		private MerchantUser generateSecuredCredentials(MerchantUser model)

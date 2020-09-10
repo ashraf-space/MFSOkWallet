@@ -166,7 +166,7 @@ export class MfsUtilityService {
         if (photoId.length && photoId.length != 0) {
             switch (+photoIdTypeCode) {
                 case 1:
-                    if (photoId.length == 10 || photoId.length == 13) {
+                    if (photoId.length == 10 || photoId.length == 13 || photoId.length == 17) {
                         return false;
                     }
                     else {

@@ -68,8 +68,8 @@
 			<div class="p-col-6">
 				<br />
 				<span class="ui-float-label ">
-					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.customerServiceChargePer" pInputText [pKeyFilter]="positveNumber" id="float-input">
-					<label for="float-input input-lg" class="col-form-label">Settlement Fee</label>
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.customerServiceChargePer" pInputText pKeyFilter="num" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Settlement Fee (%)</label>
 				</span>
 			</div>
 

@@ -113,6 +113,7 @@ export class OutboxComponent implements OnInit {
         this.gridConfig.entityField = 'mphone';
         this.gridConfig.hasCustomContent = true;
         this.gridConfig.showUniversalFilter = false;
+        this.gridConfig.showExport = false;
     }
 ;
 }

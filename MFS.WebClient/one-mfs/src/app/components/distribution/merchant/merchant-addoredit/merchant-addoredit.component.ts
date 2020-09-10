@@ -38,6 +38,7 @@ export class MerchantAddoreditComponent implements OnInit {
     entityId: string;
     isEditMode: boolean = false;
     isRegistrationPermitted: boolean = false;
+    isSecuredViewPermitted: boolean = false;
     msgs: Message[] = [];
     msgsDuplicate: Message[] = [];
     error: boolean = false;
@@ -58,6 +59,7 @@ export class MerchantAddoreditComponent implements OnInit {
     positveNumber: RegExp;
     isLoading: boolean = false;
     selectedCycleWeekDay: SelectItem[];
+    disabledEdit: boolean= true;
     constructor(private merchantService: MerchantService,
         private distributorService: DistributorService,
         private router: Router,
@@ -132,8 +134,24 @@ export class MerchantAddoreditComponent implements OnInit {
         if (this.entityId) {
             this.isEditMode = true;
             this.getMerChantByMphone();
-            this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
+            this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);            
         }
+        this.checkForSecureView();
+    }
+    checkForSecureView() {
+        if (this.entityId) {
+            this.isSecuredViewPermitted = this.authService.checkIsSecuredViewPermitted(this.route.snapshot.routeConfig.path);
+            if (this.isSecuredViewPermitted) {
+                this.disabledEdit = false;
+            }
+            else {
+                this.disabledEdit = true;
+            }
+        }
+        else {
+            this.disabledEdit = false;
+        }
+        
     }
     viewWeeklyDate() {
         if (this.selectedCycle.toString() === 'weekly') {
@@ -303,10 +321,12 @@ export class MerchantAddoreditComponent implements OnInit {
 
     saveMerchant(event): any {
         this.showDuplicateMsg = false;
-        if (!this.isEditMode) {
+        //if (!this.isEditMode) {
+        //    this.regInfoModel.entryBy = this.currentUserModel.user.username;
+        //}
+        if (event === 'save') {
             this.regInfoModel.entryBy = this.currentUserModel.user.username;
         }
-
         if (this.isEditMode && !this.isRegistrationPermitted) {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
         }
@@ -322,18 +342,24 @@ export class MerchantAddoreditComponent implements OnInit {
             this.merchantService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        window.history.back();
-                        if (this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant updated' });
-                        }
-                        else if
-                            (this.isRegistrationPermitted && this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
+                        if (data === 200) {
+                            window.history.back();
+                            if (this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant updated' });
+                            }
+                            else if
+                                (this.isRegistrationPermitted && this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
+                            }
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant added' });
+
+                            }
                         }
                         else {
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant added' });
-
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
+                        
                     },
                     error => {
                         console.log(error);

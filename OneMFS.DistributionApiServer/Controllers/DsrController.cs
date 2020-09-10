@@ -72,7 +72,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
 					//int fourDigitRandomNo = new Random().Next(1000, 9999);                  
 					try
 					{
@@ -94,7 +94,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_DsrService.UpdateRegInfo(regInfo);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR",regInfo.Mphone, "Update successfully");
+						var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "DSR",regInfo.Mphone, "Update successfully");
 						return HttpStatusCode.OK;
 
 					}
@@ -109,7 +110,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "R");
 							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_DsrService.UpdateRegInfo(regInfo);
-							_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 3, 4, "DSR", regInfo.Mphone, "Register successfully");
+							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "DSR", regInfo.Mphone, "Register successfully");
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()

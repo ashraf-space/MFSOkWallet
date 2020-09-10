@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MessageService, Message } from 'primeng/api';
 import { AuthenticationService } from 'src/app/shared/_services';
 import { GridSettingService } from 'src/app/services/grid-setting.service';
@@ -6,6 +6,8 @@ import { disbursementService } from 'src/app/services/transaction';
 import { first } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+declare let jsPDF: any;
+
 
 
 @Component({
@@ -51,6 +53,8 @@ export class DisburseProcessComponent implements OnInit {
         this.getdisburseTypeList();
         this.getDisburseCompanyList();
         this.getCompanyAndBatchNoList();
+
+        this.initialiseGridConfig();
     }
     getCompanyAndBatchNoList(): any {
         this.disbursementService.getCompanyAndBatchNoList(null)
@@ -168,7 +172,7 @@ export class DisburseProcessComponent implements OnInit {
                     this.messageService.add({ severity: 'success', summary: 'uploaded successfully', detail: 'Excel file has been successfully uploaded' });
                 else
                     this.messageService.add({ severity: 'warn', summary: 'Failed', detail: result.toString() });
-               
+
                 setTimeout(() => {
                     this.isLoading = false;
                     location.reload();
@@ -183,11 +187,11 @@ export class DisburseProcessComponent implements OnInit {
 
     Process(): any {
         if (this.processBatchNo) {
-            
+
             this.companyName = this.companyAndBatchNoList.find(it => {
                 return it.value.toLowerCase().includes(this.processBatchNo.toLowerCase());
-                }).label;
-            
+            }).label;
+
 
             this.isLoading = true;
             this.disbursementService.Process(this.processBatchNo, this.companyName)
@@ -228,7 +232,9 @@ export class DisburseProcessComponent implements OnInit {
                         if (data.length > 0) {
                             this.tblDisburseInvalidDataList = data;
                             //this.totalSum = Math.round((data[data.length - 1].totalSum + Number.EPSILON) * 100) / 100;
-                            this.totalSum = data[data.length - 1].totalSum.toFixed(3); 
+                            this.gridConfig.dataSource = this.tblDisburseInvalidDataList;
+                            
+                            this.totalSum = data[data.length - 1].totalSum.toFixed(3);
                             if (validOrInvalid == 'V')
                                 this.isPostingDisabled = false;
                             else
@@ -236,6 +242,7 @@ export class DisburseProcessComponent implements OnInit {
                         }
                         else {
                             this.tblDisburseInvalidDataList = null;
+                            this.gridConfig.dataSource = null;
                             this.totalSum = 0;
                             this.isPostingDisabled = true;
                         }
@@ -246,13 +253,13 @@ export class DisburseProcessComponent implements OnInit {
                         console.log(error);
                     }
                 );
-            this.cols = [
-                { field: 'sl', header: 'SL No.', width: '10%' },
-                { field: 'acNo', header: 'A/C No.', width: '20%', filter: this.gridSettingService.getFilterableNone() },
-                { field: 'batchno', header: 'Batch No', width: '25%', filter: this.gridSettingService.getFilterableNone() },
-                { field: 'amount', header: 'Amount', width: '20%', filter: this.gridSettingService.getFilterableNone() },
-                { field: 'remarks', header: 'Remarks', width: '25%', filter: this.gridSettingService.getFilterableNone() }
-            ];
+            //this.cols = [
+            //    { field: 'sl', header: 'SL No.', width: '10%' },
+            //    { field: 'acNo', header: 'A/C No.', width: '20%', filter: this.gridSettingService.getFilterableNone() },
+            //    { field: 'batchno', header: 'Batch No', width: '25%', filter: this.gridSettingService.getFilterableNone() },
+            //    { field: 'amount', header: 'Amount', width: '20%', filter: this.gridSettingService.getFilterableNone() },
+            //    { field: 'remarks', header: 'Remarks', width: '25%', filter: this.gridSettingService.getFilterableNone() }
+            //];
         }
         else {
             this.messageService.add({ severity: 'warn', summary: 'Company & Batch No Empty', detail: 'Select Company & BatchNo First!' });
@@ -290,6 +297,26 @@ export class DisburseProcessComponent implements OnInit {
 
     };
 
+    initialiseGridConfig(): any {
 
+        this.gridConfig.dataSource = [];
+
+        this.gridConfig.autoUpdateDataSource = false;
+        this.gridConfig.autoIndexing = true;
+
+        this.gridConfig.gridName = "Valid/Invalid Data";
+        this.gridConfig.gridIconClass = 'fas fa-thumbtack';
+
+        this.gridConfig.hasEditState = true;
+        this.gridConfig.showUniversalFilter = false;
+
+        this.gridConfig.columnList = [
+            { field: 'sl', header: 'SL No.', width: '10%' },
+            { field: 'acNo', header: 'A/C No.', width: '20%', filter: this.gridSettingService.getFilterableNone() },
+            { field: 'batchno', header: 'Batch No', width: '25%', filter: this.gridSettingService.getFilterableNone() },
+            { field: 'amount', header: 'Amount', width: '20%', filter: this.gridSettingService.getFilterableNone() },
+            { field: 'remarks', header: 'Remarks', width: '25%', filter: this.gridSettingService.getFilterableNone() }
+        ];
+    };
 
 }

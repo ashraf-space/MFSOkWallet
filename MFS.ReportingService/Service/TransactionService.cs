@@ -23,7 +23,8 @@ namespace MFS.ReportingService.Service
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
         List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
 		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
-	}
+        List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate);
+    }
 
     public class TransactionService : BaseService<AccountStatement>, ITransactionService
     {
@@ -189,5 +190,19 @@ namespace MFS.ReportingService.Service
 				throw;
 			}
 		}
-	}
+
+        public List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate)
+        {
+            try
+            {
+                return _TransactionRepository.GetBranchCashinCashoutList(branchCode,cashinCashoutType, option, fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+    }
 }

@@ -30,6 +30,7 @@ namespace MFS.TransactionService.Repository
         string AllSend(string processBatchNo, string brCode, string checkerId, double totalSum);
         object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
+        string GetTargetCatIdByCompany(string onlyCompanyName);
     }
     public class DisbursementRepository : BaseRepository<TblDisburseCompanyInfo>, IDisbursementRepository
     {
@@ -431,6 +432,25 @@ namespace MFS.TransactionService.Repository
                 return ex.ToString();
             }
 
+        }
+
+        public string GetTargetCatIdByCompany(string onlyCompanyName)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select TARGET_CAT_ID from " + mainDbUser.DbUser + "TBL_DISBURSE_COMPANY_INFO where COMPANY_NAME= " + "'" + onlyCompanyName + "'" + "";
+                    var result = connection.Query<string>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
     }
 }

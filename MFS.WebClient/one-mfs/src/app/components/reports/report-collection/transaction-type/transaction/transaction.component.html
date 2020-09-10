@@ -17,7 +17,7 @@
         <div class="p-col-4">
             <label for="float-input" class="col-form-label">Date Type<span class="mandatory">*</span></label>
             <p-dropdown [options]="dateTypeDDL" placeholder="Select Status" [(ngModel)]="model.dateType"
-                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="loadGLCodeNameLevel()"></p-dropdown>
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.dateType==null || model.dateType=='') && error " severity="error" text="Cannot be left blank"></p-message>
         </div>
 
@@ -43,7 +43,7 @@
         <div class="p-col-4">
             <label for="float-input" class="col-form-label">Gateway<span class="mandatory">*</span></label>
             <p-dropdown [options]="gatewayDDL" placeholder="Select Status" [(ngModel)]="model.gateway"
-                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="loadGLCodeNameLevel()"></p-dropdown>
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.gateway==null || model.gateway=='') && error " severity="error" text="Cannot be left blank"></p-message>
         </div>
 

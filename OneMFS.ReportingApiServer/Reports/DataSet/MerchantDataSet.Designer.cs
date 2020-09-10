@@ -28,6 +28,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         
         private OutletSummaryTransactionDataTable tableOutletSummaryTransaction;
         
+        private OutletDailyTransactionDataTable tableOutletDailyTransaction;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -61,6 +63,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 }
                 if ((ds.Tables["OutletSummaryTransaction"] != null)) {
                     base.Tables.Add(new OutletSummaryTransactionDataTable(ds.Tables["OutletSummaryTransaction"]));
+                }
+                if ((ds.Tables["OutletDailyTransaction"] != null)) {
+                    base.Tables.Add(new OutletDailyTransactionDataTable(ds.Tables["OutletDailyTransaction"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -97,6 +102,16 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         public OutletSummaryTransactionDataTable OutletSummaryTransaction {
             get {
                 return this.tableOutletSummaryTransaction;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public OutletDailyTransactionDataTable OutletDailyTransaction {
+            get {
+                return this.tableOutletDailyTransaction;
             }
         }
         
@@ -173,6 +188,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 if ((ds.Tables["OutletSummaryTransaction"] != null)) {
                     base.Tables.Add(new OutletSummaryTransactionDataTable(ds.Tables["OutletSummaryTransaction"]));
                 }
+                if ((ds.Tables["OutletDailyTransaction"] != null)) {
+                    base.Tables.Add(new OutletDailyTransactionDataTable(ds.Tables["OutletDailyTransaction"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -218,6 +236,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                     this.tableOutletSummaryTransaction.InitVars();
                 }
             }
+            this.tableOutletDailyTransaction = ((OutletDailyTransactionDataTable)(base.Tables["OutletDailyTransaction"]));
+            if ((initTable == true)) {
+                if ((this.tableOutletDailyTransaction != null)) {
+                    this.tableOutletDailyTransaction.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -232,6 +256,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             base.Tables.Add(this.tableOutletDetailsTransaction);
             this.tableOutletSummaryTransaction = new OutletSummaryTransactionDataTable();
             base.Tables.Add(this.tableOutletSummaryTransaction);
+            this.tableOutletDailyTransaction = new OutletDailyTransactionDataTable();
+            base.Tables.Add(this.tableOutletDailyTransaction);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -243,6 +269,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializeOutletSummaryTransaction() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeOutletDailyTransaction() {
             return false;
         }
         
@@ -306,6 +338,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void OutletSummaryTransactionRowChangeEventHandler(object sender, OutletSummaryTransactionRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void OutletDailyTransactionRowChangeEventHandler(object sender, OutletDailyTransactionRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -970,6 +1005,365 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class OutletDailyTransactionDataTable : global::System.Data.TypedTableBase<OutletDailyTransactionRow> {
+            
+            private global::System.Data.DataColumn columnTransDate;
+            
+            private global::System.Data.DataColumn columnOutletName;
+            
+            private global::System.Data.DataColumn columnOutletId;
+            
+            private global::System.Data.DataColumn columnMerchantAccNo;
+            
+            private global::System.Data.DataColumn columnNoOfTrans;
+            
+            private global::System.Data.DataColumn columnTransAmt;
+            
+            private global::System.Data.DataColumn columnSettlementFee;
+            
+            private global::System.Data.DataColumn columnTotalDeduction;
+            
+            private global::System.Data.DataColumn columnNetAmount;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionDataTable() {
+                this.TableName = "OutletDailyTransaction";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal OutletDailyTransactionDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected OutletDailyTransactionDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TransDateColumn {
+                get {
+                    return this.columnTransDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OutletNameColumn {
+                get {
+                    return this.columnOutletName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OutletIdColumn {
+                get {
+                    return this.columnOutletId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantAccNoColumn {
+                get {
+                    return this.columnMerchantAccNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn NoOfTransColumn {
+                get {
+                    return this.columnNoOfTrans;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TransAmtColumn {
+                get {
+                    return this.columnTransAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SettlementFeeColumn {
+                get {
+                    return this.columnSettlementFee;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalDeductionColumn {
+                get {
+                    return this.columnTotalDeduction;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn NetAmountColumn {
+                get {
+                    return this.columnNetAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionRow this[int index] {
+                get {
+                    return ((OutletDailyTransactionRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event OutletDailyTransactionRowChangeEventHandler OutletDailyTransactionRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event OutletDailyTransactionRowChangeEventHandler OutletDailyTransactionRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event OutletDailyTransactionRowChangeEventHandler OutletDailyTransactionRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event OutletDailyTransactionRowChangeEventHandler OutletDailyTransactionRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddOutletDailyTransactionRow(OutletDailyTransactionRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionRow AddOutletDailyTransactionRow(System.DateTime TransDate, string OutletName, string OutletId, string MerchantAccNo, int NoOfTrans, double TransAmt, double SettlementFee, double TotalDeduction, double NetAmount) {
+                OutletDailyTransactionRow rowOutletDailyTransactionRow = ((OutletDailyTransactionRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        TransDate,
+                        OutletName,
+                        OutletId,
+                        MerchantAccNo,
+                        NoOfTrans,
+                        TransAmt,
+                        SettlementFee,
+                        TotalDeduction,
+                        NetAmount};
+                rowOutletDailyTransactionRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOutletDailyTransactionRow);
+                return rowOutletDailyTransactionRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                OutletDailyTransactionDataTable cln = ((OutletDailyTransactionDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new OutletDailyTransactionDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnTransDate = base.Columns["TransDate"];
+                this.columnOutletName = base.Columns["OutletName"];
+                this.columnOutletId = base.Columns["OutletId"];
+                this.columnMerchantAccNo = base.Columns["MerchantAccNo"];
+                this.columnNoOfTrans = base.Columns["NoOfTrans"];
+                this.columnTransAmt = base.Columns["TransAmt"];
+                this.columnSettlementFee = base.Columns["SettlementFee"];
+                this.columnTotalDeduction = base.Columns["TotalDeduction"];
+                this.columnNetAmount = base.Columns["NetAmount"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnTransDate = new global::System.Data.DataColumn("TransDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransDate);
+                this.columnOutletName = new global::System.Data.DataColumn("OutletName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutletName);
+                this.columnOutletId = new global::System.Data.DataColumn("OutletId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOutletId);
+                this.columnMerchantAccNo = new global::System.Data.DataColumn("MerchantAccNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantAccNo);
+                this.columnNoOfTrans = new global::System.Data.DataColumn("NoOfTrans", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNoOfTrans);
+                this.columnTransAmt = new global::System.Data.DataColumn("TransAmt", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTransAmt);
+                this.columnSettlementFee = new global::System.Data.DataColumn("SettlementFee", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSettlementFee);
+                this.columnTotalDeduction = new global::System.Data.DataColumn("TotalDeduction", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalDeduction);
+                this.columnNetAmount = new global::System.Data.DataColumn("NetAmount", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNetAmount);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionRow NewOutletDailyTransactionRow() {
+                return ((OutletDailyTransactionRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new OutletDailyTransactionRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(OutletDailyTransactionRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.OutletDailyTransactionRowChanged != null)) {
+                    this.OutletDailyTransactionRowChanged(this, new OutletDailyTransactionRowChangeEvent(((OutletDailyTransactionRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.OutletDailyTransactionRowChanging != null)) {
+                    this.OutletDailyTransactionRowChanging(this, new OutletDailyTransactionRowChangeEvent(((OutletDailyTransactionRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.OutletDailyTransactionRowDeleted != null)) {
+                    this.OutletDailyTransactionRowDeleted(this, new OutletDailyTransactionRowChangeEvent(((OutletDailyTransactionRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.OutletDailyTransactionRowDeleting != null)) {
+                    this.OutletDailyTransactionRowDeleting(this, new OutletDailyTransactionRowChangeEvent(((OutletDailyTransactionRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveOutletDailyTransactionRow(OutletDailyTransactionRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                MerchantDataSet ds = new MerchantDataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "OutletDailyTransactionDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class OutletDetailsTransactionRow : global::System.Data.DataRow {
@@ -1394,6 +1788,276 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class OutletDailyTransactionRow : global::System.Data.DataRow {
+            
+            private OutletDailyTransactionDataTable tableOutletDailyTransaction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal OutletDailyTransactionRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOutletDailyTransaction = ((OutletDailyTransactionDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime TransDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOutletDailyTransaction.TransDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransDate\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.TransDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OutletName {
+                get {
+                    try {
+                        return ((string)(this[this.tableOutletDailyTransaction.OutletNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OutletName\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.OutletNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OutletId {
+                get {
+                    try {
+                        return ((string)(this[this.tableOutletDailyTransaction.OutletIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OutletId\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.OutletIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantAccNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOutletDailyTransaction.MerchantAccNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantAccNo\' in table \'OutletDailyTransaction\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.MerchantAccNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public int NoOfTrans {
+                get {
+                    try {
+                        return ((int)(this[this.tableOutletDailyTransaction.NoOfTransColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NoOfTrans\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.NoOfTransColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double TransAmt {
+                get {
+                    try {
+                        return ((double)(this[this.tableOutletDailyTransaction.TransAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TransAmt\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.TransAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double SettlementFee {
+                get {
+                    try {
+                        return ((double)(this[this.tableOutletDailyTransaction.SettlementFeeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SettlementFee\' in table \'OutletDailyTransaction\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.SettlementFeeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double TotalDeduction {
+                get {
+                    try {
+                        return ((double)(this[this.tableOutletDailyTransaction.TotalDeductionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalDeduction\' in table \'OutletDailyTransaction\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.TotalDeductionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double NetAmount {
+                get {
+                    try {
+                        return ((double)(this[this.tableOutletDailyTransaction.NetAmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NetAmount\' in table \'OutletDailyTransaction\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOutletDailyTransaction.NetAmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTransDateNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.TransDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTransDateNull() {
+                this[this.tableOutletDailyTransaction.TransDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOutletNameNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.OutletNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOutletNameNull() {
+                this[this.tableOutletDailyTransaction.OutletNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOutletIdNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.OutletIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOutletIdNull() {
+                this[this.tableOutletDailyTransaction.OutletIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantAccNoNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.MerchantAccNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantAccNoNull() {
+                this[this.tableOutletDailyTransaction.MerchantAccNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsNoOfTransNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.NoOfTransColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetNoOfTransNull() {
+                this[this.tableOutletDailyTransaction.NoOfTransColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTransAmtNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.TransAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTransAmtNull() {
+                this[this.tableOutletDailyTransaction.TransAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSettlementFeeNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.SettlementFeeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSettlementFeeNull() {
+                this[this.tableOutletDailyTransaction.SettlementFeeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalDeductionNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.TotalDeductionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalDeductionNull() {
+                this[this.tableOutletDailyTransaction.TotalDeductionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsNetAmountNull() {
+                return this.IsNull(this.tableOutletDailyTransaction.NetAmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetNetAmountNull() {
+                this[this.tableOutletDailyTransaction.NetAmountColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -1447,6 +2111,40 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public OutletSummaryTransactionRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class OutletDailyTransactionRowChangeEvent : global::System.EventArgs {
+            
+            private OutletDailyTransactionRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionRowChangeEvent(OutletDailyTransactionRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public OutletDailyTransactionRow Row {
                 get {
                     return this.eventRow;
                 }

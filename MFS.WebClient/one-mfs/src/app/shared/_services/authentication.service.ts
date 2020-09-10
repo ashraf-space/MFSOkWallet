@@ -10,6 +10,7 @@ import { MfsSettingService } from '../../services/mfs-setting.service';
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     
+    
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
 
@@ -103,7 +104,17 @@ export class AuthenticationService {
 
         return false;
     }
+    checkIsSecuredViewPermitted(path: string): boolean {
+        var statePermission = this.getCurrentStatePermission(path);
 
+        if (statePermission) {
+            if (statePermission.ISSECUREDVIEWPERMITTED == 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     getGlobalSearchResult(model: any): any {
         return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetGlobalSearchResult?option=' + model.option + '&criteria=' + model.criteria + '&filter=' + model.filter)

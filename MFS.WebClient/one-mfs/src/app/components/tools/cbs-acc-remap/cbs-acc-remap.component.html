@@ -1,12 +1,11 @@
-<p-messages [(value)]="msgs" *ngIf="showMsg"></p-messages>
-
+<!--<p-messages [(value)]="msgs" *ngIf="showMsg"></p-messages>-->
+<mfs-loader *ngIf="loadingCbsInfo"></mfs-loader>
+<mfs-loader *ngIf="loading"></mfs-loader>
 	<div class="form-elements">
 		<p-card [style]="{'margin-bottom':'5px'}">
 			<div class="form-group">
 				<h6 class="form-header">Search Customer</h6>
-				<div *ngIf="loading">
-					<p><p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner></p>
-				</div>
+				
 				<div class="p-grid">
 					<div class="p-col-3">
 						<div class="form-group row">
@@ -45,9 +44,7 @@
 		<p-card [style]="{'margin-bottom':'5px'}">
 			<div class="form-group">
 				<h6 class="form-header">CBS Information</h6>
-				<div *ngIf="loadingCbsInfo">
-					<p><p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner></p>
-				</div>
+				
 				<div class="p-grid">
 					<div class="p-col-4">
 						<div class="form-group row">

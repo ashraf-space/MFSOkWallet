@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MFS.SecurityService.Models;
+using MFS.SecurityService.Service;
 using OneMFS.SharedResources;
 using OneMFS.SharedResources.Utility;
 using Oracle.ManagedDataAccess.Client;
@@ -17,20 +18,19 @@ namespace MFS.SecurityService.Repository
         string GetTransAmtLimit(string createUser);
         object IsProceedToController(List<string> userInfos);
         object GetAppUserListDdl();
+        object GetAllApplicationUserList();
     }
 
     public class ApplicationUserRepository : BaseRepository<ApplicationUser>, IApplicationUserRepository
     {
-
         //private static string dbUser;
         //public ApplicationUserRepository(MainDbUser objMainDbUser)
         //{
         //    dbUser = objMainDbUser.DbUser;
         //}
-
         MainDbUser mainDbUser = new MainDbUser();
-
-        public ApplicationUser validateLogin(string userName, string password)
+			
+		public ApplicationUser validateLogin(string userName, string password)
         {
             try
             {
@@ -42,8 +42,7 @@ namespace MFS.SecurityService.Repository
                     dyParam.Add("LOGIN_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     IList<ApplicationUser> result = SqlMapper.Query<ApplicationUser>(conn, mainDbUser.DbUser + "PR_MFS_VALIDATELOGIN", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
-                    this.CloseConnection(conn);
-
+                    this.CloseConnection(conn);				
                     if (result.Count == 0)
                     {
                         ApplicationUser obj = conn.QueryFirstOrDefault<ApplicationUser>("Select " + this.GetCamelCaseColumnList(new ApplicationUser()) + " from " + mainDbUser.DbUser + "Application_User where username='" + userName + "'");
@@ -58,8 +57,8 @@ namespace MFS.SecurityService.Repository
                 }
             }
             catch (Exception e)
-            {
-                return new ApplicationUser() { Is_validated = false };
+            {				
+				return new ApplicationUser() { Is_validated = false };
             }
 
         }
@@ -125,6 +124,26 @@ namespace MFS.SecurityService.Repository
             }
             catch (Exception ex)
             {
+                throw;
+            }
+        }
+
+        public object GetAllApplicationUserList()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id";
+                    var result = connection.Query<dynamic>(query).ToList();
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
                 throw;
             }
         }

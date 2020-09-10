@@ -99,6 +99,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MFS.SecurityService\MFS.SecurityService.csproj">
+      <Project>{1738c0c0-e371-4e76-9871-65d104196dec}</Project>
+      <Name>MFS.SecurityService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OneMFS.SharedResources\OneMFS.SharedResources.csproj">
       <Project>{358d868e-ca78-49a1-944f-4046814b8bb6}</Project>
       <Name>OneMFS.SharedResources</Name>

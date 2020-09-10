@@ -739,5 +739,49 @@ namespace OneMFS.ReportingApiServer.Controllers
 			paraList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
 			return paraList;
 		}
-	}
+
+        [HttpPost]
+        [Route("api/Transaction/BranchCashinCashout")]
+        public byte[] BranchCashinCashout(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
+            string cashinCashoutType = builder.ExtractText(Convert.ToString(model.ReportOption), "cashinCashoutType", ",");
+            string option = builder.ExtractText(Convert.ToString(model.ReportOption), "option", ",");
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+            if (fromDate == "null")
+            {
+                fromDate = DateTime.Now.AddYears(-99).ToString("yyyy/MM/dd");
+            }
+            if (toDate == "null")
+            {
+                toDate = DateTime.Now.ToString("yyyy/MM/dd");
+            }
+
+            ReportViewer reportViewer = new ReportViewer();
+           
+            cashinCashoutType = cashinCashoutType == "" ? null : cashinCashoutType;
+
+            List<BranchCashinCashout> branchCashinCashoutList = new List<BranchCashinCashout>();
+            branchCashinCashoutList = _TransactionService.GetBranchCashinCashoutList(branchCode,cashinCashoutType, option, fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTBranchCashinCashout.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForFundTransfer(fromDate, toDate, cashinCashoutType, option));
+            ReportDataSource A = new ReportDataSource("BranchCashinCashout", branchCashinCashoutList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+    }
 }

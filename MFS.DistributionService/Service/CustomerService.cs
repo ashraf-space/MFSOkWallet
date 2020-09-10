@@ -44,7 +44,8 @@ namespace MFS.DistributionService.Service
 					aReginfo.PinStatus = "N";
 					aReginfo.AcTypeCode = 2;
 					aReginfo.RegSource = "P";
-					//aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
+					aReginfo.EntryDate = System.DateTime.Now;
+					aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
 
 					try
 					{
@@ -77,7 +78,8 @@ namespace MFS.DistributionService.Service
 						aReginfo.RegStatus = "R";
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						_customerRepository.UpdateRegInfo(aReginfo);
-						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Reject successfully");
+						var currentModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Reject successfully");
 						return HttpStatusCode.OK;
 					}
 					else if (evnt == "edit")
@@ -85,7 +87,8 @@ namespace MFS.DistributionService.Service
 						aReginfo.UpdateDate = System.DateTime.Now;
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						_customerRepository.UpdateRegInfo(aReginfo);
-						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer",aReginfo.Mphone, "Update successfully");				
+						var currentModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, aReginfo.UpdateBy, 3, 4, "Customer",aReginfo.Mphone, "Update successfully");				
 						return HttpStatusCode.OK;
 
 					}
@@ -100,7 +103,8 @@ namespace MFS.DistributionService.Service
 							//aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "C");
 							var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 							_customerRepository.UpdateRegInfo(aReginfo);
-							kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Register successfully");
+							var currentModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+							kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, aReginfo.AuthoBy, 3, 4, "Customer", aReginfo.Mphone, "Register successfully");
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
 							{

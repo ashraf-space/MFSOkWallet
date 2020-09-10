@@ -58,6 +58,9 @@ export class CustomerAddoreditComponent implements OnInit {
     occupationList: any;
     alphabetsWithSpace: any;
     emailRegx: any;
+    showRejectModal: boolean = false;
+    disableButton: boolean = false;
+    checkedAsPresent: boolean = false;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -109,14 +112,15 @@ export class CustomerAddoreditComponent implements OnInit {
                     this.activeIndex = 3;
                     //this.messageService.add({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
                 }
-            },
-            {
-                label: 'Bank info',
-                command: (event: any) => {
-                    this.activeIndex = 4;
-                    //this.messageService.add({ severity: 'info', summary: 'Last Step', detail: event.item.label });
-                }
             }
+            //},
+            //{
+            //    label: 'Bank info',
+            //    command: (event: any) => {
+            //        this.activeIndex = 4;
+            //        //this.messageService.add({ severity: 'info', summary: 'Last Step', detail: event.item.label });
+            //    }
+            //}
         ];
 
         this.genderTypes = [
@@ -359,7 +363,7 @@ export class CustomerAddoreditComponent implements OnInit {
     }
 
     onStepAhead(event) {
-        if (this.activeIndex < 5) {
+        if (this.activeIndex < 4) {
             this.validation(event);
             //this.activeIndex++;
         }
@@ -374,115 +378,159 @@ export class CustomerAddoreditComponent implements OnInit {
         }
     }
     validation(event) {
-
-        switch (this.activeIndex) {
-            case 0:
-                {
-                    if (!this.regInfoModel.mphone || !this.regDate.year) {
-                        this.msgs = [];
-                        this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                        this.error = true;
-                        break;
-                    }
-                    else {
-                        this.activeIndex++;
-                        this.error = false;
-                        break;
-                    }
-                }
-            case 1:
-                {
-                    if (!this.regInfoModel.name ||
-                        !this.regInfoModel.photoIdTypeCode ||
-                        !this.regInfoModel.photoId ||
-                        !this.selectedDivision ||
-                        !this.selectedDistrict ||
-                        !this.regInfoModel.locationCode ||
-                        !this.regInfoModel.occupation ||
-                        !this.regInfoModel.perAddr ||
-                        !this.regInfoModel.mphone ||
-                        !this.regDate.year ||
-                        !this.regInfoModel.fatherName ||
-                        !this.regInfoModel.motherName ||
-                        !this.dateOfBirth.year) {
-                        this.msgs = [];
-                        this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                        this.error = true;
-                        break;
-                    } else {
-                        this.activeIndex++;
-                        this.error = false;
-                        break;
-                    }
-                }
-            case 2:
-                {
-                    if (!this.regInfoModel.name ||
-                        !this.regInfoModel.photoIdTypeCode ||
-                        !this.regInfoModel.photoId ||
-                        !this.selectedDivision ||
-                        !this.selectedDistrict ||
-                        !this.regInfoModel.locationCode ||
-                        !this.regInfoModel.occupation ||
-                        !this.regInfoModel.perAddr ||
-                        !this.regInfoModel.mphone ||
-                        !this.regDate.year ||
-                        !this.dateOfBirth.year ||
-                        !this.regInfoModel.fatherName ||
-                        !this.regInfoModel.motherName ||
-                        !this.regInfoModel.firstNomineeName) {
-                        this.msgs = [];
-                        this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                        this.error = true;
-                        break;
-                    } else {
-                        this.activeIndex++;
-                        this.error = false;
-                        break;
-                    }
-                }
-            case 3:
-                {
-                    this.activeIndex++;
-                    this.error = false;
-                    break;
-                }
-            case 4:
-                {
-                    if (!this.regInfoModel.branchCode ||
-                        !this.regInfoModel.name ||
-                        !this.regInfoModel.photoIdTypeCode ||
-                        !this.regInfoModel.photoId ||
-                        !this.selectedDivision ||
-                        !this.selectedDistrict ||
-                        !this.regInfoModel.locationCode ||
-                        !this.regInfoModel.occupation ||
-                        !this.regInfoModel.perAddr ||
-                        !this.regInfoModel.mphone ||
-                        !this.regDate.year ||
-                        !this.regInfoModel.fatherName ||
-                        !this.regInfoModel.motherName ||
-                        !this.dateOfBirth.year) {
-                        this.msgs = [];
-                        this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                        if (this.regInfoModel.branchCode) {
-                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+        if (event == 'reject') {
+            this.SaveCustomer(event);
+            this.error = false;
+        }
+        else {
+            switch (this.activeIndex) {
+                case 0:
+                    {
+                        if (!this.regInfoModel.mphone || !this.regDate.year) {
+                            this.msgs = [];
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.error = true;
+                            break;
                         }
-                        this.error = true;
-                        break;
-                    } else {
+                        else {
+                            this.activeIndex++;
+                            this.error = false;
+                            break;
+                        }
+                    }
+                case 1:
+                    {
+                        if (!this.regInfoModel.name ||
+                            !this.regInfoModel.photoIdTypeCode ||
+                            !this.regInfoModel.photoId ||
+                            !this.selectedDivision ||
+                            !this.selectedDistrict ||
+                            !this.regInfoModel.locationCode ||
+                            !this.regInfoModel.occupation ||
+                            !this.regInfoModel.perAddr ||
+                            !this.regInfoModel.mphone ||
+                            !this.regDate.year ||
+                            !this.regInfoModel.fatherName ||
+                            !this.regInfoModel.motherName ||
+                            !this.dateOfBirth.year ||
+                            !this.regInfoModel.gender) {
+                            this.msgs = [];
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.error = true;
+                            break;
+                        } else {
+                            this.activeIndex++;
+                            this.error = false;
+                            break;
+                        }
+                    }
+                case 2:
+                    {
+                        if (!this.regInfoModel.name ||
+                            !this.regInfoModel.photoIdTypeCode ||
+                            !this.regInfoModel.photoId ||
+                            !this.selectedDivision ||
+                            !this.selectedDistrict ||
+                            !this.regInfoModel.locationCode ||
+                            !this.regInfoModel.occupation ||
+                            !this.regInfoModel.perAddr ||
+                            !this.regInfoModel.mphone ||
+                            !this.regDate.year ||
+                            !this.dateOfBirth.year ||
+                            !this.regInfoModel.fatherName ||
+                            !this.regInfoModel.motherName ||
+                            !this.regInfoModel.firstNomineeName ||
+                            !this.regInfoModel.gender) {
+                            this.msgs = [];
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.error = true;
+                            break;
+                        } else {
+                            this.activeIndex++;
+                            this.error = false;
+                            break;
+                        }
+                    }
+                case 3:
+                    {
+                        //this.activeIndex++;
+                        //this.error = false;
+                        //break;
                         this.SaveCustomer(event);
                         this.error = false;
                         break;
                     }
-                }
+                //case 4:
+                //    {
+                //        if (!this.regInfoModel.branchCode ||
+                //            !this.regInfoModel.name ||
+                //            !this.regInfoModel.photoIdTypeCode ||
+                //            !this.regInfoModel.photoId ||
+                //            !this.selectedDivision ||
+                //            !this.selectedDistrict ||
+                //            !this.regInfoModel.locationCode ||
+                //            !this.regInfoModel.occupation ||
+                //            !this.regInfoModel.perAddr ||
+                //            !this.regInfoModel.mphone ||
+                //            !this.regDate.year ||
+                //            !this.regInfoModel.fatherName ||
+                //            !this.regInfoModel.motherName ||
+                //            !this.dateOfBirth.year) {
+                //            this.msgs = [];
+                //            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                //            if (this.regInfoModel.branchCode) {
+                //                this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                //            }
+                //            this.error = true;
+                //            break;
+                //        } else {
+                //            this.SaveCustomer(event);
+                //            this.error = false;
+                //            break;
+                //        }
+                //    }
 
+            }
         }
+
     }
 
+    onRejectCustomer(event) {
+        this.disableButton = true;
+        if (event === 'reject') {
+            this.customerService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
+                .subscribe(
+                    data => {
+                        if (data === 200) {
+                            this.showRejectModal = false;
+                            this.disableButton = false;
+                            window.history.back();
+                            if (event == 'reject') {
+                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.regInfoModel.mphone });
+                            }
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
+                        }
+                    },
+                    error => {
+                        console.log(error);
+                        this.messageService.add({ severity: 'error', summary: 'Erros Occured', sticky: true, detail: error, closable: false });
+                    });
+        }
+        this.showRejectModal = false;
+        this.disableButton = false;
+    }
 
+    sameAsPresent() {
+        if (this.checkedAsPresent) {
+            this.regInfoModel.preAddr = this.regInfoModel.perAddr;
+        }
+        else {
+            this.regInfoModel.preAddr = '';
+        }
 
-
+    }
     SaveCustomer(event): any {
         this.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.regDate);
         this.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.dateOfBirth);
@@ -493,16 +541,21 @@ export class CustomerAddoreditComponent implements OnInit {
             this.regInfoModel.photoidValidation = 'N';
         }
 
-        if (this.isEditMode) {
+        if (event === 'edit') {
             this.regInfoModel.updateBy = this.currentUserModel.user.username;
+            this.regInfoModel.branchCode = this.currentUserModel.user.branchCode;
         }
-        if (this.isEditMode && this.isRegPermit) {
+        if (event === 'register') {
             this.regInfoModel.authoBy = this.currentUserModel.user.username;
         }
-        if (event != 'reject') {
+        if (event === 'save') {
             this.regInfoModel.entryBy = this.currentUserModel.user.username;
+            this.regInfoModel.branchCode = this.currentUserModel.user.branchCode;
         }
-        if (this.regInfoModel.mphone != "" || this.regInfoModel.branchName != "") {
+        if (event === 'reject') {
+            this.showRejectModal = true;
+        }
+        if (this.regInfoModel.mphone != "" && event != 'reject') {
             this.customerService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
@@ -513,7 +566,7 @@ export class CustomerAddoreditComponent implements OnInit {
                             }
 
                             else if (this.isEditMode && !this.isRegPermit) {
-                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Customer Updated: '+ this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Customer Updated: ' + this.regInfoModel.mphone });
                             }
                             else if (this.isRegPermit && this.isRegPermit) {
                                 this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Customer Registered: ' + this.regInfoModel.mphone });

@@ -17,6 +17,7 @@ export class BulkUploadComponent implements OnInit {
     isCustomerShow: boolean = false;
     isUploadDisabled: boolean = true;
     isLoading: boolean = false;
+    error: boolean = false;
     displayMaximizable: boolean = false;
     @ViewChild('fileInput') fileInput;
     content: string;

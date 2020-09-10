@@ -256,6 +256,31 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="BranchCashinCashout" msprop:Generator_TableClassName="BranchCashinCashoutDataTable" msprop:Generator_TableVarName="tableBranchCashinCashout" msprop:Generator_RowChangedName="BranchCashinCashoutRowChanged" msprop:Generator_TablePropName="BranchCashinCashout" msprop:Generator_RowDeletingName="BranchCashinCashoutRowDeleting" msprop:Generator_RowChangingName="BranchCashinCashoutRowChanging" msprop:Generator_RowEvHandlerName="BranchCashinCashoutRowChangeEventHandler" msprop:Generator_RowDeletedName="BranchCashinCashoutRowDeleted" msprop:Generator_RowClassName="BranchCashinCashoutRow" msprop:Generator_UserTableName="BranchCashinCashout" msprop:Generator_RowEvArgName="BranchCashinCashoutRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="TransNo" msprop:Generator_ColumnVarNameInTable="columnTransNo" msprop:Generator_ColumnPropNameInRow="TransNo" msprop:Generator_ColumnPropNameInTable="TransNoColumn" msprop:Generator_UserColumnName="TransNo" type="xs:string" minOccurs="0" />
+              <xs:element name="BranchCode" msprop:Generator_ColumnVarNameInTable="columnBranchCode" msprop:Generator_ColumnPropNameInRow="BranchCode" msprop:Generator_ColumnPropNameInTable="BranchCodeColumn" msprop:Generator_UserColumnName="BranchCode" type="xs:string" minOccurs="0" />
+              <xs:element name="Mphone" msprop:Generator_ColumnVarNameInTable="columnMphone" msprop:Generator_ColumnPropNameInRow="Mphone" msprop:Generator_ColumnPropNameInTable="MphoneColumn" msprop:Generator_UserColumnName="Mphone" type="xs:string" minOccurs="0" />
+              <xs:element name="Amount" msprop:Generator_ColumnVarNameInTable="columnAmount" msprop:Generator_ColumnPropNameInRow="Amount" msprop:Generator_ColumnPropNameInTable="AmountColumn" msprop:Generator_UserColumnName="Amount" type="xs:double" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CreditCardReport" msprop:Generator_TableClassName="CreditCardReportDataTable" msprop:Generator_TableVarName="tableCreditCardReport" msprop:Generator_RowChangedName="CreditCardReportRowChanged" msprop:Generator_TablePropName="CreditCardReport" msprop:Generator_RowDeletingName="CreditCardReportRowDeleting" msprop:Generator_RowChangingName="CreditCardReportRowChanging" msprop:Generator_RowEvHandlerName="CreditCardReportRowChangeEventHandler" msprop:Generator_RowDeletedName="CreditCardReportRowDeleted" msprop:Generator_RowClassName="CreditCardReportRow" msprop:Generator_UserTableName="CreditCardReport" msprop:Generator_RowEvArgName="CreditCardReportRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:string" minOccurs="0" />
+              <xs:element name="TransNo" msprop:Generator_ColumnVarNameInTable="columnTransNo" msprop:Generator_ColumnPropNameInRow="TransNo" msprop:Generator_ColumnPropNameInTable="TransNoColumn" msprop:Generator_UserColumnName="TransNo" type="xs:string" minOccurs="0" />
+              <xs:element name="TransFrom" msprop:Generator_ColumnVarNameInTable="columnTransFrom" msprop:Generator_ColumnPropNameInRow="TransFrom" msprop:Generator_ColumnPropNameInTable="TransFromColumn" msprop:Generator_UserColumnName="TransFrom" type="xs:string" minOccurs="0" />
+              <xs:element name="TransTo" msprop:Generator_ColumnVarNameInTable="columnTransTo" msprop:Generator_ColumnPropNameInRow="TransTo" msprop:Generator_ColumnPropNameInTable="TransToColumn" msprop:Generator_UserColumnName="TransTo" type="xs:string" minOccurs="0" />
+              <xs:element name="PayAmount" msprop:Generator_ColumnVarNameInTable="columnPayAmount" msprop:Generator_ColumnPropNameInRow="PayAmount" msprop:Generator_ColumnPropNameInTable="PayAmountColumn" msprop:Generator_UserColumnName="PayAmount" type="xs:string" minOccurs="0" />
+              <xs:element name="Particular" msprop:Generator_ColumnVarNameInTable="columnParticular" msprop:Generator_ColumnPropNameInRow="Particular" msprop:Generator_ColumnPropNameInTable="ParticularColumn" msprop:Generator_UserColumnName="Particular" type="xs:string" minOccurs="0" />
+              <xs:element name="BillNo" msprop:Generator_ColumnVarNameInTable="columnBillNo" msprop:Generator_ColumnPropNameInRow="BillNo" msprop:Generator_ColumnPropNameInTable="BillNoColumn" msprop:Generator_UserColumnName="BillNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Gateway" msprop:Generator_ColumnVarNameInTable="columnGateway" msprop:Generator_ColumnPropNameInRow="Gateway" msprop:Generator_ColumnPropNameInTable="GatewayColumn" msprop:Generator_UserColumnName="Gateway" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

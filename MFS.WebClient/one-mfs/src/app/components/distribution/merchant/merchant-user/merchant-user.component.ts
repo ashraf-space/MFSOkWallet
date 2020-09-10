@@ -25,6 +25,7 @@ export class MerchantUserComponent implements OnInit {
     error: boolean = false;
     selectedSmsStatus: any;
     isLoading: boolean = false;
+    merchantTypeList: any;
     constructor(private merchantService: MerchantService, private distributorService: DistributorService, private router: Router,
         private route: ActivatedRoute, private messageService: MessageService, private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService) {
@@ -39,6 +40,11 @@ export class MerchantUserComponent implements OnInit {
         this.statusList = [
             { label: 'Active', value: 'A' },
             { label: 'Inactive', value: 'I' }
+        ]
+        this.merchantTypeList = [
+            { label: 'Individual', value: 'I' },
+            { label: 'Chain Parent', value: 'CP' },
+            { label: 'Child', value: 'CM' },
         ]
         this.getMerchantList();
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -93,12 +99,15 @@ export class MerchantUserComponent implements OnInit {
             this.merchantService.onMerchantUserSave(this.merchantUserModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        if (data) {
+                        if (data === 200) {
                             window.history.back();
                             if (this.isEditMode)
                                 this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant updated' });
                             else
                                 this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant added' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.merchantUserModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
                     },
                     error => {

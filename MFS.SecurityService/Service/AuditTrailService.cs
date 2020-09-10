@@ -6,7 +6,6 @@ using OneMFS.SharedResources.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace MFS.SecurityService.Service

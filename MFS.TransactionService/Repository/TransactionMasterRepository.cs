@@ -89,7 +89,7 @@ namespace MFS.TransactionService.Repository
                         {
                             fStatus = "N";
                         }
-                        else if (roleName == "Financial Maker")
+                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
                         {
                             fStatus = "M";
                         }
@@ -140,7 +140,7 @@ namespace MFS.TransactionService.Repository
                         {
                             fStatus = "N";
                         }
-                        else if (roleName == "Financial Maker")
+                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
                         {
                             fStatus = "M";
                         }
@@ -171,7 +171,7 @@ namespace MFS.TransactionService.Repository
                                 {
                                     item.Status = "M";
                                 }
-                                else if (roleName == "Financial Maker")
+                                else if (roleName == "Financial Maker" || roleName == "Sales Executive")
                                 {
                                     item.Status = "C";
                                 }

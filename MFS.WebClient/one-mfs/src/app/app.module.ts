@@ -192,6 +192,9 @@ import { AuditTrailComponent } from './components/security/audit/audit-trail/aud
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
 import { DpdcDescoComponent } from './components/reports/report-collection/dpdc-desco/dpdc-desco.component';
 import { FundTransferComponent } from './components/reports/report-collection/transaction-type/fund-transfer/fund-transfer.component';
+import { AgentReplaceComponent } from './components/distribution/agent-replace/agent-replace.component';
+import { BranchCashinCashoutComponent } from './components/reports/report-collection/transaction-type/branch-cashin-cashout/branch-cashin-cashout.component';
+import { CreditCardReportComponent } from './components/reports/report-collection/credit-card-report/credit-card-report.component';
 
 @NgModule({
     imports: [
@@ -381,7 +384,10 @@ import { FundTransferComponent } from './components/reports/report-collection/tr
         AuditTrailComponent,
         AuditTrailDtlComponent,
         DpdcDescoComponent,
-        FundTransferComponent
+        FundTransferComponent,
+        AgentReplaceComponent,
+        BranchCashinCashoutComponent,
+        CreditCardReportComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

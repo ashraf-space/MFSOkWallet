@@ -13,8 +13,10 @@ namespace MFS.ReportingService.Service
     {
         List<OutletDetailsTransaction> GetOutletDetailsTransactionList(string chainMerchantCode,string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
         List<OutletSummaryTransaction> GetOutletSummaryTransactionList(string chainMerchantCode, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
+        List<OutletDailySummaryTransaction> GetOutletDailySummaryTransList(string chainMerchantCode, string outletAccNo, string outletCode, string reportType, string fromDate, string toDate, string dateType);
         List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType);
-    }
+		string GetChainMerchantCodeByMphone(string mphone);
+	}
     public class ChainMerchantService:BaseService<OutletDetailsTransaction>,IChainMerchantService 
 	{
         private readonly IChainMerchantRepository _chainMerchantRepository;
@@ -48,6 +50,18 @@ namespace MFS.ReportingService.Service
                 throw;
             }
         }
+        public List<OutletDailySummaryTransaction> GetOutletDailySummaryTransList(string chainMerchantCode, string outletAccNo, string outletCode, string reportType,  string fromDate, string toDate, string dateType)
+        {
+            try
+            {
+                return _chainMerchantRepository.GetOutletDailySummaryTransList(chainMerchantCode, outletAccNo, outletCode, reportType,  fromDate, toDate, dateType);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
 
         public List<OutletSummaryTransaction> GetOutletToParentTransSummaryList(string chainMerchantCode, string chainMerchantNo, string outletAccNo, string outletCode, string reportType, string reportViewType, string fromDate, string toDate, string dateType)
         {
@@ -62,5 +76,16 @@ namespace MFS.ReportingService.Service
             }
         }
 
-    }
+		public string GetChainMerchantCodeByMphone(string mphone)
+		{
+			try
+			{
+				return _chainMerchantRepository.GetChainMerchantCodeByMphone(mphone);
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
+		}
+	}
 }

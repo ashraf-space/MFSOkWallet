@@ -84,7 +84,7 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Transfer Amount<span class="mandatory"> *</span></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control form-input" maxlength="9" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pInputText pKeyFilter="money" (focus)="fundTransferModel.payAmt=''"  (change)="GetTransactionDetailsByPayAmount();">
+                            <input type="text" class="form-control form-input" maxlength="12" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pInputText pKeyFilter="money" (focus)="fundTransferModel.payAmt=''"  (change)="GetTransactionDetailsByPayAmount();">
                             <p-message *ngIf="(fundTransferModel.payAmt==null || fundTransferModel.payAmt==''|| fundTransferModel.payAmt=='0') && error " severity="error" text="Cannot be left blank"></p-message>
                         </div>
                     </div>

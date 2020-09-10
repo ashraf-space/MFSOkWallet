@@ -9,6 +9,7 @@ import { MenuItem } from 'primeng/api';
 import { DistributorService } from 'src/app/services/distribution';
 import { first } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
+import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -38,7 +39,10 @@ export class CustomerCarePortalComponent implements OnInit {
     verification: any = {};
     switchCaseLoading: boolean = false;
 
-    constructor(private distributorService: DistributorService, private messageService: MessageService) {
+    constructor(private distributorService: DistributorService,
+        private messageService: MessageService,
+        private ngbDatepickerConfig: NgbDatepickerConfig) {
+        ngbDatepickerConfig.minDate = { year: 1940, month: 1, day: 1 };
         this.caseList = [
             { label: 'Customer Care Portal', icon: 'far fa-handshake' }
         ];

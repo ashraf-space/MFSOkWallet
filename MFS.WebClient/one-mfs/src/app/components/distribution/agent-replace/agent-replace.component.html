@@ -1,0 +1,114 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Agent Transfer from Distributor to another Distributor</h6>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <p-fieldset legend="From Distributor">
+                        <div class="p-grid">
+                            <div class="p-col-12">
+                                <div>
+                                    <p-dropdown [options]="distributorList" [(ngModel)]="agentReplaceModel.exMobileNo" placeholder="Select Distributor" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getRegionDetailsByMobileNo('Ex')"></p-dropdown>
+                                    <p-message *ngIf="(agentReplaceModel.exMobileNo==null || agentReplaceModel.exMobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-grid">
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.exDistCode" [disabled]="true">
+                                </div>
+                            </div>
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.exRegion" [disabled]="true">
+                                </div>
+                            </div>
+
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.exArea" [disabled]="true">
+                                </div>
+                            </div>
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.exTerritory" [disabled]="true">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-grid">
+                            <div class="p-col-12">
+                                <div>
+                                    <p-dropdown [options]="exClusterList" [(ngModel)]="agentReplaceModel.exCluster"  [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getAgentListByCluster('Ex')"></p-dropdown>
+                                    <p-message *ngIf="(agentReplaceModel.exCluster==null || agentReplaceModel.exCluster=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                                </div>
+                            </div>
+
+                        </div>
+                     
+                        <div class="p-grid" style="margin:5px">
+                            <generic-grid [gridConfig]="exGridConfig">
+                            </generic-grid>
+                        </div>
+                    </p-fieldset>
+                </div>
+                <div class="p-col-6">
+                    <p-fieldset legend="To Distributor">
+                        <div class="p-grid">
+                            <div class="p-col-12">
+                                <div>
+                                    <p-dropdown [options]="distributorList" [(ngModel)]="agentReplaceModel.newMobileNo" placeholder="Select Distributor" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getRegionDetailsByMobileNo('New')"></p-dropdown>
+                                    <p-message *ngIf="(agentReplaceModel.newMobileNo==null || agentReplaceModel.newMobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-grid">
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.newDistCode" [disabled]="true">
+                                </div>
+                            </div>
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.newRegion" [disabled]="true">
+                                </div>
+                            </div>
+
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.newArea" [disabled]="true">
+                                </div>
+                            </div>
+                            <div class="p-col-3">
+                                <div>
+                                    <input type="text" class="form-control" [(ngModel)]="agentReplaceModel.newTerritory" [disabled]="true">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="p-grid">
+                            <div class="p-col-12">
+                                <div>
+                                    <p-dropdown [options]="newClusterList" [(ngModel)]="agentReplaceModel.newCluster" placeholder="Select Cluster" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getAgentListByCluster('New')"></p-dropdown>
+                                    <p-message *ngIf="(agentReplaceModel.newCluster==null || agentReplaceModel.newCluster=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-grid" style="margin:5px">
+                            <generic-grid [gridConfig]="newGridConfig">
+                            </generic-grid>
+                        </div>
+                    </p-fieldset>
+                </div>
+
+            </div>
+
+
+        </div>
+    </p-card>
+</div>
+<app-generic-form-action (onSave)="ExecuteAgentReplace()" [disableAction]="isActionDisable"></app-generic-form-action>

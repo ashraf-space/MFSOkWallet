@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using OneMFS.TransactionApiServer.Filters;
 using MFS.SecurityService.Service;
 using System.Reflection;
+using System.Net;
 
 namespace OneMFS.TransactionApiServer.Controllers
 {
@@ -40,7 +41,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 		public object GetMappedAccountInfoByMphone(string mphone)
 		{
 			try
-			{				
+			{
 				return _service.GetMappedAccountInfoByMphone(mphone);
 			}
 			catch (Exception ex)
@@ -54,7 +55,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 		public object GetNameByMphone(string mblNo)
 		{
 			try
-			{				
+			{
 				return _service.GetNameByMphone(mblNo);
 			}
 			catch (Exception ex)
@@ -93,7 +94,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 		}
 		[HttpGet]
 		[Route("CheckIsAccountValid")]
-		public object CheckIsAccountValid(string mblNo ,string accNo)
+		public object CheckIsAccountValid(string mblNo, string accNo)
 		{
 			try
 			{
@@ -130,20 +131,20 @@ namespace OneMFS.TransactionApiServer.Controllers
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
-		[ApiGuardAuth]
-		[HttpPost]
-		[Route("SaveRemapCbsAccount")]
-		public object SaveRemapCbsAccount([FromBody] BatchUpdateModel model)
-		{
-			try
-			{
-				return _service.SaveRemapCbsAccount(model);
-			}
-			catch (Exception ex)
-			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-			}
-		}
+		//[ApiGuardAuth]
+		//[HttpPost]
+		//[Route("SaveRemapCbsAccount")]
+		//public object SaveRemapCbsAccount([FromBody] BatchUpdateModel model)
+		//{
+		//	try
+		//	{
+		//		return _service.SaveRemapCbsAccount(model);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+		//	}
+		//}
 		[ApiGuardAuth]
 		[HttpPost]
 		[Route("SaveActionPendingCbsAccounts")]
@@ -155,7 +156,8 @@ namespace OneMFS.TransactionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.InternalServerError;
 			}
 		}
 		[ApiGuardAuth]
@@ -197,7 +199,8 @@ namespace OneMFS.TransactionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 		[ApiGuardAuth]

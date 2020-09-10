@@ -482,7 +482,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 
 
 
-                        fundTransferModel.Particular = fromGlorAC + " =>" + toGlorAC;
+                        fundTransferModel.Particular = fromGlorAC + " => " + toGlorAC;
                         fundTransferModel.EntryDate = System.DateTime.Now;
                         _fundTransferService.Add(fundTransferModel);
 
@@ -594,8 +594,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                 {
                     if (evnt == "register")
                     {
-                        //fundTransferModel.Status = "A";
-                        fundTransferModel.Status = "P";
+                        fundTransferModel.Status = "A";
+                        //fundTransferModel.Status = "P";
                         fundTransferModel.CheckDate = System.DateTime.Now;
 
                         successOrErrorMsg = _fundTransferService.DataInsertToTransMSTandDTL(fundTransferModel, transType);

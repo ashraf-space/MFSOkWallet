@@ -52,6 +52,7 @@ namespace MFS.SecurityService.Service
 			AuthClientUser AuthClientUser = new AuthClientUser();
 
 			AuthClientUser.User = model;
+			//AuthClientUser.User.Mtype = model.Mtype;
 			if (AuthClientUser.User.Is_validated)
 			{
 				AuthClientUser.IsAuthenticated = true;

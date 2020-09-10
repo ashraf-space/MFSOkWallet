@@ -27,7 +27,8 @@ namespace MFS.ReportingService.Repository
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate, string gateway);
         List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
 		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
-	}
+        List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate);
+    }
     public class TransactionRepository : BaseRepository<AccountStatement>, ITransactionRepository
     {
         MainDbUser mainDbUser = new MainDbUser();
@@ -374,7 +375,7 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("gateway", OracleDbType.Char, ParameterDirection.Input, character);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-                    result = SqlMapper.Query<TransactionDetails>(connection, "RPT_TransactionDetails", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    result = SqlMapper.Query<TransactionDetails>(connection, mainDbUser.DbUser + "RPT_TransactionDetails", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
                     return result;
                 }
@@ -443,5 +444,35 @@ namespace MFS.ReportingService.Repository
 			}
 			return result;
 		}
-	}
+
+        public List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate)
+        {
+
+            List<BranchCashinCashout> result = new List<BranchCashinCashout>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_BRANCHCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
+                    dyParam.Add("V_CASHINCASHOUTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, cashinCashoutType);
+                    dyParam.Add("V_OPTIONS", OracleDbType.Varchar2, ParameterDirection.Input, option);
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<BranchCashinCashout>(connection, mainDbUser.DbUser + "RPT_BranchCashinCashout", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+    }
 }

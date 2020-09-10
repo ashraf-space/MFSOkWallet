@@ -20,16 +20,18 @@ namespace MFS.TransactionService.Repository
         object GetCbsCustomerInfo(string accNo);
         object GetPendingCbsAccounts(string branchCode);
         object CheckAccountValidityByCount(string mblNo);
-        int InactiveCbsAccountByAccountNo(string inactiveCbsAccountNo);
+        int InactiveCbsAccountByAccountNo(string inactiveCbsAccountNo, string makeBy, string ubranch);
         object GetMappedAccountByMblNo(string mblNo);
         object CheckAccNoIsMappedByMblNo(string mblAcc, string accno);
         object CheckStatusByAcc(string mtcbsinfoAccno);
-        int ActiveCbsAccountByAccountNo(string inactiveCbsAccountNo);
+        int ActiveCbsAccountByAccountNo(string inactiveCbsAccountNo, string makeBy, string ubranch);
         int CheckEligibilityMappingByMphone(string mphone);
         object CheckPendingAccountByMphone(string mblAcc);
         object CheckActivatdAccountByMphone(string mblNo);
         object CheckCbsValidClass(string @class);
-    }
+		void ChekCbsAccuntByAccNo(MtCbsinfo mtcbsinfo);
+		object GetMappedAccountByAccNo(string accNo);
+	}
     public class ToolsRepository : BaseRepository<MtCbsinfo>, IToolsRepository
     {
         MainDbUser mainDbUser = new MainDbUser();
@@ -86,7 +88,7 @@ namespace MFS.TransactionService.Repository
 
                 //string URL = "http://10.20.32.118/CBS/";
                 //string urlParameters = "?proc=CBSINFO&ACCNO=" + accNo.ToString();
-                //string URL = "http://10.20.32.158/CbsDemoAPi/api/DemoCbs";
+                //string URL = "http://10.20.32.158/CbsDemoAPi/api/DemoCbs?accno=" + accNo.ToString();
                 //string URL = "http://10.156.4.253/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
 				string URL = "http://10.156.4.16/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
 				//string urlParameters = "proc=CBSINFO?&accno=" + accNo.ToString();
@@ -185,7 +187,7 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public int InactiveCbsAccountByAccountNo(string inactiveCbsAccountNo)
+        public int InactiveCbsAccountByAccountNo(string inactiveCbsAccountNo, string makeBy, string ubranch)
         {
             try
             {
@@ -193,7 +195,9 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("ACC_NO", OracleDbType.Varchar2, ParameterDirection.Input, inactiveCbsAccountNo);
-                    SqlMapper.Query<dynamic>(_connection, mainDbUser.DbUser + "SP_INACTIVE_CBS_ACC_BY_ACCNO", param: parameter,
+					parameter.Add("V_MAKE_BY", OracleDbType.Varchar2, ParameterDirection.Input, makeBy);
+					parameter.Add("V_UBRANCH", OracleDbType.Varchar2, ParameterDirection.Input, ubranch);
+					SqlMapper.Query<dynamic>(_connection, mainDbUser.DbUser + "SP_INACTIVE_CBS_ACC_BY_ACCNO", param: parameter,
                         commandType: CommandType.StoredProcedure);
 
                     _connection.Close();
@@ -207,7 +211,7 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public int ActiveCbsAccountByAccountNo(string inactiveCbsAccountNo)
+        public int ActiveCbsAccountByAccountNo(string inactiveCbsAccountNo, string makeBy, string ubranch)
         {
             try
             {
@@ -215,7 +219,9 @@ namespace MFS.TransactionService.Repository
                 {
                     var parameter = new OracleDynamicParameters();
                     parameter.Add("ACC_NO", OracleDbType.Varchar2, ParameterDirection.Input, inactiveCbsAccountNo);
-                    SqlMapper.Query<dynamic>(_connection, mainDbUser.DbUser + "SP_ACTIVE_CBS_ACC_BY_ACCNO", param: parameter,
+					parameter.Add("V_MAKE_BY", OracleDbType.Varchar2, ParameterDirection.Input, makeBy);
+					parameter.Add("V_UBRANCH", OracleDbType.Varchar2, ParameterDirection.Input, ubranch);
+					SqlMapper.Query<dynamic>(_connection, mainDbUser.DbUser + "SP_ACTIVE_CBS_ACC_BY_ACCNO", param: parameter,
                         commandType: CommandType.StoredProcedure);
 
                     _connection.Close();
@@ -251,8 +257,30 @@ namespace MFS.TransactionService.Repository
                 throw;
             }
         }
+		public object GetMappedAccountByAccNo(string AccNo)
+		{
+			try
+			{
+				using (var _connection = this.GetConnection())
+				{
+					var parameter = new OracleDynamicParameters();
+					parameter.Add("V_ACC_NO", OracleDbType.Varchar2, ParameterDirection.Input, AccNo);
+					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+					var result = SqlMapper.Query<MtCbsinfo>(_connection, mainDbUser.DbUser + "SP_GET_MAP_ACC_BY_ACCNO", param: parameter,
+						commandType: CommandType.StoredProcedure).FirstOrDefault();
 
-        public object CheckAccNoIsMappedByMblNo(string mblAcc, string accno)
+					_connection.Close();
+
+					return result;
+				}
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+		}
+
+		public object CheckAccNoIsMappedByMblNo(string mblAcc, string accno)
         {
             try
             {
@@ -373,5 +401,30 @@ namespace MFS.TransactionService.Repository
                 throw;
             }
         }
-    }
+
+		public void ChekCbsAccuntByAccNo(MtCbsinfo mtcbsinfo)
+		{
+			try
+			{
+				using (var _connection = this.GetConnection())
+				{
+					var parameter = new OracleDynamicParameters();
+					parameter.Add("ACC_NO", OracleDbType.Varchar2, ParameterDirection.Input, mtcbsinfo.Accno);
+					parameter.Add("V_CHECK_BY", OracleDbType.Varchar2, ParameterDirection.Input, mtcbsinfo.CheckBy);
+					parameter.Add("V_MAKE_STATUS", OracleDbType.Varchar2, ParameterDirection.Input, mtcbsinfo.MakeStatus);
+					parameter.Add("V_CHECK_STATUS", OracleDbType.Varchar2, ParameterDirection.Input, mtcbsinfo.CheckStatus);										
+					
+					var result = SqlMapper.Query(_connection, mainDbUser.DbUser + "SP_CHECK_CBS_ACC_BY_ACCNO", param: parameter,
+						commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+					_connection.Close();					
+				}
+
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
+		}
+	}
 }

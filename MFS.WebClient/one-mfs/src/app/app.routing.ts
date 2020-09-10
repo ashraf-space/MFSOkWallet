@@ -99,6 +99,8 @@ import { ClientWorkTabComponent } from './components/client/client-work-tab/clie
 import { BulkUploadComponent } from './components/distribution/bulk-upload/bulk-upload.component';
 import { AuditTrailComponent } from './components/security/audit/audit-trail/audit-trail.component';
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
+import { AgentReplaceComponent } from './components/distribution/agent-replace/agent-replace.component';
+
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
@@ -201,6 +203,7 @@ const appRoutes: Routes = [
     { path: 'distribution/bulk-upload', component: BulkUploadComponent, canActivate: [AuthGuard] },
     { path: 'audit/audit-trail/list', component: AuditTrailComponent, canActivate: [AuthGuard] },
     { path: 'audit/audit-trail-dtl/:id', component: AuditTrailDtlComponent, canActivate: [AuthGuard] },
+    { path: 'distribution/agent-replace', component: AgentReplaceComponent, canActivate: [AuthGuard] },
     {
         path: "",
         pathMatch: "full",

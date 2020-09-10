@@ -118,7 +118,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
                 .subscribe(
                 data => {
                     this.messageService.add({ severity: 'success', summary: 'Success', detail: this.applicationUserModel.name + ' saved Successfully' });
-                        console.log(data);
+                        //console.log(data);
                         this.goBack();
                     },
                     error => {

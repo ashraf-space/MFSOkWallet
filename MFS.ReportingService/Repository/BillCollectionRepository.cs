@@ -14,7 +14,8 @@ namespace MFS.ReportingService.Repository
     public interface IBillCollectionRepository : IBaseRepository<BillCollection>
     {
         List<BillCollection> GetDpdcDescoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
-    }
+		List<CreditCardReport> GetCreditPaymentReport(string transNo, string fromDate, string toDate);
+	}
     public class BillCollectionRepository : BaseRepository<BillCollection>, IBillCollectionRepository
     {
         private readonly string dbUser;
@@ -23,7 +24,30 @@ namespace MFS.ReportingService.Repository
             dbUser = objMainDbUser.DbUser;
         }
 
-        public List<BillCollection> GetDpdcDescoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
+		public List<CreditCardReport> GetCreditPaymentReport(string transNo, string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));					
+					dyParam.Add("V_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, transNo);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<CreditCardReport> result = SqlMapper.Query<CreditCardReport>(connection, dbUser + "RPT_CREDITCARDINFO", param: dyParam, commandType: CommandType.StoredProcedure).ToList();					
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<BillCollection> GetDpdcDescoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
         {
             try
             {

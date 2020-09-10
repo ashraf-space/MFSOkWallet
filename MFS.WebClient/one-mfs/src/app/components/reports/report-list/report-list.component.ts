@@ -45,7 +45,7 @@ export class ReportListComponent implements OnInit {
             this.gridConfig.gridName = "Report list";
             this.gridConfig.gridIconClass = 'fas fa-list';
 
-            this.gridConfig.columnList.push({ field: 'Id', header: 'Generate', width: '10%', isCustomAction: true, customActionIcon: 'fas fa-directions', filter: this.gridSettingService.getFilterableNone() });
+            this.gridConfig.columnList.push({ field: 'Id', header: 'Generate Report', width: '10%', isCustomAction: true, customActionIcon: 'fas fa-directions', filter: this.gridSettingService.getFilterableNone() });
 
             this.gridConfig.dataSourcePath = this.mfsSettingService.reportingApiServer + '/ReportInfo/GetReportInfoList';
             this.gridConfig.autoUpdateDataSource = true;

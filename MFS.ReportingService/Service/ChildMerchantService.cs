@@ -13,6 +13,8 @@ namespace MFS.ReportingService.Service
 	{
 		List<ChildMerchantTransaction> GetChildMerchantTransactionReport(string mphone, string fromDate, string toDate);
 		List<MerchantTransactionSummary> ChainMerTransSummReportByTd(string mphone, string fromDate, string toDate);
+		List<OutletSummaryTransaction> ChainMerTransSummReportByOutlet(string mphone,string childMerchantCode, string fromDate, string toDate, string dateType);
+		List<OutletDailySummaryTransaction> ChildMerDailySumReport(string mphone, string childMerchantCode, string fromDate, string toDate, string dateType);
 	}
 	public class ChildMerchantService : BaseService<ChildMerchantTransaction>, IChildMerchantService
 	{
@@ -22,9 +24,19 @@ namespace MFS.ReportingService.Service
 			this.childMerchantRepository = childMerchantRepository;
 		}
 
+		public List<OutletSummaryTransaction> ChainMerTransSummReportByOutlet(string mphone, string childMerchantCode, string fromDate, string toDate, string dateType)
+		{
+			return childMerchantRepository.ChainMerTransSummReportByOutlet(mphone,childMerchantCode, fromDate, toDate,dateType);
+		}
+
 		public List<MerchantTransactionSummary> ChainMerTransSummReportByTd(string mphone, string fromDate, string toDate)
 		{
 			return childMerchantRepository.ChainMerTransSummReportByTd(mphone, fromDate, toDate);
+		}
+
+		public List<OutletDailySummaryTransaction> ChildMerDailySumReport(string mphone, string childMerchantCode, string fromDate, string toDate, string dateType)
+		{
+			return childMerchantRepository.ChildMerDailySumReport(mphone, childMerchantCode, fromDate, toDate, dateType);
 		}
 
 		public List<ChildMerchantTransaction> GetChildMerchantTransactionReport(string mphone, string fromDate, string toDate)

@@ -31,13 +31,14 @@ export class ApplicationUserListComponent implements OnInit {
         //this.gridConfig.detailsStateUrl = '/application-user/details/'
 
         this.gridConfig.columnList = [
-            { field: 'name', header: 'Full Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'username', header: 'User Name', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'mobileNo', header: 'Mobile Number#', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'emailId', header: 'Email Id', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'logInStatus', header: 'Log In Status', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getYesNoTemplateForRowData() },
-            { field: 'pstatus', header: 'Password Status', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getPinStatusTemplateForRowData() },
-            { field: 'id', header: 'Edit', width: '15%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() },
+            { field: 'NAME', header: 'Full Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'USERNAME', header: 'User Name', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'ROLENAME', header: 'Role Name', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'MOBILE_NO', header: 'Mobile Number#', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'EMAIL_ID', header: 'Email Id', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'LOG_IN_STATUS', header: 'Log In Status', width: '10%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getYesNoTemplateForRowData() },
+            { field: 'PSTATUS', header: 'Password Status', width: '15%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getPinStatusTemplateForRowData() },
+            { field: 'ID', header: 'Edit', width: '15%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() },
             //{ field: 'id', header: 'Details', width: '15%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() }
         ];
 

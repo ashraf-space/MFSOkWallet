@@ -17,6 +17,7 @@ export class EodComponent implements OnInit {
     todayDate: any = {};
     userName: string = null;
     currentUserModel: any;
+    error: any;
     constructor(private messageService: MessageService, private mfsUtilityService: MfsUtilityService,
         private authService: AuthenticationService, private processService: ProcessService) {
         this.authService.currentUser.subscribe(x => {

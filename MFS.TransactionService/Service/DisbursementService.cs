@@ -27,6 +27,7 @@ namespace MFS.TransactionService.Service
         string AllSend(string processBatchNo,string brCode,string checkerId,double totalSum);
         object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
+        string GetTargetCatIdByCompany(string onlyCompanyName);
     }
     public class DisbursementService : BaseService<TblDisburseCompanyInfo>, IDisbursementService
     {
@@ -215,6 +216,18 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _DisbursementRepository.GetAccountDetails( accountNo);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public string GetTargetCatIdByCompany(string onlyCompanyName)
+        {
+            try
+            {
+                return _DisbursementRepository.GetTargetCatIdByCompany(onlyCompanyName);
             }
             catch (Exception ex)
             {

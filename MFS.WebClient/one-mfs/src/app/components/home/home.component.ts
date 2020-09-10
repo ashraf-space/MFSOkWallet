@@ -10,6 +10,7 @@ import { UserService, AuthenticationService } from '../../shared/_services';
 
 export class HomeComponent implements OnInit, OnDestroy {
     currentUser: User;
+    currentUserModel: any = {};
     currentUserSubscription: Subscription;
     users: User[] = [];
     pieData: any;
@@ -19,6 +20,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     dashboardModel: any;
     isLoading: boolean;
     clientCountList: any;
+    
+    isBranchTeller: boolean = false;
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -28,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ) {
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
             this.currentUser = user;   
+            this.currentUserModel = user;
             this.dashboardModel = {};
             this.clientCountList = [];
             this.clientCountList.push({ name: 'CLIENT', icon: 'far fa-hand-point-right' });
@@ -35,6 +39,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.isBranchTeller = this.currentUserModel.user.role_Name == 'Branch Teller' ? true : false;
+
         this.getDataForDashboard();
         this.pieData = {
             labels: ['Agent','Customer','Distributor','DSR','Merchant'],
@@ -82,6 +88,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                 }
             ]
         };
+
+        
     }
 
     ngOnDestroy() {
@@ -126,42 +134,60 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     getDataForDashboard() {
-        this.isLoading = true;
-        this.authenticationService.getDataForDashboard().pipe(first())
-            .subscribe(
-                data => {
-                    this.dashboardModel = data;
-                    //console.log(this.dashboardModel);
-                    this.isLoading = false;
-                    this.dashboardModel.totalTransaction = 0;
-                    this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.AGENT);
-                    this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.CUSTOMER);
-                    this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.DISTRIBUTOR);
-                    this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.DSR);
-                    this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.MERCHANT);
+        if (!this.isBranchTeller) {
+            this.isLoading = true;
+            this.authenticationService.getDataForDashboard().pipe(first())
+                .subscribe(
+                    data => {
+                        this.dashboardModel = data;
+                        //console.log(this.dashboardModel);
+                        this.isLoading = false;
+                        this.dashboardModel.totalTransaction = 0;
+                        this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.AGENT);
+                        this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.CUSTOMER);
+                        this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.DISTRIBUTOR);
+                        this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.DSR);
+                        this.pieData.datasets[0].data.push(this.dashboardModel.totalClientCount.MERCHANT);
 
-                    this.dashboardModel.transactionByMonth.forEach(obj => {
-                        this.barData.labels.push(obj.MONTH.trim());
-                        this.barData.datasets[0].data.push(obj.TRANSACTION);
+                        this.dashboardModel.transactionByMonth.forEach(obj => {
+                            this.barData.labels.push(obj.MONTH.trim());
+                            this.barData.datasets[0].data.push(obj.TRANSACTION);
+                        });
+
+                        this.dashboardModel.transactionByYear.forEach(obj => {
+                            if (obj.YEAR != null) {
+                                this.barData2.labels.push(obj.YEAR.trim());
+                                this.barData2.datasets[0].data.push(obj.TRANSACTION);
+                                this.dashboardModel.totalTransaction = this.dashboardModel.totalTransaction + obj.TRANSACTION;
+                            }
+                        });
+
+                        Object.keys(this.dashboardModel.totalClientCount).forEach(e => {
+                            if (e != 'CLIENTTHISYEAR' && e != 'CLIENTTHISMONTH')
+                                this.clientCountList.push(this.insertIntoClientCountList(e));
+                        });
+
+                        this.dashboardModel.totalTransaction = this.dashboardModel.totalTransaction / 100;
+                    },
+                    error => {
+                        console.log(error);
                     });
+        }
+        
+    }
 
-                    this.dashboardModel.transactionByYear.forEach(obj => {
-                        if (obj.YEAR != null) {
-                            this.barData2.labels.push(obj.YEAR.trim());
-                            this.barData2.datasets[0].data.push(obj.TRANSACTION);
-                            this.dashboardModel.totalTransaction = this.dashboardModel.totalTransaction + obj.TRANSACTION;
-                        }
-                    });
+    goToBranchCashIn() {
+        this.router.navigate(['/transfer/branch-cash-in']);
+        //this.router.navigateByUrl('../feature-category/worklist');
+    }
 
-                    Object.keys(this.dashboardModel.totalClientCount).forEach(e => {
-                        if (e != 'CLIENTTHISYEAR' && e !='CLIENTTHISMONTH')
-                            this.clientCountList.push(this.insertIntoClientCountList(e));
-                    });
+   
 
-                    this.dashboardModel.totalTransaction = this.dashboardModel.totalTransaction / 100;
-                },
-                error => {
-                    console.log(error);
-                });
+    goToBranchCashOut() {        
+        this.router.navigate(['/transfer/branch-cash-out']);
+    }
+
+    goToReport() {
+        this.router.navigate(['/reports/branch-cashin-cashout']);
     }
 }
