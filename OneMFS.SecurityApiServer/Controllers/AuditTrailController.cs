@@ -63,6 +63,14 @@ namespace OneMFS.AuditTrailApiServer.Controllers
 				DateRangeModel date = new DateRangeModel();
 				date.FromDate = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
 				date.ToDate = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
+				if(userAction == "undefined")
+				{
+					userAction = null;
+				}
+				if(menu == "undefined")
+				{
+					menu = null;
+				}
 				return auditTrailService.GetAuditTrails(date, user, userAction, menu);
 			}
 

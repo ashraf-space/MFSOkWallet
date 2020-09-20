@@ -100,6 +100,7 @@ import { BulkUploadComponent } from './components/distribution/bulk-upload/bulk-
 import { AuditTrailComponent } from './components/security/audit/audit-trail/audit-trail.component';
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
 import { AgentReplaceComponent } from './components/distribution/agent-replace/agent-replace.component';
+import { BlinkTopupStockEntryComponent } from './components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -204,6 +205,7 @@ const appRoutes: Routes = [
     { path: 'audit/audit-trail/list', component: AuditTrailComponent, canActivate: [AuthGuard] },
     { path: 'audit/audit-trail-dtl/:id', component: AuditTrailDtlComponent, canActivate: [AuthGuard] },
     { path: 'distribution/agent-replace', component: AgentReplaceComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/blink-topup-stock-entry', component: BlinkTopupStockEntryComponent, canActivate: [AuthGuard] },
     {
         path: "",
         pathMatch: "full",

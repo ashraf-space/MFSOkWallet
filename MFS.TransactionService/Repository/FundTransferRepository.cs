@@ -25,7 +25,7 @@ namespace MFS.TransactionService.Repository
         VMACandGLDetails GetACandGLDetailsByMphone(string transFrom);
         object saveBranchCashIn(BranchCashIn branchCashIn);
         object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt);
-        void saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
+        object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
         object getAmountByTransNo(string transNo, string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
@@ -352,54 +352,68 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public void saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
+        public object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
         {
+            string successOrErrorMsg = null;
             try
             {
                 using (var connection = this.GetConnection())
                 {
-                    string newID = "";
+                   // string newID = "";
                     var parameter = new OracleDynamicParameters();
-                    parameter.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, "G2G");
-                    parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.FromSysCoaCode);
+                    parameter.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, "A2G");
+                    //parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.FromSysCoaCode);
+                    parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "01848471748");
                     parameter.Add("V_CR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "A40000000131");
                     parameter.Add("V_AMT", OracleDbType.Double, ParameterDirection.Input, robiTopupStockEntry.TransactionAmt);
                     parameter.Add("V_HOTKEY", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.Hotkey);
-                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output, newID);
+                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
                     parameter.Add("V_ENTRY_USER", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.EntryUser);
                     parameter.Add("V_PARTICULAR", OracleDbType.Varchar2, ParameterDirection.Input);
-                    //parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input);
-                    //parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input);
-
-                    SqlMapper.Query<string>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                   
+                    SqlMapper.Query<string>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
                     //string newID = parameter.<string>("V_FLAG");
                     string transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
 
                     if (transactionNo != null)
                     {
-                        parameter.oracleParameters[1].Value = robiTopupStockEntry.FromSysCoaCode;
+                        //parameter.oracleParameters[1].Value = robiTopupStockEntry.FromSysCoaCode;
+                        parameter.oracleParameters[1].Value = "01848471748";
                         parameter.oracleParameters[2].Value = "L40000000135";
                         parameter.oracleParameters[3].Value = robiTopupStockEntry.RowThreeFour;
                         parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, transactionNo);
                         parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input, 3);
 
-                        SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
+                        SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
                         transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
                         if (transactionNo != null)
                         {
+                            parameter.oracleParameters[0].Value = "G2G";
                             parameter.oracleParameters[1].Value = "A40000000137";
                             parameter.oracleParameters[2].Value = "L40000000135";
                             parameter.oracleParameters[3].Value = robiTopupStockEntry.RowFiveSix;
                             parameter.oracleParameters[8].Value = transactionNo;
                             parameter.oracleParameters[9].Value = 5;
 
-                            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION", param: parameter, commandType: CommandType.StoredProcedure);
+                            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
                         }
 
 
                     }
 
                     connection.Close();
+                    string flag = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+
+                    if (flag == "0")
+                    {
+                        successOrErrorMsg = "Failed";
+                    }
+                    else
+                    {
+                        successOrErrorMsg = "1";
+                    }
+                    return successOrErrorMsg;
+
                 }
             }
             catch (Exception e)

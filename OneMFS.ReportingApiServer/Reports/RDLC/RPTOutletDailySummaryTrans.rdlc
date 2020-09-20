@@ -121,31 +121,31 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.35417in</Width>
+                  <Width>0.70139in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.34722in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.34722in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.72917in</Width>
+                  <Width>2.07639in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.60764in</Width>
+                  <Width>0.95486in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.34722in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.72917in</Width>
+                  <Width>1.07639in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.65625in</Width>
+                  <Width>1.00347in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.09375in</Width>
+                  <Width>1.44097in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -163,8 +163,6 @@
                                 <TextRun>
                                   <Value>SL No#</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -199,8 +197,6 @@
                                 <TextRun>
                                   <Value>Trans Date</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -235,8 +231,6 @@
                                 <TextRun>
                                   <Value>Merchant Acc No</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -271,8 +265,6 @@
                                 <TextRun>
                                   <Value>Outlet Name</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -307,8 +299,6 @@
                                 <TextRun>
                                   <Value>Total Transaction</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -343,8 +333,6 @@
                                 <TextRun>
                                   <Value>Total Trans Amount</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -379,8 +367,6 @@
                                 <TextRun>
                                   <Value>Settlement Fee</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -415,8 +401,6 @@
                                 <TextRun>
                                   <Value>Total Deduction</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -451,8 +435,6 @@
                                 <TextRun>
                                   <Value>Total Trans  Amt after service charge</Value>
                                   <Style>
-                                    <FontFamily>Sitka Subheading</FontFamily>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1069,9 +1051,9 @@
             </TablixRowHierarchy>
             <DataSetName>OutletDailyTransaction</DataSetName>
             <Top>0.06944in</Top>
-            <Left>0.03695in</Left>
+            <Left>0.12028in</Left>
             <Height>0.90625in</Height>
-            <Width>8.17015in</Width>
+            <Width>11.29513in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1082,7 +1064,7 @@
         <Height>0.97569in</Height>
         <Style />
       </Body>
-      <Width>8.27653in</Width>
+      <Width>11.52653in</Width>
       <Page>
         <PageHeader>
           <Height>1.42583in</Height>
@@ -1126,7 +1108,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Outlet Daily Transaction Report</Value>
+                      <Value>Daily Summary Report</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>
@@ -1287,7 +1269,7 @@
               <Top>0.125in</Top>
               <Left>1.28695in</Left>
               <Height>1.23139in</Height>
-              <Width>6.70139in</Width>
+              <Width>10.12847in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1330,8 +1312,8 @@
             </Border>
           </Style>
         </PageFooter>
-        <PageHeight>11.69in</PageHeight>
-        <PageWidth>8.27in</PageWidth>
+        <PageHeight>8.27in</PageHeight>
+        <PageWidth>11.69in</PageWidth>
         <LeftMargin>0.01in</LeftMargin>
         <RightMargin>0.01in</RightMargin>
         <TopMargin>0.01in</TopMargin>

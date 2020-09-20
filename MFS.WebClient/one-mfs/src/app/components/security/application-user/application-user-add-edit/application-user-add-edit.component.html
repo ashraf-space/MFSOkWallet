@@ -29,9 +29,9 @@
 					<br />
 					<span class="ui-float-label ">
 						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.employeeId" pInputText id="float-input" [disabled]="!hasEditPermission">
-						<label for="float-input input-lg" class="col-form-label">Employee Id <span class="mandatory">*</span></label>
+						<label for="float-input input-lg" class="col-form-label">Employee Id </label>
 					</span>
-					<p-message *ngIf="(applicationUserModel.employeeId==null || applicationUserModel.employeeId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+					<!--<p-message *ngIf="(applicationUserModel.employeeId==null || applicationUserModel.employeeId=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
 				</div>
 				<div class="p-col-3">
 					<br />

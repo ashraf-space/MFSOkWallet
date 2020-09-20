@@ -278,6 +278,17 @@
               <xs:element name="Particular" msprop:Generator_ColumnVarNameInTable="columnParticular" msprop:Generator_ColumnPropNameInRow="Particular" msprop:Generator_ColumnPropNameInTable="ParticularColumn" msprop:Generator_UserColumnName="Particular" type="xs:string" minOccurs="0" />
               <xs:element name="BillNo" msprop:Generator_ColumnVarNameInTable="columnBillNo" msprop:Generator_ColumnPropNameInRow="BillNo" msprop:Generator_ColumnPropNameInTable="BillNoColumn" msprop:Generator_UserColumnName="BillNo" type="xs:string" minOccurs="0" />
               <xs:element name="Gateway" msprop:Generator_ColumnVarNameInTable="columnGateway" msprop:Generator_ColumnPropNameInRow="Gateway" msprop:Generator_ColumnPropNameInTable="GatewayColumn" msprop:Generator_UserColumnName="Gateway" type="xs:string" minOccurs="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CreditCardBeftnReport" msprop:Generator_TableClassName="CreditCardBeftnReportDataTable" msprop:Generator_TableVarName="tableCreditCardBeftnReport" msprop:Generator_TablePropName="CreditCardBeftnReport" msprop:Generator_RowDeletingName="CreditCardBeftnReportRowDeleting" msprop:Generator_RowChangingName="CreditCardBeftnReportRowChanging" msprop:Generator_RowEvHandlerName="CreditCardBeftnReportRowChangeEventHandler" msprop:Generator_RowDeletedName="CreditCardBeftnReportRowDeleted" msprop:Generator_UserTableName="CreditCardBeftnReport" msprop:Generator_RowChangedName="CreditCardBeftnReportRowChanged" msprop:Generator_RowEvArgName="CreditCardBeftnReportRowChangeEvent" msprop:Generator_RowClassName="CreditCardBeftnReportRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" minOccurs="0" />
+              <xs:element name="CardNo" msprop:Generator_ColumnVarNameInTable="columnCardNo" msprop:Generator_ColumnPropNameInRow="CardNo" msprop:Generator_ColumnPropNameInTable="CardNoColumn" msprop:Generator_UserColumnName="CardNo" type="xs:string" minOccurs="0" />
+              <xs:element name="RoutingNo" msprop:Generator_ColumnVarNameInTable="columnRoutingNo" msprop:Generator_ColumnPropNameInRow="RoutingNo" msprop:Generator_ColumnPropNameInTable="RoutingNoColumn" msprop:Generator_UserColumnName="RoutingNo" type="xs:string" minOccurs="0" />
+              <xs:element name="Amount" msprop:Generator_ColumnVarNameInTable="columnAmount" msprop:Generator_ColumnPropNameInRow="Amount" msprop:Generator_ColumnPropNameInTable="AmountColumn" msprop:Generator_UserColumnName="Amount" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

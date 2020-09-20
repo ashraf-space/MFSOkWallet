@@ -16,7 +16,11 @@ namespace MFS.ReportingService.Models
 		public string Particular { get; set; }
 		public string BillNo { get; set; }
 		public string Gateway { get; set; }
-		//public string Name { get; set; }
-	
+		public string Name { get; set; }
+		public string CardNo { get; set; }
+		public string RoutingNo { get; set; }
+		public decimal Amount { get; set; }
+
+
 	}
 }

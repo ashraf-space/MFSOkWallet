@@ -26,6 +26,9 @@ export class RobiTopupStockEntryComponent implements OnInit {
     vMTransactionDetails: any = {};
     vMTransactionDetailList: any; 
 
+    isLoading: boolean = false;
+    isSaveDisable = true;
+
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private authService: AuthenticationService, private messageService: MessageService) {
@@ -60,14 +63,23 @@ export class RobiTopupStockEntryComponent implements OnInit {
 
     initialiseGridConfig(): any {
         this.robiTopupStockEntryModel.hotkey = "RBTOP TO GL";
+        this.isLoading = true;
         this.fundTransferService.GetTransDtlForRobiByPayAmount(this.robiTopupStockEntryModel)
             .pipe(first())
             .subscribe(
                 data => {
+                    this.isLoading = false;
+
                     if (data != null) {
                         this.vMTransactionDetailList = data;
                         this.robiTopupStockEntryModel.rowThreeFour = data[2].debitAmount;
                         this.robiTopupStockEntryModel.rowFiveSix = data[4].debitAmount;
+                        if (data[0].glCode != '') {
+                            this.isSaveDisable = false;
+                        }
+                        else {
+                            this.isSaveDisable = true;
+                        }
                     }                 
 
                 },
@@ -77,8 +89,8 @@ export class RobiTopupStockEntryComponent implements OnInit {
             );
 
         this.cols = [
-            { field: 'glCode', header: 'GL Code', width: '30%', template: 'none' },
-            { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone(), template: 'none' },
+            { field: 'glCode', header: 'GL Code', width: '15%', template: 'none' },
+            { field: 'glName', header: 'GL Name', width: '45%', filter: this.gridSettingService.getFilterableNone(), template: 'none' },
             { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() },
             { field: 'creditAmount', header: 'Credit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() }
         ];
@@ -102,7 +114,7 @@ export class RobiTopupStockEntryComponent implements OnInit {
 
     saveRobiTopupStockEntry(event): any {
 
-        if (!this.robiTopupStockEntryModel.fromSysCoaCode || this.robiTopupStockEntryModel.fromSysCoaCode == '' ||
+        if (!this.robiTopupStockEntryModel.glCode || this.robiTopupStockEntryModel.glCode == '' ||
             !this.robiTopupStockEntryModel.transactionAmt || this.robiTopupStockEntryModel.transactionAmt == '0' ||
             !this.robiTopupStockEntryModel.discountRatio || this.robiTopupStockEntryModel.discountRatio == '0') {
             this.msgs = [];
@@ -116,16 +128,18 @@ export class RobiTopupStockEntryComponent implements OnInit {
 
             this.robiTopupStockEntryModel.fromCatId = "RBTOP";
             this.robiTopupStockEntryModel.toCatId = "GL";
-            this.robiTopupStockEntryModel.hotkey = "RBTOP TO GL";//for data base save           
+            this.robiTopupStockEntryModel.hotkey = "RBTOP TO GL";//for data base save     
+            this.isLoading = true;
             this.fundTransferService.saveRobiTopupStockEntry(this.robiTopupStockEntryModel).pipe(first())
                 .subscribe(
                     data => {
                         this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Robi Topup Stock Entry added' });
-                        console.log(data);
+                       
                         setTimeout(() => {
+                            this.isLoading = false;
                             location.reload();
-                        }, 500);
-                        //window.history.back();
+                        }, 5000);
+                       
                     },
                     error => {
                         console.log(error);

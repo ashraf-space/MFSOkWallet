@@ -27,56 +27,60 @@
                     <div class="p-grid">
                         <div class="p-col-12">
                             <!--<div [ngSwitch]="model.Id" *ngIf="model.Id">-->
-                            <div [ngSwitch]="model.CallingApi" *ngIf="model.CallingApi">
-                                <!--<div *ngSwitchCase="1">
-                                    <transaction-history-report #form></transaction-history-report>
-                                </div>
-                                <div *ngSwitchCase="13">
-                                    <transaction-history-report #form></transaction-history-report>
-                                </div>-->
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/GenerateAccountStatement'">
-                                    <account-statement-report #form></account-statement-report>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/CurrentAffairsStatement'">
-                                    <current-affairs-statement #form></current-affairs-statement>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/ChartOfAccounts'">
-                                    <chart-of-accounts #form></chart-of-accounts>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/EODAffairsStatement'">
-                                    <eod-affairs-statement #form></eod-affairs-statement>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReport'">
-                                    <registration-report #form></registration-report>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReportSummary'">
-                                    <app-registration-summary #form></app-registration-summary>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/AgentInformation'">
-                                    <app-agent-information #form></app-agent-information>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/GLStatement'">
-                                    <app-gl-statement #form></app-gl-statement>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/KycBalance'">
-                                    <app-kyc-balance #form></app-kyc-balance>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/TransactionSummaryOrDtl'">
-                                    <app-transaction #form></app-transaction>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/FundTransfer'">
-                                    <app-fund-transfer #form></app-fund-transfer>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/DpdcDescoReport'">
-                                    <app-dpdc-desco #form></app-dpdc-desco>
-                                </div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BranchCashinCashout'">
-                                    <app-branch-cashin-cashout #form></app-branch-cashin-cashout>
-                                </div>
+							<div [ngSwitch]="model.CallingApi" *ngIf="model.CallingApi">
+								<!--<div *ngSwitchCase="1">
+		<transaction-history-report #form></transaction-history-report>
+	</div>
+	<div *ngSwitchCase="13">
+		<transaction-history-report #form></transaction-history-report>
+	</div>-->
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/GenerateAccountStatement'">
+									<account-statement-report #form></account-statement-report>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/CurrentAffairsStatement'">
+									<current-affairs-statement #form></current-affairs-statement>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/ChartOfAccounts'">
+									<chart-of-accounts #form></chart-of-accounts>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/EODAffairsStatement'">
+									<eod-affairs-statement #form></eod-affairs-statement>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReport'">
+									<registration-report #form></registration-report>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReportSummary'">
+									<app-registration-summary #form></app-registration-summary>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/AgentInformation'">
+									<app-agent-information #form></app-agent-information>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/GLStatement'">
+									<app-gl-statement #form></app-gl-statement>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/KycBalance'">
+									<app-kyc-balance #form></app-kyc-balance>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/TransactionSummaryOrDtl'">
+									<app-transaction #form></app-transaction>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/FundTransfer'">
+									<app-fund-transfer #form></app-fund-transfer>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/DpdcDescoReport'">
+									<app-dpdc-desco #form></app-dpdc-desco>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BranchCashinCashout'">
+									<app-branch-cashin-cashout #form></app-branch-cashin-cashout>
+								</div>
 								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymentReport'">
 									<app-credit-card-report #form></app-credit-card-report>
 								</div>
-                            </div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymenBeftnInfotReport'">
+									<app-credit-beftn #form></app-credit-beftn>
+								</div>
+								
+							</div>
                         </div>
                     </div>
                 </div>

@@ -38,8 +38,8 @@ namespace MFS.SecurityService.Repository
                     dyParam.Add("FROM_DATE", OracleDbType.Date, ParameterDirection.Input, date.FromDate);
                     dyParam.Add("UPTO_DATE", OracleDbType.Date, ParameterDirection.Input, date.ToDate);
                     dyParam.Add("USERNAME", OracleDbType.Varchar2, ParameterDirection.Input, user.Trim());
-                    dyParam.Add("ACTION", OracleDbType.Varchar2, ParameterDirection.Input, action.Trim());
-                    dyParam.Add("MENU", OracleDbType.Varchar2, ParameterDirection.Input, menu.Trim());
+                    dyParam.Add("ACTION", OracleDbType.Varchar2, ParameterDirection.Input, action);
+                    dyParam.Add("MENU", OracleDbType.Varchar2, ParameterDirection.Input, menu);
                     dyParam.Add("TRAILS", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_AUDITTRAILS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();

@@ -17,8 +17,8 @@ using OneMFS.TransactionApiServer.Filters;
 namespace OneMFS.TransactionApiServer.Controllers
 {
     [Authorize]
-	//[ApiGuardAuth]
-	[Produces("application/json")]
+    //[ApiGuardAuth]
+    [Produces("application/json")]
     [Route("api/FundTransfer")]
     public class FundTransferController : Controller
     {
@@ -48,7 +48,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [HttpGet]
@@ -63,7 +63,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [HttpGet]
@@ -78,7 +78,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-           
+
         }
 
         [HttpGet]
@@ -93,7 +93,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [HttpGet]
@@ -108,7 +108,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [HttpPost]
@@ -231,7 +231,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-           
+
         }
 
         [HttpPost]
@@ -258,7 +258,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 {
                     for (int i = 0; i < 6; i++)
                     {
-                        String result = null;
+                        //String result = null;
                         double robiBalance = 0;
                         robiBalance = robiTopupStockEntryModel.TransactionAmt / robiTopupStockEntryModel.DiscountRatio;
                         double rowThreeFour = 0, rowFiveSix = 0;
@@ -340,7 +340,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
         [HttpGet]
         [Route("GetTransactionDetailsByTransactionNo")]
@@ -437,7 +437,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [ApiGuardAuth]
@@ -487,7 +487,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         _fundTransferService.Add(fundTransferModel);
 
                         //Insert into audit trial audit and detail
-                        _auditTrailService.InsertModelToAuditTrail(fundTransferModel, fundTransferModel.EntryUser, 9, 3, "Fund Entry (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo,"Saved Successfully!");
+                        _auditTrailService.InsertModelToAuditTrail(fundTransferModel, fundTransferModel.EntryUser, 9, 3, "Fund Entry (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo, "Saved Successfully!");
 
                     }
                     catch (Exception)
@@ -528,9 +528,9 @@ namespace OneMFS.TransactionApiServer.Controllers
                         if (successOrErrorMsg == "1")
                         {
                             //Insert into audit trial audit and detail                      
-                            _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In", branchCashIn.Mphone, "Save Successfully!");
+                            _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In (Deposit)", branchCashIn.Mphone, "Save Successfully!");
                         }
-                       
+
 
                         return successOrErrorMsg;
 
@@ -541,7 +541,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         return "Something Error";
                     }
 
-                   
+
 
                 }
                 else
@@ -575,7 +575,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-            
+
         }
 
         [ApiGuardAuth]
@@ -608,7 +608,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         string response = successOrErrorMsg.ToString() == "1" ? "Approved Successfully!" : successOrErrorMsg.ToString();
                         FundTransfer prevModel = _fundTransferService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "TransNo", new FundTransfer());
                         prevModel.Status = "M";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo,response);
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo, response);
 
 
                         return successOrErrorMsg;
@@ -623,7 +623,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         //Insert into audit trial audit and detail
                         FundTransfer prevModel = _fundTransferService.SingleOrDefaultByCustomField(fundTransferModel.TransNo, "TransNo", new FundTransfer());
                         prevModel.Status = "M";//insert for only audit trail
-                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")",fundTransferModel.TransNo, "Rejected Successfully!");
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(fundTransferModel, prevModel, fundTransferModel.CheckUser, 9, 4, "Fund Transfer (" + fundTransferModel.Hotkey + ")", fundTransferModel.TransNo, "Rejected Successfully!");
 
                         return true;
                     }
@@ -699,7 +699,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                     else
                         response = "Reject successfully";
                 }
-                else if(successOrErrorMsg == "Failed")
+                else if (successOrErrorMsg == "Failed")
                 {
                     response = "Failed";
                 }
@@ -707,7 +707,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 {
                     response = "Not rejected";
                 }
-                _auditTrailService.InsertModelToAuditTrail(tblPortalCashout, tblPortalCashout.CheckBy, 9, 3, "Brach Cash Out",tblPortalCashout.Mphone,response);
+                _auditTrailService.InsertModelToAuditTrail(tblPortalCashout, tblPortalCashout.CheckBy, 9, 3, "Brach Cash Out (Withdrawal)", tblPortalCashout.Mphone, response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)
@@ -723,16 +723,26 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                _fundTransferService.saveRobiTopupStockEntry(robiTopupStockEntryModel);
+                string successOrErrorMsg = _fundTransferService.saveRobiTopupStockEntry(robiTopupStockEntryModel).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (successOrErrorMsg == "1")
+                {
+                    response = "Added Successfully";
+                }
+                else 
+                {
+                    response = "Failed";
+                }
+               
+                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Robi Topup Stock Entry", robiTopupStockEntryModel.GlName, response);
+                return successOrErrorMsg;
             }
             catch (Exception ex)
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
-
-            return true;
-
-
 
 
         }

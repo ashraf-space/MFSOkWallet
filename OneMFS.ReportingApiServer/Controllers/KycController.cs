@@ -29,6 +29,13 @@ namespace OneMFS.ReportingApiServer.Controllers
 		{
 			return service.GetAccountCategory();
 		}
+		[HttpGet]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Kyc/GetMerchantKycInfoByMphone")]
+		public object GetMerchantKycInfoByMphone(string mphone)
+		{
+			return service.GetMerchantKycInfoByMphone(mphone);
+		}
 		[HttpPost]
 		[AcceptVerbs("GET", "POST")]
 		[Route("api/Kyc/RegistrationReport")]
@@ -191,6 +198,9 @@ namespace OneMFS.ReportingApiServer.Controllers
 			paraList.Add(new ReportParameter("category", reportShareService.GetCategoryNameById(accCategory)));
 			return paraList;
 		}
+
+
+
 	}
 
 }

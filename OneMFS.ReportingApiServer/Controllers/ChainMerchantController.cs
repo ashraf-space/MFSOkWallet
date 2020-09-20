@@ -1,4 +1,5 @@
-﻿using MFS.ReportingService.Models;
+﻿using MFS.DistributionService.Models;
+using MFS.ReportingService.Models;
 using MFS.ReportingService.Service;
 using MFS.ReportingService.Utility;
 using Microsoft.Reporting.WebForms;
@@ -69,10 +70,12 @@ namespace OneMFS.ReportingApiServer.Controllers
 			if (reportType == "ODTR")
 			{
 				List<OutletDetailsTransaction> OutletDetailsTransactionList = new List<OutletDetailsTransaction>();
+				var parentMerchantMphone = kycService.GetChainMerchantMphoneByCode(chainMerchantCode).ToString();
+				var parentReginfo = (Reginfo)kycService.GetClientInfoByMphone(parentMerchantMphone);
 				OutletDetailsTransactionList = _chainMerchantService.GetOutletDetailsTransactionList(chainMerchantCode, outletAccNo, outletCode, reportType, reportViewType, fromDate, toDate, dateType).ToList();
 
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOutletDetailsTransaction.rdlc");
-				reportViewer.LocalReport.SetParameters(RptParamForOutletDetailsTransaction(fromDate, toDate, chainMerchantCode));
+				reportViewer.LocalReport.SetParameters(RptParamForOutletDetailsTransaction(fromDate, toDate, chainMerchantCode, parentMerchantMphone, parentReginfo.CompanyName));
 				ReportDataSource A = new ReportDataSource("OutletDetailsTransaction", OutletDetailsTransactionList);
 				reportViewer.LocalReport.DataSources.Add(A);
 			}
@@ -81,9 +84,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 			{
 				List<OutletSummaryTransaction> outletSummaryTransactionList = new List<OutletSummaryTransaction>();
 				outletSummaryTransactionList = _chainMerchantService.GetOutletSummaryTransactionList(chainMerchantCode, outletAccNo, outletCode, reportType, reportViewType, fromDate, toDate, dateType).ToList();
-
+				var parentMerchantMphone = kycService.GetChainMerchantMphoneByCode(chainMerchantCode).ToString();
+				var parentReginfo = (Reginfo)kycService.GetClientInfoByMphone(parentMerchantMphone);
+				string reportName = "Outlet Summary Transaction report";
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOutletSummaryTransaction.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType));
+				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType, reportName, parentMerchantMphone,parentReginfo.CompanyName));
 				ReportDataSource A = new ReportDataSource("OutletSummaryTransaction", outletSummaryTransactionList);
 				reportViewer.LocalReport.DataSources.Add(A);
 			}
@@ -92,9 +97,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 			{
 				List<OutletSummaryTransaction> OutletToParentSummaryTransactionList = new List<OutletSummaryTransaction>();
 				OutletToParentSummaryTransactionList = _chainMerchantService.GetOutletToParentTransSummaryList(chainMerchantCode, chainMerchantNo, outletAccNo, outletCode, reportType, reportViewType, fromDate, toDate, dateType).ToList();
-
+				string reportName = "Outlet To Parent Transaction report";
+				var parentMerchantMphone = kycService.GetChainMerchantMphoneByCode(chainMerchantCode).ToString();
+				var parentReginfo = (Reginfo)kycService.GetClientInfoByMphone(parentMerchantMphone);
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOutletSummaryTransaction.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType));
+				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType,reportName, parentMerchantMphone, parentReginfo.CompanyName));
 				ReportDataSource A = new ReportDataSource("OutletSummaryTransaction", OutletToParentSummaryTransactionList);
 				reportViewer.LocalReport.DataSources.Add(A);
 			}
@@ -102,9 +109,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 			{
 				List<OutletDailySummaryTransaction> outletDailySummaryTransactionList = new List<OutletDailySummaryTransaction>();
 				outletDailySummaryTransactionList = _chainMerchantService.GetOutletDailySummaryTransList(chainMerchantCode, outletAccNo, outletCode, reportType, fromDate, toDate, dateType).ToList();
-
+				string reportName = null;
+				var parentMerchantMphone = kycService.GetChainMerchantMphoneByCode(chainMerchantCode).ToString();
+				var parentReginfo = (Reginfo)kycService.GetClientInfoByMphone(parentMerchantMphone);
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOutletDailySummaryTrans.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType));
+				reportViewer.LocalReport.SetParameters(RptParamForOutletSummaryTransaction(fromDate, toDate, chainMerchantCode, reportViewType,reportName, parentMerchantMphone, parentReginfo.CompanyName));
 				ReportDataSource A = new ReportDataSource("OutletDailyTransaction", outletDailySummaryTransactionList);
 				reportViewer.LocalReport.DataSources.Add(A);
 
@@ -117,27 +126,31 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return reportUtility.GenerateReport(reportViewer, model.FileType);
 		}
 
-		private IEnumerable<ReportParameter> RptParamForOutletDetailsTransaction(string fromDate, string toDate, string chainMerchantCode)
+		private IEnumerable<ReportParameter> RptParamForOutletDetailsTransaction(string fromDate, string toDate, string chainMerchantCode, string parentMerchantMphone, string companyName)
 		{
 			List<ReportParameter> paramList = new List<ReportParameter>();
-			paramList.Add(new ReportParameter("MerchantNumber", "MerchantNumberFromUI"));
-			paramList.Add(new ReportParameter("MerchantName", "MerchantNameFromUI"));
+			paramList.Add(new ReportParameter("MerchantNumber", parentMerchantMphone));
+			paramList.Add(new ReportParameter("MerchantName", companyName));
 			paramList.Add(new ReportParameter("MerchantCode", chainMerchantCode));
 			paramList.Add(new ReportParameter("FromDate", fromDate));
 			paramList.Add(new ReportParameter("ToDate", toDate));
 			paramList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
 			return paramList;
 		}
-		private IEnumerable<ReportParameter> RptParamForOutletSummaryTransaction(string fromDate, string toDate, string chainMerchantCode, string reportViewType)
+		private IEnumerable<ReportParameter> RptParamForOutletSummaryTransaction(string fromDate, string toDate, string chainMerchantCode, string reportViewType, string reportName, string parentMerchantMphone, string companyName)
 		{
 			List<ReportParameter> paramList = new List<ReportParameter>();
 			paramList.Add(new ReportParameter("FromDate", fromDate));
 			paramList.Add(new ReportParameter("ToDate", toDate));
 			paramList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
-			paramList.Add(new ReportParameter("MerchantNumber", "MerchantNumberFromUI"));
-			paramList.Add(new ReportParameter("MerchantName", "MerchantNameFromUI"));
+			paramList.Add(new ReportParameter("MerchantNumber", parentMerchantMphone));
+			paramList.Add(new ReportParameter("MerchantName", companyName));
 			paramList.Add(new ReportParameter("MerchantCode", chainMerchantCode));
 			paramList.Add(new ReportParameter("ReportViewType", reportViewType));
+			if (reportName != null)
+			{
+				paramList.Add(new ReportParameter("ReportName", reportName));
+			}				
 			return paramList;
 		}
 	}

@@ -337,6 +337,7 @@
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByOutlet.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByTd.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTBranchCashinCashout.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfoBEFTN.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />

@@ -905,7 +905,7 @@
                 <TablixMember />
                 <TablixMember>
                   <Visibility>
-                    <Hidden>= iif(Parameters!ReportViewType.Value = "Transaction Date", true,false)</Hidden>
+                    <Hidden>= iif(Parameters!ReportViewType.Value = "Transaction Date", false,true)</Hidden>
                   </Visibility>
                 </TablixMember>
                 <TablixMember />
@@ -988,7 +988,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Outlet Summary Transaction Report</Value>
+                      <Value>=Parameters!ReportName.Value</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>
@@ -1227,11 +1227,17 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ReportName">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>6</NumberOfRows>
+      <NumberOfRows>7</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1267,6 +1273,11 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>5</RowIndex>
           <ParameterName>ReportViewType</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>6</RowIndex>
+          <ParameterName>ReportName</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

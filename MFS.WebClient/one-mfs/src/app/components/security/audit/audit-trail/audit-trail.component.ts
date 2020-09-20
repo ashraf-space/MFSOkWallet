@@ -54,9 +54,12 @@ export class AuditTrailComponent implements OnInit {
     }
     onSearch() {
         this.showGrid = true;
-        if (this.auditObj.user && this.auditObj.action && this.auditObj.menu && this.auditObj.fromDate && this.auditObj.toDate) {
+        if (this.auditObj.user && this.auditObj.fromDate && this.auditObj.toDate) {
             this.gridConfig.dataSourcePath = this.mfsSettingService.securityApiServer + '/AuditTrail/GetAuditTrail?fromDate=' + this.mfsUtilityService.renderDate(this.auditObj.fromDate, true) +
                 '&ToDate=' + this.mfsUtilityService.renderDate(this.auditObj.toDate, true) + '&user=' + this.auditObj.user + '&userAction=' + this.auditObj.action + '&menu=' + this.auditObj.menu;
+        }
+        else if (this.auditObj.user &&  (!this.auditObj.fromDate || !this.auditObj.toDate)) {
+            this.gridConfig.dataSourcePath = this.mfsSettingService.securityApiServer + '/AuditTrail/GetAuditTrail?user=' + this.auditObj.user + '&userAction=' + this.auditObj.action + '&menu=' + this.auditObj.menu;
         }
         else {
         }

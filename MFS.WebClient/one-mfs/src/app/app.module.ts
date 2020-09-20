@@ -195,6 +195,8 @@ import { FundTransferComponent } from './components/reports/report-collection/tr
 import { AgentReplaceComponent } from './components/distribution/agent-replace/agent-replace.component';
 import { BranchCashinCashoutComponent } from './components/reports/report-collection/transaction-type/branch-cashin-cashout/branch-cashin-cashout.component';
 import { CreditCardReportComponent } from './components/reports/report-collection/credit-card-report/credit-card-report.component';
+import { BlinkTopupStockEntryComponent } from './components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component';
+import { CreditBeftnComponent } from './components/reports/report-collection/credit-beftn/credit-beftn.component';
 
 @NgModule({
     imports: [
@@ -387,7 +389,9 @@ import { CreditCardReportComponent } from './components/reports/report-collectio
         FundTransferComponent,
         AgentReplaceComponent,
         BranchCashinCashoutComponent,
-        CreditCardReportComponent
+        CreditCardReportComponent,
+        BlinkTopupStockEntryComponent,
+        CreditBeftnComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -23,7 +23,7 @@ namespace MFS.TransactionService.Service
         VMACandGLDetails GetACandGLDetailsByMphone(string transFrom);
         object saveBranchCashIn(BranchCashIn branchCashIn);
         object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt);
-        void saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
+        object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
         object getAmountByTransNo(string transNo,string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
@@ -146,11 +146,11 @@ namespace MFS.TransactionService.Service
             }
         }
 
-        public void saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
+        public object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
         {
             try
             {
-                _FundTransferRepository.saveRobiTopupStockEntry(robiTopupStockEntry);
+                return _FundTransferRepository.saveRobiTopupStockEntry(robiTopupStockEntry);
             }
             catch (Exception)
             {

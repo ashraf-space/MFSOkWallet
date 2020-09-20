@@ -7,7 +7,7 @@
                         <h6><b><i class="fas fa-tachometer-alt"></i> OK Wallet Dashboard</b></h6>
                     </div>
 
-                    <div class="p-col-8" *ngIf="isBranchTeller">
+                    <div class="p-col-8" *ngIf="isBranchTeller && userPStatus!=='N'">
                         <div class="btn-group edit-group" role="group" aria-label="Basic example">
                             <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Branch Cash In (Deposit)<i class="fas fa-money-bill-alt"></i></button>
                         </div>
@@ -22,7 +22,7 @@
             </p-card>
         </div>
 
-        <div class="p-grid" *ngIf="!isBranchTeller">
+        <div class="p-grid" *ngIf="!isBranchTeller && userPStatus!=='N'">
             <div class="p-col-4">
                 <p-card>
                     <div class="p-grid">

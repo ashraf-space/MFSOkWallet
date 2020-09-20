@@ -51,7 +51,7 @@ export class BranchCashInComponent implements OnInit {
             this.error = true;
         }
         else {
-
+            this.isLoading = true;
             this.branchCashInService.saveBranchCashIn(this.branchCashInModel, this.isEditMode).pipe(first())
                 .subscribe(
                     data => {
@@ -64,7 +64,11 @@ export class BranchCashInComponent implements OnInit {
                                 this.messageService.add({ severity: 'error', summary: 'Not Approved', detail: data });
                             }
                         }
-                        window.history.back();
+                        setTimeout(() => {
+                            this.isLoading = false;
+                            location.reload();
+                        }, 5000);
+                        //window.history.back();
                     },
                     error => {
                         console.log(error);

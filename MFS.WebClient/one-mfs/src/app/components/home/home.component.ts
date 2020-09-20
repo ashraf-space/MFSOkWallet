@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     clientCountList: any;
     
     isBranchTeller: boolean = false;
+    userPStatus: any;
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -39,7 +40,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        
+        this.userPStatus = this.currentUserModel.user.pstatus;
         this.isBranchTeller = this.currentUserModel.user.role_Name == 'Branch Teller' ? true : false;
+       
+       
 
         this.getDataForDashboard();
         this.pieData = {

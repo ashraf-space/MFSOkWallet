@@ -489,7 +489,7 @@
             <DataSetName>OutletSummaryTransaction</DataSetName>
             <Top>0.10417in</Top>
             <Height>0.5in</Height>
-            <Width>7.98834in</Width>
+            <Width>7.98835in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -544,7 +544,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Chain Merchant Transaction Report</Value>
+                      <Value>Chain Merchant Outlet Transaction Summary Report</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>

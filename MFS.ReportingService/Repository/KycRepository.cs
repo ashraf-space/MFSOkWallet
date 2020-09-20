@@ -21,7 +21,9 @@ namespace MFS.ReportingService.Repository
         List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory);
         List<KycBalance> GetKycBalance(string regStatus, string fromDate, string toDate, string accNo, string options, string accCategory);
         object GetClientInfoByMphone(string mphone);
-    }
+		object GetMerchantKycInfoByMphone(string mPhone);
+		object GetChainMerchantMphoneByCode(string chainMerchantCode);
+	}
     public class KycRepository : BaseRepository<RegistrationReport>, IKycRepository
     {
         private readonly string dbUser;
@@ -62,9 +64,32 @@ namespace MFS.ReportingService.Repository
             }
         }
 
+		public object GetChainMerchantMphoneByCode(string chainMerchantCode)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.mphone as ""Mphone"" from one.merchant_config t where t.mcode = '"+chainMerchantCode+"'";
 
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
 
-        public List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory)
+					this.CloseConnection(connection);
+					connection.Dispose();
+					var Heading = ((IDictionary<string, object>)result).Keys.ToArray();
+					var details = ((IDictionary<string, object>)result);
+					var values = details[Heading[0]];
+					return values.ToString();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory)
         {
             using (var connection = this.GetConnection())
             {
@@ -145,5 +170,26 @@ namespace MFS.ReportingService.Repository
                 throw ex;
             }
         }
-    }
+
+		public object GetMerchantKycInfoByMphone(string mPhone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"Select t.company_name as ""CompanyName""  from " + dbUser + "reginfo t where t.mphone= '" + mPhone + "' ";
+
+					var result = connection.Query<Reginfo>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+	}
 }

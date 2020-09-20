@@ -102,7 +102,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
 
 
     onUserSave() {
-        if (!this.applicationUserModel.username || this.applicationUserModel.username == '' || !this.applicationUserModel.employeeId || this.applicationUserModel.employeeId == '' ||
+        if (!this.applicationUserModel.username || this.applicationUserModel.username == '' || 
             !this.applicationUserModel.mobileNo || this.applicationUserModel.mobileNo == '' || !this.applicationUserModel.name || this.applicationUserModel.name == '' ||
             !this.applicationUserModel.branchCode || this.applicationUserModel.branchCode == '' || !this.applicationUserModel.roleId || this.applicationUserModel.roleId == '' || this.isExistingUsername) {
             this.error = true;

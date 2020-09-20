@@ -89,8 +89,8 @@ namespace MFS.TransactionService.Repository
                 //string URL = "http://10.20.32.118/CBS/";
                 //string urlParameters = "?proc=CBSINFO&ACCNO=" + accNo.ToString();
                 //string URL = "http://10.20.32.158/CbsDemoAPi/api/DemoCbs?accno=" + accNo.ToString();
-                //string URL = "http://10.156.4.253/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
-				string URL = "http://10.156.4.16/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
+                string URL = "http://10.156.4.253/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
+				//string URL = "http://10.156.4.16/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
 				//string urlParameters = "proc=CBSINFO?&accno=" + accNo.ToString();
 				object dataObjects = null;
                 HttpClient client = new HttpClient();

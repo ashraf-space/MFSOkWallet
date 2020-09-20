@@ -346,7 +346,7 @@
             <DataSetName>MerchantTransferSummary</DataSetName>
             <Top>0.13542in</Top>
             <Height>0.5in</Height>
-            <Width>7.99875in</Width>
+            <Width>7.99876in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -490,7 +490,7 @@
             </TablixRowHierarchy>
             <Top>0.78125in</Top>
             <Height>0.25in</Height>
-            <Width>7.99875in</Width>
+            <Width>7.99876in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -502,7 +502,7 @@
         <Height>1.40625in</Height>
         <Style />
       </Body>
-      <Width>7.99875in</Width>
+      <Width>7.99876in</Width>
       <Page>
         <PageHeader>
           <Height>1.23833in</Height>
@@ -546,7 +546,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Individual Merchant Transaction Report</Value>
+                      <Value>Outlet Summary Transaction Report</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>

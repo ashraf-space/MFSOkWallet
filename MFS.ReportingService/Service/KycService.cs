@@ -17,6 +17,8 @@ namespace MFS.ReportingService.Service
 		List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory);
 		List<KycBalance> GetKycBalance(string regStatus, string fromDate, string toDate, string accNo, string options, string accCategory);
 		object GetClientInfoByMphone(string mphone);
+		object GetMerchantKycInfoByMphone(string mPhone);
+		object GetChainMerchantMphoneByCode(string chainMerchantCode);
 	}
 	public class KycService : BaseService<RegistrationReport>, IKycService
 	{
@@ -54,6 +56,16 @@ namespace MFS.ReportingService.Service
 		public object GetClientInfoByMphone(string mphone)
 		{
 			return kycRepository.GetClientInfoByMphone(mphone);
+		}
+
+		public object GetMerchantKycInfoByMphone(string mPhone)
+		{
+			return kycRepository.GetMerchantKycInfoByMphone(mPhone);
+		}
+
+		public object GetChainMerchantMphoneByCode(string chainMerchantCode)
+		{
+			return kycRepository.GetChainMerchantMphoneByCode(chainMerchantCode);
 		}
 	}
 }

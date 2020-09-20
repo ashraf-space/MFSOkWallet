@@ -555,7 +555,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Individual Merchant Transaction Report</Value>
+                      <Value>Child Merchant Transaction Report</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>

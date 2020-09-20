@@ -152,7 +152,7 @@ export class GenericGridComponent implements OnInit {
             .subscribe(data => {
                 this.updateDataSource();
                 this.itemsToEdit = [];
-                this.messageService.add({ severity: 'success', summary: 'Batch Update Successful', detail: data.toString() });
+                this.messageService.add({ severity: 'success', summary: 'List Update Successful', detail: data.toString() });
             });
     }
 

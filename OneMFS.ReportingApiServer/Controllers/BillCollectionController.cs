@@ -121,6 +121,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+			if (transNo == "null")
+			{
+				transNo = null;
+			}
 			List<CreditCardReport> creditCardReports = new List<CreditCardReport>();
 			creditCardReports = billCollectionService.GetCreditPaymentReport(transNo, fromDate, toDate);
 			
@@ -148,6 +152,32 @@ namespace OneMFS.ReportingApiServer.Controllers
 			paraList.Add(new ReportParameter("transNo", transNo));
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
 			return paraList;
+		}
+
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/BillCollection/CreditPaymenBeftnInfotReport")]
+		public byte[] CreditPaymenBeftnInfotReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+			if (transNo == "null")
+			{
+				transNo = null;
+			}
+			List<CreditCardReport> creditCardReports = new List<CreditCardReport>();
+			creditCardReports = billCollectionService.GetCreditBeftnPaymentReport(transNo, fromDate, toDate);
+
+			ReportViewer reportViewer = new ReportViewer();
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTCreditCardInfoBEFTN.rdlc");  //Request.RequestUri("");
+			reportViewer.LocalReport.SetParameters(GetCreditPaymentReportParameter(fromDate, toDate, transNo));
+			ReportDataSource A = new ReportDataSource("CreditCardBeftnReport", creditCardReports);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
 		}
 	}
 }

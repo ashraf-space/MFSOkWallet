@@ -70,7 +70,10 @@ export class ClientProfileComponent implements OnInit {
             this.isLoading = true;
             this.model = {};
             this.entityId = this.route.snapshot.paramMap.get('id');
-            this.isDetailMode = true;
+            if (this.model.catId === 'C') {
+                this.isDetailMode = true;
+            }
+            this.isDetailMode = true;           
             this.checkIsKycSales();
             this.getProfileDetails(this.entityId);
         }
@@ -88,6 +91,9 @@ export class ClientProfileComponent implements OnInit {
     }
     ngOnChanges() {
         if (this.model) {
+            if (this.model.catId === 'C') {
+                this.isDetailMode = true;
+            }
             this.dormantModel.catId = this.model.catId;
             this.dormantModel.mphone = this.model.mphone;
             this.closeStatus = this.model.status == 'C' ? 'Open' : 'Close';
@@ -98,8 +104,8 @@ export class ClientProfileComponent implements OnInit {
     }
 
     checkIsKycSales() {
-        if (this.currentUserModel.user.role_Name.trim() === 'KYC Sales Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'KYC Sales Checker'.trim() ||
-            this.currentUserModel.user.role_Name.trim() === 'Sales Executive'.trim()) {
+        if (this.currentUserModel.user.role_Name.trim() === 'Sales Ops KYC Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'Sales Ops KYC Checker'.trim() ||
+            this.currentUserModel.user.role_Name.trim() === 'SOM and FM'.trim()) {
             this.isKycExecutive = true;
         }
         else {
