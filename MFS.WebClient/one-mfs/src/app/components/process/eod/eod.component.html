@@ -10,13 +10,19 @@
                 </div>
                 <div class="p-col-3">
                     <br />
-                    <span class="ui-float-label">
+                    <!--<span class="ui-float-label">
                         <input class="form-control" placement="down" pInputText id="float-input" [disabled]="true"
-                               [(ngModel)]="todayDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+                        [(ngModel)]="todayDate" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()">
+
                         <label for="float-input input-lg">Today Date <span class="mandatory">*</span></label>
                     </span>
-                    <p-message *ngIf="(todayDate.year==null || todayDate.year=='') && error " severity="error" text="Cannot be left blank"></p-message>
-
+                    <p-message *ngIf="(todayDate.year==null || todayDate.year=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                    <div class="form-group row">
+                        <label class="col-sm-5 col-form-label">Last Eod Date & time</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" [(ngModel)]="lastEodDateTime" [disabled]="true">
+                        </div>
+                    </div>
                 </div>
                 <div class="p-col-3">
                     <br />

@@ -285,7 +285,7 @@
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label">Division <span class="mandatory">*</span></label>
 							<p-dropdown [options]="divisionList" placeholder="Select Division" [(ngModel)]="selectedDivision"
-										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isEditMode || isRegPermit"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegPermit"
 										(onChange)="fillDistrictDDLByDivision();"></p-dropdown>
 							<p-message *ngIf="(selectedDivision=='0') && error " severity="error"
 									   text="Cannot be left blank"></p-message>
@@ -294,7 +294,7 @@
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label">District <span class="mandatory">*</span></label>
 							<p-dropdown [options]="districtList" placeholder="Select District" [(ngModel)]="selectedDistrict"
-										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isEditMode || isRegPermit"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegPermit"
 										(onChange)="fillThanaDDLByDistrict();"></p-dropdown>
 							<p-message *ngIf="(selectedDistrict=='0') && error " severity="error"
 									   text="Cannot be left blank"></p-message>
@@ -303,7 +303,7 @@
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label">Thana <span class="mandatory">*</span></label>
 							<p-dropdown [options]="thanaList" placeholder="Select Thana" [(ngModel)]="regInfoModel.locationCode"
-										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isEditMode || isRegPermit"></p-dropdown>
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegPermit"></p-dropdown>
 							<p-message *ngIf="(regInfoModel.locationCode==null || regInfoModel.locationCode=='')
 								   && error " severity="error" text="Cannot be left blank"></p-message>
 

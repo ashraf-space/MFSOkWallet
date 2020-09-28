@@ -269,6 +269,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MFSDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSet\Payment.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Payment.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Utility\ReportModel.cs" />
     <Compile Include="Utility\ReportUtility.cs" />
   </ItemGroup>
@@ -331,6 +336,17 @@
     <Content Include="Reports\DataSet\MFSDataSet.xss">
       <DependentUpon>MFSDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSet\Payment.xsc">
+      <DependentUpon>Payment.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSet\Payment.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Payment.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSet\Payment.xss">
+      <DependentUpon>Payment.xsd</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
@@ -342,6 +358,7 @@
     <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChildMerchantTransaction.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTParticularWiseTrans.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransaction.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTMerchantTransactionSummary.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChildOutletDailySummaryTrans.rdlc" />
@@ -359,6 +376,9 @@
     <EmbeddedResource Include="Reports\RDLC\RPTCurrentAffairsStatement.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatement.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTBranchWiseSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTJgtdBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTEdumanBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTWasaBillInfo.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MFS.DistributionService\MFS.DistributionService.csproj">

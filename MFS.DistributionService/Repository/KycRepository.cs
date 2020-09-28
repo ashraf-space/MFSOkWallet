@@ -252,7 +252,7 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("LOC_CODE", OracleDbType.Varchar2, ParameterDirection.Input, locationCode == "null" ? null : locationCode);
 					parameter.Add("CUR_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 					//parameter.Add("OUT_MESSEGE", OracleDbType.Varchar2, ParameterDirection.Output);				
-					var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_DISTLOC_INFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+					var result = SqlMapper.Query<DistrictLocation>(connection, dbUser + "PR_GET_DISTLOC_INFO", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					connection.Dispose();
 					return result;

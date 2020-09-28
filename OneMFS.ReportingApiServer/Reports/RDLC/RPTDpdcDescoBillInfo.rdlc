@@ -593,7 +593,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!TransDate.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>d MMM yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1016,7 +1018,7 @@
             <Top>0.04167in</Top>
             <Left>0.155in</Left>
             <Height>0.5in</Height>
-            <Width>11.32292in</Width>
+            <Width>11.32291in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1356,7 +1358,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <Top>0.61111in</Top>
-            <Left>2.25049in</Left>
+            <Left>2.37548in</Left>
             <Height>0.28583in</Height>
             <Width>7.15278in</Width>
             <ZIndex>1</ZIndex>

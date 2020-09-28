@@ -84,8 +84,8 @@ export class MfsUtilityService {
         ];
         this.parentMenuList = [
             { label: 'Dashboard', value: 'Dashboard' },
-            { label: 'Client', value: 'Client' },
-            { label: 'Distribution', value: 'Distribution' },
+            { label: 'Customer Care', value: 'Customer Care' },
+            { label: 'Channels', value: 'Channels' },
             { label: 'Environment', value: 'Environment' },
             { label: 'Reports', value: 'Reports' },
             { label: 'Merchant', value: 'Merchant' },

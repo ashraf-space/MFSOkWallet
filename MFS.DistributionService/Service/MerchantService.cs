@@ -215,10 +215,10 @@ namespace MFS.DistributionService.Service
 
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 
-				return HttpStatusCode.BadRequest;
+				throw ex;
 			}
 		}
 
@@ -344,10 +344,10 @@ namespace MFS.DistributionService.Service
 
 				}
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 
-				throw;
+				throw ex;
 			}
 		}
 

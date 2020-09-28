@@ -1,0 +1,41 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">From Date<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="From Date"
+                       name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+                       id="float-input">
+            </div>
+        </div>
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">To Date<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="To Date"
+                       name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+                       (click)="h.toggle()" id="float-input">
+            </div>
+        </div>
+
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">Particulars<span class="mandatory">*</span></label>
+            <p-dropdown [options]="particularList" placeholder="Select Particular" [(ngModel)]="model.particular"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="loadTrasaction()"></p-dropdown>
+            <p-message *ngIf="(model.particular==null || model.particular=='') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">Transaction </label>
+            <p-dropdown [options]="transactionDDL" placeholder="Select Transaction" [(ngModel)]="model.transaction"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+        </div>
+
+
+
+
+    </div>
+</div>

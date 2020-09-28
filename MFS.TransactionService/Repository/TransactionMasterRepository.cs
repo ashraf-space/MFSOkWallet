@@ -19,6 +19,7 @@ namespace MFS.TransactionService.Repository
         object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList);
         object ExecuteEOD(DateTime todayDate, string userName);
         TblBdStatus GetBankDepositStatusByTransNo(string tranno);
+        string GetLastEodDateTime();
     }
     public class TransactionMasterRepository : BaseRepository<GlTransMst>, ITransactionMasterRepository
     {
@@ -43,10 +44,10 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
-           
+
 
         }
 
@@ -56,7 +57,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    var result = connection.QueryFirstOrDefault<GlTransMst>("select * from "+ mainDbUser.DbUser + "gltransmstview where transNo = '" + transactionNumber + "'");
+                    var result = connection.QueryFirstOrDefault<GlTransMst>("select * from " + mainDbUser.DbUser + "gltransmstview where transNo = '" + transactionNumber + "'");
                     //this.CloseConnection(connection);
                     connection.Close();
 
@@ -65,7 +66,7 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
             //var result = conn.QueryFirstOrDefault<GlTransMst>("select * from gltransmstview where transNo = '" + transactionNumber + "'");
@@ -85,11 +86,13 @@ namespace MFS.TransactionService.Repository
                     string fStatus = null;// filtering Status
                     if (balanceType == "Main Balance")
                     {
-                        if (roleName == "SOM")
+                        //if (roleName == "SOM")
+                        if (roleName == "Distribution Leader")
                         {
                             fStatus = "N";
                         }
-                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        //else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        else if (roleName == "Financial Maker" || roleName == "SOM and FM")
                         {
                             fStatus = "M";
                         }
@@ -118,10 +121,10 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
-           
+
         }
 
         public object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList)
@@ -136,11 +139,13 @@ namespace MFS.TransactionService.Repository
                     {
                         //cheking is already action performed?
                         string fStatus = null;
-                        if (roleName == "SOM")
+                        //if (roleName == "SOM")
+                        if (roleName == "Distribution Leader")
                         {
                             fStatus = "N";
                         }
-                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        //else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        else if (roleName == "Financial Maker" || roleName == "SOM and FM")
                         {
                             fStatus = "M";
                         }
@@ -148,7 +153,7 @@ namespace MFS.TransactionService.Repository
                         {
                             fStatus = "C";
                         }
-                        string status = connection.QueryFirstOrDefault<string>("Select status from "+ mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + item.Tranno + "'");
+                        string status = connection.QueryFirstOrDefault<string>("Select status from " + mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + item.Tranno + "'");
                         if (fStatus != status)
                         {
                             return successOrErrorMsg = "MissMatch";
@@ -167,11 +172,13 @@ namespace MFS.TransactionService.Repository
                             }
                             else if (evnt == "register")
                             {
-                                if (roleName == "SOM")
+                                //if (roleName == "SOM")
+                                if (roleName == "Distribution Leader")
                                 {
                                     item.Status = "M";
                                 }
-                                else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                                //else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                                else if (roleName == "Financial Maker" || roleName == "SOM and FM")
                                 {
                                     item.Status = "C";
                                 }
@@ -244,10 +251,10 @@ namespace MFS.TransactionService.Repository
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
-            
+
         }
 
         public object ExecuteEOD(DateTime todayDate, string userName)
@@ -257,26 +264,32 @@ namespace MFS.TransactionService.Repository
                 using (var connection = this.GetConnection())
                 {
                     var parameter = new OracleDynamicParameters();
-                    parameter.Add("todayDate", OracleDbType.Date, ParameterDirection.Input, todayDate);
-                    parameter.Add("CheckBy", OracleDbType.Varchar2, ParameterDirection.Input, userName);
-                    parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
+                    //parameter.Add("todayDate", OracleDbType.Date, ParameterDirection.Input, todayDate);
+                    //parameter.Add("CheckBy", OracleDbType.Varchar2, ParameterDirection.Input, userName);
+                    //parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
 
-                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_EOD_Process", param: parameter, commandType: CommandType.StoredProcedure);
+                    //SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_EOD_Process", param: parameter, commandType: CommandType.StoredProcedure);
+
+
+                    parameter.Add("USER_ID", OracleDbType.Varchar2, ParameterDirection.Input, userName);
+                    parameter.Add("MSSGOUT", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
+
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_EOD", param: parameter, commandType: CommandType.StoredProcedure);
 
                     //this.CloseConnection(conn);
                     connection.Close();
 
-                    string successOrErrorMsg = parameter.oracleParameters[2].Value != null ? parameter.oracleParameters[2].Value.ToString() : null;
+                    string successOrErrorMsg = parameter.oracleParameters[1].Value != null ? parameter.oracleParameters[1].Value.ToString() : null;
 
 
                     return successOrErrorMsg;
                 }
 
-               
+
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
 
@@ -284,13 +297,35 @@ namespace MFS.TransactionService.Repository
 
         public TblBdStatus GetBankDepositStatusByTransNo(string tranno)
         {
+            TblBdStatus objTblBdStatus = new TblBdStatus();
             try
             {
                 using (var connection = this.GetConnection())
                 {
-                    return connection.QueryFirstOrDefault<TblBdStatus>("Select * from " + mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + tranno + "'");
+                    objTblBdStatus = connection.QueryFirstOrDefault<TblBdStatus>("Select * from " + mainDbUser.DbUser + "TBL_BD_STATUS where Tranno ='" + tranno + "'");
+                    connection.Close();
+                    return objTblBdStatus;
                 }
-                    
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public string GetLastEodDateTime()
+        {
+            string result = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    result = connection.QueryFirstOrDefault<string>("SELECT * FROM(SELECT Execution_date FROM " + mainDbUser.DbUser + "eod_post_log ORDER BY value_date desc) WHERE ROWNUM = 1");
+                    connection.Close();
+                    return result;
+                }
             }
             catch (Exception ex)
             {

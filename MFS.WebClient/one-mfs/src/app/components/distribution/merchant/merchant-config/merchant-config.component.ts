@@ -37,7 +37,7 @@ export class MerchantConfigComponent implements OnInit {
     ngOnInit() {
         this.getAllMerchant();
         this.smsStatusList = [
-            { label: 'Yes', value: 'Y' },
+            { label: 'Yes', value: 'A' },
             { label: 'No', value: 'I' }
         ]
 

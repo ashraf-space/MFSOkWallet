@@ -15,6 +15,7 @@ namespace MFS.TransactionService.Service
         //object GetCashEntryListByBranchCode(string branchCode);
         object GetGlList();
         object getGlDetailsForRobi();
+        object getGlDetailsForBlink();
         object GetAmountByGL(string sysCode);
         object GetACList();
         object GetAmountByAC(string mPhone);
@@ -27,6 +28,7 @@ namespace MFS.TransactionService.Service
         object getAmountByTransNo(string transNo,string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
+        object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
     }
     public class FundTransferService:BaseService<FundTransfer>, IFundTransferService
     {
@@ -51,6 +53,20 @@ namespace MFS.TransactionService.Service
                 throw;
             }
             
+        }
+
+        public object getGlDetailsForBlink()
+        {
+            try
+            {
+                return _FundTransferRepository.getGlDetailsForBlink();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
         public object GetACList()
         {
@@ -151,6 +167,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _FundTransferRepository.saveRobiTopupStockEntry(robiTopupStockEntry);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
+        {
+            try
+            {
+                return _FundTransferRepository.saveBlinkTopupStockEntry(robiTopupStockEntry);
             }
             catch (Exception)
             {

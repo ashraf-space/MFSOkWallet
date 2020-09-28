@@ -79,7 +79,13 @@
 								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymenBeftnInfotReport'">
 									<app-credit-beftn #form></app-credit-beftn>
 								</div>
-								
+
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/ParticularWiseTransaction'">
+									<app-particular-wise-transaction #form></app-particular-wise-transaction>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/EdumanBillReport'">
+									<app-eduman-bill #form></app-eduman-bill>
+								</div>
 							</div>
                         </div>
                     </div>

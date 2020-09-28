@@ -98,7 +98,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                     if (item.MakeStatus)
                     {
                         string response = null;
-                        if (roleName == "SOM")
+                        //if (roleName == "SOM")
+                        if (roleName == "Distribution Leader")
                         {
                             item.SomId = userName;
                             if (evnt == "reject")
@@ -116,7 +117,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                             prevModel.Status = "N";
                             _auditTrailService.InsertUpdatedModelToAuditTrail(item, prevModel, item.SomId, 9, 4, "Bank Deposit Status", item.Tranno, response);
                         }
-                        else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        //else if (roleName == "Financial Maker" || roleName == "Sales Executive")
+                        else if (roleName == "Financial Maker" || roleName == "SOM and FM")
                         {
                             item.MakerId = userName;
                             if (evnt == "reject")
@@ -171,13 +173,32 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
+                string response = null;
                 DateRangeModel date = new DateRangeModel();
                 date.FromDate = string.IsNullOrEmpty(todayDate) == true ? DateTime.Now : DateTime.Parse(todayDate);
-                return transMastService.ExecuteEOD(date.FromDate, userName);
+                response =transMastService.ExecuteEOD(date.FromDate, userName).ToString();
+                //Insert into audit trial audit and detail
+                var model = new { todayDate, userName };
+                _auditTrailService.InsertModelToAuditTrail(model, userName, 10, 4, "End of Day (EOD)", date.FromDate.ToString(), response);
+                return response;
             }
             catch (Exception ex)
             {
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+        [HttpGet]
+        [Route("GetLastEodDateTime")]
+        public string GetLastEodDateTime()
+        {
+            try
+            {
+                return transMastService.GetLastEodDateTime();
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString(); 
             }
         }
     }

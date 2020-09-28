@@ -231,7 +231,7 @@ namespace MFS.DistributionService.Repository
 		{
 			try
 			{
-				if (selectedCategory == "M")
+				if (selectedCategory == "M" || selectedCategory == "E")
 				{
 					using (var connection = this.GetConnection())
 					{

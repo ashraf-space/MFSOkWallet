@@ -6,13 +6,12 @@ import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-dpdc-desco',
-  templateUrl: './dpdc-desco.component.html',
-  styleUrls: ['./dpdc-desco.component.css']
+    selector: 'app-eduman-bill',
+    templateUrl: './eduman-bill.component.html',
+    styleUrls: ['./eduman-bill.component.css']
 })
-export class DpdcDescoComponent implements OnInit {
-
-   model: any;
+export class EdumanBillComponent implements OnInit {
+    model: any;
     dateTypeList: any;
     utilityList: any;
     gatewayList: any;
@@ -27,32 +26,17 @@ export class DpdcDescoComponent implements OnInit {
         this.model = {};
     }
 
-
     ngOnInit() {
-        this.utilityList = [
-            { label: 'DPDC', value: 'dpdc' },
-            { label: 'DESCO', value: 'desco' },
-            { label: 'WASA', value: 'wasa' },
-            { label: 'JALALABAD GAS', value: 'jgtd' }
-        ];
-        this.gatewayList = [
-            { label: 'USSD', value: 'U' },
-            { label: 'APP', value: 'A' },
-            { label: 'ALL', value: 'All' }  
-        ];
         this.catTypeList = [
             { label: 'Agent', value: 'A' },
             { label: 'Customer', value: 'C' },
-            { label: 'ALL', value: 'All' }  
+            { label: 'ALL', value: 'All' }
         ];
         this.dateTypeList = [
             { label: 'EOD Date', value: 'eod' },
             { label: 'Transaction Date', value: 'trans' }
         ]
     }
-   
-   
-
     getReportParam() {
         if (this.validate()) {
             var obj: any = {};
@@ -60,8 +44,18 @@ export class DpdcDescoComponent implements OnInit {
                 obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
                 obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
             }
-            obj.utility = this.model.utility;
-            obj.gateway = this.model.gateway;
+            if (!this.model.studentId) {
+                obj.studentId = null;
+            }
+            else {
+                obj.studentId =this.model.studentId
+            }
+            if (!this.model.instituteId) {
+                obj.instituteId = null;
+            }
+            else {
+                obj.instituteId = this.model.instituteId
+            }
             obj.catType = this.model.catType;
             obj.dateType = this.model.dateType;
             return obj;
@@ -74,7 +68,7 @@ export class DpdcDescoComponent implements OnInit {
     }
 
     validate(): any {
-        if (!this.model.utility || !this.model.gateway || !this.model.catType || !this.model.dateType ||
+        if (!this.model.catType || !this.model.dateType ||
             !this.model.fromDate || !this.model.toDate) {
             return false;
         }

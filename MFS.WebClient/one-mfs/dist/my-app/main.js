@@ -7169,12 +7169,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_reports_report_collection_credit_card_report_credit_card_report_component__WEBPACK_IMPORTED_MODULE_189__ = __webpack_require__(/*! ./components/reports/report-collection/credit-card-report/credit-card-report.component */ "./src/app/components/reports/report-collection/credit-card-report/credit-card-report.component.ts");
 /* harmony import */ var _components_transaction_blink_topup_stock_entry_blink_topup_stock_entry_component__WEBPACK_IMPORTED_MODULE_190__ = __webpack_require__(/*! ./components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component */ "./src/app/components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component.ts");
 /* harmony import */ var _components_reports_report_collection_credit_beftn_credit_beftn_component__WEBPACK_IMPORTED_MODULE_191__ = __webpack_require__(/*! ./components/reports/report-collection/credit-beftn/credit-beftn.component */ "./src/app/components/reports/report-collection/credit-beftn/credit-beftn.component.ts");
+/* harmony import */ var _components_reports_report_collection_transaction_type_particular_wise_transaction_particular_wise_transaction_component__WEBPACK_IMPORTED_MODULE_192__ = __webpack_require__(/*! ./components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component */ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.ts");
+/* harmony import */ var _components_reports_report_collection_ems_eduman_bill_eduman_bill_component__WEBPACK_IMPORTED_MODULE_193__ = __webpack_require__(/*! ./components/reports/report-collection/ems/eduman-bill/eduman-bill.component */ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -7566,7 +7570,9 @@ var AppModule = /** @class */ (function () {
                 _components_reports_report_collection_transaction_type_branch_cashin_cashout_branch_cashin_cashout_component__WEBPACK_IMPORTED_MODULE_188__["BranchCashinCashoutComponent"],
                 _components_reports_report_collection_credit_card_report_credit_card_report_component__WEBPACK_IMPORTED_MODULE_189__["CreditCardReportComponent"],
                 _components_transaction_blink_topup_stock_entry_blink_topup_stock_entry_component__WEBPACK_IMPORTED_MODULE_190__["BlinkTopupStockEntryComponent"],
-                _components_reports_report_collection_credit_beftn_credit_beftn_component__WEBPACK_IMPORTED_MODULE_191__["CreditBeftnComponent"]
+                _components_reports_report_collection_credit_beftn_credit_beftn_component__WEBPACK_IMPORTED_MODULE_191__["CreditBeftnComponent"],
+                _components_reports_report_collection_transaction_type_particular_wise_transaction_particular_wise_transaction_component__WEBPACK_IMPORTED_MODULE_192__["ParticularWiseTransactionComponent"],
+                _components_reports_report_collection_ems_eduman_bill_eduman_bill_component__WEBPACK_IMPORTED_MODULE_193__["EdumanBillComponent"]
             ],
             providers: [
                 { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_4__["HTTP_INTERCEPTORS"], useClass: _shared_helpers__WEBPACK_IMPORTED_MODULE_8__["JwtInterceptor"], multi: true },
@@ -8288,7 +8294,7 @@ var ClientProfileComponent = /** @class */ (function () {
             this.isLoading = true;
             this.model = {};
             this.entityId = this.route.snapshot.paramMap.get('id');
-            if (this.model.catId === 'C') {
+            if (this.model.status === 'C') {
                 this.isDetailMode = true;
             }
             this.isDetailMode = true;
@@ -8309,7 +8315,7 @@ var ClientProfileComponent = /** @class */ (function () {
     };
     ClientProfileComponent.prototype.ngOnChanges = function () {
         if (this.model) {
-            if (this.model.catId === 'C') {
+            if (this.model.status === 'C') {
                 this.isDetailMode = true;
             }
             this.dormantModel.catId = this.model.catId;
@@ -8322,7 +8328,8 @@ var ClientProfileComponent = /** @class */ (function () {
     };
     ClientProfileComponent.prototype.checkIsKycSales = function () {
         if (this.currentUserModel.user.role_Name.trim() === 'Sales Ops KYC Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'Sales Ops KYC Checker'.trim() ||
-            this.currentUserModel.user.role_Name.trim() === 'SOM and FM'.trim()) {
+            this.currentUserModel.user.role_Name.trim() === 'SOM and FM'.trim() || this.currentUserModel.user.role_Name.trim() === 'Service Ops KYC Checker'.trim() ||
+            this.currentUserModel.user.role_Name.trim() === 'Service Ops KYC Maker'.trim()) {
             this.isKycExecutive = true;
         }
         else {
@@ -9156,7 +9163,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p-tabMenu [model]=\"caseList\" [activeItem]=\"activeCase\">\r\n    <ng-template pTemplate=\"item\" let-item let-i=\"index\">\r\n        <div style=\"position: relative; text-align: center;\" (click)=\"openTab($event, i)\" >\r\n            <div class=\"ui-menuitem-icon\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></div>\r\n            <div class=\"ui-menuitem-text\">\r\n                {{item.label}}\r\n            </div>\r\n            <a tabindex=\"0\" class=\"ui-menuitem-icon\" (click)=\"closeCase($event, i)\" style=\"position: absolute; right: -1em; top: -.5em; padding: 0\" *ngIf=\"i !== 0\" >\r\n                <span class=\"pi pi-times\"></span>\r\n            </a>\r\n        </div>\r\n    </ng-template>\r\n</p-tabMenu>\r\n<br />\r\n<div *ngIf=\"switchCaseLoading\">\r\n    <p style=\"text-align:center\"><p-progressSpinner></p-progressSpinner></p>\r\n</div>\r\n<div *ngIf=\"isHomeActive && !switchCaseLoading\">\r\n    <div>\r\n        <div class=\"btn-group edit-group \" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"goBack()\"><i class=\"fas fa-chevron-left\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('agent-location')\">Agent Location <i class=\"fas fa-thumbtack\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('resend-message')\">Resend Message <i class=\"fas fa-paper-plane\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('error')\">Error Log <i class=\"fas fa-bug\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('profile')\">Profile <i class=\"far fa-user-circle\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('hot-key')\">Hot Key <i class=\"fab fa-keycdn\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('trans-detail')\">Transaction Details <i class=\"fas fa-money-check-alt\"></i></button>\r\n        </div>\r\n        <!--<div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('request')\">Customer Request <i class=\"fab fa-replyd\"></i></button>\r\n        </div>-->\r\n    </div>\r\n    <app-outbox></app-outbox>\r\n</div>\r\n<div *ngIf=\"!isHomeActive && !switchCaseLoading\">\r\n    <app-client-profile [model]=\"activeCaseDetails\" [isCustomerCare]=\"true\"></app-client-profile>\r\n</div>\r\n\r\n<app-generic-modal [initiateModal]=\"showAgentLocation\" [header]=\"'Agent Location'\" [hideConfirm]=\"true\" (onDestroy)=\"showAgentLocation=false\">\r\n    <div style=\"margin-bottom:8rem\">\r\n        <app-agent-location></app-agent-location>\r\n    </div>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showResendMessage\" [header]=\"'Resend Message'\" [hideConfirm]=\"true\" (onDestroy)=\"showResendMessage=false\">\r\n    <div style=\"margin-bottom:5rem\">\r\n        <app-message-resend></app-message-resend>\r\n    </div>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showHotKey\" [header]=\"'Hot Key'\" [hideConfirm]=\"true\" (onDestroy)=\"showHotKey=false\">\r\n    <app-hotkey-list [showCaption]=\"false\"></app-hotkey-list>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showTransDetail\" [header]=\"'Transaction Detail'\" [hideConfirm]=\"true\" (onDestroy)=\"showTransDetail=false\">\r\n    <app-transaction-detail></app-transaction-detail>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showCustomerRequestLog\" [header]=\"'Customer Request'\" [hideConfirm]=\"true\" (onDestroy)=\"showCustomerRequestLog=false\">\r\n    <app-customer-request></app-customer-request>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showErrorLog\" [header]=\"'Error Log'\" [hideConfirm]=\"true\" (onDestroy)=\"showErrorLog=false\">\r\n    <app-error-list></app-error-list>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"addCaseModal\" [header]=\"'Profile'\" [hideConfirm]=\"true\" (onDestroy)=\"addCaseModal=false\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-9\">\r\n            <span class=\"ui-float-label \">\r\n                <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.mphone\">\r\n                <label for=\"float-input input-lg\"><i class='fa fa-search'></i> Enter MPhone Number</label>\r\n            </span>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onSearch()\" [disabled]=\"!searchModel.mphone\"><i class=\"fas fa-search\"></i> Search </button>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"loading\">\r\n        <p style=\"text-align:center\"><p-progressSpinner></p-progressSpinner></p>\r\n    </div>\r\n    <div class=\"form-group\" *ngIf=\"searchModel.result\">\r\n        <h6 class=\"form-header-orange\" *ngIf=\"!isEditMode\"><i class=\"fas fa-user\" aria-hidden=\"true\"></i>   {{ searchModel.result.name  }}</h6>\r\n        <br />\r\n        <div class=\"p-grid\">\r\n            <div class=\"p-col-8\">\r\n                <div class=\"p-grid\">\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.mphone\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">MPhone</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.name\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">Name</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.branchCode\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">Branch Code</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-12\">\r\n                        <h4 class=\"form-header\">Verification</h4>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-grid\">\r\n\t\t\t\t\t<div class=\"p-col-4\">\t\t\r\n\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t<input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.dateOfBirth\" [disabled]=\"!searchModel.result.dateOfBirth\" (change)=\"verify('dob')\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\">Date of Birth [ yyyy-mm-dd ]</label>\r\n\t\t\t\t\t\t</span>\r\n\t\t\t\t\t</div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.conMob\" [disabled]=\"!searchModel.result.conMob\" (change)=\"verify('con-mob')\">\r\n                            <label for=\"float-input input-lg\">Contact Number</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.photoId\" [disabled]=\"!searchModel.result.photoId\" (change)=\"verify('photo-id')\">\r\n                            <label for=\"float-input input-lg\">Varification Id {{searchModel.result.photoIdTypeCode | photoId}}</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-12\">\r\n                        <h6 style=\"text-align:center;color:cadetblue;font-size: 90%;\">*Verify with the editable fields only</h6>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"p-col-4\">\r\n                <br />\r\n                <!--remove the disabled property from the below line-->\r\n                <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"addCase()\" style=\"margin-top: 3.2em;\" [disabled]=\"!verification.verified\"><i class=\"fas fa-map-pin\"></i>Click Here</button>\r\n                <br />\r\n                <div style=\"text-align:center\">\r\n                    <p-message *ngIf=\"!verification.verified\" severity=\"error\" text=\"Warning! Profile Not Verified\"></p-message>\r\n                    <p-message *ngIf=\"verification.verified\" severity=\"success\" text=\"Profile Verified\"></p-message>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</app-generic-modal>\r\n"
+module.exports = "<p-tabMenu [model]=\"caseList\" [activeItem]=\"activeCase\">\r\n    <ng-template pTemplate=\"item\" let-item let-i=\"index\">\r\n        <div style=\"position: relative; text-align: center;\" (click)=\"openTab($event, i)\" >\r\n            <div class=\"ui-menuitem-icon\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></div>\r\n            <div class=\"ui-menuitem-text\">\r\n                {{item.label}}\r\n            </div>\r\n            <a tabindex=\"0\" class=\"ui-menuitem-icon\" (click)=\"closeCase($event, i)\" style=\"position: absolute; right: -1em; top: -.5em; padding: 0\" *ngIf=\"i !== 0\" >\r\n                <span class=\"pi pi-times\"></span>\r\n            </a>\r\n        </div>\r\n    </ng-template>\r\n</p-tabMenu>\r\n<br />\r\n<div *ngIf=\"switchCaseLoading\">\r\n    <p style=\"text-align:center\"><p-progressSpinner></p-progressSpinner></p>\r\n</div>\r\n<div *ngIf=\"isHomeActive && !switchCaseLoading\">\r\n    <div>\r\n        <div class=\"btn-group edit-group \" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"goBack()\"><i class=\"fas fa-chevron-left\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('agent-location')\">Agent Location <i class=\"fas fa-thumbtack\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('resend-message')\">Resend Message <i class=\"fas fa-paper-plane\"></i></button>\r\n        </div>\r\n        <!--<div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('error')\">Error Log <i class=\"fas fa-bug\"></i></button>\r\n        </div>-->\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('profile')\">Profile <i class=\"far fa-user-circle\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('hot-key')\">Hot Key <i class=\"fab fa-keycdn\"></i></button>\r\n        </div>\r\n        <div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('trans-detail')\">Transaction Details <i class=\"fas fa-money-check-alt\"></i></button>\r\n        </div>\r\n        <!--<div class=\"btn-group edit-group\" role=\"group\" aria-label=\"Basic example\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse\" (click)=\"openModal('request')\">Customer Request <i class=\"fab fa-replyd\"></i></button>\r\n        </div>-->\r\n    </div>\r\n    <app-outbox></app-outbox>\r\n</div>\r\n<div *ngIf=\"!isHomeActive && !switchCaseLoading\">\r\n    <app-client-profile [model]=\"activeCaseDetails\" [isCustomerCare]=\"true\"></app-client-profile>\r\n</div>\r\n\r\n<app-generic-modal [initiateModal]=\"showAgentLocation\" [header]=\"'Agent Location'\" [hideConfirm]=\"true\" (onDestroy)=\"showAgentLocation=false\">\r\n    <div style=\"margin-bottom:8rem\">\r\n        <app-agent-location></app-agent-location>\r\n    </div>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showResendMessage\" [header]=\"'Resend Message'\" [hideConfirm]=\"true\" (onDestroy)=\"showResendMessage=false\">\r\n    <div style=\"margin-bottom:5rem\">\r\n        <app-message-resend></app-message-resend>\r\n    </div>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showHotKey\" [header]=\"'Hot Key'\" [hideConfirm]=\"true\" (onDestroy)=\"showHotKey=false\">\r\n    <app-hotkey-list [showCaption]=\"false\"></app-hotkey-list>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showTransDetail\" [header]=\"'Transaction Detail'\" [hideConfirm]=\"true\" (onDestroy)=\"showTransDetail=false\">\r\n    <app-transaction-detail></app-transaction-detail>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showCustomerRequestLog\" [header]=\"'Customer Request'\" [hideConfirm]=\"true\" (onDestroy)=\"showCustomerRequestLog=false\">\r\n    <app-customer-request></app-customer-request>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"showErrorLog\" [header]=\"'Error Log'\" [hideConfirm]=\"true\" (onDestroy)=\"showErrorLog=false\">\r\n    <app-error-list></app-error-list>\r\n</app-generic-modal>\r\n\r\n<app-generic-modal [initiateModal]=\"addCaseModal\" [header]=\"'Profile'\" [hideConfirm]=\"true\" (onDestroy)=\"addCaseModal=false\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-9\">\r\n            <span class=\"ui-float-label \">\r\n                <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.mphone\">\r\n                <label for=\"float-input input-lg\"><i class='fa fa-search'></i> Enter MPhone Number</label>\r\n            </span>\r\n        </div>\r\n        <div class=\"p-col-3\">\r\n            <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onSearch()\" [disabled]=\"!searchModel.mphone\"><i class=\"fas fa-search\"></i> Search </button>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"loading\">\r\n        <p style=\"text-align:center\"><p-progressSpinner></p-progressSpinner></p>\r\n    </div>\r\n    <div class=\"form-group\" *ngIf=\"searchModel.result\">\r\n        <h6 class=\"form-header-orange\" *ngIf=\"!isEditMode\"><i class=\"fas fa-user\" aria-hidden=\"true\"></i>   {{ searchModel.result.name  }}</h6>\r\n        <br />\r\n        <div class=\"p-grid\">\r\n            <div class=\"p-col-8\">\r\n                <div class=\"p-grid\">\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.mphone\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">MPhone</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.name\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">Name</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"searchModel.result.branchCode\" [disabled]=\"true\">\r\n                            <label for=\"float-input input-lg\">Branch Code</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-12\">\r\n                        <h4 class=\"form-header\">Verification</h4>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-grid\">\r\n\t\t\t\t\t<div class=\"p-col-4\">\t\t\r\n\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t<input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.dateOfBirth\" [disabled]=\"!searchModel.result.dateOfBirth\" (change)=\"verify('dob')\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\">Date of Birth [ yyyy-mm-dd ]</label>\r\n\t\t\t\t\t\t</span>\r\n\t\t\t\t\t</div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.conMob\" [disabled]=\"!searchModel.result.conMob\" (change)=\"verify('con-mob')\">\r\n                            <label for=\"float-input input-lg\">Contact Number</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-4\">\r\n                        <span class=\"ui-float-label \">\r\n                            <input id=\"float-input\" type=\"text\" class=\"form-control\" pInputText [(ngModel)]=\"verification.photoId\" [disabled]=\"!searchModel.result.photoId\" (change)=\"verify('photo-id')\">\r\n                            <label for=\"float-input input-lg\">Varification Id {{searchModel.result.photoIdTypeCode | photoId}}</label>\r\n                        </span>\r\n                    </div>\r\n                    <div class=\"p-col-12\">\r\n                        <h6 style=\"text-align:center;color:cadetblue;font-size: 90%;\">*Verify with the editable fields only</h6>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"p-col-4\">\r\n                <br />\r\n                <!--remove the disabled property from the below line-->\r\n                <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"addCase()\" style=\"margin-top: 3.2em;\" [disabled]=\"!verification.verified\"><i class=\"fas fa-map-pin\"></i>Click Here</button>\r\n                <br />\r\n                <div style=\"text-align:center\">\r\n                    <p-message *ngIf=\"!verification.verified\" severity=\"error\" text=\"Warning! Profile Not Verified\"></p-message>\r\n                    <p-message *ngIf=\"verification.verified\" severity=\"success\" text=\"Profile Verified\"></p-message>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</app-generic-modal>\r\n"
 
 /***/ }),
 
@@ -10673,7 +10680,7 @@ module.exports = ".ui-steps .ui-steps-item {\r\n    width: 25%;\r\n}\r\n\r\n.ui-
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p-messages [hideTransitionOptions]=\"'3000ms'\" [(value)]=\"msgs\" *ngIf=\"showDuplicateMsg\"></p-messages>\r\n<p-steps [model]=\"items\" [(activeIndex)]=\"activeIndex\" [readonly]=\"!isEditMode\"></p-steps>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<fieldset [disabled]=\"isRegPermit ? 'disabled' : null\">\r\n\t<div class=\"form-elements\">\r\n\t\t<p-card>\r\n\t\t\t<label for=\"float-input input-lg\" style=\"font-size:large\" class=\"col-form-label\">Displayed OK Account: {{regInfoModel.mphone}}</label>\r\n\t\t</p-card>\r\n\t\t<!--Primary Information-->\r\n\t\t<div *ngIf=\"activeIndex==0\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Office use only</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<p-inputMask type=\"text\" mask=\"99999999999\" [style]=\"{'width':'100%'}\" [(ngModel)]=\"regInfoModel.mphone\" (change)=\"checkMphoneAlreadyExist()\"\r\n\t\t\t\t\t\t\t\t\t\t\t placeholder=\"01xxxxxxxxx\" id=\"float-input\" pKeyFilter=\"int\"></p-inputMask>\r\n\t\t\t\t\t\t\t\t<!--<input autocomplete=\"off\"  type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.mphone\" pInputText [pKeyFilter]=\"mobileNoRegEx\" />-->\r\n\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent AC No<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.mphone==null || regInfoModel.mphone=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.formSerial\" pInputText [pKeyFilter]=\"positveNumber\" />\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">KYC Form Serial No</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" class=\"form-control\" placement=\"down\" [readonly]=\"true\"\r\n\t\t\t\t\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"regDate\" ngbDatepicker #d=\"ngbDatepicker\"\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Registration Date<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regDate.year==null || regDate.year=='') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"DistributorCode\"\r\n\t\t\t\t\t\t\t\t\t   (change)=\"GetInfoByDistributor();\" pInputText id=\"float-input\" />\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label\">Distributor Code <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(DistributorCode==null || DistributorCode=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t<!--<div class=\"p-grid\">\r\n\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t<br/>\r\n\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\"  type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"DistributorCode\"\r\n\t\t\t\t\t\t\t\t   (change)=\"GetInfoByDistributor();\" pInputText id=\"float-input\"/>\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label\">Distributor Code <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t<p-message *ngIf=\"(DistributorCode==null || DistributorCode=='') && error \"\r\n\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>-->\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label class=\"col-form-label\">Region </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"regionList\" placeholder=\"Select Region\" [(ngModel)]=\"selectedRegion\"\r\n\t\t\t\t\t\t\t\t\t\t[disabled]=\"true\" [filter]=\"true\" filterBy=\"label,value.name\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Area </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"areaList\" placeholder=\"Select Area\" [(ngModel)]=\"selectedArea\" [disabled]=\"true\" [filter]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\tfilterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Territory </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"territoryList\" placeholder=\"Select Territory\" [(ngModel)]=\"selectedTerritory\" [disabled]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label-dd\">Cluster <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"clusterList\" [(ngModel)]=\"selectedCluster\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"GenerateAgentCode()\" [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"\r\n\t\t\t\t\t\t\t\t\t\t[disabled]=\"isEditMode\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedCluster == '0') && error\" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.distCode\"\r\n\t\t\t\t\t\t\t\t\t   disabled=\"disabled\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\"> Agent Code</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\t\t</div>\r\n\r\n\t\t<!--Personal Information-->\r\n\t\t<div *ngIf=\"activeIndex==1\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Personal details</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.companyName\" uppercase\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Company Name<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.companyName==null || regInfoModel.companyName=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" id=\"OwnerName\" [(ngModel)]=\"regInfoModel.name\" uppercase\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Agent First Name<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.name==null || regInfoModel.name=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-2\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.lastName\" uppercase [pKeyFilter]=\"alphabetsWithSpace\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent Last Name </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<!--<p-message *ngIf=\"(regInfoModel.name==null || regInfoModel.name=='') && error\" severity=\"error\"\r\n\t\t\t\t\t\ttext=\"Cannot be left blank\"></p-message>-->\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t\t\t\t\t<label for=\"Gender\" class=\"col-sm-2 col-form-label\">Gender</label>\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-10\">\r\n\t\t\t\t\t\t\t\t\t<p-selectButton [options]=\"genderTypes\" [(ngModel)]=\"regInfoModel.gender\" [disabled]=\"isRegPermit\" [style]=\"{color: 'white'}\"></p-selectButton>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Date Of Birth [yyyy-mm-dd]<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" class=\"form-control\" placement=\"down\" (change)=\"validateDatepicker($event)\"\r\n\t\t\t\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"dateOfBirth\" ngbDatepicker #d=\"ngbDatepicker\"\r\n\t\t\t\t\t\t\t\t   id=\"float-input\">\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(dateOfBirth.year==null || dateOfBirth.year=='') && error\" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(dateOfBirth.year==null || dateOfBirth.year=='')\" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Please Input Valid Date  [yyyy-mm-dd]\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.nationality\"\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Nationality</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Photo Id Type<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"photoIDTypeList\" placeholder=\"Select Type\" [(ngModel)]=\"regInfoModel.photoIdTypeCode\" [disabled]=\"isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.photoIdTypeCode==null || regInfoModel.photoIdTypeCode=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.photoId\" (change)=\"checkPhotoIdLength()\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Photo ID No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.photoId==null || regInfoModel.photoId=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"formValidation.photoId\" severity=\"error\" text=\"Invalid NID\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<!--<input autocomplete=\"off\"  type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.conMob\" pInputText id=\"float-input\">-->\r\n\t\t\t\t\t\t\t\t<p-inputMask mask=\"99999999999\" [(ngModel)]=\"regInfoModel.conMob\" pKeyFilter=\"int\" [style]=\"{'width':'100%'}\"></p-inputMask>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent Contact No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.conMob==null || regInfoModel.conMob=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.fatherName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Father's Name</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.motherName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Mother's Name</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.spouseName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Spouse Name </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.emergencyConNo\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Emergency Contact No </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"50\" [(ngModel)]=\"regInfoModel.offAddr\" uppercase\r\n\t\t\t\t\t\t\t\t\t\t  pInputTextarea autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Business Address<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.offAddr==null || regInfoModel.offAddr=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"50\" [(ngModel)]=\"regInfoModel.perAddr\" uppercase\r\n\t\t\t\t\t\t\t\t\t\t  pInputTextarea autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Permanent Address <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.perAddr==null || regInfoModel.perAddr=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Same as Present</label>\r\n\t\t\t\t\t\t\t<p-checkbox [(ngModel)]=\"checkedAsPresent\" (onChange)=\"sameAsPresent()\" binary=\"true\"></p-checkbox>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"40\" [(ngModel)]=\"regInfoModel.preAddr\" pInputTextarea\r\n\t\t\t\t\t\t\t\t\t\t  uppercase autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Present Address </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Division <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"divisionList\" placeholder=\"Select Division\" [(ngModel)]=\"selectedDivision\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isEditMode || isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"fillDistrictDDLByDivision();\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedDivision=='0') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">District <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"districtList\" placeholder=\"Select District\" [(ngModel)]=\"selectedDistrict\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isEditMode || isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"fillThanaDDLByDistrict();\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedDistrict=='0') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Thana <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"thanaList\" placeholder=\"Select Thana\" [(ngModel)]=\"regInfoModel.locationCode\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isEditMode || isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.locationCode==null || regInfoModel.locationCode=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Trade Licence No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.tradeLicenseNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.tradeLicenseNo==null || regInfoModel.tradeLicenseNo=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">TIN</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.tinNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Vat Reg No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.vatRegNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\t\t</div>\r\n\r\n\t\t<!--Nominee and Introducer-->\r\n\t\t<div *ngIf=\"activeIndex==2\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Nominee Information</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Name</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t<!--<p-message *ngIf=\"(regInfoModel.firstNomineeName==null || regInfoModel.firstNomineeName=='')  && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>-->\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Nominee Contact No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.nomineeConNo\" [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Age</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeAge\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Relation </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"relationList\" [(ngModel)]=\"regInfoModel.relationFirstNominee\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [showClear]=\"true\" placeholder=\"Select Relation\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Ratio</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.partOfFirst\" [disabled]=\"true\" [pKeyFilter]=\"positveNumber\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Address</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeAddress\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\r\n\t\t</div>\r\n\t\t<!--Bank info-->\r\n\t\t<div *ngIf=\"activeIndex==3\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Bank Information</h6>\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Branch Name <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"bankBranchList\" [(ngModel)]=\"regInfoModel.branchCode\" [showClear]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" placeholder=\"Select Branch\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.branchCode==null || regInfoModel.branchCode=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Account Name</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.accountName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Account No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.bankAcNo\" [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t</p-card>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\r\n</fieldset>\r\n\r\n<app-generic-stepper-form-action [activeIndex]=\"activeIndex\" [maxIndex]=\"4\" (onStepAhead)=\"onStepAhead($event)\" (onStepBack)=\"onStepBack()\"></app-generic-stepper-form-action>\r\n\r\n\r\n<!--<div class=\"event-buttons\">\r\n\t<p-card>\r\n\t\t<div class=\"p-grid\">\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-danger btn-block btn-reverse\" (click)=\"cancel()\">Cancel</button>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-9\">\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-warning btn-block btn-reverse\" *ngIf=\"activeIndex!=0\" (click)=\"onStepBack()\">Back</button>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-success btn-block btn-reverse\" (click)=\"onStepAhead()\"><span *ngIf=\"activeIndex<3\">Next</span><span *ngIf=\"activeIndex==3\">Save</span></button>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</p-card>\r\n</div>-->\r\n"
+module.exports = "<p-messages [hideTransitionOptions]=\"'3000ms'\" [(value)]=\"msgs\" *ngIf=\"showDuplicateMsg\"></p-messages>\r\n<p-steps [model]=\"items\" [(activeIndex)]=\"activeIndex\" [readonly]=\"!isEditMode\"></p-steps>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<fieldset [disabled]=\"isRegPermit ? 'disabled' : null\">\r\n\t<div class=\"form-elements\">\r\n\t\t<p-card>\r\n\t\t\t<label for=\"float-input input-lg\" style=\"font-size:large\" class=\"col-form-label\">Displayed OK Account: {{regInfoModel.mphone}}</label>\r\n\t\t</p-card>\r\n\t\t<!--Primary Information-->\r\n\t\t<div *ngIf=\"activeIndex==0\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Office use only</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<p-inputMask type=\"text\" mask=\"99999999999\" [style]=\"{'width':'100%'}\" [(ngModel)]=\"regInfoModel.mphone\" (change)=\"checkMphoneAlreadyExist()\"\r\n\t\t\t\t\t\t\t\t\t\t\t placeholder=\"01xxxxxxxxx\" id=\"float-input\" pKeyFilter=\"int\"></p-inputMask>\r\n\t\t\t\t\t\t\t\t<!--<input autocomplete=\"off\"  type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.mphone\" pInputText [pKeyFilter]=\"mobileNoRegEx\" />-->\r\n\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent AC No<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.mphone==null || regInfoModel.mphone=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.formSerial\" pInputText [pKeyFilter]=\"positveNumber\" />\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">KYC Form Serial No</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" class=\"form-control\" placement=\"down\" [readonly]=\"true\"\r\n\t\t\t\t\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"regDate\" ngbDatepicker #d=\"ngbDatepicker\"\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Registration Date<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regDate.year==null || regDate.year=='') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"DistributorCode\"\r\n\t\t\t\t\t\t\t\t\t   (change)=\"GetInfoByDistributor();\" pInputText id=\"float-input\" />\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label\">Distributor Code <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(DistributorCode==null || DistributorCode=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t<!--<div class=\"p-grid\">\r\n\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t<br/>\r\n\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\"  type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"DistributorCode\"\r\n\t\t\t\t\t\t\t\t   (change)=\"GetInfoByDistributor();\" pInputText id=\"float-input\"/>\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label\">Distributor Code <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t<p-message *ngIf=\"(DistributorCode==null || DistributorCode=='') && error \"\r\n\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>-->\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label class=\"col-form-label\">Region </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"regionList\" placeholder=\"Select Region\" [(ngModel)]=\"selectedRegion\"\r\n\t\t\t\t\t\t\t\t\t\t[disabled]=\"true\" [filter]=\"true\" filterBy=\"label,value.name\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Area </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"areaList\" placeholder=\"Select Area\" [(ngModel)]=\"selectedArea\" [disabled]=\"true\" [filter]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\tfilterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Territory </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"territoryList\" placeholder=\"Select Territory\" [(ngModel)]=\"selectedTerritory\" [disabled]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\" col-form-label-dd\">Cluster <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"clusterList\" [(ngModel)]=\"selectedCluster\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"GenerateAgentCode()\" [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"\r\n\t\t\t\t\t\t\t\t\t\t[disabled]=\"isEditMode\" id=\"float-input\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedCluster == '0') && error\" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"regInfoModel.distCode\"\r\n\t\t\t\t\t\t\t\t\t   disabled=\"disabled\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\"> Agent Code</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\t\t</div>\r\n\r\n\t\t<!--Personal Information-->\r\n\t\t<div *ngIf=\"activeIndex==1\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Personal details</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.companyName\" uppercase\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Company Name<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.companyName==null || regInfoModel.companyName=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" id=\"OwnerName\" [(ngModel)]=\"regInfoModel.name\" uppercase\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Agent First Name<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.name==null || regInfoModel.name=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-2\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.lastName\" uppercase [pKeyFilter]=\"alphabetsWithSpace\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent Last Name </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<!--<p-message *ngIf=\"(regInfoModel.name==null || regInfoModel.name=='') && error\" severity=\"error\"\r\n\t\t\t\t\t\ttext=\"Cannot be left blank\"></p-message>-->\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<div class=\"form-group row\">\r\n\t\t\t\t\t\t\t\t<label for=\"Gender\" class=\"col-sm-2 col-form-label\">Gender</label>\r\n\t\t\t\t\t\t\t\t<div class=\"col-sm-10\">\r\n\t\t\t\t\t\t\t\t\t<p-selectButton [options]=\"genderTypes\" [(ngModel)]=\"regInfoModel.gender\" [disabled]=\"isRegPermit\" [style]=\"{color: 'white'}\"></p-selectButton>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Date Of Birth [yyyy-mm-dd]<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" class=\"form-control\" placement=\"down\" (change)=\"validateDatepicker($event)\"\r\n\t\t\t\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"dateOfBirth\" ngbDatepicker #d=\"ngbDatepicker\"\r\n\t\t\t\t\t\t\t\t   id=\"float-input\">\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(dateOfBirth.year==null || dateOfBirth.year=='') && error\" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(dateOfBirth.year==null || dateOfBirth.year=='')\" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Please Input Valid Date  [yyyy-mm-dd]\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.nationality\"\r\n\t\t\t\t\t\t\t\t\t   pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label gap\">Nationality</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Photo Id Type<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"photoIDTypeList\" placeholder=\"Select Type\" [(ngModel)]=\"regInfoModel.photoIdTypeCode\" [disabled]=\"isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.photoIdTypeCode==null || regInfoModel.photoIdTypeCode=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.photoId\" (change)=\"checkPhotoIdLength()\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Photo ID No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.photoId==null || regInfoModel.photoId=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"formValidation.photoId\" severity=\"error\" text=\"Invalid NID\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<!--<input autocomplete=\"off\"  type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.conMob\" pInputText id=\"float-input\">-->\r\n\t\t\t\t\t\t\t\t<p-inputMask mask=\"99999999999\" [(ngModel)]=\"regInfoModel.conMob\" pKeyFilter=\"int\" [style]=\"{'width':'100%'}\"></p-inputMask>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Agent Contact No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.conMob==null || regInfoModel.conMob=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.fatherName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Father's Name</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.motherName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Mother's Name</label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.spouseName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Spouse Name </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.emergencyConNo\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Emergency Contact No </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"50\" [(ngModel)]=\"regInfoModel.offAddr\" uppercase\r\n\t\t\t\t\t\t\t\t\t\t  pInputTextarea autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Business Address<span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.offAddr==null || regInfoModel.offAddr=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"50\" [(ngModel)]=\"regInfoModel.perAddr\" uppercase\r\n\t\t\t\t\t\t\t\t\t\t  pInputTextarea autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Permanent Address <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.perAddr==null || regInfoModel.perAddr=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Same as Present</label>\r\n\t\t\t\t\t\t\t<p-checkbox [(ngModel)]=\"checkedAsPresent\" (onChange)=\"sameAsPresent()\" binary=\"true\"></p-checkbox>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-3\">\r\n\t\t\t\t\t\t\t<br />\r\n\t\t\t\t\t\t\t<span class=\"ui-float-label \">\r\n\t\t\t\t\t\t\t\t<textarea rows=\"1\" cols=\"40\" [(ngModel)]=\"regInfoModel.preAddr\" pInputTextarea\r\n\t\t\t\t\t\t\t\t\t\t  uppercase autoResize=\"autoResize\" pInputText id=\"float-input\"></textarea>\r\n\t\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Present Address </label>\r\n\t\t\t\t\t\t\t</span>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Division <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"divisionList\" placeholder=\"Select Division\" [(ngModel)]=\"selectedDivision\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"fillDistrictDDLByDivision();\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedDivision=='0') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">District <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"districtList\" placeholder=\"Select District\" [(ngModel)]=\"selectedDistrict\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"\r\n\t\t\t\t\t\t\t\t\t\t(onChange)=\"fillThanaDDLByDistrict();\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(selectedDistrict=='0') && error \" severity=\"error\"\r\n\t\t\t\t\t\t\t\t\t   text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Thana <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"thanaList\" placeholder=\"Select Thana\" [(ngModel)]=\"regInfoModel.locationCode\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.locationCode==null || regInfoModel.locationCode=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Trade Licence No <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.tradeLicenseNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.tradeLicenseNo==null || regInfoModel.tradeLicenseNo=='')\r\n\t\t\t\t\t\t\t\t   && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">TIN</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.tinNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-4\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Vat Reg No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.vatRegNo\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\t\t</div>\r\n\r\n\t\t<!--Nominee and Introducer-->\r\n\t\t<div *ngIf=\"activeIndex==2\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Nominee Information</h6>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Name</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t\t<!--<p-message *ngIf=\"(regInfoModel.firstNomineeName==null || regInfoModel.firstNomineeName=='')  && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>-->\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Nominee Contact No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.nomineeConNo\" [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Age</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeAge\" pInputText [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Relation </label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"relationList\" [(ngModel)]=\"regInfoModel.relationFirstNominee\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [showClear]=\"true\" placeholder=\"Select Relation\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t</div>\r\n\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Ratio</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.partOfFirst\" [disabled]=\"true\" [pKeyFilter]=\"positveNumber\" pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Address</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.firstNomineeAddress\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</p-card>\r\n\r\n\t\t</div>\r\n\t\t<!--Bank info-->\r\n\t\t<div *ngIf=\"activeIndex==3\">\r\n\t\t\t<p-card [style]=\"{'margin-bottom':'20px'}\">\r\n\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t<h6 class=\"form-header\">Bank Information</h6>\r\n\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label-dd\">Branch Name <span class=\"mandatory\">*</span></label>\r\n\t\t\t\t\t\t\t<p-dropdown [options]=\"bankBranchList\" [(ngModel)]=\"regInfoModel.branchCode\" [showClear]=\"true\"\r\n\t\t\t\t\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" placeholder=\"Select Branch\"\r\n\t\t\t\t\t\t\t\t\t\t[style]=\"{display: 'grid'}\" [disabled]=\"isRegPermit\"></p-dropdown>\r\n\t\t\t\t\t\t\t<p-message *ngIf=\"(regInfoModel.branchCode==null || regInfoModel.branchCode=='') && error \"\r\n\t\t\t\t\t\t\t\t\t   severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<div class=\"p-grid\">\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Account Name</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.accountName\" uppercase pInputText id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t<div class=\"p-col-6\">\r\n\t\t\t\t\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Account No</label>\r\n\t\t\t\t\t\t\t<input autocomplete=\"off\" type=\"text\" class=\"form-control\" [(ngModel)]=\"regInfoModel.bankAcNo\" [pKeyFilter]=\"positveNumber\" id=\"float-input\">\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t</p-card>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\r\n</fieldset>\r\n\r\n<app-generic-stepper-form-action [activeIndex]=\"activeIndex\" [maxIndex]=\"4\" (onStepAhead)=\"onStepAhead($event)\" (onStepBack)=\"onStepBack()\"></app-generic-stepper-form-action>\r\n\r\n\r\n<!--<div class=\"event-buttons\">\r\n\t<p-card>\r\n\t\t<div class=\"p-grid\">\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-danger btn-block btn-reverse\" (click)=\"cancel()\">Cancel</button>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-9\">\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-warning btn-block btn-reverse\" *ngIf=\"activeIndex!=0\" (click)=\"onStepBack()\">Back</button>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"p-col-1\">\r\n\t\t\t\t<button class=\"btn btn-success btn-block btn-reverse\" (click)=\"onStepAhead()\"><span *ngIf=\"activeIndex<3\">Next</span><span *ngIf=\"activeIndex==3\">Save</span></button>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</p-card>\r\n</div>-->\r\n"
 
 /***/ }),
 
@@ -12384,7 +12391,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<generic-grid [gridConfig]=\"gridConfig\">\r\n\t<div *ngIf=\"isAllowUser\" class=\"p-grid\">\r\n\t\t<div class=\"p-col-3\">\r\n\t\t\t<input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important\" (change)=\"onCustomerSearch()\" placeholder=\"OK Account No\" [(ngModel)]=\"regInfoModel.mphone\" pInputText>\r\n\t\t</div>\r\n\t\t<div class=\"p-col-3\">\r\n\t\t\t<button type=\"button\"  class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onCustomerSearch()\"><i class=\"fas fa-search\"></i></button>\r\n\t\t</div>\r\n\t</div>\r\n</generic-grid>"
+module.exports = "<generic-grid [gridConfig]=\"gridConfig\">\r\n\t<div *ngIf=\"isAllowUser\" class=\"p-grid\">\r\n\t\t<div class=\"p-col-3\">\r\n\t\t\t<input class=\"form-control\" style=\"border:none; min-height: 70% !important;font-size: 150% !important\" (change)=\"onCustomerSearch()\" placeholder=\"OK Mobile No\" [(ngModel)]=\"regInfoModel.mphone\" pInputText>\r\n\t\t</div>\r\n\t\t<div class=\"p-col-3\">\r\n\t\t\t<button type=\"button\"  class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"onCustomerSearch()\"><i class=\"fas fa-search\"></i></button>\r\n\t\t</div>\r\n\t</div>\r\n</generic-grid>"
 
 /***/ }),
 
@@ -15360,7 +15367,8 @@ var MerchantAddoreditComponent = /** @class */ (function () {
         ];
         this.mCatList = [
             { label: 'Individual Merchant', value: 'M' },
-            { label: 'Chain (Parent) Merchant', value: 'C' }
+            { label: 'Chain (Parent) Merchant', value: 'C' },
+            { label: 'E-Commerce Merchant', value: 'E' }
         ];
         this.mAreaList = [
             { label: 'Urban', value: 'Urban' },
@@ -15954,7 +15962,7 @@ var MerchantConfigComponent = /** @class */ (function () {
     MerchantConfigComponent.prototype.ngOnInit = function () {
         this.getAllMerchant();
         this.smsStatusList = [
-            { label: 'Yes', value: 'Y' },
+            { label: 'Yes', value: 'A' },
             { label: 'No', value: 'I' }
         ];
         this.statusList = [
@@ -18404,7 +18412,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-elements\">\r\n    <p-card [style]=\"{'margin-bottom':'5px'}\">\r\n        <div class=\"form-group\">\r\n            <h6 class=\"form-header\">End of Day Process</h6>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n                    <span class=\"ui-float-label\">\r\n                        <input class=\"form-control\" placement=\"down\" pInputText id=\"float-input\" [disabled]=\"true\"\r\n                               [(ngModel)]=\"todayDate\" ngbDatepicker #d=\"ngbDatepicker\" (click)=\"d.toggle()\">\r\n                        <label for=\"float-input input-lg\">Today Date <span class=\"mandatory\">*</span></label>\r\n                    </span>\r\n                    <p-message *ngIf=\"(todayDate.year==null || todayDate.year=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n                    <button type=\"button\" class=\"btn btn-blue btn-sm btn-block btn-reverse\"\r\n                            (click)=\"executeEOD()\">\r\n                        Execute\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </p-card>\r\n\r\n\r\n</div>"
+module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-elements\">\r\n    <p-card [style]=\"{'margin-bottom':'5px'}\">\r\n        <div class=\"form-group\">\r\n            <h6 class=\"form-header\">End of Day Process</h6>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n                    <!--<span class=\"ui-float-label\">\r\n                        <input class=\"form-control\" placement=\"down\" pInputText id=\"float-input\" [disabled]=\"true\"\r\n                        [(ngModel)]=\"todayDate\" ngbDatepicker #d=\"ngbDatepicker\" (click)=\"d.toggle()\">\r\n\r\n                        <label for=\"float-input input-lg\">Today Date <span class=\"mandatory\">*</span></label>\r\n                    </span>\r\n                    <p-message *ngIf=\"(todayDate.year==null || todayDate.year=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>-->\r\n                    <div class=\"form-group row\">\r\n                        <label class=\"col-sm-5 col-form-label\">Last Eod Date & time</label>\r\n                        <div class=\"col-sm-7\">\r\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"lastEodDateTime\" [disabled]=\"true\">\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <br />\r\n                    <button type=\"button\" class=\"btn btn-blue btn-sm btn-block btn-reverse\"\r\n                            (click)=\"executeEOD()\">\r\n                        Execute\r\n                    </button>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </p-card>\r\n\r\n\r\n</div>"
 
 /***/ }),
 
@@ -18456,7 +18464,14 @@ var EodComponent = /** @class */ (function () {
         });
     }
     EodComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.todayDate = this.mfsUtilityService.getFullDateByMonthParam(0, 1);
+        this.processService.GetLastEodDateTime().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])())
+            .subscribe(function (data) {
+            _this.lastEodDateTime = data;
+        }, function (error) {
+            console.log(error);
+        });
     };
     EodComponent.prototype.executeEOD = function () {
         var _this = this;
@@ -18465,14 +18480,16 @@ var EodComponent = /** @class */ (function () {
             this.userName = this.currentUserModel.user.username;
             this.processService.executeEOD(this.mfsUtilityService.renderDate(this.todayDate, true), this.userName).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["first"])())
                 .subscribe(function (data) {
-                if (data == 'SUCCESS')
-                    _this.messageService.add({ severity: 'success', summary: 'EOD successfully', detail: 'EOD is done successfully' });
+                if (data.substring(0, 36) == 'EOD Process Was Successfully Done By')
+                    _this.messageService.add({ severity: 'success', summary: 'EOD successfully done', detail: data.toString() });
+                else if (data == 'EOD Process Was Already Successfully Done Till Today.')
+                    _this.messageService.add({ severity: 'success', summary: 'EOD already done', detail: data.toString() });
                 else
                     _this.messageService.add({ severity: 'error', summary: 'Something wrong', detail: 'EOD is not successful' });
                 setTimeout(function () {
                     _this.isLoading = false;
                     location.reload();
-                }, 100);
+                }, 20000);
             }, function (error) {
                 console.log(error);
             });
@@ -19161,18 +19178,21 @@ var DpdcDescoComponent = /** @class */ (function () {
         this.model = {};
     }
     DpdcDescoComponent.prototype.ngOnInit = function () {
-        console.log("Hello FROM Dpdc");
         this.utilityList = [
             { label: 'DPDC', value: 'dpdc' },
-            { label: 'DESCO', value: 'desco' }
+            { label: 'DESCO', value: 'desco' },
+            { label: 'WASA', value: 'wasa' },
+            { label: 'JALALABAD GAS', value: 'jgtd' }
         ];
         this.gatewayList = [
             { label: 'USSD', value: 'U' },
-            { label: 'APP', value: 'A' }
+            { label: 'APP', value: 'A' },
+            { label: 'ALL', value: 'All' }
         ];
         this.catTypeList = [
             { label: 'Agent', value: 'A' },
-            { label: 'Customer', value: 'C' }
+            { label: 'Customer', value: 'C' },
+            { label: 'ALL', value: 'All' }
         ];
         this.dateTypeList = [
             { label: 'EOD Date', value: 'eod' },
@@ -19218,6 +19238,132 @@ var DpdcDescoComponent = /** @class */ (function () {
             _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbDatepickerConfig"]])
     ], DpdcDescoComponent);
     return DpdcDescoComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.css":
+/*!************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.css ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcmVwb3J0cy9yZXBvcnQtY29sbGVjdGlvbi9lbXMvZWR1bWFuLWJpbGwvZWR1bWFuLWJpbGwuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.html":
+/*!*************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.html ***!
+  \*************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"form-group\">\r\n\t<div class=\"p-grid\">\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Category Type<span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"catTypeList\" placeholder=\"Select Category\" [(ngModel)]=\"model.catType\"\r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Student Id</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"model.studentId\" pInputText pKeyFilter=\"int\" />\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input input-lg\" class=\"col-form-label\">Institute Id</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input type=\"text\" class=\"form-control form-input\" [(ngModel)]=\"model.instituteId\" pInputText pKeyFilter=\"int\" />\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"p-grid\">\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">Select Date Type <span class=\"mandatory\">*</span></label>\r\n\t\t\t<p-dropdown [options]=\"dateTypeList\" placeholder=\"Select Date Type\" [(ngModel)]=\"model.dateType\"\r\n\t\t\t\t\t\t[filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n\t\t</div>\r\n\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">From</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From\" [disabled]=\"isDateDisabled\"\r\n\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n\t\t\t\t\t   id=\"float-input\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<div class=\"p-col-4\">\r\n\t\t\t<label for=\"float-input\" class=\"col-form-label\">To</label>\r\n\t\t\t<div class=\"input-group\">\r\n\t\t\t\t<input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To\" [disabled]=\"isDateDisabled\"\r\n\t\t\t\t\t   name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n\t\t\t\t\t   (click)=\"h.toggle()\" id=\"float-input\">\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t</div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.ts":
+/*!***********************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.ts ***!
+  \***********************************************************************************************/
+/*! exports provided: EdumanBillComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EdumanBillComponent", function() { return EdumanBillComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/mfs-utility.service */ "./src/app/services/mfs-utility.service.ts");
+/* harmony import */ var src_app_services_report_kyc_report_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/report/kyc-report.service */ "./src/app/services/report/kyc-report.service.ts");
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ "./node_modules/@ng-bootstrap/ng-bootstrap/fesm5/ng-bootstrap.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var EdumanBillComponent = /** @class */ (function () {
+    function EdumanBillComponent(mfsUtilityService, kycReportService, ngbDatepickerConfig) {
+        this.mfsUtilityService = mfsUtilityService;
+        this.kycReportService = kycReportService;
+        this.ngbDatepickerConfig = ngbDatepickerConfig;
+        this.isDateDisabled = false;
+        ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
+        var currentDate = new Date();
+        ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
+        this.model = {};
+    }
+    EdumanBillComponent.prototype.ngOnInit = function () {
+        this.catTypeList = [
+            { label: 'Agent', value: 'A' },
+            { label: 'Customer', value: 'C' },
+            { label: 'ALL', value: 'All' }
+        ];
+        this.dateTypeList = [
+            { label: 'EOD Date', value: 'eod' },
+            { label: 'Transaction Date', value: 'trans' }
+        ];
+    };
+    EdumanBillComponent.prototype.getReportParam = function () {
+        if (this.validate()) {
+            var obj = {};
+            if (this.model.fromDate && this.model.toDate) {
+                obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
+                obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
+            }
+            if (!this.model.studentId) {
+                obj.studentId = null;
+            }
+            else {
+                obj.studentId = this.model.studentId;
+            }
+            if (!this.model.instituteId) {
+                obj.instituteId = null;
+            }
+            else {
+                obj.instituteId = this.model.instituteId;
+            }
+            obj.catType = this.model.catType;
+            obj.dateType = this.model.dateType;
+            return obj;
+        }
+        else {
+            var obj = {};
+            obj.isNotValidated = true;
+        }
+        return this.model;
+    };
+    EdumanBillComponent.prototype.validate = function () {
+        if (!this.model.catType || !this.model.dateType ||
+            !this.model.fromDate || !this.model.toDate) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+    EdumanBillComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-eduman-bill',
+            template: __webpack_require__(/*! ./eduman-bill.component.html */ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.html"),
+            styles: [__webpack_require__(/*! ./eduman-bill.component.css */ "./src/app/components/reports/report-collection/ems/eduman-bill/eduman-bill.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_1__["MfsUtilityService"],
+            src_app_services_report_kyc_report_service__WEBPACK_IMPORTED_MODULE_2__["KycReportService"],
+            _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_3__["NgbDatepickerConfig"]])
+    ], EdumanBillComponent);
+    return EdumanBillComponent;
 }());
 
 
@@ -20198,6 +20344,128 @@ var FundTransferComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.css":
+/*!*********************************************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.css ***!
+  \*********************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvcmVwb3J0cy9yZXBvcnQtY29sbGVjdGlvbi90cmFuc2FjdGlvbi10eXBlL3BhcnRpY3VsYXItd2lzZS10cmFuc2FjdGlvbi9wYXJ0aWN1bGFyLXdpc2UtdHJhbnNhY3Rpb24uY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.html":
+/*!**********************************************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.html ***!
+  \**********************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n<div class=\"form-group\">\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">From Date<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"From Date\"\r\n                       name=\"dp\" [(ngModel)]=\"model.fromDate\" ngbDatepicker #g=\"ngbDatepicker\" (click)=\"g.toggle()\"\r\n                       id=\"float-input\">\r\n            </div>\r\n        </div>\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">To Date<span class=\"mandatory\">*</span></label>\r\n            <div class=\"input-group\">\r\n                <input class=\"form-control\" placement=\"down\" [readonly]=\"true\" placeholder=\"To Date\"\r\n                       name=\"dp\" [(ngModel)]=\"model.toDate\" ngbDatepicker #h=\"ngbDatepicker\"\r\n                       (click)=\"h.toggle()\" id=\"float-input\">\r\n            </div>\r\n        </div>\r\n\r\n\r\n    </div>\r\n    <div class=\"p-grid\">\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Particulars<span class=\"mandatory\">*</span></label>\r\n            <p-dropdown [options]=\"particularList\" placeholder=\"Select Particular\" [(ngModel)]=\"model.particular\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\" (onChange)=\"loadTrasaction()\"></p-dropdown>\r\n            <p-message *ngIf=\"(model.particular==null || model.particular=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n        </div>\r\n        <div class=\"p-col-6\">\r\n            <label for=\"float-input\" class=\"col-form-label\">Transaction </label>\r\n            <p-dropdown [options]=\"transactionDDL\" placeholder=\"Select Transaction\" [(ngModel)]=\"model.transaction\"\r\n                        [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n\r\n        </div>\r\n\r\n\r\n\r\n\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.ts":
+/*!********************************************************************************************************************************************!*\
+  !*** ./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.ts ***!
+  \********************************************************************************************************************************************/
+/*! exports provided: ParticularWiseTransactionComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ParticularWiseTransactionComponent", function() { return ParticularWiseTransactionComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var src_app_services_report_transaction_report_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/report/transaction-report.service */ "./src/app/services/report/transaction-report.service.ts");
+/* harmony import */ var src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/mfs-utility.service */ "./src/app/services/mfs-utility.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ParticularWiseTransactionComponent = /** @class */ (function () {
+    function ParticularWiseTransactionComponent(transactionReportService, mfsUtilityService) {
+        this.transactionReportService = transactionReportService;
+        this.mfsUtilityService = mfsUtilityService;
+        this.isLoading = false;
+        this.error = false;
+        this.model = {};
+    }
+    ParticularWiseTransactionComponent.prototype.ngOnInit = function () {
+        this.loadParticulars();
+    };
+    ParticularWiseTransactionComponent.prototype.loadParticulars = function () {
+        var _this = this;
+        this.isLoading = true;
+        this.transactionReportService.getParticularDDL()
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["first"])())
+            .subscribe(function (data) {
+            _this.isLoading = false;
+            _this.particularList = data;
+        }, function (error) {
+            console.log(error);
+        });
+    };
+    ParticularWiseTransactionComponent.prototype.loadTrasaction = function () {
+        var _this = this;
+        this.isLoading = true;
+        this.transactionReportService.getTransactionDDLByParticular(this.model.particular)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_1__["first"])())
+            .subscribe(function (data) {
+            _this.isLoading = false;
+            _this.transactionDDL = data;
+        }, function (error) {
+            console.log(error);
+        });
+    };
+    ParticularWiseTransactionComponent.prototype.getReportParam = function () {
+        if (this.validate()) {
+            var obj = {};
+            obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
+            obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
+            obj.particular = this.model.particular;
+            obj.transaction = this.model.transaction ? this.model.transaction : '';
+            return obj;
+        }
+        else {
+            var obj = {};
+            obj.isNotValidated = true;
+        }
+    };
+    ParticularWiseTransactionComponent.prototype.validate = function () {
+        if (!this.model.fromDate || !this.model.toDate
+            || !this.model.particular || this.model.particular == '0') {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+    ParticularWiseTransactionComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-particular-wise-transaction',
+            template: __webpack_require__(/*! ./particular-wise-transaction.component.html */ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.html"),
+            styles: [__webpack_require__(/*! ./particular-wise-transaction.component.css */ "./src/app/components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component.css")]
+        }),
+        __metadata("design:paramtypes", [src_app_services_report_transaction_report_service__WEBPACK_IMPORTED_MODULE_2__["TransactionReportService"], src_app_services_mfs_utility_service__WEBPACK_IMPORTED_MODULE_3__["MfsUtilityService"]])
+    ], ParticularWiseTransactionComponent);
+    return ParticularWiseTransactionComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/components/reports/report-collection/transaction-type/transaction/transaction.component.css":
 /*!*************************************************************************************************************!*\
   !*** ./src/app/components/reports/report-collection/transaction-type/transaction/transaction.component.css ***!
@@ -20372,7 +20640,7 @@ module.exports = ".report-description {\r\n    text-align: center;\r\n    font-s
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n    <div class=\"p-col-12\">\r\n        <p-card>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-2\">\r\n                    <button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n                </div>\r\n                <div class=\"p-col-7\">\r\n                    <h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <h6 class=\"report-description\">\r\n                        {{model.ReportDescription}}\r\n                    </h6>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <div class=\"p-grid\">\r\n                        <div class=\"p-col-12\">\r\n                            <!--<div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">-->\r\n\t\t\t\t\t\t\t<div [ngSwitch]=\"model.CallingApi\" *ngIf=\"model.CallingApi\">\r\n\t\t\t\t\t\t\t\t<!--<div *ngSwitchCase=\"1\">\r\n\t\t<transaction-history-report #form></transaction-history-report>\r\n\t</div>\r\n\t<div *ngSwitchCase=\"13\">\r\n\t\t<transaction-history-report #form></transaction-history-report>\r\n\t</div>-->\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/GenerateAccountStatement'\">\r\n\t\t\t\t\t\t\t\t\t<account-statement-report #form></account-statement-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/CurrentAffairsStatement'\">\r\n\t\t\t\t\t\t\t\t\t<current-affairs-statement #form></current-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/ChartOfAccounts'\">\r\n\t\t\t\t\t\t\t\t\t<chart-of-accounts #form></chart-of-accounts>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/EODAffairsStatement'\">\r\n\t\t\t\t\t\t\t\t\t<eod-affairs-statement #form></eod-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReport'\">\r\n\t\t\t\t\t\t\t\t\t<registration-report #form></registration-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReportSummary'\">\r\n\t\t\t\t\t\t\t\t\t<app-registration-summary #form></app-registration-summary>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/AgentInformation'\">\r\n\t\t\t\t\t\t\t\t\t<app-agent-information #form></app-agent-information>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/GLStatement'\">\r\n\t\t\t\t\t\t\t\t\t<app-gl-statement #form></app-gl-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/KycBalance'\">\r\n\t\t\t\t\t\t\t\t\t<app-kyc-balance #form></app-kyc-balance>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/TransactionSummaryOrDtl'\">\r\n\t\t\t\t\t\t\t\t\t<app-transaction #form></app-transaction>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/FundTransfer'\">\r\n\t\t\t\t\t\t\t\t\t<app-fund-transfer #form></app-fund-transfer>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/DpdcDescoReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-dpdc-desco #form></app-dpdc-desco>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/BranchCashinCashout'\">\r\n\t\t\t\t\t\t\t\t\t<app-branch-cashin-cashout #form></app-branch-cashin-cashout>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymentReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-credit-card-report #form></app-credit-card-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymenBeftnInfotReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-credit-beftn #form></app-credit-beftn>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n                </div>\r\n            </div>\r\n        </p-card>\r\n    </div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
+module.exports = "<mfs-pdf-viewer [src]=\"pdf\" #mfsPdfViewer></mfs-pdf-viewer>\r\n<div class=\"p-grid\">\r\n    <div class=\"p-col-12\">\r\n        <p-card>\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-2\">\r\n                    <button class=\"btn btn-danger btn-reverse btn-sm btn-block\" (click)=\"cancel()\"><i class=\"fas fa-caret-left\"></i> Back</button>\r\n                </div>\r\n                <div class=\"p-col-7\">\r\n                    <h5 style=\"text-align:center\">{{model.ReportName}}</h5>\r\n                </div>\r\n                <div class=\"p-col-3\">\r\n                    <p-selectButton [options]=\"fileOptionList\" [(ngModel)]=\"reportObject.fileType\"></p-selectButton>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <h6 class=\"report-description\">\r\n                        {{model.ReportDescription}}\r\n                    </h6>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <div class=\"p-grid\">\r\n                        <div class=\"p-col-12\">\r\n                            <!--<div [ngSwitch]=\"model.Id\" *ngIf=\"model.Id\">-->\r\n\t\t\t\t\t\t\t<div [ngSwitch]=\"model.CallingApi\" *ngIf=\"model.CallingApi\">\r\n\t\t\t\t\t\t\t\t<!--<div *ngSwitchCase=\"1\">\r\n\t\t<transaction-history-report #form></transaction-history-report>\r\n\t</div>\r\n\t<div *ngSwitchCase=\"13\">\r\n\t\t<transaction-history-report #form></transaction-history-report>\r\n\t</div>-->\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/GenerateAccountStatement'\">\r\n\t\t\t\t\t\t\t\t\t<account-statement-report #form></account-statement-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/CurrentAffairsStatement'\">\r\n\t\t\t\t\t\t\t\t\t<current-affairs-statement #form></current-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/ChartOfAccounts'\">\r\n\t\t\t\t\t\t\t\t\t<chart-of-accounts #form></chart-of-accounts>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/EODAffairsStatement'\">\r\n\t\t\t\t\t\t\t\t\t<eod-affairs-statement #form></eod-affairs-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReport'\">\r\n\t\t\t\t\t\t\t\t\t<registration-report #form></registration-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReportSummary'\">\r\n\t\t\t\t\t\t\t\t\t<app-registration-summary #form></app-registration-summary>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/AgentInformation'\">\r\n\t\t\t\t\t\t\t\t\t<app-agent-information #form></app-agent-information>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/GLStatement'\">\r\n\t\t\t\t\t\t\t\t\t<app-gl-statement #form></app-gl-statement>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Kyc/KycBalance'\">\r\n\t\t\t\t\t\t\t\t\t<app-kyc-balance #form></app-kyc-balance>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/TransactionSummaryOrDtl'\">\r\n\t\t\t\t\t\t\t\t\t<app-transaction #form></app-transaction>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/FundTransfer'\">\r\n\t\t\t\t\t\t\t\t\t<app-fund-transfer #form></app-fund-transfer>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/DpdcDescoReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-dpdc-desco #form></app-dpdc-desco>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/BranchCashinCashout'\">\r\n\t\t\t\t\t\t\t\t\t<app-branch-cashin-cashout #form></app-branch-cashin-cashout>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymentReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-credit-card-report #form></app-credit-card-report>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/CreditPaymenBeftnInfotReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-credit-beftn #form></app-credit-beftn>\r\n\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/Transaction/ParticularWiseTransaction'\">\r\n\t\t\t\t\t\t\t\t\t<app-particular-wise-transaction #form></app-particular-wise-transaction>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div *ngSwitchCase=\"'../OneMFS.ReportingApiServer/api/BillCollection/EdumanBillReport'\">\r\n\t\t\t\t\t\t\t\t\t<app-eduman-bill #form></app-eduman-bill>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <hr />\r\n                </div>\r\n                <div class=\"p-col-12\">\r\n                    <button type=\"button\" class=\"btn btn-blue btn-sm btn-reverse btn-block\" (click)=\"generateReport()\">Generate Report <i class=\"fas fa-download\"></i></button>\r\n                </div>\r\n            </div>\r\n        </p-card>\r\n    </div>\r\n</div>\r\n<mfs-loader *ngIf=\"isLoading\"></mfs-loader>\r\n"
 
 /***/ }),
 
@@ -24488,7 +24756,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  blink-topup-stock-entry works!\n</p>\n"
+module.exports = "<div class=\"form-elements\">\r\n    <p-card [style]=\"{'margin-bottom':'20px'}\">\r\n        <div class=\"form-group\">\r\n            <h6 class=\"form-header\"><i class=\"fa fa-list-alt\" aria-hidden=\"true\"></i> Banglalink Topup Stock Entry</h6>\r\n            <p-fieldset legend=\"\">\r\n                <div class=\"p-grid\">\r\n                    <div class=\"p-col-1\">\r\n\r\n                    </div>\r\n                    <div class=\"p-col-3\">\r\n                        <div style=\"text-align:center\">\r\n                            <label>GL Code</label>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"p-col-5\">\r\n                        <div style=\"text-align:center\">\r\n                            <label>GL Name</label>\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"p-col-3\">\r\n                        <div style=\"text-align:right\">\r\n                            <label style=\"text-align:center\">Amount</label>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n                <div class=\"p-grid\">\r\n                    <div class=\"p-col-1\">\r\n                    </div>\r\n                    <!--<div class=\"p-col-8\">\r\n                        <div>\r\n                            <p-dropdown [options]=\"glList\" [(ngModel)]=\"fundTransferModel.toSysCoaCode\" placeholder=\"Select GL\" [filter]=\"true\" filterBy=\"label,value.name\" [style]=\"{display: 'grid'}\"></p-dropdown>\r\n                            <p-message *ngIf=\"(fundTransferModel.toSysCoaCode==null || fundTransferModel.toSysCoaCode=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                        </div>\r\n                    </div>-->\r\n                    <div class=\"p-col-3\">\r\n                        <div>\r\n                            <input type=\"text\" style=\"text-align:center\" class=\"form-control\" [(ngModel)]=\"blinkTopupStockEntryModel.glCode\" [disabled]=\"true\">\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"p-col-5\">\r\n                        <div>\r\n                            <input type=\"text\" style=\"text-align:center\" class=\"form-control\" [(ngModel)]=\"blinkTopupStockEntryModel.glName\" [disabled]=\"true\">\r\n                        </div>\r\n                    </div>\r\n                    <div class=\"p-col-3\">\r\n                        <div>\r\n                            <input type=\"text\" style=\"text-align:right\" class=\"form-control\" [(ngModel)]=\"blinkTopupStockEntryModel.amount\" [disabled]=\"true\">\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </p-fieldset>\r\n\r\n            <br />\r\n\r\n            <div class=\"p-grid\">\r\n                <div class=\"p-col-4\">\r\n                    <div class=\"form-group row\">\r\n                        <label class=\"col-sm-4 col-form-label\">Transfer Amount<span class=\"mandatory\">*</span></label>\r\n                        <div class=\"col-sm-8\">\r\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"blinkTopupStockEntryModel.transactionAmt\" id=\"PayAmt\" pKeyFilter=\"int\" (change)=\"GetTransDtlForRobiByPayAmount();\">\r\n                            <p-message *ngIf=\"(blinkTopupStockEntryModel.transactionAmt==null || blinkTopupStockEntryModel.transactionAmt=='0' || blinkTopupStockEntryModel.transactionAmt=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"p-col-4\">\r\n\r\n                </div>\r\n                <div class=\"p-col-4\">\r\n                    <div class=\"form-group row\">\r\n                        <label class=\"col-sm-4 col-form-label\">Discount ratio <span class=\"mandatory\">*</span></label>\r\n                        <div class=\"col-sm-8\">\r\n                            <input type=\"text\" class=\"form-control\" [(ngModel)]=\"blinkTopupStockEntryModel.discountRatio\" (change)=\"GetTransDtlForRobiByPayAmount();\">\r\n                            <p-message *ngIf=\"(blinkTopupStockEntryModel.discountRatio==null || blinkTopupStockEntryModel.discountRatio=='0'|| blinkTopupStockEntryModel.discountRatio=='') && error \" severity=\"error\" text=\"Cannot be left blank\"></p-message>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n\r\n            </div>\r\n\r\n            <p-fieldset legend=\"Transaction Details\">\r\n\r\n                <p-table [value]=\"vMTransactionDetailList\">\r\n                    <ng-template pTemplate=\"header\">\r\n                        <tr>\r\n                            <th *ngFor=\"let col of cols\" style=\"text-align:center\">\r\n                                {{col.header}}\r\n                            </th>\r\n                        </tr>\r\n                    </ng-template>\r\n                    <ng-template pTemplate=\"body\" let-rowData>\r\n                        <tr>\r\n                            <td *ngFor=\"let col of cols\" style=\"text-align:right\">\r\n                                <div [ngSwitch]=\"col.template.name\">\r\n                                    <p *ngSwitchCase=\"'money'\">\r\n                                        <span [innerHtml]=\"rowData[col.field] | number:'1.2-2' | bdtCurrency\"></span>\r\n                                    </p>\r\n                                </div>\r\n                                <span *ngIf=\"col.template=='none'\">{{rowData[col.field]}}</span>\r\n                            </td>\r\n                        </tr>\r\n                    </ng-template>\r\n                </p-table>\r\n                <div class=\"p-grid\" style=\"margin:auto\">\r\n                    <div class=\"p-col-4\">\r\n\r\n                    </div>\r\n                    <div class=\"p-col-8\">\r\n                        <div class=\"form-group row\">\r\n                            <label class=\"col-sm-2 col-form-label single-line\">In Words :</label>\r\n                            <div class=\"col-sm-10\">\r\n\r\n                                <input type=\"text\" class=\"form-control\" *ngIf=\"vMTransactionDetailList && vMTransactionDetailList.length > 5\" [(ngModel)]=\"vMTransactionDetailList[6].inWords\" [disabled]=\"true\">\r\n\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </p-fieldset>\r\n\r\n\r\n\r\n\r\n\r\n        </div>\r\n    </p-card>\r\n</div>\r\n\r\n<!--<app-generic-form-action [isEditMode]=\"isEditMode\" (onSave)=\"saveMerchant($event)\" (onDelete)=\"onDeleteMerchant($event)\"></app-generic-form-action>-->\r\n<app-generic-form-action [isEditMode]=\"isEditMode\" (onSave)=\"saveBlinkTopupStockEntry($event)\" [disableAction]=\"isSaveDisable\"></app-generic-form-action>\r\n"
 
 /***/ }),
 
@@ -24503,6 +24771,13 @@ module.exports = "<p>\n  blink-topup-stock-entry works!\n</p>\n"
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BlinkTopupStockEntryComponent", function() { return BlinkTopupStockEntryComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var src_app_services_transaction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/transaction */ "./src/app/services/transaction/index.ts");
+/* harmony import */ var src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/mfs-setting.service */ "./src/app/services/mfs-setting.service.ts");
+/* harmony import */ var src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! src/app/services/grid-setting.service */ "./src/app/services/grid-setting.service.ts");
+/* harmony import */ var primeng_api__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! primeng/api */ "./node_modules/primeng/api.js");
+/* harmony import */ var primeng_api__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(primeng_api__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var src_app_shared_services__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! src/app/shared/_services */ "./src/app/shared/_services/index.ts");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24512,11 +24787,167 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 var __metadata = (undefined && undefined.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (undefined && undefined.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+
+
+
+
 
 var BlinkTopupStockEntryComponent = /** @class */ (function () {
-    function BlinkTopupStockEntryComponent() {
+    function BlinkTopupStockEntryComponent(fundTransferService, mfsSettingService, gridSettingService, authService, messageService) {
+        var _this = this;
+        this.fundTransferService = fundTransferService;
+        this.mfsSettingService = mfsSettingService;
+        this.gridSettingService = gridSettingService;
+        this.authService = authService;
+        this.messageService = messageService;
+        this.blinkTopupStockEntryModel = {};
+        this.currentUserModel = {};
+        this.entryBranchCode = "";
+        this.isEditMode = false;
+        this.isRegistrationPermitted = false;
+        this.msgs = [];
+        this.error = false;
+        this.vMTransactionDetails = {};
+        this.isLoading = false;
+        this.isSaveDisable = true;
+        this.gridConfig = {};
+        this.authService.currentUser.subscribe(function (x) {
+            _this.currentUserModel = x;
+        });
     }
     BlinkTopupStockEntryComponent.prototype.ngOnInit = function () {
+        this.blinkTopupStockEntryModel.discountRatio = 0.9910802775024777;
+        this.initialiseGridConfig();
+        this.getGlDetailsForBlink();
+    };
+    BlinkTopupStockEntryComponent.prototype.getGlDetailsForBlink = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.fundTransferService.getGlDetailsForBlink()
+                    .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])())
+                    .subscribe(function (data) {
+                    _this.blinkTopupStockEntryModel.glCode = data.GLCODE;
+                    _this.blinkTopupStockEntryModel.glName = data.GLNAME;
+                    _this.blinkTopupStockEntryModel.fromSysCoaCode = data.SYSCOACODE;
+                    _this.blinkTopupStockEntryModel.amount = data.AMOUNT;
+                }, function (error) {
+                    console.log(error);
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    BlinkTopupStockEntryComponent.prototype.initialiseGridConfig = function () {
+        var _this = this;
+        this.blinkTopupStockEntryModel.hotkey = "LBTOP TO GL";
+        this.isLoading = true;
+        this.fundTransferService.GetTransDtlForBlinkByPayAmount(this.blinkTopupStockEntryModel)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])())
+            .subscribe(function (data) {
+            _this.isLoading = false;
+            if (data != null) {
+                _this.vMTransactionDetailList = data;
+                _this.blinkTopupStockEntryModel.rowThreeFour = data[2].debitAmount;
+                _this.blinkTopupStockEntryModel.rowFiveSix = data[4].debitAmount;
+                if (data[0].glCode != '') {
+                    _this.isSaveDisable = false;
+                }
+                else {
+                    _this.isSaveDisable = true;
+                }
+            }
+        }, function (error) {
+            console.log(error);
+        });
+        this.cols = [
+            { field: 'glCode', header: 'GL Code', width: '15%', template: 'none' },
+            { field: 'glName', header: 'GL Name', width: '45%', filter: this.gridSettingService.getFilterableNone(), template: 'none' },
+            { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() },
+            { field: 'creditAmount', header: 'Credit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() }
+        ];
+    };
+    ;
+    BlinkTopupStockEntryComponent.prototype.GetTransDtlForRobiByPayAmount = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                if (!this.blinkTopupStockEntryModel.transactionAmt || this.blinkTopupStockEntryModel.transactionAmt == '0' ||
+                    !this.blinkTopupStockEntryModel.discountRatio || this.blinkTopupStockEntryModel.discountRatio == '0') {
+                    this.msgs = [];
+                    this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                    this.error = true;
+                }
+                else {
+                    this.initialiseGridConfig();
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    BlinkTopupStockEntryComponent.prototype.saveBlinkTopupStockEntry = function (event) {
+        var _this = this;
+        if (!this.blinkTopupStockEntryModel.glCode || this.blinkTopupStockEntryModel.glCode == '' ||
+            !this.blinkTopupStockEntryModel.transactionAmt || this.blinkTopupStockEntryModel.transactionAmt == '0' ||
+            !this.blinkTopupStockEntryModel.discountRatio || this.blinkTopupStockEntryModel.discountRatio == '0') {
+            this.msgs = [];
+            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+            this.error = true;
+        }
+        else {
+            this.blinkTopupStockEntryModel.entryBrCode = this.currentUserModel.user.branchCode;
+            this.blinkTopupStockEntryModel.entryUser = this.currentUserModel.user.username;
+            this.blinkTopupStockEntryModel.fromCatId = "LBTOP";
+            this.blinkTopupStockEntryModel.toCatId = "GL";
+            this.blinkTopupStockEntryModel.hotkey = "LBTOP TO GL"; //for data base save     
+            this.isLoading = true;
+            this.fundTransferService.saveBlinkTopupStockEntry(this.blinkTopupStockEntryModel).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["first"])())
+                .subscribe(function (data) {
+                _this.messageService.add({ severity: 'success', summary: 'Save Successfully', detail: 'Banglalink TopUp stock entry added' });
+                setTimeout(function () {
+                    _this.isLoading = false;
+                    location.reload();
+                }, 5000);
+            }, function (error) {
+                console.log(error);
+            });
+        }
     };
     BlinkTopupStockEntryComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -24524,7 +24955,8 @@ var BlinkTopupStockEntryComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./blink-topup-stock-entry.component.html */ "./src/app/components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component.html"),
             styles: [__webpack_require__(/*! ./blink-topup-stock-entry.component.css */ "./src/app/components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [src_app_services_transaction__WEBPACK_IMPORTED_MODULE_1__["FundTransferService"], src_app_services_mfs_setting_service__WEBPACK_IMPORTED_MODULE_2__["MfsSettingService"], src_app_services_grid_setting_service__WEBPACK_IMPORTED_MODULE_3__["GridSettingService"],
+            src_app_shared_services__WEBPACK_IMPORTED_MODULE_5__["AuthenticationService"], primeng_api__WEBPACK_IMPORTED_MODULE_4__["MessageService"]])
     ], BlinkTopupStockEntryComponent);
     return BlinkTopupStockEntryComponent;
 }());
@@ -30813,7 +31245,7 @@ var EnterpriseServiceService = /** @class */ (function () {
 /*!************************************************!*\
   !*** ./src/app/services/distribution/index.ts ***!
   \************************************************/
-/*! exports provided: AgentService, DistributorService, DsrService, MerchantService */
+/*! exports provided: DistributorService, AgentService, DsrService, MerchantService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31900,8 +32332,8 @@ var MfsUtilityService = /** @class */ (function () {
         ];
         this.parentMenuList = [
             { label: 'Dashboard', value: 'Dashboard' },
-            { label: 'Client', value: 'Client' },
-            { label: 'Distribution', value: 'Distribution' },
+            { label: 'Customer Care', value: 'Customer Care' },
+            { label: 'Channels', value: 'Channels' },
             { label: 'Environment', value: 'Environment' },
             { label: 'Reports', value: 'Reports' },
             { label: 'Merchant', value: 'Merchant' },
@@ -32284,6 +32716,18 @@ var TransactionReportService = /** @class */ (function () {
     };
     TransactionReportService.prototype.getOkServicesDDL = function () {
         return this.http.get(this.settings.reportingApiServer + '/Transaction/GetOkServicesDDL')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (data) {
+            return data;
+        }));
+    };
+    TransactionReportService.prototype.getParticularDDL = function () {
+        return this.http.get(this.settings.reportingApiServer + '/Transaction/GetParticularDDL')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (data) {
+            return data;
+        }));
+    };
+    TransactionReportService.prototype.getTransactionDDLByParticular = function (particular) {
+        return this.http.get(this.settings.reportingApiServer + '/Transaction/GetTransactionDDLByParticular?particular=' + particular)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (data) {
             return data;
         }));
@@ -33278,6 +33722,12 @@ var FundTransferService = /** @class */ (function () {
             return GlList;
         }));
     };
+    FundTransferService.prototype.getGlDetailsForBlink = function () {
+        return this.http.get(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForBlink')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (GlList) {
+            return GlList;
+        }));
+    };
     FundTransferService.prototype.getACList = function () {
         return this.http.get(this.transactionService.transactionApiServer + '/FundTransfer/GetACList')
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (ACList) {
@@ -33308,6 +33758,12 @@ var FundTransferService = /** @class */ (function () {
             return transactionDetails;
         }));
     };
+    FundTransferService.prototype.GetTransDtlForBlinkByPayAmount = function (blinkTopupStockEntryModel) {
+        return this.http.post(this.transactionService.transactionApiServer + '/FundTransfer/GetTransDtlForBlinkByPayAmount', blinkTopupStockEntryModel)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (transactionDetails) {
+            return transactionDetails;
+        }));
+    };
     FundTransferService.prototype.GetTransactionDetailsByTransactionNo = function (transNo) {
         return this.http.get(this.transactionService.transactionApiServer + '/FundTransfer/GetTransactionDetailsByTransactionNo?transNo=' + transNo)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (transactionDetails) {
@@ -33334,6 +33790,12 @@ var FundTransferService = /** @class */ (function () {
     };
     FundTransferService.prototype.saveRobiTopupStockEntry = function (robiTopupStockEntryModel) {
         return this.http.post(this.transactionService.transactionApiServer + '/FundTransfer/saveRobiTopupStockEntry', robiTopupStockEntryModel)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (model) {
+            return model;
+        }));
+    };
+    FundTransferService.prototype.saveBlinkTopupStockEntry = function (blinkTopupStockEntryModel) {
+        return this.http.post(this.transactionService.transactionApiServer + '/FundTransfer/saveBlinkTopupStockEntry', blinkTopupStockEntryModel)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (model) {
             return model;
         }));
@@ -33438,6 +33900,12 @@ var ProcessService = /** @class */ (function () {
         return this.http.get(this.transactionService.transactionApiServer + '/TransactionMaster/ExecuteEOD?todayDate=' + todayDate + '&userName=' + userName)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (model) {
             return model;
+        }));
+    };
+    ProcessService.prototype.GetLastEodDateTime = function () {
+        return this.http.get(this.transactionService.transactionApiServer + '/TransactionMaster/GetLastEodDateTime')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (data) {
+            return data;
         }));
     };
     ProcessService = __decorate([

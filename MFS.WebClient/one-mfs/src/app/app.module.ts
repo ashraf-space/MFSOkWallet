@@ -197,6 +197,8 @@ import { BranchCashinCashoutComponent } from './components/reports/report-collec
 import { CreditCardReportComponent } from './components/reports/report-collection/credit-card-report/credit-card-report.component';
 import { BlinkTopupStockEntryComponent } from './components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component';
 import { CreditBeftnComponent } from './components/reports/report-collection/credit-beftn/credit-beftn.component';
+import { ParticularWiseTransactionComponent } from './components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component';
+import { EdumanBillComponent } from './components/reports/report-collection/ems/eduman-bill/eduman-bill.component';
 
 @NgModule({
     imports: [
@@ -391,7 +393,9 @@ import { CreditBeftnComponent } from './components/reports/report-collection/cre
         BranchCashinCashoutComponent,
         CreditCardReportComponent,
         BlinkTopupStockEntryComponent,
-        CreditBeftnComponent
+        CreditBeftnComponent,
+        ParticularWiseTransactionComponent,
+        EdumanBillComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

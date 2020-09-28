@@ -24,6 +24,9 @@ namespace MFS.ReportingService.Service
         List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
 		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
         List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate);
+        object GetParticularDDL();
+        object GetTransactionDDLByParticular(string particular);
+        List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate);
     }
 
     public class TransactionService : BaseService<AccountStatement>, ITransactionService
@@ -196,6 +199,45 @@ namespace MFS.ReportingService.Service
             try
             {
                 return _TransactionRepository.GetBranchCashinCashoutList(branchCode,cashinCashoutType, option, fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetParticularDDL()
+        {
+            try
+            {
+                return _TransactionRepository.GetParticularDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public  object GetTransactionDDLByParticular(string particular)
+        {
+            try
+            {
+                return _TransactionRepository.GetTransactionDDLByParticular(particular);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate)
+        {
+            try
+            {
+                return _TransactionRepository.GetParticularWiseTransList(particular, transaction, fromDate, toDate);
             }
             catch (Exception ex)
             {

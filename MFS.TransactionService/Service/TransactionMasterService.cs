@@ -17,6 +17,7 @@ namespace MFS.TransactionService.Service
         object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList);
         object ExecuteEOD(DateTime todayDate, string userName);
         TblBdStatus GetBankDepositStatusByTransNo(string tranno);
+        string GetLastEodDateTime();
     }
     public class TransactionMasterService : BaseService<GlTransMst>, ITransactionMasterService
     {
@@ -80,6 +81,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return repo.GetBankDepositStatusByTransNo( tranno);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public string GetLastEodDateTime()
+        {
+            try
+            {
+                return repo.GetLastEodDateTime();
             }
             catch (Exception ex)
             {

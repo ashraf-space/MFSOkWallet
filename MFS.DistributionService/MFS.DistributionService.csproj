@@ -52,6 +52,7 @@
     <Compile Include="Models\BalanceInfo.cs" />
     <Compile Include="Models\CompanyAndHolderName.cs" />
     <Compile Include="Models\DistributorReplace.cs" />
+    <Compile Include="Models\DistrictLocation.cs" />
     <Compile Include="Models\DormantAcc.cs" />
     <Compile Include="Models\Reginfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

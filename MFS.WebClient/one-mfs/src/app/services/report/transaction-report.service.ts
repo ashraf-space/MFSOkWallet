@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class TransactionReportService {
+     
     
 
     constructor(private http: HttpClient, private settings: MfsSettingService) { }
@@ -20,6 +21,20 @@ export class TransactionReportService {
 
     getOkServicesDDL(): any {
         return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetOkServicesDDL')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    getParticularDDL(): any {
+        return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetParticularDDL')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    getTransactionDDLByParticular(particular: any): any {
+        return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetTransactionDDLByParticular?particular=' + particular)
             .pipe(map(data => {
                 return data;
             }));

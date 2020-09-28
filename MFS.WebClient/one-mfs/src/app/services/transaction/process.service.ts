@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class ProcessService {   
+export class ProcessService {
+     
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     executeEOD(todayDate: any, userName: string): any {
@@ -15,5 +16,12 @@ export class ProcessService {
                 return model;
             }))
     }
+
+    GetLastEodDateTime(): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/TransactionMaster/GetLastEodDateTime')
+            .pipe(map(data => {
+                return data;
+            }))
+    }  
 
 }

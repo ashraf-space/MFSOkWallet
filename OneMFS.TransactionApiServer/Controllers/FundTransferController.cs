@@ -67,6 +67,21 @@ namespace OneMFS.TransactionApiServer.Controllers
         }
 
         [HttpGet]
+        [Route("getGlDetailsForBlink")]
+        public object getGlDetailsForBlink()
+        {
+            try
+            {
+                return _fundTransferService.getGlDetailsForBlink();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
+        [HttpGet]
         [Route("GetACList")]
         public object GetACList()
         {
@@ -342,6 +357,114 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("GetTransDtlForBlinkByPayAmount")]
+        public object GetTransDtlForBlinkByPayAmount([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
+        {
+            try
+            {
+                List<VMTransactionDetails> VMTransactionDetaillist = new List<VMTransactionDetails>();
+                if (robiTopupStockEntryModel.TransactionAmt == 0)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        objVMTransactionDetails.ACNo = "";
+                        objVMTransactionDetails.GLCode = "";
+                        objVMTransactionDetails.GLName = "";
+                        objVMTransactionDetails.DebitAmount = 0;
+                        objVMTransactionDetails.CreditAmount = 0;
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        //String result = null;
+                        double blBalance = 0;
+                        blBalance = robiTopupStockEntryModel.TransactionAmt / robiTopupStockEntryModel.DiscountRatio;
+                        double rowThreeFour = 0, rowFiveSix = 0;                       
+                        rowFiveSix = (blBalance * 0.0099108027750248) * .1;
+                        rowThreeFour = (blBalance * 0.0099108027750248) - rowFiveSix;
+
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        if (i == 0)
+                        {
+                            objVMTransactionDetails.GLCode = robiTopupStockEntryModel.GlCode;
+                            objVMTransactionDetails.GLName = robiTopupStockEntryModel.GlName;
+                            objVMTransactionDetails.DebitAmount = robiTopupStockEntryModel.TransactionAmt;
+                            objVMTransactionDetails.CreditAmount = 0;
+
+                        }
+                        else if (i == 1)
+                        {
+                            objVMTransactionDetails.GLCode = "1020403";
+                            objVMTransactionDetails.GLName = "BANALALINK AIRTIME RECEIVABLE";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = robiTopupStockEntryModel.TransactionAmt;
+                        }
+                        else if (i == 2)
+                        {
+                            objVMTransactionDetails.GLCode = "1010303";
+                            objVMTransactionDetails.GLName = "BANGLALINK  AIRTIME STOCK";
+                            objVMTransactionDetails.DebitAmount = rowThreeFour;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else if (i == 3)
+                        {
+                            objVMTransactionDetails.GLCode = "2030503";
+                            objVMTransactionDetails.GLName = "PREPAID INCOME FROM BANGLALINK";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowThreeFour;
+                        }
+                        else if (i == 4)
+                        {
+                            objVMTransactionDetails.GLCode = "1020501";
+                            objVMTransactionDetails.GLName = "ADVANCE TAX ON AIRTIME COMMISSION";
+                            objVMTransactionDetails.DebitAmount = rowFiveSix;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else
+                        {
+                            objVMTransactionDetails.GLCode = "2030503";
+                            objVMTransactionDetails.GLName = "PREPAID INCOME FROM BANGLALINK";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowFiveSix;
+                        }
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                double totalDebitAmt = 0;
+                double totalCreditAmt = 0;
+                foreach (var item in VMTransactionDetaillist)
+                {
+                    totalDebitAmt += item.DebitAmount;
+                    totalCreditAmt += item.CreditAmount;
+                }
+
+                VMTransactionDetails obj = new VMTransactionDetails();
+                obj.GLCode = "";
+                obj.GLName = "Total :";
+                obj.DebitAmount = totalDebitAmt;
+                obj.CreditAmount = totalCreditAmt;
+                string totalAmt = totalDebitAmt.ToString("N2");
+
+                NumericWordConversion numericWordConversion = new NumericWordConversion();
+                obj.InWords = numericWordConversion.InWords(Convert.ToDecimal(totalAmt));
+
+                VMTransactionDetaillist.Add(obj);
+
+                return VMTransactionDetaillist;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
         [HttpGet]
         [Route("GetTransactionDetailsByTransactionNo")]
         public object GetTransactionDetailsByTransactionNo(string transNo)
@@ -737,6 +860,38 @@ namespace OneMFS.TransactionApiServer.Controllers
                 }
                
                 _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Robi Topup Stock Entry", robiTopupStockEntryModel.GlName, response);
+                return successOrErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+
+        }
+
+
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("saveBlinkTopupStockEntry")]
+        public object saveBlinkTopupStockEntry([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
+        {
+            try
+            {
+                string successOrErrorMsg = _fundTransferService.saveBlinkTopupStockEntry(robiTopupStockEntryModel).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (successOrErrorMsg == "1")
+                {
+                    response = "Added Successfully";
+                }
+                else
+                {
+                    response = "Failed";
+                }
+
+                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Banglalink Topup Stock Entry", robiTopupStockEntryModel.GlName, response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)

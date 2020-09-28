@@ -553,8 +553,18 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return paraList;
 		}
 
+        private IEnumerable<ReportParameter> GetReportParamForParticularWiseTrans(string fromDate, string toDate, string particular)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("FromDate", fromDate));
+            paraList.Add(new ReportParameter("ToDate", toDate));
+            paraList.Add(new ReportParameter("Particular", particular));
 
-		[HttpPost]
+            return paraList;
+        }
+
+
+        [HttpPost]
 		[Route("api/Transaction/FundTransfer")]
 		public byte[] FundTransfer(ReportModel model)
 		{
@@ -783,5 +793,80 @@ namespace OneMFS.ReportingApiServer.Controllers
 
             return reportUtility.GenerateReport(reportViewer, model.FileType);
         }
+
+        [HttpPost]
+        [Route("api/Transaction/ParticularWiseTransaction")]
+        public byte[] ParticularWiseTransaction(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+            string particular = builder.ExtractText(Convert.ToString(model.ReportOption), "particular", ",");
+            string transaction = builder.ExtractText(Convert.ToString(model.ReportOption), "transaction", "}");
+
+            if (fromDate == "null")
+            {
+                fromDate = DateTime.Now.AddYears(-99).ToString("yyyy/MM/dd");
+            }
+            if (toDate == "null")
+            {
+                toDate = DateTime.Now.ToString("yyyy/MM/dd");
+            }
+
+            ReportViewer reportViewer = new ReportViewer();           
+
+            List<ParticularWiseTransaction> particularWiseTransactionList = new List<ParticularWiseTransaction>();
+            particularWiseTransactionList = _TransactionService.GetParticularWiseTransList(particular, transaction, fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTParticularWiseTrans.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForParticularWiseTrans(fromDate, toDate, particular));
+            ReportDataSource A = new ReportDataSource("ParticularWiseTrans", particularWiseTransactionList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+        [HttpGet]
+        [Route("api/Transaction/GetParticularDDL")]
+        public object GetParticularDDL()
+        {
+            try
+            {
+                return _TransactionService.GetParticularDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("api/Transaction/GetTransactionDDLByParticular")]
+        public object GetTransactionDDLByParticular(string particular)
+        {
+            try
+            {
+                return _TransactionService.GetTransactionDDLByParticular(particular);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

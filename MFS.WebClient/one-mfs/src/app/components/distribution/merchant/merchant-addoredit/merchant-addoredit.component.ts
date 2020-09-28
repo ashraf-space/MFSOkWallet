@@ -115,7 +115,8 @@ export class MerchantAddoreditComponent implements OnInit {
 
         this.mCatList = [
             { label: 'Individual Merchant', value: 'M' },
-            { label: 'Chain (Parent) Merchant', value: 'C' }
+            { label: 'Chain (Parent) Merchant', value: 'C' },
+            { label: 'E-Commerce Merchant', value: 'E' }
         ]
 
         this.mAreaList = [

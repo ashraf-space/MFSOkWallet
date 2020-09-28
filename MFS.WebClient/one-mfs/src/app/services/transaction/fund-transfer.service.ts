@@ -8,6 +8,7 @@ import { from } from 'rxjs';
     providedIn: 'root'
 })
 export class FundTransferService {
+   
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     getGlList() {
@@ -18,6 +19,13 @@ export class FundTransferService {
     }
     getGlDetailsForRobi() {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForRobi')
+            .pipe(map(GlList => {
+                return GlList;
+            }));
+    }
+
+    getGlDetailsForBlink(): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForBlink')
             .pipe(map(GlList => {
                 return GlList;
             }));
@@ -62,6 +70,13 @@ export class FundTransferService {
             }));
     }
 
+    GetTransDtlForBlinkByPayAmount(blinkTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransDtlForBlinkByPayAmount', blinkTopupStockEntryModel)
+            .pipe(map(transactionDetails => {
+                return transactionDetails;
+            }));
+    }
+
     GetTransactionDetailsByTransactionNo(transNo: any): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransactionDetailsByTransactionNo?transNo=' + transNo)
             .pipe(map(transactionDetails => {
@@ -92,6 +107,13 @@ export class FundTransferService {
 
     saveRobiTopupStockEntry(robiTopupStockEntryModel: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveRobiTopupStockEntry', robiTopupStockEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    saveBlinkTopupStockEntry(blinkTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveBlinkTopupStockEntry', blinkTopupStockEntryModel)
             .pipe(map(model => {
                 return model;
             }))

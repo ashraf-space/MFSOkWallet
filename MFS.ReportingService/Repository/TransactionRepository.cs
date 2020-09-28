@@ -26,8 +26,11 @@ namespace MFS.ReportingService.Repository
         List<TransactionSummary> GetTransactionSummaryList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate, string gateway);
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate, string gateway);
         List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
-		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
+        List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
         List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate);
+        object GetParticularDDL();
+        object GetTransactionDDLByParticular(string particular);
+        List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate);
     }
     public class TransactionRepository : BaseRepository<AccountStatement>, ITransactionRepository
     {
@@ -417,33 +420,33 @@ namespace MFS.ReportingService.Repository
             }
         }
 
-		public List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate)
-		{
-			List<MerchantTransactionSummary> result = new List<MerchantTransactionSummary>();
+        public List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate)
+        {
+            List<MerchantTransactionSummary> result = new List<MerchantTransactionSummary>();
 
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					var dyParam = new OracleDynamicParameters();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
 
-					dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
-					dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
-					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
-					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+                    dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					result = SqlMapper.Query<MerchantTransactionSummary>(connection, mainDbUser.DbUser + "RPT_MerchantSummary", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
-					this.CloseConnection(connection);
-				}
+                    result = SqlMapper.Query<MerchantTransactionSummary>(connection, mainDbUser.DbUser + "RPT_MerchantSummary", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
 
-			}
-			catch (Exception e)
-			{
+            }
+            catch (Exception e)
+            {
 
-				throw;
-			}
-			return result;
-		}
+                throw;
+            }
+            return result;
+        }
 
         public List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate)
         {
@@ -466,6 +469,79 @@ namespace MFS.ReportingService.Repository
                     return result;
                 }
 
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetParticularDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select distinct particular as Value, particular as Label  from " + mainDbUser.DbUser + "gl_trans_mst where particular is not null";
+
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetTransactionDDLByParticular(string particular)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select Trans_No as Value,Trans_No as Label from " + mainDbUser.DbUser + "gl_trans_mst where particular=" + "'" + particular + "'";
+
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate)
+        {
+            List<ParticularWiseTransaction> result = new List<ParticularWiseTransaction>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_Particular", OracleDbType.Varchar2, ParameterDirection.Input, particular);
+                    dyParam.Add("V_Transaction", OracleDbType.Varchar2, ParameterDirection.Input, transaction);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<ParticularWiseTransaction>(connection, mainDbUser.DbUser + "RPT_ParticularWiseTrans", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
             }
             catch (Exception ex)
             {

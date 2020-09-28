@@ -13,6 +13,9 @@ namespace MFS.ReportingService.Service
 		List<BillCollection> GetDpdcDescoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
 		List<CreditCardReport> GetCreditPaymentReport(string transNo, string fromDate, string toDate);
 		List<CreditCardReport> GetCreditBeftnPaymentReport(string transNo, string fromDate, string toDate);
+		List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
+		List<JalalabadGasBillPayment> GetJgtdReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
+		List<EdumanBillPayment> EdumanBillReport(string studentId, string fromDate, string toDate, string instituteId, string dateType, string catType);
 	}
 	public class BillCollectionService : IBillCollectionService
 	{
@@ -20,6 +23,11 @@ namespace MFS.ReportingService.Service
 		public BillCollectionService(IBillCollectionRepository _billCollectionRepository)
 		{
 			this.billCollectionRepository = _billCollectionRepository;
+		}
+
+		public List<EdumanBillPayment> EdumanBillReport(string studentId, string fromDate, string toDate, string instituteId, string dateType, string catType)
+		{
+			return billCollectionRepository.EdumanBillReport(studentId, fromDate, toDate, instituteId, dateType, catType);
 		}
 
 		public List<CreditCardReport> GetCreditBeftnPaymentReport(string transNo, string fromDate, string toDate)
@@ -35,6 +43,16 @@ namespace MFS.ReportingService.Service
 		public List<BillCollection> GetDpdcDescoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
 		{
 			return billCollectionRepository.GetDpdcDescoReport(utility, fromDate, toDate, gateway, dateType,catType);
+		}
+
+		public List<JalalabadGasBillPayment> GetJgtdReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
+		{
+			return billCollectionRepository.GetJgtdReport(utility, fromDate, toDate, gateway, dateType, catType);
+		}
+
+		public List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
+		{
+			return billCollectionRepository.GetWasaReport(utility, fromDate, toDate, gateway, dateType, catType);
 		}
 	}
 }
