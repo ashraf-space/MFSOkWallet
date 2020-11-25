@@ -69,8 +69,8 @@ export class DpdcDescoComponent implements OnInit {
         else {
             var obj: any = {};
             obj.isNotValidated = true;
-        }
-        return this.model;
+            return obj;
+        }     
     }
 
     validate(): any {

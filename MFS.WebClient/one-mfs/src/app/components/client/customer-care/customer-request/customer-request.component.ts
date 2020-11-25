@@ -30,8 +30,8 @@ export class CustomerRequestComponent implements OnInit {
         this.gridConfig = {};
         this.searchObj = {};
         this.model = {};
-        this.searchObj.statusList = [{ label: 'Pending', value: 'Pending' }, { label: 'Resolved', value: 'Resolved' }, { label: 'On Process', value: 'OnProcess'}];
-        this.actionColumn = { field: 'mphone', header: 'Action', width: '7%', isCustomAction: true, customActionIcon: 'far fa-bell', filter: this.gridSettingService.getFilterableNone() };
+        this.searchObj.statusList = [{ label: 'All', value: 'A' }, { label: 'Dormant', value: 'D' }, { label: 'Pin Reset', value: 'P'}];
+        //this.actionColumn = { field: 'mphone', header: 'Action', width: '7%', isCustomAction: true, customActionIcon: 'far fa-bell', filter: this.gridSettingService.getFilterableNone() };
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
         });
@@ -44,7 +44,7 @@ export class CustomerRequestComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.searchObj.selectedStatus = "Pending";
+        this.searchObj.selectedStatus = "A";
         this.initialiseGridConfig();
         this.actionList = [
             { label: 'Open', value: 'O', icon: 'far fa-clock' },
@@ -59,13 +59,14 @@ export class CustomerRequestComponent implements OnInit {
 
         this.gridConfig.columnList = [
             { field: 'reqDate', header: 'Request Date', width: '12%', filter: this.gridSettingService.getDefaultDateFilterable(), template: this.gridSettingService.getDateTemplateForRowData() },
-            { field: 'remarks', header: 'Remarks', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'remarks', header: 'Reason', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'request', header: 'Request', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'mphone', header: 'A/C #', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'handledBy', header: 'Perform By', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'status', header: 'Status', width: '12%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getOpenCloseStatusTemplateForRowData() }
         ];
 
-        this.gridConfig.columnList.push(this.actionColumn);
+        //this.gridConfig.columnList.push(this.actionColumn);
 
         if (this.mPhone) {            
             this.searchObj.mphone = this.mPhone;
@@ -140,12 +141,12 @@ export class CustomerRequestComponent implements OnInit {
 
     addRemoveActionColumn() {
         if (this.searchObj.selectedStatus == 'Pending') {
-            if (this.gridConfig.columnList.length == 5) {
+            if (this.gridConfig.columnList.length == 6) {
                 this.gridConfig.columnList.push(this.actionColumn);
             }
         }
         else {
-            if (this.gridConfig.columnList.length != 5) {
+            if (this.gridConfig.columnList.length != 6) {
                 this.gridConfig.columnList.pop();
             }
         }

@@ -65,7 +65,7 @@ initialiseGridConfig(): any {
 
     this.gridConfig.hasEditState = true;
     this.gridConfig.entityField = 'mphone';
-    this.gridConfig.showUniversalFilter = false;
+    this.gridConfig.showUniversalFilter = true;
 
     this.gridConfig.paramForBatchUpdate = this.currentUserModel.user.username;
 

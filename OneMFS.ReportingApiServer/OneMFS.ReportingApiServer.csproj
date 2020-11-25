@@ -245,9 +245,12 @@
     <Compile Include="Controllers\BillCollectionController.cs" />
     <Compile Include="Controllers\ChainMerchantController.cs" />
     <Compile Include="Controllers\ChildMerchantController.cs" />
+    <Compile Include="Controllers\DistributorPortalController.cs" />
+    <Compile Include="Controllers\EmsController.cs" />
     <Compile Include="Controllers\ExcelUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KycController.cs" />
+    <Compile Include="Controllers\MasterWalletController.cs" />
     <Compile Include="Controllers\ReportInfoController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -259,6 +262,11 @@
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\UserDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\DataSet\DistPortalDataset.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DistPortalDataset.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSet\MerchantDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -268,6 +276,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MFSDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSet\MFSV2DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MFSV2DataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSet\Payment.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -320,6 +333,17 @@
     <Content Include="Reports\DataSet\MerchantDataSet.xsc">
       <DependentUpon>MerchantDataSet.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSet\DistPortalDataset.xsc">
+      <DependentUpon>DistPortalDataset.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSet\DistPortalDataset.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DistPortalDataset.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSet\DistPortalDataset.xss">
+      <DependentUpon>DistPortalDataset.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSet\MerchantDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -339,6 +363,17 @@
     <Content Include="Reports\DataSet\Payment.xsc">
       <DependentUpon>Payment.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSet\MFSV2DataSet.xsc">
+      <DependentUpon>MFSV2DataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSet\MFSV2DataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MFSV2DataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSet\MFSV2DataSet.xss">
+      <DependentUpon>MFSV2DataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSet\Payment.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -349,12 +384,20 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\RDLC\RPTAccStatMst.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTAgentDsr.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTEmsInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTRegInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByOutlet.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByTd.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTBranchCashinCashout.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTApplicationUser.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfoBEFTN.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTOnlineReg.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTRmgWiseSalaryDis.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTItemWiseServices.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTFundTransfer.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdcDescoBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChildMerchantTransaction.rdlc" />

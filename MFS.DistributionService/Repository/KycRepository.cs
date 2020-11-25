@@ -199,7 +199,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid + "' and t.cat_id = '" + type + "'";
+					string query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid + "' and t.cat_id = '" + type + "' and t.status <> 'C'";
 
 					var result = connection.Query<int>(query).FirstOrDefault();
 					this.CloseConnection(connection);

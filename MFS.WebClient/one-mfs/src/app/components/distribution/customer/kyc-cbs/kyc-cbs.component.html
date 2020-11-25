@@ -1,0 +1,28 @@
+<p-card [style]="{'margin-bottom':'20px'}">
+	<div class="form-group">
+		<h6 class="form-header">Personal details</h6>
+		<br />
+		<div class="p-grid">
+			<div class="p-col-4">				
+				<span class="ui-float-label ">
+					<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.mphone" appPascalcase [pKeyFilter]="reginfo.alphabetsWithSpace" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Ok Account No <span class="mandatory">*</span></label>
+				</span>
+				
+			</div>
+			<div class="p-col-4">			
+				<span class="ui-float-label ">
+					<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.bankAcNo" appPascalcase [pKeyFilter]="reginfo.alphabetsWithSpace" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Bank Account No</label>
+				</span>				
+			</div>
+			<div class="p-col-4">
+				<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"						
+						(click)="getCbsAccInfo()">
+					<i class="fas fa-search"></i> Search
+				</button>
+			</div>
+	
+		</div>
+	</div>
+</p-card>

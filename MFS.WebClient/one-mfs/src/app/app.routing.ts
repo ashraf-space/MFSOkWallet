@@ -101,6 +101,11 @@ import { AuditTrailComponent } from './components/security/audit/audit-trail/aud
 import { AuditTrailDtlComponent } from './components/security/audit/audit-trail-dtl/audit-trail-dtl.component';
 import { AgentReplaceComponent } from './components/distribution/agent-replace/agent-replace.component';
 import { BlinkTopupStockEntryComponent } from './components/transaction/blink-topup-stock-entry/blink-topup-stock-entry.component';
+import { CommissionEntryComponent } from './components/transaction/fund-transfer/commission-entry/commission-entry.component';
+import { AirtelTopupStockEntryComponent } from './components/transaction/airtel-topup-stock-entry/airtel-topup-stock-entry.component';
+import { CommissionApprovalComponent } from './components/transaction/fund-transfer/commission-approval/commission-approval.component';
+import { NidPaymentCollectionComponent } from './components/transaction/nid-payment-collection/nid-payment-collection.component';
+import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -206,6 +211,12 @@ const appRoutes: Routes = [
     { path: 'audit/audit-trail-dtl/:id', component: AuditTrailDtlComponent, canActivate: [AuthGuard] },
     { path: 'distribution/agent-replace', component: AgentReplaceComponent, canActivate: [AuthGuard] },
     { path: 'transaction/blink-topup-stock-entry', component: BlinkTopupStockEntryComponent, canActivate: [AuthGuard] },
+    { path: 'fund-transfer/commission-entry', component: CommissionEntryComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/airtel-topup-stock-entry', component: AirtelTopupStockEntryComponent, canActivate: [AuthGuard] },
+    { path: 'fund-transfer/commission-approval', component: CommissionApprovalComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/nid-payment-collection', component: NidPaymentCollectionComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/bill-collection-common/:id', component: BillCollectionCommonComponent, canActivate: [AuthGuard] },
+   
     {
         path: "",
         pathMatch: "full",

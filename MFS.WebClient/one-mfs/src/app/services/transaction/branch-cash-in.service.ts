@@ -4,10 +4,11 @@ import { MfsSettingService } from '../mfs-setting.service';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BranchCashInService {
-   
+
+
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     saveBranchCashIn(branchCashInModel: any, isEditMode: boolean): any {
@@ -22,14 +23,14 @@ export class BranchCashInService {
             .pipe(map(model => {
                 return model;
             }));
-    }  
+    }
 
     getReginfoCashoutByMphone(mphone: string): any {
         return this.http.get<any>(this.transactionService.distributionApiServer + '/Distributor/getReginfoCashoutByMphone?mphone=' + mphone)
             .pipe(map(model => {
                 return model;
             }));
-    }  
+    }
 
     getAmountByTransNo(mobile: string, transNo: any): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getAmountByTransNo?transNo=' + transNo + '&mobile=' + mobile)
@@ -44,5 +45,12 @@ export class BranchCashInService {
                 return model;
             }));
     }
-   
+
+    CheckData(transNo: any, mphone: any, amount: any): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/CheckData?transNo=' + transNo + '&mphone=' + mphone + '&amount' + amount)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
 }

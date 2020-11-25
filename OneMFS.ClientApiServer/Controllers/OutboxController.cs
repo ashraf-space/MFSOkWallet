@@ -34,6 +34,10 @@ namespace OneMFS.ClientApiServer.Controllers
 			try
 			{
 				DateRangeModel date = new DateRangeModel();
+				if (string.IsNullOrEmpty(fromDate) || string.IsNullOrEmpty(toDate) || string.IsNullOrEmpty(mphone))
+				{
+					return new List<string>();
+				}
 				date.FromDate = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
 				date.ToDate = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
 

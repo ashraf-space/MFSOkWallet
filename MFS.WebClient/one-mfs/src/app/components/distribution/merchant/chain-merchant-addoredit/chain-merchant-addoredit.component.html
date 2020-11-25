@@ -30,7 +30,7 @@
 							   pInputText id="float-input">
 						<label for="float-input input-lg" class="col-form-label-dd">Merchant Name<span class="mandatory">*</span></label>
 					</span>
-					<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error "
+					<p-message *ngIf="(parentCompanyName==null || parentCompanyName=='') && error "
 							   severity="error" text="Cannot be left blank"></p-message>
 				</div>
 
@@ -39,8 +39,8 @@
 			<div class="p-grid">
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">Photo Id Type<span class="mandatory">*</span></label>
-					<p-dropdown [options]="photoIDTypeList" placeholder="Select Type" [disabled]="true"
-								[(ngModel)]="regInfoModel.photoIdTypeCode"
+					<p-dropdown [options]="photoIDTypeList" placeholder="Select Type" 
+								[(ngModel)]="regInfoModel.photoIdTypeCode" [disabled]="isRegistrationPermitted"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
 					<p-message *ngIf="(regInfoModel.photoIdTypeCode==null || regInfoModel.photoIdTypeCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -49,7 +49,7 @@
 				<div class="p-col-6">
 					<br />
 					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="regInfoModel.photoId" [readonly]="true" (change)="checkPhotoIdLength()" pInputText id="float-input">
+						<input type="text" class="form-control" [(ngModel)]="regInfoModel.photoId"  (change)="checkPhotoIdLength()" pInputText id="float-input">
 						<label for="float-input input-lg" class="col-form-label">Photo ID No <span class="mandatory">*</span></label>
 					</span>
 					<p-message *ngIf="(regInfoModel.photoId==null || regInfoModel.photoId=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -62,12 +62,12 @@
 				<div class="p-col-6">
 					<br />
 					<span class="ui-float-label ">
-						<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="regInfoModel.eftAccNo" (change)="checkMphoneAlreadyExist()"
+						<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="regInfoModel._ChildMphone" (change)="checkMphoneAlreadyExist()"
 									 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int" [style]="{'width':'100%'}"></p-inputMask>
 
 						<label for="float-input input-lg" class="col-form-label-dd">Outlet Account No<span class="mandatory">*</span></label>
 					</span>
-					<p-message *ngIf="(regInfoModel.eftAccNo==null || regInfoModel.eftAccNo=='') && error "
+					<p-message *ngIf="(regInfoModel._ChildMphone==null || regInfoModel._ChildMphone=='') && error "
 							   severity="error" text="Cannot be left blank"></p-message>
 				</div>
 				<div class="p-col-6">
@@ -103,7 +103,7 @@
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 								[disabled]="isRegistrationPermitted"
 								id="float-input"></p-dropdown>
-					<p-message *ngIf="(selectedMtype == '0') && error" severity="error" text="Cannot be left blank"></p-message>
+					<p-message *ngIf="(selectedAreatype == '0') && error" severity="error" text="Cannot be left blank"></p-message>
 				</div>
 			</div>
 			<div class="p-grid">

@@ -115,12 +115,13 @@ namespace MFS.DistributionService.Models
 		public string PostalCode { get; set; }
 
 		public string Remarks { get; set; }
-
+		public string _ChildMphone { get; set; }
 		public string _Mcode { get; set; }
 		public string _MCategory { get; set; }
 		public string _OutletCode { get; set; }
 		public string SelectedCycleWeekDay { get; set; }
 		public string BlackList { get; set; }
+		public string _OrgCode { get; set; }
 		public IEnumerable<dynamic> _SelectedCycleWeekDay { get; set; }
 	}
 }

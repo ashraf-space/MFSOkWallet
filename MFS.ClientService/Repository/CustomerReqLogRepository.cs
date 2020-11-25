@@ -4,6 +4,7 @@ using OneMFS.SharedResources;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 
 namespace MFS.ClientService.Repository
@@ -13,6 +14,7 @@ namespace MFS.ClientService.Repository
         void updateRequestLog(CustomerRequest model);
         void deleteRequestLog(CustomerRequest model);
 		object GetAllOnProcessRequestByCustomer(string mphone);
+		object GetCustomerRequestHistoryByCat(string status, string mphone);
 	}
 
     public class CustomerReqLogRepository : BaseRepository<CustomerReqLog>, ICustomerReqLogRepository
@@ -70,6 +72,42 @@ namespace MFS.ClientService.Repository
 				throw;
 			}
 			
+		}
+
+		public object GetCustomerRequestHistoryByCat(string status, string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = string.Empty;
+					if (status == "A")
+					{
+						 query = @"select t.req_date as reqdate,t.handled_by as handledby, t.request,t.status,t.remarks,t.mphone from one.customer_request t where t.mphone = '" + mphone + "'";						
+					}
+					else if (status == "D")
+					{
+						query = @"select t.req_date as reqdate,t.handled_by as handledby, t.request,t.status,t.remarks,t.mphone
+								 from one.customer_request t where t.mphone = '" + mphone + "' and (t.request = 'Dormant' or t.request = 'Dormant Withdraw')";
+
+					}
+					else 
+					{
+						query = @"select t.req_date as reqdate,t.handled_by as handledby, t.request,t.status,t.remarks,t.mphone
+								 from one.customer_request t where t.mphone = '" + mphone + "' and (t.request = 'Pin Reset' or t.request = 'Pin Reset/Unlock')";
+					}
+					var result = connection.Query<CustomerRequest>(query).ToList().OrderByDescending(e => e.ReqDate);
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+
 		}
 
 		public void updateRequestLog(CustomerRequest model)

@@ -16,6 +16,8 @@ namespace MFS.EnvironmentService.Service
         object GetMerchantConfigDetails(string mphone);
 		object GetParentInfoByChildMcode(string v);
 		object GetAllMerchant();
+		void OnMerchantConfigUpdate(MerchantConfig merchantConfig);
+		object GetMerchantConfigDetails(string mphone, string mcode);
 	}
 
     public class MerchantConfigService : BaseService<MerchantConfig>, IMerchantConfigService
@@ -60,6 +62,16 @@ namespace MFS.EnvironmentService.Service
 		public object GetAllMerchant()
 		{
 			return MerchantConfigRepo.GetAllMerchant();
+		}
+
+		public void OnMerchantConfigUpdate(MerchantConfig merchantConfig)
+		{
+			 MerchantConfigRepo.OnMerchantConfigUpdate(merchantConfig);
+		}
+
+		public object GetMerchantConfigDetails(string mphone, string mcode)
+		{
+			return MerchantConfigRepo.GetMerchantConfigDetails(mphone, mcode);
 		}
 	}
 }

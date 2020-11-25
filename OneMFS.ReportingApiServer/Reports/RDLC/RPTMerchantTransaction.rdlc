@@ -259,7 +259,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Transaction Id</Value>
+                                  <Value>Transaction ID</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -295,7 +295,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Trans Amt</Value>
+                                  <Value>Transaction Amount</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -331,7 +331,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Trans From</Value>
+                                  <Value>Transaction From</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -881,7 +881,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!AvailableBalance.Value)</Value>
+                                  <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -942,7 +942,7 @@
             <Top>0.04167in</Top>
             <Left>0.13417in</Left>
             <Height>0.83904in</Height>
-            <Width>8.01388in</Width>
+            <Width>8.01389in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -967,7 +967,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>ONE Bank Ltd.</Value>
+                      <Value />
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>12pt</FontSize>
@@ -976,22 +976,7 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>OK Mobile Financial Service</Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>11pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
                 <Paragraph>
@@ -1000,18 +985,19 @@
                       <Value>Individual Merchant Transaction Report</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
+                        <FontSize>11pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Name:</Value>
+                      <Value>Name: </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>9pt</FontSize>
@@ -1026,25 +1012,9 @@
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
-                    <TextRun>
-                      <Value> - Code: </Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value>=Parameters!MerchantCode.Value</Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
                 <Paragraph>
@@ -1065,23 +1035,23 @@
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
-                    <TextRun>
-                      <Value xml:space="preserve">  </Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>From Date : </Value>
+                      <Value>From Date</Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> : </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1097,7 +1067,22 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value>     To Date :  </Value>
+                      <Value xml:space="preserve">     </Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>To Date</Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> :  </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1112,13 +1097,13 @@
                         <Format>dd-MMM-yy</Format>
                       </Style>
                     </TextRun>
-                    <TextRun>
-                      <Value xml:space="preserve">                                  </Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
                     <TextRun>
                       <Value>Print Date &amp; Time : </Value>
                       <Style>
@@ -1135,15 +1120,15 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox26</rd:DefaultName>
               <Top>0.125in</Top>
-              <Left>1.28695in</Left>
+              <Left>1.95015in</Left>
               <Height>1.08555in</Height>
-              <Width>6.70139in</Width>
+              <Width>4.41319in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1158,8 +1143,8 @@
               <Source>Embedded</Source>
               <Value>OKWallet</Value>
               <Sizing>FitProportional</Sizing>
-              <Top>0.18625in</Top>
-              <Left>0.57514in</Left>
+              <Top>0.31125in</Top>
+              <Left>1.70014in</Left>
               <Height>0.66667in</Height>
               <Width>0.69792in</Width>
               <ZIndex>1</ZIndex>

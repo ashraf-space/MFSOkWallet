@@ -30,6 +30,12 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return service.GetAccountCategory();
 		}
 		[HttpGet]
+		[Route("api/Kyc/GetCurrentBalance")]
+		public object GetCurrentBalance(string mphone)
+		{
+			return service.GetCurrentBalance(mphone);
+		}
+		[HttpGet]
 		[AcceptVerbs("GET", "POST")]
 		[Route("api/Kyc/GetMerchantKycInfoByMphone")]
 		public object GetMerchantKycInfoByMphone(string mphone)
@@ -199,8 +205,72 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return paraList;
 		}
 
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Kyc/OnlineRegistration")]
+		public object OnlineRegistration(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+			string accNo = builder.ExtractText(Convert.ToString(model.ReportOption), "accNo", "}");
+			string category = builder.ExtractText(Convert.ToString(model.ReportOption), "category", ",");
+		
+
+			List<OnlineRegistration> onlineRegistrations = service.GetOnlineRegReport(fromDate, toDate, category,accNo);
+			ReportViewer reportViewer = new ReportViewer();
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOnlineReg.rdlc");  //Request.RequestUri("");
+			reportViewer.LocalReport.SetParameters(GetKycBalanceRptParameter(fromDate, toDate, category));
+			ReportDataSource A = new ReportDataSource("OnlineRegistration", onlineRegistrations);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
+			
+		}
+
+		private IEnumerable<ReportParameter> GetKycBalanceRptParameter(string fromDate, string toDate, string category)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			paraList.Add(new ReportParameter("category", reportShareService.GetCategoryNameById(category)));
+			return paraList;
+		}
+
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Kyc/RegistrationReportByCategory")]
+		public object RegistrationReportByCategory(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");	
+			string regSource = builder.ExtractText(Convert.ToString(model.ReportOption), "regSource", ",");
+			string status = builder.ExtractText(Convert.ToString(model.ReportOption), "status", ",");
+			string accCategory = builder.ExtractText(Convert.ToString(model.ReportOption), "accCategory", ",");
+			string regStatus = builder.ExtractText(Convert.ToString(model.ReportOption), "regStatus", "}");
 
 
+			List<RegInfoReport> regInfoReports = service.GetRegReportByCategory(fromDate, toDate, regSource,status,accCategory,regStatus);
+			ReportViewer reportViewer = new ReportViewer();
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTRegInfo.rdlc");  //Request.RequestUri("");
+			reportViewer.LocalReport.SetParameters(GetKycBalanceRptParameter(fromDate, toDate, accCategory));
+			ReportDataSource A = new ReportDataSource("RegInfoReport", regInfoReports);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);			
+
+		}
 	}
 
 }

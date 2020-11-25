@@ -130,14 +130,17 @@ export class FundEntryActoacComponent implements OnInit {
 
                         }
 
+                        this.fundTransferModel.payAmt = 0;
+                        this.initialiseGridConfig();
+
                     },
                     error => {
                         console.log(error);
                     }
                 );
 
-            this.fundTransferModel.payAmt = 0;
-            this.initialiseGridConfig();
+            //this.fundTransferModel.payAmt = 0;
+            //this.initialiseGridConfig();
         }
         else {
             if (formOrTotype == 'From') {

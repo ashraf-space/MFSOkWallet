@@ -120,14 +120,17 @@ export class FundEntryActoglComponent implements OnInit {
                         }
                     }
 
+                    this.fundTransferModel.payAmt = 0;
+                    this.initialiseGridConfig();
+
                 },
                 error => {
                     console.log(error);
                 }
             );
 
-        this.fundTransferModel.payAmt = 0;
-        this.initialiseGridConfig();
+        //this.fundTransferModel.payAmt = 0;
+        //this.initialiseGridConfig();
     }
 
     //fill amount against Sys code
@@ -154,14 +157,17 @@ export class FundEntryActoglComponent implements OnInit {
                         }
                     }
 
+                    this.fundTransferModel.payAmt = 0;
+                    this.initialiseGridConfig();
+
                 },
                 error => {
                     console.log(error);
                 }
             );
 
-        this.fundTransferModel.payAmt = 0;
-        this.initialiseGridConfig();
+        //this.fundTransferModel.payAmt = 0;
+        //this.initialiseGridConfig();
     }
 
     async GetTransactionDetailsByPayAmount() {
@@ -214,7 +220,7 @@ export class FundEntryActoglComponent implements OnInit {
                     else {
                         this.isSaveDisable = true;
                     }
-                  
+
 
                 },
                 error => {

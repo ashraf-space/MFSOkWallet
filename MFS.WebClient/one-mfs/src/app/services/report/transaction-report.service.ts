@@ -7,9 +7,7 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class TransactionReportService {
-     
-    
-
+   
     constructor(private http: HttpClient, private settings: MfsSettingService) { }
 
     getGlCoaCodeNameLevelDDL(assetType: any): any {
@@ -39,5 +37,20 @@ export class TransactionReportService {
                 return data;
             }));
     }
+
+    getTelcoDDL(): any {
+        return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetTelcoDDL')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    getRmgDDL(): any {
+        return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetRmgDDL')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
    
 }

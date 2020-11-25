@@ -134,6 +134,7 @@
                                   <Value>Accounts Code</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -169,6 +170,7 @@
                                   <Value>Level</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -204,6 +206,7 @@
                                   <Value>Accounts Desc</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -239,6 +242,7 @@
                                   <Value>Balance</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -265,7 +269,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.21875in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -279,7 +283,7 @@
                                   <Value>=Fields!AccountsCode.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -314,7 +318,7 @@
                                   <Value>=Fields!CoaLevel.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -349,7 +353,7 @@
                                   <Value>=Fields!AccountsDesc.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>=IIf(Fields!CoaLevel.Value=1,"Bold","Normal")</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -385,7 +389,8 @@
                                   <Value>=Fields!Balance.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>9pt</FontSize>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>=IIF(Fields!Balance.Value &lt; 0,"Bold","Normal")</FontWeight>
                                     <Format>#,0.0000</Format>
                                   </Style>
                                 </TextRun>
@@ -449,7 +454,7 @@
             <DataSetName>CurrentAffairsStatement</DataSetName>
             <Top>0.14804in</Top>
             <Left>0.13417in</Left>
-            <Height>0.55208in</Height>
+            <Height>0.52083in</Height>
             <Width>7.85416in</Width>
             <Style>
               <Border>
@@ -513,7 +518,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.00</Format>
+                      <Format>#,0.0000</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>

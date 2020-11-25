@@ -16,7 +16,7 @@ export class ChainMerchantAddoreditComponent implements OnInit {
     merchantConfig: any = {};
     activeIndex: number = 0;
     items: MenuItem[];
-    selectedChainMerchant: any;
+    selectedChainMerchant: string = "0";
     divisionList: any;
     selectedDivision: string = "0";
     districtList: any;
@@ -108,15 +108,15 @@ export class ChainMerchantAddoreditComponent implements OnInit {
             )
     }
     checkMphoneAlreadyExist(): any {
-        if (this.regInfoModel.eftAccNo.toString().substring(0, 2) == "01" && this.regInfoModel.eftAccNo.toString().substring(0, 3) != "012") {
-            this.merchantService.checkMphoneAlreadyExist(this.regInfoModel.eftAccNo)
+        if (this.regInfoModel._ChildMphone.toString().substring(0, 2) == "01" && this.regInfoModel._ChildMphone.toString().substring(0, 3) != "012") {
+            this.merchantService.checkMphoneAlreadyExist(this.regInfoModel._ChildMphone)
                 .pipe(first())
                 .subscribe(
                     data => {
                         if (data) {
                             this.msgs = [];
-                            this.msgs.push({ severity: 'error', summary: 'Merchant A/C No : ' + this.regInfoModel.eftAccNo, detail: 'Already Exists!' });
-                            this.regInfoModel.eftAccNo = null;
+                            this.msgs.push({ severity: 'error', summary: 'Merchant A/C No : ' + this.regInfoModel._ChildMphone, detail: 'Already Exists!' });
+                            this.regInfoModel._ChildMphone = '';
                             this.showDuplicateMsg = true;
                         }
                         else {
@@ -129,7 +129,7 @@ export class ChainMerchantAddoreditComponent implements OnInit {
                 );
         }
         else {
-            this.regInfoModel.eftAccNo = '';
+            this.regInfoModel._ChildMphone = '';
             this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Mobiel No', closable: true });
         }
     }
@@ -225,17 +225,19 @@ export class ChainMerchantAddoreditComponent implements OnInit {
         switch (this.activeIndex) {
             case 0:
                 {
-                    if (!this.regInfoModel.mphone ||
-                        !this.regInfoModel.name ||
+                    if (!this.regInfoModel.mphone ||                     
                         !this.parentCode ||
+                        !this.parentCompanyName ||
+                        !this.regInfoModel.photoIdTypeCode||
                         !this.regInfoModel._OutletCode ||
                         (this.selectedAreatype == '0') ||
                         (this.selectedDistrict == '0') ||
                         (this.selectedDivision == '0') ||
+                        !this.selectedChainMerchant||
                         !this.regInfoModel.locationCode
                     ) {
-                        this.msgs = [];
-                        this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                        this.msgs = [];                
+                        this.messageService.add({ severity: 'error', summary: 'Warning!', detail: 'Cannot be left blank' });
                         this.error = true;
                         break;
                     }
@@ -247,6 +249,7 @@ export class ChainMerchantAddoreditComponent implements OnInit {
         }
 
     }
+
 
     saveMerchant(event): any {
         this.showDuplicateMsg = false;
@@ -265,22 +268,24 @@ export class ChainMerchantAddoreditComponent implements OnInit {
 
         this.regInfoModel.mAreaType = this.selectedAreatype;
         this.regInfoModel.pmphone = this.selectedChainMerchant;
-        if (this.regInfoModel.EftAccNo != "") {
+        if (this.regInfoModel._ChildMphone != "") {
             this.merchantService.saveChildMerchant(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
-                        window.history.back();
-                        if (this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant Updated' });
+                        if (data === 200) {
+                            window.history.back();
+                            if (this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Merchant Updated' });
 
-                        }
-                        else if
-                            (this.isRegistrationPermitted && this.isEditMode) {
-                            this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
-                        }
-                        else {
-                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant Added' });
-                        }
+                            }
+                            else if
+                                (this.isRegistrationPermitted && this.isEditMode) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', detail: 'Merchant Registered' });
+                            }
+                            else {
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Merchant Added' });
+                            }
+                        }                      
                     },
                     error => {
                         console.log(error);

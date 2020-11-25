@@ -43,8 +43,10 @@ export class MerchantUserComponent implements OnInit {
         ]
         this.merchantTypeList = [
             { label: 'Individual', value: 'I' },
-            { label: 'Chain Parent', value: 'CP' },
-            { label: 'Child', value: 'CM' },
+            { label: 'Parent Merchant', value: 'PM' },
+            { label: 'Child Merchantt', value: 'CM' },
+            { label: 'Master Wallet', value: 'MW' },
+            { label: 'Distributor', value: 'D' },
         ]
         this.getMerchantList();
         this.entityId = this.route.snapshot.paramMap.get('id');

@@ -5,20 +5,20 @@ import { map } from 'rxjs/operators';
 import { MfsSettingService } from '../mfs-setting.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class AgentService {      
-    
+export class AgentService {
+
     constructor(private http: HttpClient, private environment: MfsSettingService) {
 
     }
 
-    GetclusterByTerritoryCode(code : string) {
-        return this.http.get<any>(this.environment.distributionApiServer + '/agent/GetclusterByTerritoryCode?code='+code)
+    GetclusterByTerritoryCode(code: string) {
+        return this.http.get<any>(this.environment.distributionApiServer + '/agent/GetclusterByTerritoryCode?code=' + code)
             .pipe(map(clusterList => {
                 return clusterList;
             }));
-    }
+    }  
 
     save(agentModel: any, isEditMode: boolean, event: string) {
         return this.http.post<any>(this.environment.distributionApiServer + '/agent/saveagent?isEditMode=' + isEditMode + '&evnt=' + event, agentModel)
@@ -76,12 +76,19 @@ export class AgentService {
             }));
     }
 
+    GetAgentPhoneCodeListByClusterDtor(selectedCluster: string, mobileNo: string): any {
+        return this.http.get<any>(this.environment.distributionApiServer + '/agent/GetAgentPhoneCodeListByClusterDtor?cluster=' + selectedCluster + '&mobileNo=' + mobileNo)
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
     ExecuteAgentReplace(exMobileNo: any, newMobileNo: any, exCluster: any, newCluster: any, entryBy: any, AgentPhoneCodeModel: any): any {
         return this.http.post<any>(this.environment.distributionApiServer + '/agent/ExecuteAgentReplace?exMobileNo=' + exMobileNo + '&newMobileNo=' + newMobileNo + '&exCluster=' + exCluster + ' &newCluster=' + newCluster + '&entryBy=' + entryBy, AgentPhoneCodeModel)
             .pipe(map(model => {
                 return model;
             }))
-    } 
-   
+    }
+
 
 }

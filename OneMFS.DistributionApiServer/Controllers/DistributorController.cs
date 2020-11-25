@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using MFS.ClientService.Models;
+using MFS.ClientService.Service;
 using MFS.CommunicationService.Service;
 using MFS.DistributionService.Models;
 using MFS.DistributionService.Service;
@@ -30,7 +32,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 		private readonly ILocationService _locationService;
 		private IAuditTrailService auditTrailService;
 		private IErrorLogService errorLogService;
-		public DistributorController(IErrorLogService _errorLogService, IAuditTrailService _auditTrailService, ILocationService locationService, IKycService kycService, IDistributorService distributorService, IDsrService objDsrService, IDormantAccService _dormantAccService)
+		public ICustomerRequestService customerRequestService;
+		public DistributorController(ICustomerRequestService _customerRequestService, IErrorLogService _errorLogService, IAuditTrailService _auditTrailService, ILocationService locationService, IKycService kycService, IDistributorService distributorService, IDsrService objDsrService, IDormantAccService _dormantAccService)
 		{
 			this.auditTrailService = _auditTrailService;
 			this._distributorService = distributorService;
@@ -39,6 +42,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			this._kycService = kycService;
 			this._locationService = locationService;
 			this.errorLogService = _errorLogService;
+			this.customerRequestService = _customerRequestService;
 		}
 
 		[HttpGet]
@@ -186,7 +190,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 							_distributorService.UpdateRegInfo(regInfo);
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
 							//_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
@@ -359,8 +363,18 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				int fourDigitRandomNo = new Random().Next(1000, 9999);
 				model.UpdateDate = DateTime.Now;
+				CustomerRequest customerRequest = new CustomerRequest
+				{
+					Mphone = model.Mphone,
+					ReqDate = DateTime.Now,
+					HandledBy = model.UpdateBy,
+					Remarks = model.Remarks,
+					Request = "Pin Reset",
+					Status = "Y"
+				}; 
 				Reginfo prevAReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				_DsrService.UpdatePinNo(model.Mphone, fourDigitRandomNo.ToString());
+				customerRequestService.Add(customerRequest);
 				_distributorService.UpdateRegInfo(model);
 				Reginfo currentReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevAReginfo);
@@ -370,7 +384,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					auditTrail.Who = model.UpdateBy;
 					auditTrail.WhatActionId = 4;
 					auditTrail.WhichParentMenuId = 2;
-					auditTrail.WhichMenu = "Client Profile";
+					auditTrail.WhichMenu = "KYC Profile";
 					auditTrail.InputFeildAndValue = diffList;
 					auditTrail.WhichId = model.Mphone;
 					auditTrail.Response = "Success! Pin Reset Successfully";
@@ -382,7 +396,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					auditTrail.Who = model.UpdateBy;
 					auditTrail.WhatActionId = 4;
 					auditTrail.WhichParentMenuId = 2;
-					auditTrail.WhichMenu = "Client Profile";
+					auditTrail.WhichMenu = "KYC Profile";
 					auditTrail.InputFeildAndValue = diffList;
 					auditTrail.WhichId = model.Mphone;
 					auditTrail.Response = "Success! Account Unlocked Successfully";

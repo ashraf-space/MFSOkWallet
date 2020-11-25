@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DistPortalDataset" targetNamespace="http://tempuri.org/DistPortalDataset.xsd" xmlns:mstns="http://tempuri.org/DistPortalDataset.xsd" xmlns="http://tempuri.org/DistPortalDataset.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DistPortalDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DistPortalDataset" msprop:Generator_UserDSName="DistPortalDataset">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="AgentDsrList" msprop:Generator_TableClassName="AgentDsrListDataTable" msprop:Generator_TableVarName="tableAgentDsrList" msprop:Generator_RowChangedName="AgentDsrListRowChanged" msprop:Generator_TablePropName="AgentDsrList" msprop:Generator_RowDeletingName="AgentDsrListRowDeleting" msprop:Generator_RowChangingName="AgentDsrListRowChanging" msprop:Generator_RowEvHandlerName="AgentDsrListRowChangeEventHandler" msprop:Generator_RowDeletedName="AgentDsrListRowDeleted" msprop:Generator_RowClassName="AgentDsrListRow" msprop:Generator_UserTableName="AgentDsrList" msprop:Generator_RowEvArgName="AgentDsrListRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AgentName" msprop:Generator_ColumnVarNameInTable="columnAgentName" msprop:Generator_ColumnPropNameInRow="AgentName" msprop:Generator_ColumnPropNameInTable="AgentNameColumn" msprop:Generator_UserColumnName="AgentName" type="xs:string" minOccurs="0" />
+              <xs:element name="Mphone" msprop:Generator_ColumnVarNameInTable="columnMphone" msprop:Generator_ColumnPropNameInRow="Mphone" msprop:Generator_ColumnPropNameInTable="MphoneColumn" msprop:Generator_UserColumnName="Mphone" type="xs:string" minOccurs="0" />
+              <xs:element name="OffAddr" msprop:Generator_ColumnVarNameInTable="columnOffAddr" msprop:Generator_ColumnPropNameInRow="OffAddr" msprop:Generator_ColumnPropNameInTable="OffAddrColumn" msprop:Generator_UserColumnName="OffAddr" type="xs:string" minOccurs="0" />
+              <xs:element name="DivisionName" msprop:Generator_ColumnVarNameInTable="columnDivisionName" msprop:Generator_ColumnPropNameInRow="DivisionName" msprop:Generator_ColumnPropNameInTable="DivisionNameColumn" msprop:Generator_UserColumnName="DivisionName" type="xs:string" minOccurs="0" />
+              <xs:element name="DistrictName" msprop:Generator_ColumnVarNameInTable="columnDistrictName" msprop:Generator_ColumnPropNameInRow="DistrictName" msprop:Generator_ColumnPropNameInTable="DistrictNameColumn" msprop:Generator_UserColumnName="DistrictName" type="xs:string" minOccurs="0" />
+              <xs:element name="ThanaName" msprop:Generator_ColumnVarNameInTable="columnThanaName" msprop:Generator_ColumnPropNameInRow="ThanaName" msprop:Generator_ColumnPropNameInTable="ThanaNameColumn" msprop:Generator_UserColumnName="ThanaName" type="xs:string" minOccurs="0" />
+              <xs:element name="Balance" msprop:Generator_ColumnVarNameInTable="columnBalance" msprop:Generator_ColumnPropNameInRow="Balance" msprop:Generator_ColumnPropNameInTable="BalanceColumn" msprop:Generator_UserColumnName="Balance" type="xs:string" minOccurs="0" />
+              <xs:element name="Category" msprop:Generator_ColumnVarNameInTable="columnCategory" msprop:Generator_ColumnPropNameInRow="Category" msprop:Generator_ColumnPropNameInTable="CategoryColumn" msprop:Generator_UserColumnName="Category" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,49 @@
+<div class="form-group">
+	<div class="p-grid">
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Branch Code</label>
+			<input autocomplete="off" type="text" class="form-control" [(ngModel)]="model.branchCode" pInputText id="float-input">
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">User Name</label>
+			<input autocomplete="off" type="text" class="form-control" [(ngModel)]="model.userName" pInputText id="float-input">
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Name</label>
+			<input autocomplete="off" type="text" class="form-control" [(ngModel)]="model.name" pInputText id="float-input">
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Mobile No</label>
+			<input autocomplete="off" type="text" class="form-control" [(ngModel)]="model.mobileNo" pInputText id="float-input">
+
+		</div>		
+	</div>
+	<div class="p-grid">
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Select Date Type</label>
+			<p-dropdown [options]="roleList" placeholder="Select Date Type" [(ngModel)]="model.roleName" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">From <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From" 
+					   name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">To <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To" 
+					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+					   (click)="h.toggle()" id="float-input">
+			</div>
+		</div>
+	</div>
+</div>

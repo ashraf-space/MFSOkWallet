@@ -93,7 +93,7 @@ namespace MFS.DistributionService.Service
 						//aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "E");
 						var prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						enterpriseRepository.UpdateRegInfo(aReginfo);
-						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.UpdateBy, 3, 4, "Enterprise",aReginfo.Mphone ,"Register successfully");
+						kycService.InsertUpdatedModelToAuditTrail(aReginfo, prevModel, aReginfo.AuthoBy, 3, 4, "Enterprise",aReginfo.Mphone ,"Register successfully");
 						MessageService service = new MessageService();
 						//service.SendMessage(new MessageModel()
 						//{

@@ -43,7 +43,15 @@
 					</div>
 
 					<div class="p-grid">
-						<div class="p-col-6">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" (change)="checkSnameExist()" [disabled]="isEditMode" [(ngModel)]="regInfoModel._OrgCode" pKeyFilter="int" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Organization Code <span class="mandatory">*(EMS)</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel._OrgCode==null || regInfoModel._OrgCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
 							<label for="float-input input-lg" class=" col-form-label-dd">Merchant Type<span class="mandatory">*</span></label>
 							<p-dropdown [options]="mTypeList" [(ngModel)]="selectedMtype" placeholder="Please Select"
 										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
@@ -52,7 +60,7 @@
 							<p-message *ngIf="(selectedMtype == '0') && error" severity="error" text="Cannot be left blank"></p-message>
 						</div>
 
-						<div class="p-col-6">
+						<div class="p-col-4">
 							<label for="float-input input-lg" class=" col-form-label-dd">Area Type<span class="mandatory">*</span></label>
 							<p-dropdown [options]="mAreaList" [(ngModel)]="selectedAreatype" placeholder="Please Select"
 										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
@@ -247,7 +255,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText [pKeyFilter]="positveNumber" id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText  id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Trade Licence No </label>
 							</span>
 						</div>
@@ -281,19 +289,13 @@
 										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
 						</div>
 						<div class="p-col-4">
-							<br />
-							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.accountName" uppercase pInputText id="float-input">
-								<label for="float-input input-lg" class="col-form-label">Account Name</label>
-							</span>
+							<label for="float-input input-lg" class="col-form-label-dd">Account Name</label>
+							<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.accountName" uppercase pInputText id="float-input">
 						</div>
 
 						<div class="p-col-4">
-							<br />
-							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo" [disabled]="disabledEdit" [pKeyFilter]="positveNumber" id="float-input">
-								<label for="float-input input-lg" class="col-form-label">Account No</label>
-							</span>
+							<label for="float-input input-lg" class="col-form-label-dd">Account No</label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo" [disabled]="disabledEdit" [pKeyFilter]="positveNumber" id="float-input">
 						</div>
 
 					</div>

@@ -63,8 +63,8 @@ export class EdumanBillComponent implements OnInit {
         else {
             var obj: any = {};
             obj.isNotValidated = true;
+            return obj;
         }
-        return this.model;
     }
 
     validate(): any {

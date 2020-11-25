@@ -61,6 +61,7 @@ export class GlStatementComponent implements OnInit {
         else {
             var obj: any = {};
             obj.isNotValidated = true;
+            return obj;
         }
     }
 

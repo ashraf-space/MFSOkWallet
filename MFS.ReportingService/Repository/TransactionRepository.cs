@@ -31,7 +31,12 @@ namespace MFS.ReportingService.Repository
         object GetParticularDDL();
         object GetTransactionDDLByParticular(string particular);
         List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate);
-    }
+        object GetTelcoDDL();
+        List<ItemWiseServices> GetItemWiseServicesList(string telcoType, string fromDate, string toDate);
+        object GetRmgDDL();
+        List<RmgWiseSalaryDisbursement> GetRmgWiseSalaryDisbursementList(string rmgId, string fromDate, string toDate);
+		List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo);
+	}
     public class TransactionRepository : BaseRepository<AccountStatement>, ITransactionRepository
     {
         MainDbUser mainDbUser = new MainDbUser();
@@ -550,5 +555,131 @@ namespace MFS.ReportingService.Repository
             }
         }
 
-    }
+        public object GetTelcoDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select distinct Telco_code as Value, Telco_name as Label  from " + mainDbUser.DbUser + "telco_list";
+
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<ItemWiseServices> GetItemWiseServicesList(string telcoType, string fromDate, string toDate)
+        {
+            List<ItemWiseServices> result = new List<ItemWiseServices>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_OPT_CODE", OracleDbType.Varchar2, ParameterDirection.Input, telcoType);
+                    dyParam.Add("V_START_DATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_END_DATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_RETURN", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<ItemWiseServices>(connection, mainDbUser.DbUser + "RPT_SESSION_REPORT", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetRmgDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select Company_Id as Value, Company_name as Label from " + mainDbUser.DbUser + "Tbl_Disburse_Company_Info where Sal_acc='70000000020'";
+
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<RmgWiseSalaryDisbursement> GetRmgWiseSalaryDisbursementList(string rmgId, string fromDate, string toDate)
+        {
+            List<RmgWiseSalaryDisbursement> result = new List<RmgWiseSalaryDisbursement>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_RmgId", OracleDbType.Varchar2, ParameterDirection.Input, rmgId);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<RmgWiseSalaryDisbursement>(connection, mainDbUser.DbUser + "RPT_RmgWiseSalaryDisbursement", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+		public List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo)
+		{
+			List<MasterWallet> result = new List<MasterWallet>();
+
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, fromDate=="null"?DateTime.Now: Convert.ToDateTime(fromDate));
+					dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, toDate =="null"?DateTime.Now: Convert.ToDateTime(toDate));
+					dyParam.Add("AccountNo", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+					dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo=="null"?null: transNo);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					result = SqlMapper.Query<MasterWallet>(connection, mainDbUser.DbUser + "RPT_ACC_STAT_MER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+				}
+
+			}
+			catch (Exception e)
+			{
+
+				throw;
+			}
+			return result;
+		}
+	}
 }

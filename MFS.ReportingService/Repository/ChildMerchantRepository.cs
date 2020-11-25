@@ -42,7 +42,7 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					result = SqlMapper.Query<OutletSummaryTransaction>(connection, dbUser + "RPT_CHILD_OUTLETSUMMARYTRANSACTION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					result = SqlMapper.Query<OutletSummaryTransaction>(connection, dbUser + "RPT_CHILD_OUTLETSUMTRANS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 					this.CloseConnection(connection);
 				}
 

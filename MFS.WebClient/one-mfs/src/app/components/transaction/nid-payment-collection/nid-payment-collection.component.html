@@ -1,0 +1,42 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> NID Payment Collection (  )</h6>
+            <p-fieldset>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label single-line">Enter NID Number <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="16" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="nidPaymentCollectionModel.nidNumber">
+                        <p-message *ngIf="(nidPaymentCollectionModel.nidNumber==null || nidPaymentCollectionModel.nidNumber==''|| nidPaymentCollectionModel.nidNumber=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label single-line">Enter Amount <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="nidPaymentCollectionModel.amount" (change)="GetAmountInWords();" [disabled]="true">
+                        <p-message *ngIf="(nidPaymentCollectionModel.amount==null || nidPaymentCollectionModel.amount==''|| nidPaymentCollectionModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="mphone" class="col-sm-2 col-form-label">Beneficiary Mobile Number <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-input" [(ngModel)]="nidPaymentCollectionModel.beneficiaryNumber" placeholder="01xxxxxxxxx" pKeyFilter="int" maxlength="11">
+                        <p-message *ngIf="(nidPaymentCollectionModel.beneficiaryNumber==null || nidPaymentCollectionModel.beneficiaryNumber=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+                <!--<div class="form-group row">
+                    <label class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" [(ngModel)]="amountInWords" [disabled]="true">
+                    </div>
+                </div>-->
+            </p-fieldset>
+
+        </div>
+
+    </p-card>
+</div>
+
+<app-generic-form-action [disableAction]="isActionDisabled" (onSave)="onNIDPaymentSave()"></app-generic-form-action>
+

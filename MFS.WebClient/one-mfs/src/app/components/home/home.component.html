@@ -1,10 +1,19 @@
 ﻿<div>
     <div class="p-grid" *ngIf="!isLoading">
-        <div class="p-col-12">
+        <div class="p-col-12" *ngIf="!isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12" style="text-align:center">
+                        <h6><b><i class="fas fa-tachometer-alt"></i> OK Wallet Dashboard</b></h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
             <p-card>
                 <div class="p-grid">
                     <div class="p-col-4">
-                        <h6><b><i class="fas fa-tachometer-alt"></i> OK Wallet Dashboard</b></h6>
+                        <h6><b><i class="fa fa-th-list"></i> Cash In/Cash Out</b></h6>
                     </div>
 
                     <div class="p-col-8" *ngIf="isBranchTeller && userPStatus!=='N'">
@@ -15,12 +24,126 @@
                             <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">Branch Cash Out (Withdrawal)<i class="fas fa-money-bill-alt"></i></button>
                         </div>
                         <!--<div class="btn-group edit-group" role="group" aria-label="Basic example">
-                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToReport()">Report <i class="fa fa-th-list"></i></button>
-                        </div>-->
+                        <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToReport()">Report <i class="fa fa-th-list"></i></button>
+                    </div>-->
+                    </div>
+
+                </div>
+
+
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Utility Bill Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Dhaka WASA<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">DPDC Postpaid<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">DPDC Prepaid<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">NESCO<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">DESCO Postpaid<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToReport()">Jalalabad Gas<i class="fa fa-th-list"></i></button>
+                        </div>
                     </div>
                 </div>
             </p-card>
         </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Tuition Fee Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">OK EMS<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">EDUMAN<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                         <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">EMS ID Retrive<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Credit Card Bill Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">ONE Bank Credit Card<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Lanka Bangla DPS<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Lanka Bangla Credit Card Bill<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">Other Bank Credit Card Bill<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Other Bill/Fee Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">NID Info Correction<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Other Info Correction<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Both Info Correction<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">Duplicate Regular<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToReport()">Duplicate Urgent <i class="fa fa-th-list"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+
+
+
+
 
         <div class="p-grid" *ngIf="!isBranchTeller && userPStatus!=='N'">
             <div class="p-col-4">

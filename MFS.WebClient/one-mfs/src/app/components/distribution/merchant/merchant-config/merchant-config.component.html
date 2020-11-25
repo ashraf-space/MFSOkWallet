@@ -42,7 +42,7 @@
 					<label for="float-input input-lg" class="col-form-label-dd">Outlet Name</label>
 				</span>
 				<!--<p-message *ngIf="(merchantConfigModel.companyName==null || merchantConfigModel.companyName=='') && error "
-						   severity="error" text="Cannot be left blank"></p-message>-->
+					   severity="error" text="Cannot be left blank"></p-message>-->
 			</div>
 		</div>
 
@@ -63,7 +63,23 @@
 			</div>
 
 		</div>
+		<div class="p-grid" *ngIf="isSpecialMerchant">
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.customerServiceChargeMax" pInputText [pKeyFilter]="positveNumber" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Customer Service Charge Max</label>
+				</span>
+			</div>
+			<div class="p-col-6">
+				<br />
+				<span class="ui-float-label ">
+					<input type="text" class="form-control" [(ngModel)]="merchantConfigModel.customerServiceChargeMin" pInputText [pKeyFilter]="positveNumber" id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Customer Service Charge Min</label>
+				</span>
+			</div>
 
+		</div>
 		<div class="p-grid">
 			<div class="p-col-6">
 				<br />
@@ -79,7 +95,7 @@
 							[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 							[disabled]="isRegistrationPermitted"
 							id="float-input"></p-dropdown>
-				<p-message *ngIf="(merchantConfigModel.merchantSmsNotification == '' || merchantConfigModel.merchantSmsNotification == null) && error" 
+				<p-message *ngIf="(merchantConfigModel.merchantSmsNotification == '' || merchantConfigModel.merchantSmsNotification == null) && error"
 						   severity="error" text="Cannot be left blank"></p-message>
 			</div>
 		</div>

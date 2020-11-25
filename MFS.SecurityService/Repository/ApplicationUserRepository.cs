@@ -19,6 +19,7 @@ namespace MFS.SecurityService.Repository
         object IsProceedToController(List<string> userInfos);
         object GetAppUserListDdl();
         object GetAllApplicationUserList();
+        PasswordPolicy GetPasswordPolicy();
     }
 
     public class ApplicationUserRepository : BaseRepository<ApplicationUser>, IApplicationUserRepository
@@ -29,8 +30,8 @@ namespace MFS.SecurityService.Repository
         //    dbUser = objMainDbUser.DbUser;
         //}
         MainDbUser mainDbUser = new MainDbUser();
-			
-		public ApplicationUser validateLogin(string userName, string password)
+
+        public ApplicationUser validateLogin(string userName, string password)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace MFS.SecurityService.Repository
                     dyParam.Add("LOGIN_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     IList<ApplicationUser> result = SqlMapper.Query<ApplicationUser>(conn, mainDbUser.DbUser + "PR_MFS_VALIDATELOGIN", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
-                    this.CloseConnection(conn);				
+                    this.CloseConnection(conn);
                     if (result.Count == 0)
                     {
                         ApplicationUser obj = conn.QueryFirstOrDefault<ApplicationUser>("Select " + this.GetCamelCaseColumnList(new ApplicationUser()) + " from " + mainDbUser.DbUser + "Application_User where username='" + userName + "'");
@@ -57,8 +58,8 @@ namespace MFS.SecurityService.Repository
                 }
             }
             catch (Exception e)
-            {				
-				return new ApplicationUser() { Is_validated = false };
+            {
+                return new ApplicationUser() { Is_validated = false };
             }
 
         }
@@ -136,6 +137,27 @@ namespace MFS.SecurityService.Repository
                 {
                     string query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id";
                     var result = connection.Query<dynamic>(query).ToList();
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public PasswordPolicy GetPasswordPolicy()
+        {
+            PasswordPolicy result = new PasswordPolicy();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select Pass_min_length as PassMinLength,Pass_max_length as PassMaxLength,Pass_alpha_lower as PassAlphaLower,Pass_alpha_upper as PassAlphaUpper,pass_number as PassNumber,Pass_special_char as PassSpecialChar,pass_history_take as PassHistoryTake from" + mainDbUser.DbUser + "global_config";
+                    result = connection.Query<PasswordPolicy>(query).FirstOrDefault();
                     this.CloseConnection(connection);
                     connection.Dispose();
                     return result;

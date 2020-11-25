@@ -867,6 +867,104 @@ namespace OneMFS.ReportingApiServer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/Transaction/GetTelcoDDL")]
+        public object GetTelcoDDL()
+        {
+            try
+            {
+                return _TransactionService.GetTelcoDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Transaction/ItemWiseServices")]
+        public byte[] ItemWiseServices(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string telcoType = builder.ExtractText(Convert.ToString(model.ReportOption), "telcoType", ",");
+            string telcoName = builder.ExtractText(Convert.ToString(model.ReportOption), "telcoName", ",");
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+            
+
+            ReportViewer reportViewer = new ReportViewer();            
+
+            List<ItemWiseServices> itemWiseServicesList = new List<ItemWiseServices>();
+            itemWiseServicesList = _TransactionService.GetItemWiseServicesList(telcoType, fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTItemWiseServices.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForFundTransfer(fromDate, toDate, telcoType, telcoName));
+            ReportDataSource A = new ReportDataSource("ItemWiseServices", itemWiseServicesList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+        [HttpGet]
+        [Route("api/Transaction/GetRmgDDL")]
+        public object GetRmgDDL()
+        {
+            try
+            {
+                return _TransactionService.GetRmgDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Transaction/RmgWiseSalaryDisbursement")]
+        public byte[] RmgWiseSalaryDisbursement(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string rmgId = builder.ExtractText(Convert.ToString(model.ReportOption), "rmgId", ",");
+            string rmgName = builder.ExtractText(Convert.ToString(model.ReportOption), "rmgName", ",");
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+
+
+            ReportViewer reportViewer = new ReportViewer();
+
+            List<RmgWiseSalaryDisbursement> rmgWiseSalaryDisbursementList = new List<RmgWiseSalaryDisbursement>();
+            rmgWiseSalaryDisbursementList = _TransactionService.GetRmgWiseSalaryDisbursementList(rmgId, fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTRmgWiseSalaryDis.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForFundTransfer(fromDate, toDate, rmgId, rmgName));
+            ReportDataSource A = new ReportDataSource("RmgWiseSalaryDisbursement", rmgWiseSalaryDisbursementList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
 
     }
 }

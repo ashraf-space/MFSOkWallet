@@ -73,6 +73,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
 					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.EntryDate = System.DateTime.Now;
 					//int fourDigitRandomNo = new Random().Next(1000, 9999);                  
 					try
 					{
@@ -111,7 +112,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_DsrService.UpdateRegInfo(regInfo);
 							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "DSR", regInfo.Mphone, "Register successfully");
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "DSR", regInfo.Mphone, "Register successfully");
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()

@@ -62,11 +62,19 @@
         <div class="row" *ngIf="invalidCredentials">
             <div class="col-sm-12">
                 <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
-                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Old Password</span>
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: {{validationMsg}}</span>
                 </div>
             </div>
         </div>
         <h6 class="form-header"><i class="fas fa-user" aria-hidden="true"></i>  {{currentUser.user.name}} | Change Password <i class="fas fa-key"></i> <span *ngIf="firstTimeChange">| Please Change Password for First Time Logging in</span></h6>
+        <div style="text-align:center">
+            <p>* Minimum character = 6</p>
+            <p>* Maximum character = 12</p>
+            <p>* Must have lower case character </p>
+            <p>* Must have upper case character </p>
+            <p>* Must have Number </p>
+            <p>* Must have Special character (!@#$. etc)</p>
+        </div>
         <div class="form-group row">
             <label for="customerAC" class="col-sm-1 col-form-label third-line">Old Password <span class="mandatory">*</span></label>
             <div class="col-sm-11">

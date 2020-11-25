@@ -40,9 +40,10 @@ export class CreditCardReportComponent implements OnInit {
             return obj;
         }
         else {
-            var obj: any = {};           
-        }
-        return this.model;
+            var obj: any = {};
+            obj.isNotValidated = true;
+            return obj;
+        }      
     }
     validate(): any {
         if (!this.model.fromDate || !this.model.toDate) {

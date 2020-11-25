@@ -295,7 +295,11 @@ namespace MFS.TransactionService.Service
 				var mtcbsinfos = ConvertBatchUpdateModelToMtCbsinfoModelForCheck(model);
 
 				foreach (MtCbsinfo mtcbsinfo in mtcbsinfos)
-				{
+				{					
+					if (String.IsNullOrEmpty(mtcbsinfo.CheckBy))
+					{
+						return HttpStatusCode.Unauthorized;
+					}
 					if (mtcbsinfo.CheckStatus != null && mtcbsinfo.CheckStatus != "P")
 					{						
 						var cbsInfoPrev = _repository.GetMappedAccountByAccNo(mtcbsinfo.Accno);						
@@ -332,7 +336,11 @@ namespace MFS.TransactionService.Service
 			int count=0;
 			int countPending = 0;			
 			foreach (var item in cbsInfosList)
-			{
+			{				
+				if (String.IsNullOrEmpty(item.MakeBy))
+				{
+					return HttpStatusCode.Unauthorized;
+				}
 				if(item.Status == null && item.MakeStatus == "A")
 				{
 					_repository.Add(item);
@@ -404,7 +412,7 @@ namespace MFS.TransactionService.Service
 			try
 			{
 				var cbsCustomerInfo = (MtCbsinfo) _repository.GetCbsCustomerInfo(accno);
-
+				
 				if (cbsCustomerInfo != null)
 				{
 					var isPendingExist = _repository.CheckPendingAccountByMphone(mblAcc);
@@ -431,6 +439,10 @@ namespace MFS.TransactionService.Service
 					{
 						return "MCC"; // missing cbs class
 					}
+					//if (cbsCustomerInfo.Nationid == "")
+					//{
+					//	return "NIDNULL"; // missing NID Info
+					//}
 				}
 				else
 				{

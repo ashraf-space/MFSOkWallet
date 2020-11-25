@@ -7,6 +7,7 @@ import { MfsSettingService } from '../mfs-setting.service';
   providedIn: 'root'
 })
 export class CustomerService {
+   
 
     constructor(private http: HttpClient, private environment: MfsSettingService) {
 
@@ -20,6 +21,12 @@ export class CustomerService {
     }
     getCustomerByMphone(mPhone: string) {
         return this.http.get<any>(this.environment.distributionApiServer + '/customer/getCustomerByMphone?mPhone=' + mPhone)
+            .pipe(map(regInfoModel => {
+                return regInfoModel;
+            }));
+    }
+    GetCbsAccInfo(mphone: any, bankAcNo: any) {
+        return this.http.get<any>(this.environment.distributionApiServer + '/customer/GetCbsAccInfo?mPhone=' + mphone + '&bankAcNo=' + bankAcNo)
             .pipe(map(regInfoModel => {
                 return regInfoModel;
             }));

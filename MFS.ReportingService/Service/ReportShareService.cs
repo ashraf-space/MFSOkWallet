@@ -15,6 +15,7 @@ namespace MFS.ReportingService.Service
 		object GetReportConfigById(int id);
 		string GetCategoryNameById(string accCategory);
 		List<ReportInfo> GetReportListByRole(IEnumerable<ReportInfo> reportInfos, string role);
+		List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName);
 	}
 	public class ReportShareService : BaseService<ReportInfo>, IReportShareService
 	{
@@ -100,9 +101,13 @@ namespace MFS.ReportingService.Service
 			{
 				return "GP-Mobicash";
 			}
-			else
+			else if(accCategory == "GPA")
 			{
 				return "GP-Mobicash Agent";
+			}
+			else
+			{
+				return string.Empty;
 			}
 		}
 
@@ -127,6 +132,11 @@ namespace MFS.ReportingService.Service
 			var reportRole = roles.Split(',').Select(int.Parse).ToList();
 			return reportRole.Contains(Convert.ToInt32(roleId));
 			
+		}
+
+		public List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName)
+		{
+			return _repository.GetApplicationUserReports(branchCode, userName, name, mobileNo, fromDate, toDate, roleName);
 		}
 	}
 }

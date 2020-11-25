@@ -57,12 +57,12 @@ export class ErrorListComponent implements OnInit {
     }
     onSearch() {
         this.showGrid = true;
-        if (this.errorObj.user && this.errorObj.fromDate && this.errorObj.toDate) {
+        if (this.errorObj.fromDate && this.errorObj.toDate) {
             this.gridConfig.dataSourcePath = this.mfsSettingService.clientApiServer + '/Errors/GetErrorByFiltering?fromDate=' + this.mfsUtilityService.renderDate(this.errorObj.fromDate, true) +
                 '&ToDate=' + this.mfsUtilityService.renderDate(this.errorObj.toDate, true) + '&user=' + this.errorObj.user;
         }
         else {
-            this.messageService.add({ severity: 'error', summary: 'Select Option', detail:'Select All Option', closable: true });
+            this.messageService.add({ severity: 'error', summary: 'Select Option', detail:'Select Date Option', closable: true });
         }
         if (this.child) {
             this.child.updateDataSource();

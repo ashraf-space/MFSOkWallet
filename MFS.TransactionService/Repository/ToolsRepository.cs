@@ -86,31 +86,29 @@ namespace MFS.TransactionService.Repository
             try
             {
 
-                //string URL = "http://10.20.32.118/CBS/";
-                //string urlParameters = "?proc=CBSINFO&ACCNO=" + accNo.ToString();
-                //string URL = "http://10.20.32.158/CbsDemoAPi/api/DemoCbs?accno=" + accNo.ToString();
-                string URL = "http://10.156.4.253/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
-				//string URL = "http://10.156.4.16/CBS/?proc=CBSINFO&ACCNO=" + accNo.ToString();
-				//string urlParameters = "proc=CBSINFO?&accno=" + accNo.ToString();
+				MappingApiInfo mappingApiInfo = new MappingApiInfo();
+				string URL = mappingApiInfo.LiveApiInfo + accNo.ToString(); //For Live 
+				
 				object dataObjects = null;
                 HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(URL);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(
-                    new MediaTypeWithQualityHeaderValue("text/html"));
+				client.BaseAddress = new Uri(URL);
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Accept.Add(
+					new MediaTypeWithQualityHeaderValue("text/html"));
 
-                HttpResponseMessage response = client.GetAsync(URL).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    dataObjects = response.Content.ReadAsStringAsync().Result;
-                }
-                else
-                {
-                    client.Dispose();
-                    return null;
-                }
-
-                string[] values = dataObjects.ToString().Split(',');
+				HttpResponseMessage response = client.GetAsync(URL).Result;
+				if (response.IsSuccessStatusCode)
+				{
+					dataObjects = response.Content.ReadAsStringAsync().Result;
+				}
+				else
+				{
+					client.Dispose();
+					return null;
+				}
+							
+				string[] values = Array.Empty<string>();
+				values = dataObjects.ToString().Split(',');
                 if (values[0] == "1")
                 {
                     MtCbsinfo aMtCbsinfo = new MtCbsinfo

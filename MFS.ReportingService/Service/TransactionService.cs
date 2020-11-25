@@ -22,11 +22,17 @@ namespace MFS.ReportingService.Service
         List<TransactionSummary> GetTransactionSummaryList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
         List<TransactionDetails> GetTransactionDetailsList(string tansactionType, string fromCat, string toCat, string dateType, string fromDate, string toDate,  string gateway);
         List<FundTransfer> GetFundTransferList(string tansactionType, string option, string fromDate, string toDate);
+		List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo);
 		List<MerchantTransactionSummary> MerchantTransactionSummaryReport(string mphone, string fromDate, string toDate);
         List<BranchCashinCashout> GetBranchCashinCashoutList(string branchCode, string cashinCashoutType, string option, string fromDate, string toDate);
         object GetParticularDDL();
         object GetTransactionDDLByParticular(string particular);
         List<ParticularWiseTransaction> GetParticularWiseTransList(string particular, string transaction, string fromDate, string toDate);
+        object GetTelcoDDL();
+        List<ItemWiseServices> GetItemWiseServicesList(string telcoType, string fromDate, string toDate);
+
+        object GetRmgDDL();
+        List<RmgWiseSalaryDisbursement> GetRmgWiseSalaryDisbursementList(string rmgId, string fromDate, string toDate);
     }
 
     public class TransactionService : BaseService<AccountStatement>, ITransactionService
@@ -246,5 +252,70 @@ namespace MFS.ReportingService.Service
             }
         }
 
-    }
+        public object GetTelcoDDL()
+        {
+            try
+            {
+                return _TransactionRepository.GetTelcoDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
+        public List<ItemWiseServices> GetItemWiseServicesList(string telcoType, string fromDate, string toDate)
+        {
+            try
+            {
+                return _TransactionRepository.GetItemWiseServicesList(telcoType, fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetRmgDDL()
+        {
+            try
+            {
+                return _TransactionRepository.GetRmgDDL();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<RmgWiseSalaryDisbursement> GetRmgWiseSalaryDisbursementList(string rmgId, string fromDate, string toDate)
+        {
+            try
+            {
+                return _TransactionRepository.GetRmgWiseSalaryDisbursementList(rmgId, fromDate, toDate);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+		public List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo)
+		{
+			try
+			{
+				return _TransactionRepository.GetMasterWalletAccountStatementList(mphone, fromDate, toDate,transNo);
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+	}
 }

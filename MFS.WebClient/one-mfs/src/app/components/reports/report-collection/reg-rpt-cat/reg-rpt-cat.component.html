@@ -1,0 +1,49 @@
+<div class="form-group">
+	<div class="p-grid">
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Registration Source</label>
+			<p-dropdown [options]="regSourceList" placeholder="Select Source" [showClear]="true" [(ngModel)]="model.regSource"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Account Category</label>
+			<p-dropdown [options]="accountCategoryList" placeholder="Select Category" [showClear]="true" [(ngModel)]="model.accCategory"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Registration Status</label>
+			<p-dropdown [options]="regStatusList" placeholder="Select Status" [showClear]="true" [(ngModel)]="model.regStatus"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+
+	</div>
+	<div class="p-grid">
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Account Status</label>
+			<p-dropdown [options]="accountStatusList" placeholder="Select Status" [showClear]="true" [(ngModel)]="model.status"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">From <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From" 
+					   name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">To <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To"
+					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+					   (click)="h.toggle()" id="float-input">
+			</div>
+		</div>
+
+	</div>
+</div>

@@ -77,7 +77,11 @@ namespace OneMFS.SecurityApiServer
             }
 
             app.UseAuthentication(); // USE THIS TO LET THE API KNOW TO USE THE AUTHENTICATION -- Labib 
-            app.UseMvc();
+			app.UseCors(builder => builder
+			 .AllowAnyOrigin()
+			 .AllowAnyMethod()
+			 .AllowAnyHeader());
+			app.UseMvc();
         }
 
         public JwtModel GetJwtSettings()

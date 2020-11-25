@@ -12,6 +12,7 @@ namespace MFS.ClientService.Service
         void updateRequestLog(CustomerRequest model);
         void deleteRequestLog(CustomerRequest model);
 		object GetAllOnProcessRequestByCustomer(string mphone);
+		object GetCustomerRequestHistoryByCat(string status, string mphone);
 	}
 
     public class CustomerReqLogService : BaseService<CustomerReqLog>, ICustomerReqLogService
@@ -30,6 +31,11 @@ namespace MFS.ClientService.Service
 		public object GetAllOnProcessRequestByCustomer(string mphone)
 		{
 			return repo.GetAllOnProcessRequestByCustomer(mphone);
+		}
+
+		public object GetCustomerRequestHistoryByCat(string status, string mphone)
+		{
+			return repo.GetCustomerRequestHistoryByCat(status, mphone);
 		}
 
 		public void updateRequestLog(CustomerRequest model)

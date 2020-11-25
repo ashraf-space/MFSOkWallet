@@ -33,6 +33,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
     isExistingUsername: boolean = false;
     blockSpace: RegExp = /[^\s]/; 
     logInStatusList: any;
+    passwordChangedBy: string;
     constructor(private applicationUserService: ApplicationUserService, private router: Router,
         private route: ActivatedRoute, private bankBranchService: BankBranchService, private roleService: RoleService,
         private authenticationService: AuthenticationService, private messageService: MessageService, private confirmationService: ConfirmationService) {
@@ -112,8 +113,13 @@ export class ApplicationUserAddEditComponent implements OnInit {
         else {
             this.error = false;
             this.msgs = [];
-
-            this.applicationUserModel.createdBy = this.currentUserModel.user.username;
+            if (this.isEditMode) {
+                this.applicationUserModel.updatedBy = this.currentUserModel.user.username;
+            }
+            else {
+                this.applicationUserModel.createdBy = this.currentUserModel.user.username;
+            }
+   
             this.applicationUserService.save(this.applicationUserModel).pipe(first())
                 .subscribe(
                 data => {
@@ -148,7 +154,8 @@ export class ApplicationUserAddEditComponent implements OnInit {
 
     confirmPasswordChange() {
         this.changePasswordModel.ApplicationUserId = this.applicationUserModel.id;
-        this.applicationUserService.changePassword(this.changePasswordModel).pipe(first())
+        this.passwordChangedBy = this.currentUserModel.user.username;
+        this.applicationUserService.changePassword(this.changePasswordModel, this.passwordChangedBy).pipe(first())
             .subscribe(
             data => {
                 if (data == 'Old Password is Invalid') {

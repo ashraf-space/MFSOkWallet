@@ -64,7 +64,7 @@ export class ReportListComponent implements OnInit {
     }
 
     onGenerate(event) {
-        console.log(event.Id);
+        //console.log(event.Id);
         this.router.navigateByUrl('/report/details/' + event.Id);
     }
 

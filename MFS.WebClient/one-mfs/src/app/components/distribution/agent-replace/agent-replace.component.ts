@@ -190,7 +190,7 @@ export class AgentReplaceComponent implements OnInit {
         //this.exGridConfig.gridName = "From Agent";
         //this.exGridConfig.gridIconClass = 'fas fa-thumbtack';
 
-        this.newGridConfig.hasEditState = true;
+        //this.newGridConfig.hasEditState = true;
         this.newGridConfig.showUniversalFilter = false;
 
 
@@ -208,7 +208,7 @@ export class AgentReplaceComponent implements OnInit {
             this.selectedCluster = this.agentReplaceModel.newCluster;
         if (this.selectedCluster != null && this.selectedCluster != '0' && this.selectedCluster.length > 0) {
             this.isLoading = true;
-            this.agentService.GetAgentPhoneCodeListByCluster(this.selectedCluster)
+            this.agentService.GetAgentPhoneCodeListByClusterDtor(this.selectedCluster, this.mobileNo)
                 .pipe(first())
                 .subscribe(
                     data => {

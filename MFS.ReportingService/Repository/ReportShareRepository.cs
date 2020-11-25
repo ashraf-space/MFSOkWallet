@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MFS.ReportingService.Models;
 using OneMFS.SharedResources;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,7 +17,8 @@ namespace MFS.ReportingService.Repository
         object SaveReportRole(int item, int id);
         IEnumerable<dynamic> GetReportRolesById(int id);
         object DeleteReportRole(int id);
-    }
+		List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName);
+	}
     public class ReportShareRepository : BaseRepository<ReportInfo>, IReportShareRepository
     {
         private readonly string dbUser;
@@ -102,5 +104,26 @@ namespace MFS.ReportingService.Repository
                 throw;
             }
         }
-    }
+
+		public List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleId)
+		{
+			using (var connection = this.GetConnection())
+			{
+				var dyParam = new OracleDynamicParameters();
+
+				dyParam.Add("V_BRANCHCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "" ? null : branchCode);
+				dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+				dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+				dyParam.Add("V_USERNAME", OracleDbType.Varchar2, ParameterDirection.Input, userName == ""?null:userName);
+				dyParam.Add("V_NAME", OracleDbType.Varchar2, ParameterDirection.Input, name == ""?null:name);
+				dyParam.Add("V_MOBILENO", OracleDbType.Varchar2, ParameterDirection.Input, mobileNo==""?null:mobileNo);
+				dyParam.Add("V_ROLEID", OracleDbType.Varchar2, ParameterDirection.Input, roleId==""?null: roleId);
+				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+				List<ApplicationUserReport> result = SqlMapper.Query<ApplicationUserReport>(connection, dbUser + "RPT_APP_USER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+				this.CloseConnection(connection);
+				return result;
+			}
+		}
+	}
 }

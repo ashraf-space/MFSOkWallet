@@ -56,7 +56,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 		{
 			try
 			{
-				return _service.GetNameByMphone(mblNo);
+				return _service.GetNameByMphone(mblNo);				
 			}
 			catch (Exception ex)
 			{
@@ -152,7 +152,15 @@ namespace OneMFS.TransactionApiServer.Controllers
 		{
 			try
 			{
-				return _service.SaveActionPendingCbsAccounts(model);
+				var result = _service.SaveActionPendingCbsAccounts(model);
+				if (result.ToString() == "Unauthorized")
+				{
+					return StatusCode(StatusCodes.Status401Unauthorized);
+				}
+				else
+				{
+					return result;
+				}				
 			}
 			catch (Exception ex)
 			{
@@ -195,7 +203,15 @@ namespace OneMFS.TransactionApiServer.Controllers
 		{
 			try
 			{
-				return _service.SaveMapOrRemapCbsAccount(model);
+				var result = _service.SaveMapOrRemapCbsAccount(model);
+				if (result.ToString() == "Unauthorized")
+				{
+					return StatusCode(StatusCodes.Status401Unauthorized);
+				}
+				else
+				{
+					return result;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -242,7 +258,8 @@ namespace OneMFS.TransactionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			    errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.InternalServerError;
 			}
 
 		}

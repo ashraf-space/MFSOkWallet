@@ -31,7 +31,8 @@ namespace MFS.SecurityService.Models
         public bool Is_validated { get; set; }
         public string Role_Name { get; set; }
 		public string LogInStatus { get; set; }
+        public string UpdatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
-
-	}
+    }
 }

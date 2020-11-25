@@ -121,6 +121,9 @@ export class FundEntryGltoacComponent implements OnInit {
                         }
                     }
 
+                    this.fundTransferModel.payAmt = 0;
+                    this.initialiseGridConfig();
+
                 },
                 error => {
                     console.log(error);
@@ -154,6 +157,9 @@ export class FundEntryGltoacComponent implements OnInit {
                         this.toAmount = data;
                         this.toCategory = 'System';
                     }
+
+                    this.fundTransferModel.payAmt = 0;
+                    this.initialiseGridConfig();
 
                 },
                 error => {

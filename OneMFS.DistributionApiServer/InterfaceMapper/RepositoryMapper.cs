@@ -3,6 +3,7 @@ using MFS.DistributionService.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using MFS.EnvironmentService.Repository;
 using MFS.SecurityService.Repository;
+using MFS.ClientService.Repository;
 
 namespace OneMFS.DistributionApiServer.InterfaceMapper
 {
@@ -24,6 +25,7 @@ namespace OneMFS.DistributionApiServer.InterfaceMapper
 			services.AddTransient<IAuditTrailRepository, AuditTrailRepository>();
 			services.AddTransient<ICommonSecurityRepository, CommonSecurityRepository>();
 			services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
+			services.AddTransient<ICustomerRequestRepository, CustomerRequestRepository>();
 		}
 	}
 }

@@ -24,6 +24,7 @@ export class MerchantConfigComponent implements OnInit {
     error: boolean = false;
     selectedSmsStatus: any;
     isLoading: boolean = false;
+    isSpecialMerchant: boolean = false;
     constructor(private merchantService: MerchantService, private distributorService: DistributorService, private router: Router,
         private route: ActivatedRoute, private messageService: MessageService, private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService) {
@@ -75,6 +76,9 @@ export class MerchantConfigComponent implements OnInit {
                     if (data) {
                         this.merchantConfigModel = data;
                         this.selectedSmsStatus = data.merchantSmsNotification;
+                        if (this.merchantConfigModel.category === 'S') {
+                            this.isSpecialMerchant = true;
+                        }
                         this.isLoading = false;
                     }
 

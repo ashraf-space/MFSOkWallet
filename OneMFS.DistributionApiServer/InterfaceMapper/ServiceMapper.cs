@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using MFS.EnvironmentService.Service;
 using MFS.SecurityService.Service;
+using MFS.ClientService.Service;
 
 namespace OneMFS.DistributionApiServer.InterfaceMapper
 {
@@ -25,7 +26,7 @@ namespace OneMFS.DistributionApiServer.InterfaceMapper
 			services.AddTransient<IEnterpriseService, EnterpriseService>();
 			services.AddTransient<IAuditTrailService, AuditTrailService>();
 			services.AddTransient<IErrorLogService, ErrorLogService>();
-			
+			services.AddTransient<ICustomerRequestService, CustomerRequestService>();			
 		}
     }
 }

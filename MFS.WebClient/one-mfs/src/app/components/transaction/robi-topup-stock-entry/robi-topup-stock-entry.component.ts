@@ -133,7 +133,13 @@ export class RobiTopupStockEntryComponent implements OnInit {
             this.fundTransferService.saveRobiTopupStockEntry(this.robiTopupStockEntryModel).pipe(first())
                 .subscribe(
                     data => {
-                        this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Robi Topup Stock Entry added' });
+                        if (data == 'Failed') {
+                            this.messageService.add({ severity: 'error', summary: 'Not Saved', detail: 'Sorry! Robi Topup Stock Entry Failed.' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Robi Topup Stock Entry added' });
+                        }
+                        
                        
                         setTimeout(() => {
                             this.isLoading = false;

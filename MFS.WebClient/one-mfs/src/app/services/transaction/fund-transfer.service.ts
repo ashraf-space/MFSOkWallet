@@ -8,7 +8,7 @@ import { from } from 'rxjs';
     providedIn: 'root'
 })
 export class FundTransferService {
-   
+
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     getGlList() {
@@ -21,6 +21,13 @@ export class FundTransferService {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForRobi')
             .pipe(map(GlList => {
                 return GlList;
+            }));
+    }
+
+    getGlDetailsForAirtel() {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForAirtel')
+            .pipe(map(data => {
+                return data;
             }));
     }
 
@@ -54,7 +61,7 @@ export class FundTransferService {
     }
 
 
-    
+
     GetTransactionDetailsByPayAmount(fundTransferModel: any, from: string, to: string): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransactionDetailsByPayAmount?from=' + from + '&to=' + to, fundTransferModel)
             .pipe(map(transactionDetails => {
@@ -65,6 +72,13 @@ export class FundTransferService {
 
     GetTransDtlForRobiByPayAmount(robiTopupStockEntryModel: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransDtlForRobiByPayAmount', robiTopupStockEntryModel)
+            .pipe(map(transactionDetails => {
+                return transactionDetails;
+            }));
+    }
+
+    GetTransDtlForAirtelByPayAmount(airtelTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransDtlForAirtelByPayAmount', airtelTopupStockEntryModel)
             .pipe(map(transactionDetails => {
                 return transactionDetails;
             }));
@@ -82,7 +96,7 @@ export class FundTransferService {
             .pipe(map(transactionDetails => {
                 return transactionDetails;
             }));
-    } 
+    }
 
     saveFundTransferEntry(fundTransferModel: any, from: string, to: string, isEditMode: boolean, event: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveFundTransferEntry?isEditMode=' + isEditMode + '&evnt=' + event + '&from=' + from + '&to=' + to, fundTransferModel)
@@ -96,7 +110,7 @@ export class FundTransferService {
             .pipe(map(TransactionList => {
                 return TransactionList;
             }));
-    }  
+    }
 
     AproveOrRejectFundTransfer(fundTransferModel: any, event: any, transType: string): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/AproveOrRejectFundTransfer?evnt=' + event + '&transType=' + transType, fundTransferModel)
@@ -107,6 +121,13 @@ export class FundTransferService {
 
     saveRobiTopupStockEntry(robiTopupStockEntryModel: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveRobiTopupStockEntry', robiTopupStockEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    saveAirtelTopupStockEntry(airtelTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveAirtelTopupStockEntry', airtelTopupStockEntryModel)
             .pipe(map(model => {
                 return model;
             }))
@@ -124,6 +145,41 @@ export class FundTransferService {
             .pipe(map(amount => {
                 return amount;
             }));
+    }
+
+    getCommissionGlListForDDL(): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetCommissionGlListForDDL')
+            .pipe(map(ACList => {
+                return ACList;
+            }));
+    }
+
+    GetCommssionMobileList(sysCoaCode: any, entryOrApproval: string): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetCommssionMobileList?sysCoaCode=' + sysCoaCode + '&entryOrApproval=' + entryOrApproval)
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    SaveCommissionEntry(toCatId: any, entryBy: any, entryBrCode: any, SelectedCommissionEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/SaveCommissionEntry?toCatId=' + toCatId + '&entryBy=' + entryBy + '&entryBrCode=' + entryBrCode, SelectedCommissionEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    checkPendingApproval(): any {
+        return this.http.get<string>(this.transactionService.transactionApiServer + '/FundTransfer/CheckPendingApproval')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
+    AproveOrRejectCommissionEntry(event: any, entryBy: any, SelectedCommissionEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/AproveOrRejectCommissionEntry?evnt=' + event + '&entryBy=' + entryBy, SelectedCommissionEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
     }
 
 

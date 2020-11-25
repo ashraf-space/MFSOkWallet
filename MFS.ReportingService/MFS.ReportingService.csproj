@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AccountStatement.cs" />
+    <Compile Include="Models\AgentDsrList.cs" />
     <Compile Include="Models\AgentInformation.cs" />
+    <Compile Include="Models\ApplicationUserReport.cs" />
     <Compile Include="Models\BillCollection.cs" />
     <Compile Include="Models\BranchCashinCashout.cs" />
     <Compile Include="Models\ChildMerchantTransaction.cs" />
@@ -56,21 +58,28 @@
     <Compile Include="Models\CreditCardReport.cs" />
     <Compile Include="Models\CurrentAffairsFirst.cs" />
     <Compile Include="Models\CurrentAffairsStatement.cs" />
+    <Compile Include="Models\DistributorPortal.cs" />
     <Compile Include="Models\EdumanBillPayment.cs" />
+    <Compile Include="Models\EmsReport.cs" />
     <Compile Include="Models\FundTransfer.cs" />
     <Compile Include="Models\GLStatement.cs" />
+    <Compile Include="Models\ItemWiseServices.cs" />
     <Compile Include="Models\JalalabadGasBillPayment.cs" />
     <Compile Include="Models\KycBalance.cs" />
+    <Compile Include="Models\MasterWallet.cs" />
     <Compile Include="Models\MerchantTransaction.cs" />
     <Compile Include="Models\MerchantTransactionSummary.cs" />
+    <Compile Include="Models\OnlineRegistration.cs" />
     <Compile Include="Models\OutletDailySummaryTransaction.cs" />
     <Compile Include="Models\OutletDetailsTransaction.cs" />
     <Compile Include="Models\OutletSummaryTransaction.cs" />
     <Compile Include="Models\ParticularWiseTransaction.cs" />
+    <Compile Include="Models\RegInfoReport.cs" />
     <Compile Include="Models\RegistrationReport.cs" />
     <Compile Include="Models\RegistrationSummary.cs" />
     <Compile Include="Models\ReportInfo.cs" />
     <Compile Include="Models\ReportRole.cs" />
+    <Compile Include="Models\RmgWiseSalaryDisbursement.cs" />
     <Compile Include="Models\TransactionDetails.cs" />
     <Compile Include="Models\TransactionSummary.cs" />
     <Compile Include="Models\WasaBillPayment.cs" />
@@ -78,12 +87,16 @@
     <Compile Include="Repository\BillCollectionRepository.cs" />
     <Compile Include="Repository\ChainMerchantRepository.cs" />
     <Compile Include="Repository\ChildMerchantRepository.cs" />
+    <Compile Include="Repository\DistributorPortalRepository.cs" />
+    <Compile Include="Repository\EmsRepository.cs" />
     <Compile Include="Repository\KycRepository.cs" />
     <Compile Include="Repository\ReportShareRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
     <Compile Include="Service\BillCollectionService.cs" />
     <Compile Include="Service\ChainMerchantService.cs" />
     <Compile Include="Service\ChildMerchantService.cs" />
+    <Compile Include="Service\DistributorPortalService.cs" />
+    <Compile Include="Service\EmsService.cs" />
     <Compile Include="Service\KycService.cs" />
     <Compile Include="Service\ReportShareService.cs" />
     <Compile Include="Service\TransactionService.cs" />
@@ -103,6 +116,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

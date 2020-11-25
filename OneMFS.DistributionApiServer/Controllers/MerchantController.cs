@@ -295,6 +295,10 @@ namespace OneMFS.DistributionApiServer.Controllers
 		{
             try
             {
+				if (string.IsNullOrEmpty(merchantConfig.UpdateBy))
+				{
+					return StatusCode(StatusCodes.Status401Unauthorized);
+				}
                 return _MerchantService.OnMerchantConfigUpdate(merchantConfig);
             }
 			catch (Exception ex)
@@ -404,6 +408,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
+		}
+		[HttpGet]
+		[Route("checkSnameExist")]
+		public object CheckSnameExist(string orgCode)
+		{
+			return _MerchantService.CheckSnameExist(orgCode);
 		}
 	}
 }

@@ -12,6 +12,7 @@ import { MfsUtilityService } from '../../../../services/mfs-utility.service';
 import { Message } from 'primeng/components/common/api';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { KycService } from '../../../../services/distribution/kyc.service';
+import { Reginfo } from '../../../../shared/_models/reginfo';
 @Component({
     selector: 'app-customer-addoredit',
     templateUrl: './customer-addoredit.component.html',
@@ -19,48 +20,7 @@ import { KycService } from '../../../../services/distribution/kyc.service';
     encapsulation: ViewEncapsulation.None
 })
 export class CustomerAddoreditComponent implements OnInit {
-    regInfoModel: any = {};
-    activeIndex: number = 0;
-    items: MenuItem[];
-    genderTypes: any;
-    religeonList: any;
-    relationList: any;
-    selectedRegion: string = "0";
-    selectedArea: string = "0";
-    divisionList: any;
-    selectedDivision: string = "0";
-    districtList: any;
-    selectedDistrict: string = "0";
-    thanaList: any;
-    photoIDTypeList: any;
-    bankBranchList: any;
-    selectedTerritory: string = "0";
-    selectedCluster: string = "0";
-    clusterList: any;
-    distCode: string;
-    currentUserModel: any = {};
-    entityId: string;
-    isEditMode: boolean = false;
-    DistributorCode: string = "";
-    regDate: any = {};
-    dateOfBirth: any = {};
-    formValidation: any;
-    isFinalValdidate: boolean;
-
-    isNidVerified: boolean;
-    isLoading: boolean = false;
-    isRegPermit = false;
-    msgs: Message[] = [];
-    error: boolean = false;
-    showDuplicateMsg: boolean = false;
-    customeNumberInput: any;
-    date = new Date();
-    occupationList: any;
-    alphabetsWithSpace: any;
-    emailRegx: any;
-    showRejectModal: boolean = false;
-    disableButton: boolean = false;
-    checkedAsPresent: boolean = false;
+    public reginfo: Reginfo;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -72,64 +32,69 @@ export class CustomerAddoreditComponent implements OnInit {
         private mfsUtilityService: MfsUtilityService,
         private ngbDatepickerConfig: NgbDatepickerConfig,
         private kycService: KycService) {
-        this.customeNumberInput = this.mfsUtilityService.getPositiveWholeNumberRegExp();
-        this.alphabetsWithSpace = this.mfsUtilityService.getAlphabetsWithSpaceEegExp();
-        this.emailRegx = this.mfsUtilityService.getEmailRegExp();
+        this.reginfo = new Reginfo();
+        this.reginfo.customeNumberInput = this.mfsUtilityService.getPositiveWholeNumberRegExp();
+        this.reginfo.alphabetsWithSpace = this.mfsUtilityService.getAlphabetsWithSpaceEegExp();
+        this.reginfo.emailRegx = this.mfsUtilityService.getEmailRegExp();
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         this.authService.currentUser.subscribe(x => {
-            this.currentUserModel = x;
+            this.reginfo.currentUserModel = x;
         });
-        this.formValidation = {};
+        this.reginfo.formValidation = {};
     }
 
     ngOnInit() {
-        this.items = [
+        this.reginfo.items = [
             {
                 label: 'Office use only',
                 command: (event: any) => {
-                    this.activeIndex = 0;
-                    //this.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
+                    this.reginfo.activeIndex = 0;
+                    //this.reginfo.messageService.add({ severity: 'success', summary: 'Service Message', detail: 'Via MessageService' });
                 }
             },
             {
                 label: 'Personal details',
                 command: (event: any) => {
-                    this.activeIndex = 1;
+                    this.reginfo.activeIndex = 1;
                 }
             },
             {
                 label: 'Nominee info',
                 command: (event: any) => {
-                    this.activeIndex = 2;
-                    //this.messageService.add({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
+                    this.reginfo.activeIndex = 2;
+                    //this.reginfo.messageService.add({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
                 }
             },
             {
                 label: 'Introducer info',
                 command: (event: any) => {
-                    this.activeIndex = 3;
-                    //this.messageService.add({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
+                    this.reginfo.activeIndex = 3;
+                    //this.reginfo.messageService.add({ severity: 'info', summary: 'Pay with CC', detail: event.item.label });
                 }
             }
             //},
             //{
             //    label: 'Bank info',
             //    command: (event: any) => {
-            //        this.activeIndex = 4;
-            //        //this.messageService.add({ severity: 'info', summary: 'Last Step', detail: event.item.label });
+            //        this.reginfo.activeIndex = 4;
+            //        //this.reginfo.messageService.add({ severity: 'info', summary: 'Last Step', detail: event.item.label });
             //    }
             //}
         ];
 
-        this.genderTypes = [
+        this.reginfo.genderTypes = [
             { label: 'Male', value: 'M', icon: 'fas fa-male' },
             { label: 'Female', value: 'F', icon: 'fas fa-female' },
             { label: 'Others', value: 'O', icon: 'fas fa-transgender-alt' }
         ];
-
-        this.religeonList = [
+        this.reginfo.kycTypes = [
+            { label: 'From KYC Paper', value: 'K', icon: 'fa fa-file' },
+            { label: 'From CBS Account', value: 'C', icon: 'fa fa-university' }
+           
+        ]
+        this.reginfo.religeonList = [
             { label: 'Islam', value: 'Islam' },
             { label: 'Hinduism', value: 'Hinduism' },
             { label: 'Chritianity', value: 'Chritianity' },
@@ -137,7 +102,7 @@ export class CustomerAddoreditComponent implements OnInit {
             { label: 'Other', value: 'Other' }
         ];
 
-        this.relationList = [
+        this.reginfo.relationList = [
             { label: 'Husband', value: 'Husband' },
             { label: 'Wife', value: 'Wife' },
             { label: 'Mother', value: 'Mother' },
@@ -153,53 +118,61 @@ export class CustomerAddoreditComponent implements OnInit {
         this.getBankBranchListForDDL();
         this.getOccupationList();
         this.getPhotoIDTypeListForDDL();
-        this.regInfoModel.nationality = 'Bangladeshi';
-        this.entityId = this.route.snapshot.paramMap.get('id');
-        if (this.entityId) {
-            this.isEditMode = true;
+        this.reginfo.regInfoModel.nationality = 'Bangladeshi';
+        this.reginfo.entityId = this.route.snapshot.paramMap.get('id');
+        if (this.reginfo.entityId) {
+            this.reginfo.isEditMode = true;
             this.GetCustomerByMphone();
-            this.isRegPermit = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
-            if (this.isRegPermit) {
-                this.isNidVerified = false;
+            this.reginfo.isRegPermit = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
+            if (this.reginfo.isRegPermit) {
+                this.reginfo.isNidVerified = false;
             }
             else {
-                this.isNidVerified = true;
-            }
+                this.reginfo.isNidVerified = true;
+            }          
         }
-        if (!this.entityId) {
+        if (!this.reginfo.entityId) {
             var currentDate = new Date();
-            this.isNidVerified = true;
-            this.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
+            this.reginfo.isNidVerified = true;
+            this.reginfo.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         }
-        this.regInfoModel.partOfFirst = 100;
+        this.reginfo.regInfoModel.partOfFirst = 100;
     }
     validateDatepicker(event) {
-        if (this.dateOfBirth) {
-            var validate = this.mfsUtilityService.validateDatePickerInput(this.dateOfBirth);
+        if (this.reginfo.dateOfBirth) {
+            var validate = this.mfsUtilityService.validateDatePickerInput(this.reginfo.dateOfBirth);
 
             if (!validate) {
-                //this.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
-                this.dateOfBirth = null;
+                //this.reginfo.messageService.add({ severity: 'error', summary: 'Invalid Date Formate', detail: 'Please Input Valid Date', closable: true });
+                this.reginfo.dateOfBirth = null;
             }
+        }
+    }
+    switchInputMethod() {
+        if (this.reginfo.selectedKycType === 'C') {
+            this.reginfo.showCbsModal = true;
+        }
+        else {
+            this.reginfo.showCbsModal = false;
         }
     }
     checkMphoneAlreadyExist(): any {
-        //var mobileNo: string = this.regInfoModel.mphone;
+        //var mobileNo: string = this.reginfo.regInfoModel.mphone;
         //var operatorCode: string = mobileNo.substring(0, 2);
         //var toMatch: string = "01";        
-        if (this.regInfoModel.mphone.toString().substring(0, 2) == "01" && this.regInfoModel.mphone.toString().substring(0, 3) != "012") {
-            this.distributionService.GetDistributorByMphone(this.regInfoModel.mphone)
+        if (this.reginfo.regInfoModel.mphone.toString().substring(0, 2) == "01" && this.reginfo.regInfoModel.mphone.toString().substring(0, 3) != "012") {
+            this.distributionService.GetDistributorByMphone(this.reginfo.regInfoModel.mphone)
                 .pipe(first())
                 .subscribe(
                     data => {
                         if (data != null) {
-                            this.msgs = [];
-                            this.msgs.push({ severity: 'error', summary: 'Customer A/C No : ' + this.regInfoModel.mphone, detail: 'Already Exists!' });
-                            this.regInfoModel.mphone = null;
-                            this.showDuplicateMsg = true;
+                            this.reginfo.msgs = [];
+                            this.reginfo.msgs.push({ severity: 'error', summary: 'Customer A/C No : ' + this.reginfo.regInfoModel.mphone, detail: 'Already Exists!' });
+                            this.reginfo.regInfoModel.mphone = null;
+                            this.reginfo.showDuplicateMsg = true;
                         }
                         else {
-                            this.showDuplicateMsg = false;
+                            this.reginfo.showDuplicateMsg = false;
                         }
                     },
                     error => {
@@ -208,36 +181,41 @@ export class CustomerAddoreditComponent implements OnInit {
                 );
         }
         else {
-            this.regInfoModel.mphone = '';
+            this.reginfo.regInfoModel.mphone = '';
             this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Mobiel No', closable: true });
         }
     }
     GetCustomerByMphone(): any {
-        this.isLoading = true;
-        this.customerService.getCustomerByMphone(this.entityId)
+        this.reginfo.isLoading = true;
+        this.customerService.getCustomerByMphone(this.reginfo.entityId)
             .pipe(first())
             .subscribe(
                 data => {
                     if (data) {
-                        this.regInfoModel = data;
+                        this.reginfo.regInfoModel = data;
                         if (data.locationCode) {
-                            this.selectedDivision = this.regInfoModel.locationCode.substring(0, 2);
+                            this.reginfo.selectedDivision = this.reginfo.regInfoModel.locationCode.substring(0, 2);
                             this.fillDistrictDDLByDivision();
-                            this.selectedDistrict = this.regInfoModel.locationCode.substring(0, 4);
+                            this.reginfo.selectedDistrict = this.reginfo.regInfoModel.locationCode.substring(0, 4);
                             this.fillThanaDDLByDistrict();
                         }
 
-                        //this.GetDistributorCodeByPhotoId(data.photoId);
-                        this.regDate = this.mfsUtilityService.renderDateObject(data.regDate);
+                        //this.reginfo.GetDistributorCodeByPhotoId(data.photoId);
+                        this.reginfo.regDate = this.mfsUtilityService.renderDateObject(data.regDate);
                         if (data.dateOfBirth != null) {
-                            this.dateOfBirth = this.mfsUtilityService.renderDateObject(data.dateOfBirth);
+                            this.reginfo.dateOfBirth = this.mfsUtilityService.renderDateObject(data.dateOfBirth);
                         }
-
+                        if (this.reginfo.regInfoModel.regStatus === 'P') {
+                            this.reginfo.isReject = false;
+                        }
+                        else {
+                            this.reginfo.isReject = true;
+                        }
                     }
-                    this.isLoading = false;
+                    this.reginfo.isLoading = false;
                 },
                 error => {
-                    this.isLoading = false;
+                    this.reginfo.isLoading = false;
                     console.log(error);
                 });
     }
@@ -246,18 +224,18 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.DistributorCode = data;
+                    this.reginfo.DistributorCode = data;
                 },
                 error => {
                     console.log(error);
                 });
     }
     GenerateAgentCode() {
-        this.agentService.GenerateAgentCode(this.selectedCluster)
+        this.agentService.GenerateAgentCode(this.reginfo.selectedCluster)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.regInfoModel.distCode = data.DIST_CODE;
+                    this.reginfo.regInfoModel.distCode = data.DIST_CODE;
                 },
                 error => {
                     console.log(error);
@@ -266,11 +244,11 @@ export class CustomerAddoreditComponent implements OnInit {
 
 
     GetclusterByTerritoryCode() {
-        this.agentService.GetclusterByTerritoryCode(this.selectedTerritory)
+        this.agentService.GetclusterByTerritoryCode(this.reginfo.selectedTerritory)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.clusterList = data;
+                    this.reginfo.clusterList = data;
                 },
                 error => {
                     console.log(error);
@@ -278,11 +256,11 @@ export class CustomerAddoreditComponent implements OnInit {
             );
     }
     async fillThanaDDLByDistrict() {
-        this.distributionService.getDistrictListByDivision(this.selectedDistrict)
+        this.distributionService.getDistrictListByDivision(this.reginfo.selectedDistrict)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.thanaList = data;
+                    this.reginfo.thanaList = data;
                 },
                 error => {
                     console.log(error);
@@ -290,11 +268,11 @@ export class CustomerAddoreditComponent implements OnInit {
             );
     }
     async fillDistrictDDLByDivision() {
-        this.distributionService.getDistrictListByDivision(this.selectedDivision)
+        this.distributionService.getDistrictListByDivision(this.reginfo.selectedDivision)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.districtList = data;
+                    this.reginfo.districtList = data;
                 },
                 error => {
                     console.log(error);
@@ -307,7 +285,7 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.clusterList = data;
+                    this.reginfo.clusterList = data;
                 },
                 error => {
                     console.log(error);
@@ -318,7 +296,7 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.photoIDTypeList = data;
+                    this.reginfo.photoIDTypeList = data;
                 },
                 error => {
                     console.log(error);
@@ -330,7 +308,7 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.bankBranchList = data;
+                    this.reginfo.bankBranchList = data;
                 },
                 error => {
                     console.log(error);
@@ -342,7 +320,7 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.divisionList = data;
+                    this.reginfo.divisionList = data;
                 },
                 error => {
                     console.log(error);
@@ -354,7 +332,7 @@ export class CustomerAddoreditComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.occupationList = data;
+                    this.reginfo.occupationList = data;
                 },
                 error => {
                     console.log(error);
@@ -363,132 +341,131 @@ export class CustomerAddoreditComponent implements OnInit {
     }
 
     onStepAhead(event) {
-        if (this.activeIndex < 4) {
+        if (this.reginfo.activeIndex < 4) {
             this.validation(event);
-            //this.activeIndex++;
+            //this.reginfo.activeIndex++;
         }
         else {
-            //this.SaveCustomer(event);
+            //this.reginfo.SaveCustomer(event);
         }
     }
 
     onStepBack() {
-        if (this.activeIndex > 0) {
-            this.activeIndex--;
+        if (this.reginfo.activeIndex > 0) {
+            this.reginfo.activeIndex--;
         }
     }
     validation(event) {
         if (event == 'reject') {
             this.SaveCustomer(event);
-            this.error = false;
+            this.reginfo.error = false;
         }
         else {
-            switch (this.activeIndex) {
+            switch (this.reginfo.activeIndex) {
                 case 0:
                     {
-                        if (!this.regInfoModel.mphone || !this.regDate.year) {
-                            this.msgs = [];
-                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                            this.error = true;
+                        if (!this.reginfo.regInfoModel.mphone || !this.reginfo.regDate.year) {
+                            this.reginfo.msgs = [];
+                            this.reginfo.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.reginfo.error = true;
                             break;
                         }
                         else {
-                            this.activeIndex++;
-                            this.error = false;
+                            this.reginfo.activeIndex++;
+                            this.reginfo.error = false;
                             break;
                         }
                     }
                 case 1:
                     {
-                        if (!this.regInfoModel.name ||
-                            !this.regInfoModel.photoIdTypeCode ||
-                            !this.regInfoModel.photoId ||
-                            !this.selectedDivision ||
-                            !this.selectedDistrict ||
-                            !this.regInfoModel.locationCode ||
-                            !this.regInfoModel.occupation ||
-                            !this.regInfoModel.perAddr ||
-                            !this.regInfoModel.mphone ||
-                            !this.regDate.year ||
-                            !this.regInfoModel.fatherName ||
-                            !this.regInfoModel.motherName ||
-                            !this.dateOfBirth.year ||
-                            !this.regInfoModel.gender) {
-                            this.msgs = [];
-                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                            this.error = true;
+                        if (!this.reginfo.regInfoModel.name ||
+                            !this.reginfo.regInfoModel.photoIdTypeCode ||
+                            !this.reginfo.regInfoModel.photoId ||
+                            !this.reginfo.selectedDivision ||
+                            !this.reginfo.selectedDistrict ||
+                            !this.reginfo.regInfoModel.locationCode ||
+                            !this.reginfo.regInfoModel.occupation ||
+                            !this.reginfo.regInfoModel.perAddr ||
+                            !this.reginfo.regInfoModel.mphone ||
+                            !this.reginfo.regDate.year ||
+                            !this.reginfo.regInfoModel.fatherName ||
+                            !this.reginfo.regInfoModel.motherName ||
+                            !this.reginfo.dateOfBirth.year ||
+                            !this.reginfo.regInfoModel.gender) {
+                            this.reginfo.msgs = [];
+                            this.reginfo.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.reginfo.error = true;
                             break;
                         } else {
-                            this.activeIndex++;
-                            this.error = false;
+                            this.reginfo.activeIndex++;
+                            this.reginfo.error = false;
                             break;
                         }
                     }
                 case 2:
                     {
-                        if (!this.regInfoModel.name ||
-                            !this.regInfoModel.photoIdTypeCode ||
-                            !this.regInfoModel.photoId ||
-                            !this.selectedDivision ||
-                            !this.selectedDistrict ||
-                            !this.regInfoModel.locationCode ||
-                            !this.regInfoModel.occupation ||
-                            !this.regInfoModel.perAddr ||
-                            !this.regInfoModel.mphone ||
-                            !this.regDate.year ||
-                            !this.dateOfBirth.year ||
-                            !this.regInfoModel.fatherName ||
-                            !this.regInfoModel.motherName ||
-                            !this.regInfoModel.firstNomineeName ||
-                            !this.regInfoModel.gender) {
-                            this.msgs = [];
-                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                            this.error = true;
+                        if (!this.reginfo.regInfoModel.name ||
+                            !this.reginfo.regInfoModel.photoIdTypeCode ||
+                            !this.reginfo.regInfoModel.photoId ||
+                            !this.reginfo.selectedDivision ||
+                            !this.reginfo.selectedDistrict ||
+                            !this.reginfo.regInfoModel.locationCode ||
+                            !this.reginfo.regInfoModel.occupation ||
+                            !this.reginfo.regInfoModel.perAddr ||
+                            !this.reginfo.regInfoModel.mphone ||
+                            !this.reginfo.regDate.year ||
+                            !this.reginfo.dateOfBirth.year ||
+                            !this.reginfo.regInfoModel.fatherName ||
+                            !this.reginfo.regInfoModel.motherName ||
+                            !this.reginfo.regInfoModel.firstNomineeName ||
+                            !this.reginfo.regInfoModel.gender) {
+                            this.reginfo.msgs = [];
+                            this.reginfo.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.reginfo.error = true;
                             break;
                         } else {
-                            this.activeIndex++;
-                            this.error = false;
+                            this.reginfo.activeIndex++;
+                            this.reginfo.error = false;
                             break;
                         }
                     }
+                //case 3:
+                //    {
+                //        //this.reginfo.activeIndex++;
+                //        //this.reginfo.error = false;
+                //        //break;
+                //        this.reginfo.SaveCustomer(event);
+                //        this.reginfo.error = false;
+                //        break;
+                //    }
                 case 3:
                     {
-                        //this.activeIndex++;
-                        //this.error = false;
-                        //break;
-                        this.SaveCustomer(event);
-                        this.error = false;
-                        break;
+                        if (!this.reginfo.regInfoModel.name ||
+                            !this.reginfo.regInfoModel.photoIdTypeCode ||
+                            !this.reginfo.regInfoModel.photoId ||
+                            !this.reginfo.selectedDivision ||
+                            !this.reginfo.selectedDistrict ||
+                            !this.reginfo.regInfoModel.locationCode ||
+                            !this.reginfo.regInfoModel.occupation ||
+                            !this.reginfo.regInfoModel.perAddr ||
+                            !this.reginfo.regInfoModel.mphone ||
+                            !this.reginfo.regDate.year ||
+                            !this.reginfo.regInfoModel.fatherName ||
+                            !this.reginfo.regInfoModel.motherName ||
+                            !this.reginfo.regInfoModel.firstNomineeName ||
+                            !this.reginfo.dateOfBirth.year ||
+                            !this.reginfo.regInfoModel.gender) {
+                            this.reginfo.msgs = [];
+                            this.reginfo.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                            this.reginfo.error = true;
+                            break;
+                        } else {
+                            this.SaveCustomer(event);
+                            this.reginfo.error = false;
+                            break;
+                        }
                     }
-                //case 4:
-                //    {
-                //        if (!this.regInfoModel.branchCode ||
-                //            !this.regInfoModel.name ||
-                //            !this.regInfoModel.photoIdTypeCode ||
-                //            !this.regInfoModel.photoId ||
-                //            !this.selectedDivision ||
-                //            !this.selectedDistrict ||
-                //            !this.regInfoModel.locationCode ||
-                //            !this.regInfoModel.occupation ||
-                //            !this.regInfoModel.perAddr ||
-                //            !this.regInfoModel.mphone ||
-                //            !this.regDate.year ||
-                //            !this.regInfoModel.fatherName ||
-                //            !this.regInfoModel.motherName ||
-                //            !this.dateOfBirth.year) {
-                //            this.msgs = [];
-                //            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-                //            if (this.regInfoModel.branchCode) {
-                //                this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
-                //            }
-                //            this.error = true;
-                //            break;
-                //        } else {
-                //            this.SaveCustomer(event);
-                //            this.error = false;
-                //            break;
-                //        }
-                //    }
 
             }
         }
@@ -496,21 +473,21 @@ export class CustomerAddoreditComponent implements OnInit {
     }
 
     onRejectCustomer(event) {
-        this.disableButton = true;
+        this.reginfo.disableButton = true;
         if (event === 'reject') {
-            this.customerService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
+            this.customerService.save(this.reginfo.regInfoModel, this.reginfo.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
                         if (data === 200) {
-                            this.showRejectModal = false;
-                            this.disableButton = false;
+                            this.reginfo.showRejectModal = false;
+                            this.reginfo.disableButton = false;
                             window.history.back();
                             if (event == 'reject') {
-                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.reginfo.regInfoModel.mphone });
                             }
                         }
                         else {
-                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
                     },
                     error => {
@@ -518,65 +495,70 @@ export class CustomerAddoreditComponent implements OnInit {
                         this.messageService.add({ severity: 'error', summary: 'Erros Occured', sticky: true, detail: error, closable: false });
                     });
         }
-        this.showRejectModal = false;
-        this.disableButton = false;
+        this.reginfo.showRejectModal = false;
+        this.reginfo.disableButton = false;
     }
 
     sameAsPresent() {
-        if (this.checkedAsPresent) {
-            this.regInfoModel.preAddr = this.regInfoModel.perAddr;
+        if (this.reginfo.checkedAsPresent) {
+            this.reginfo.regInfoModel.preAddr = this.reginfo.regInfoModel.perAddr;
         }
         else {
-            this.regInfoModel.preAddr = '';
+            this.reginfo.regInfoModel.preAddr = '';
         }
 
     }
     SaveCustomer(event): any {
-        this.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.regDate);
-        this.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.dateOfBirth);
-        if (this.isNidVerified) {
-            this.regInfoModel.photoidValidation = 'Y';
+        this.reginfo.regInfoModel.regDate = this.mfsUtilityService.renderDate(this.reginfo.regDate);
+        this.reginfo.regInfoModel.dateOfBirth = this.mfsUtilityService.renderDate(this.reginfo.dateOfBirth);
+        if (this.reginfo.isNidVerified) {
+            this.reginfo.regInfoModel.photoidValidation = 'Y';
         }
         else {
-            this.regInfoModel.photoidValidation = 'N';
+            this.reginfo.regInfoModel.photoidValidation = 'N';
         }
 
         if (event === 'edit') {
-            this.regInfoModel.updateBy = this.currentUserModel.user.username;
-            this.regInfoModel.branchCode = this.currentUserModel.user.branchCode;
+            this.reginfo.regInfoModel.updateBy = this.reginfo.currentUserModel.user.username;
+            this.reginfo.regInfoModel.branchCode = this.reginfo.currentUserModel.user.branchCode;
         }
         if (event === 'register') {
-            this.regInfoModel.authoBy = this.currentUserModel.user.username;
+            this.reginfo.regInfoModel.authoBy = this.reginfo.currentUserModel.user.username;
         }
         if (event === 'save') {
-            this.regInfoModel.entryBy = this.currentUserModel.user.username;
-            this.regInfoModel.branchCode = this.currentUserModel.user.branchCode;
+            this.reginfo.regInfoModel.entryBy = this.reginfo.currentUserModel.user.username;
+            this.reginfo.regInfoModel.branchCode = this.reginfo.currentUserModel.user.branchCode;
         }
         if (event === 'reject') {
-            this.showRejectModal = true;
+            this.reginfo.regInfoModel.updateBy = this.reginfo.currentUserModel.user.username;
+            this.reginfo.showRejectModal = true;
         }
-        if (this.regInfoModel.mphone != "" && event != 'reject') {
-            this.customerService.save(this.regInfoModel, this.isEditMode, event).pipe(first())
+        if (this.reginfo.regInfoModel.mphone != "" && event != 'reject') {
+            this.customerService.save(this.reginfo.regInfoModel, this.reginfo.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
                         if (data === 200) {
                             window.history.back();
                             if (event == 'reject') {
-                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'error', summary: 'Reject successfully', sticky: true, detail: 'Customer rejected: ' + this.reginfo.regInfoModel.mphone });
                             }
 
-                            else if (this.isEditMode && !this.isRegPermit) {
-                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Customer Updated: ' + this.regInfoModel.mphone });
+                            else if (this.reginfo.isEditMode && !this.reginfo.isRegPermit) {
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Customer Updated: ' + this.reginfo.regInfoModel.mphone });
                             }
-                            else if (this.isRegPermit && this.isRegPermit) {
-                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Customer Registered: ' + this.regInfoModel.mphone });
+                            else if (this.reginfo.isRegPermit && this.reginfo.isRegPermit) {
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Customer Registered: ' + this.reginfo.regInfoModel.mphone });
                             }
                             else {
-                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Customer added: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Customer added: ' + this.reginfo.regInfoModel.mphone });
                             }
                         }
+                        else if (data === 'DATAEXIST') {
+                            window.history.back();
+                            this.messageService.add({ severity: 'warn', summary: 'Warning For: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Account is already Exist', closable: true });
+                        }
                         else {
-                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
+                            this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
                     },
                     error => {
@@ -592,9 +574,12 @@ export class CustomerAddoreditComponent implements OnInit {
     }
 
     checkPhotoIdLength() {
-        this.formValidation.photoId = this.mfsUtilityService.checkPhotoIdLength(this.regInfoModel.photoId, this.regInfoModel.photoIdTypeCode);
-        if (!this.formValidation.photoId) {
-            this.checkNidValid(this.regInfoModel.photoId);
+        this.reginfo.formValidation.photoId = this.mfsUtilityService.checkPhotoIdLength(this.reginfo.regInfoModel.photoId, this.reginfo.regInfoModel.photoIdTypeCode);
+        if (!this.reginfo.formValidation.photoId) {
+            this.checkNidValid(this.reginfo.regInfoModel.photoId);
+        }
+        else {
+            this.reginfo.regInfoModel.photoId = '';
         }
     };
 
@@ -605,7 +590,7 @@ export class CustomerAddoreditComponent implements OnInit {
                 data => {
                     if (data === false) {
                         this.messageService.add({ severity: 'error', summary: 'Duplicate ID', detail: 'Photo Id Already Exists!', closable: true });
-                        this.regInfoModel.photoId = '';
+                        this.reginfo.regInfoModel.photoId = '';
                     }
                 },
                 error => {

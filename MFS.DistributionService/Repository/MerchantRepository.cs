@@ -34,6 +34,7 @@ namespace MFS.DistributionService.Repository
 		object GetMerchantUserList();
 		object GetMerChantUserByMphone(string mphone);
 		object GetMerchantListForUser();
+		object CheckSnameExist(string orgCode);
 	}
 	public class MerchantRepository : BaseRepository<Reginfo>, IMerchantRepository
 	{
@@ -231,11 +232,13 @@ namespace MFS.DistributionService.Repository
 		{
 			try
 			{
-				if (selectedCategory == "M" || selectedCategory == "E")
+				if (selectedCategory !="C")
 				{
 					using (var connection = this.GetConnection())
 					{
-						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,6,6))+1 AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG";
+						//string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,6,6))+1 AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG";
+						string query = @"SELECT TO_CHAR(SYSDATE, 'RRMMDD') || MAX(SUBSTR(MCODE, 7, 6)) + 1 AS M_CODE
+										FROM ONE.MERCHANT_CONFIG T WHERE LENGTH(T.MCODE)=12";
 						var result = connection.Query(query).FirstOrDefault();
 						this.CloseConnection(connection);
 						return result;
@@ -313,8 +316,11 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select count(*) as count from " + dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'M'";
-					var result = connection.Query<int>(query).FirstOrDefault();
+					//string query = @"select count(*) as count from " + dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'M'";
+					string query = @"SELECT  TO_CHAR(MAX(SUBSTR(MCODE,1,16)) + 1) AS M_CODE
+										FROM ONE.MERCHANT_CONFIG T
+								WHERE (T.CATEGORY = 'M' OR T.CATEGORY = 'C') AND substr(t.mcode,1,12) = substr(" + mcode+",1,12)";
+					var result = connection.Query<string>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
@@ -361,10 +367,12 @@ namespace MFS.DistributionService.Repository
 				using (var connection = this.GetConnection())
 				{
 					string query = @"SELECT T.COMPANYNAME AS ""_COMPANYNAME"", M.MCODE AS ""MCODE"", M.MPHONE AS ""MPHONE"",
-							 M.MERCHANT_SMS_NOTIFICATION AS ""MERCHANTSMSNOTIFICATION"",
+							 M.MERCHANT_SMS_NOTIFICATION AS ""MERCHANTSMSNOTIFICATION"", M.CATEGORY as ""Category"",
+							 M.SNAME, M.CUSTOMER_SERVICE_CHARGE_MAX AS ""CUSTOMERSERVICECHARGEMAX"",M.CUSTOMER_SERVICE_CHARGE_MIN AS ""CUSTOMERSERVICECHARGEMIN"",
 							 M.STATUS AS ""STATUS"", M.MAX_TRANS_AMT AS ""MAXTRANSAMT"",
-							 M.MIN_TRANS_AMT AS ""MINTRANSAMT"", M.CUSTOMER_SERVICE_CHARGE_PER ""CUSTOMERSERVICECHARGEPER""
-							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '" + mPhone + "' AND T.CATID = 'M'";
+							 M.MIN_TRANS_AMT AS ""MINTRANSAMT"", M.CUSTOMER_SERVICE_CHARGE_PER*100 ""CUSTOMERSERVICECHARGEPER""
+							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '" 
+							 + mPhone + "' AND (T.CATID = 'M' OR T.CatId = 'EMSM' OR t.CatId = 'EMSC')";
 					var result = connection.Query<MerchantConfig>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -439,6 +447,34 @@ namespace MFS.DistributionService.Repository
 				throw;
 			}
 
+		}
+
+		public object CheckSnameExist(string orgCode)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"SELECT COUNT(*) FROM ONE.MERCHANT_CONFIG T WHERE T.SNAME = CONCAT('EMS.','" + orgCode.Trim()+"')";
+
+					var result = connection.Query<int>(query).FirstOrDefault();
+					this.CloseConnection(connection);
+					connection.Dispose();
+					if (Convert.ToUInt32(result) > 0)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 	}
 }

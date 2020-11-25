@@ -15,22 +15,31 @@ namespace MFS.TransactionService.Service
         //object GetCashEntryListByBranchCode(string branchCode);
         object GetGlList();
         object getGlDetailsForRobi();
+        object getGlDetailsForAirtel();
         object getGlDetailsForBlink();
         object GetAmountByGL(string sysCode);
         object GetACList();
         object GetAmountByAC(string mPhone);
-        object GetTransactionList(string hotkey,string branchCode,double transAmtLimt);
-        string DataInsertToTransMSTandDTL(FundTransfer fundTransferModel,string transType);
+        object GetTransactionList(string hotkey, string branchCode, double transAmtLimt);
+        string DataInsertToTransMSTandDTL(FundTransfer fundTransferModel, string transType);
         VMACandGLDetails GetACandGLDetailsByMphone(string transFrom);
         object saveBranchCashIn(BranchCashIn branchCashIn);
         object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt);
         object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
-        object getAmountByTransNo(string transNo,string mobile);
+        object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
+        object getAmountByTransNo(string transNo, string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
         object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
+        object GetCommissionGlListForDDL();
+        object GetCommssionMobileList(string sysCoaCode, string entryOrApproval);
+        void SaveCommissionEntry(CommissionMobile item,string entryBy,string toCatId, string entrybrCode,string transNo);
+        string CheckPendingApproval();
+        void UpdateCommissionEntry(CommissionMobile item, string entryBy);
+        string AproveOrRejectCommissionEntry(CommissionMobile item, string entryBy);
+        string CheckData(string transNo, string mphone, double amount);
     }
-    public class FundTransferService:BaseService<FundTransfer>, IFundTransferService
+    public class FundTransferService : BaseService<FundTransfer>, IFundTransferService
     {
         private readonly IFundTransferRepository _FundTransferRepository;
         public FundTransferService(IFundTransferRepository FundTransferRepository)
@@ -52,7 +61,21 @@ namespace MFS.TransactionService.Service
 
                 throw;
             }
-            
+
+        }
+
+        public object getGlDetailsForAirtel()
+        {
+            try
+            {
+                return _FundTransferRepository.getGlDetailsForAirtel();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public object getGlDetailsForBlink()
@@ -79,7 +102,7 @@ namespace MFS.TransactionService.Service
 
                 throw;
             }
-            
+
         }
         public object GetAmountByGL(string sysCode)
         {
@@ -96,7 +119,7 @@ namespace MFS.TransactionService.Service
 
                 throw;
             }
-            
+
         }
 
         public object GetTransactionList(string hotkey, string branchCode, double transAmtLimt)
@@ -115,7 +138,7 @@ namespace MFS.TransactionService.Service
         {
             try
             {
-                 return _FundTransferRepository.DataInsertToTransMSTandDTL(fundTransferModel, transType);
+                return _FundTransferRepository.DataInsertToTransMSTandDTL(fundTransferModel, transType);
             }
             catch (Exception)
             {
@@ -140,7 +163,7 @@ namespace MFS.TransactionService.Service
         {
             try
             {
-                 return _FundTransferRepository.saveBranchCashIn(branchCashIn);
+                return _FundTransferRepository.saveBranchCashIn(branchCashIn);
             }
             catch (Exception)
             {
@@ -153,7 +176,7 @@ namespace MFS.TransactionService.Service
         {
             try
             {
-                return _FundTransferRepository.AproveOrRejectBranchCashout(tblPortalCashout,evnt);
+                return _FundTransferRepository.AproveOrRejectBranchCashout(tblPortalCashout, evnt);
             }
             catch (Exception)
             {
@@ -167,6 +190,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _FundTransferRepository.saveRobiTopupStockEntry(robiTopupStockEntry);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
+        {
+            try
+            {
+                return _FundTransferRepository.saveAirtelTopupStockEntry(robiTopupStockEntry);
             }
             catch (Exception)
             {
@@ -217,7 +253,7 @@ namespace MFS.TransactionService.Service
         {
             try
             {
-                return _FundTransferRepository.GetCoaCodeBySysCoaCode( fromSysCoaCode);
+                return _FundTransferRepository.GetCoaCodeBySysCoaCode(fromSysCoaCode);
             }
             catch (Exception)
             {
@@ -225,5 +261,59 @@ namespace MFS.TransactionService.Service
                 throw;
             }
         }
+
+        public object GetCommissionGlListForDDL()
+        {
+            try
+            {
+                return _FundTransferRepository.GetCommissionGlListForDDL();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetCommssionMobileList(string sysCoaCode, string entryOrApproval)
+        {
+            try
+            {
+                return _FundTransferRepository.GetCommssionMobileList(sysCoaCode, entryOrApproval);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public void SaveCommissionEntry(CommissionMobile item, string entryBy, string toCatId,string entrybrCode,string transNo)
+        {
+             _FundTransferRepository.SaveCommissionEntry(item,  entryBy,  toCatId, entrybrCode, transNo);
+        }
+
+        public string CheckPendingApproval()
+        {
+            return _FundTransferRepository.CheckPendingApproval();
+        }
+
+        public void UpdateCommissionEntry(CommissionMobile item, string entryBy)
+        {
+             _FundTransferRepository.UpdateCommissionEntry(item,entryBy);
+        }
+
+        public string AproveOrRejectCommissionEntry(CommissionMobile item,  string entryBy)
+        {
+            return _FundTransferRepository.AproveOrRejectCommissionEntry(item, entryBy);
+        }
+
+        public string CheckData(string transNo, string mphone, double amount)
+        {
+            return _FundTransferRepository.CheckData( transNo,  mphone,  amount);
+        }
+
+
+
     }
 }

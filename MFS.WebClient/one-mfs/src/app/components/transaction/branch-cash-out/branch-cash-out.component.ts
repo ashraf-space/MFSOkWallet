@@ -52,50 +52,66 @@ export class BranchCashOutComponent implements OnInit {
         }
         else {
 
-            this.branchCashInService.AproveOrRejectBranchCashout(this.tblPortalCashoutModel, event).pipe(first())
+            this.branchCashInService.CheckData(this.tblPortalCashoutModel.transNo, this.tblPortalCashoutModel.mphone, this.tblPortalCashoutModel.amount).pipe(first())
                 .subscribe(
                     data => {
+                        if (data == "1") {
+                            this.onConfirmSave(event);
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Something wrong happened' });
+                        }
 
-                        if (event == "register")
-                            //this.messageService.add({ severity: 'success', summary: 'Cashout successfully', detail: 'Branch cash out successfully' });
-                            if (data == "1") {
-                                this.messageService.add({ severity: 'success', summary: 'Cashout successfully', detail: 'Branch cash out approved' });
-                            }
-                            else if (data == "Failed") {
-                                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Action is already performed, reload page' });
-                            }
-                            else {
-                                this.messageService.add({ severity: 'error', summary: 'Not Approved', detail: data });
-                            }
-                        else
-                            //this.messageService.add({ severity: 'success', summary: 'Reject successfully', detail: 'Branch cash out rejected' });
-                            if (data == "1") {
-                                this.messageService.add({ severity: 'success', summary: 'Reject successfully', detail: 'Branch cash out rejected' });
-                            }
-                            else if (data == "Failed") {
-                                this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Action is already performed, reload page' });
-                            }                        
-                            else {
-                                this.messageService.add({ severity: 'error', summary: 'Not rejected', detail: data });
-                            }
-
-                        //window.history.back();
-                        setTimeout(() => {
-                            this.isLoading = false;
-                            location.reload();
-                        }, 20000);
                     },
                     error => {
                         console.log(error);
-                    });
-
+                    }
+                );
 
         }
+    }
+    onConfirmSave(event): any {
+        this.branchCashInService.AproveOrRejectBranchCashout(this.tblPortalCashoutModel, event).pipe(first())
+            .subscribe(
+                data => {
+
+                    if (event == "register")
+                        //this.messageService.add({ severity: 'success', summary: 'Cashout successfully', detail: 'Branch cash out successfully' });
+                        if (data == "1") {
+                            this.messageService.add({ severity: 'success', summary: 'Cashout successfully', detail: 'Branch cash out approved' });
+                        }
+                        else if (data == "Failed") {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Action is already performed, reload page' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Not Approved', detail: data });
+                        }
+                    else
+                        //this.messageService.add({ severity: 'success', summary: 'Reject successfully', detail: 'Branch cash out rejected' });
+                        if (data == "1") {
+                            this.messageService.add({ severity: 'success', summary: 'Reject successfully', detail: 'Branch cash out rejected' });
+                        }
+                        else if (data == "Failed") {
+                            this.messageService.add({ severity: 'error', summary: 'Failed', detail: 'Action is already performed, reload page' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'error', summary: 'Not rejected', detail: data });
+                        }
+
+                    //window.history.back();
+                    setTimeout(() => {
+                        this.isLoading = false;
+                        location.reload();
+                    }, 20000);
+                },
+                error => {
+                    console.log(error);
+                });
     }
 
 
     getReginfoCashoutByMphone(): any {
-       
+
         if (this.tblPortalCashoutModel.mphone.length == 11) {
             this.isLoading = true;
             this.branchCashInService.getReginfoCashoutByMphone(this.tblPortalCashoutModel.mphone)
@@ -132,7 +148,7 @@ export class BranchCashOutComponent implements OnInit {
                             //this.GetAmountInWords();
                             this.isActionDisabled = true;
 
-                            this.messageService.add({ severity: 'warn', sticky: true, summary: 'Provide a valid OK Wallet Number', detail: 'Please collect a valid OK Wallet Number from account holder and provide in OK Wallet Number field!' });
+                            this.messageService.add({ severity: 'warn', sticky: true, summary: 'Can not proceed', detail: 'This A/C does not have any Branch Cashout Transaction or an invalid  OK Wallet A/C !' });
 
                             //setTimeout(() => {
                             //    this.isLoading = false;
@@ -184,7 +200,7 @@ export class BranchCashOutComponent implements OnInit {
                                 this.isActionDisabled = true;
                                 this.messageService.add({ severity: 'warn', sticky: true, summary: 'Exceed Limit', detail: 'Limit Amount :' + this.transAmtLimit });
 
-                               
+
                             }
                         }
                         else {

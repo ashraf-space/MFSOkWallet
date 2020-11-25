@@ -97,7 +97,7 @@ namespace OneMFS.DistributionApiServer.Controllers
                             _service.UpdateRegInfo(regInfo);
                             _dsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
                             var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-                            _kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Agent", regInfo.Mphone);
+                            _kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Agent", regInfo.Mphone);
                             MessageService service = new MessageService();
                             service.SendMessage(new MessageModel()
                             {
@@ -137,6 +137,7 @@ namespace OneMFS.DistributionApiServer.Controllers
             }
 
         }
+
         [HttpGet]
         [Route("GenerateAgentCode")]
         public object GenerateAgentCode(string code)
@@ -195,6 +196,23 @@ namespace OneMFS.DistributionApiServer.Controllers
             }
 
         }
+
+
+        [HttpGet]
+        [Route("GetAgentPhoneCodeListByClusterDtor")]
+        public object GetAgentPhoneCodeListByClusterDtor(string cluster, string mobileNo)
+        {
+            try
+            {
+                return _service.GetAgentPhoneCodeListByClusterDtor(cluster, mobileNo);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
         [HttpGet]
         [Route("GetAgentListByParent")]
         public object GetAgentListByParent(string code, string catId)

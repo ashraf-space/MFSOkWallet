@@ -53,12 +53,12 @@ export class AuditTrailComponent implements OnInit {
             );
     }
     onSearch() {
-        this.showGrid = true;
+        this.showGrid = true;        
         if (this.auditObj.user && this.auditObj.fromDate && this.auditObj.toDate) {
             this.gridConfig.dataSourcePath = this.mfsSettingService.securityApiServer + '/AuditTrail/GetAuditTrail?fromDate=' + this.mfsUtilityService.renderDate(this.auditObj.fromDate, true) +
                 '&ToDate=' + this.mfsUtilityService.renderDate(this.auditObj.toDate, true) + '&user=' + this.auditObj.user + '&userAction=' + this.auditObj.action + '&menu=' + this.auditObj.menu;
         }
-        else if (this.auditObj.user &&  (!this.auditObj.fromDate || !this.auditObj.toDate)) {
+        else if ((!this.auditObj.fromDate || !this.auditObj.toDate)) {
             this.gridConfig.dataSourcePath = this.mfsSettingService.securityApiServer + '/AuditTrail/GetAuditTrail?user=' + this.auditObj.user + '&userAction=' + this.auditObj.action + '&menu=' + this.auditObj.menu;
         }
         else {
@@ -81,7 +81,7 @@ export class AuditTrailComponent implements OnInit {
         this.gridConfig.entityField = 'id';
         this.gridConfig.createStateUrl = 'audit/audit-trail-dtl/';
         this.gridConfig.hasEditState = true;
-        this.gridConfig.showUniversalFilter = false;
+        this.gridConfig.showUniversalFilter = true;
         this.gridConfig.hideCreateState = true;
         this.gridConfig.columnList = [
             { field: 'who', header: 'User Name', width: '10%' },

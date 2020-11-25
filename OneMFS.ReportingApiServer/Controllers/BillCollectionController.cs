@@ -290,7 +290,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			}
 			paraList.Add(new ReportParameter("transNo", transNo));
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
-			return paraList;
+            string generateDate = DateTime.Now.Year.ToString().Substring(2,2) + (DateTime.Now.Month.ToString().Length==1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString()) 
+                + (DateTime.Now.Day.ToString().Length == 1 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString()) ;
+            paraList.Add(new ReportParameter("generateDate", generateDate));
+            return paraList;
 		}
 
 		[HttpPost]

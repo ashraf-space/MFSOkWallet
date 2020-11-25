@@ -40,6 +40,7 @@ export class FundEntryComponent implements OnInit {
     GLBalance: any;
     isLoading: boolean = false;
     isSaveDisable = true;
+    glType: string = null;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private authService: AuthenticationService, private messageService: MessageService) {
@@ -108,6 +109,9 @@ export class FundEntryComponent implements OnInit {
                             }
                         }
 
+                        this.fundTransferModel.payAmt = 0;
+                        this.initialiseGridConfig();
+
                     },
                     error => {
                         console.log(error);
@@ -137,9 +141,25 @@ export class FundEntryComponent implements OnInit {
        
         if (this.fundTransferModel.fromSysCoaCode && this.fundTransferModel.toSysCoaCode) {
             this.transAmtLimit = this.currentUserModel.user.tranAmtLimit;
+            this.glType = this.fundTransferModel.fromSysCoaCode.charAt(0);
 
             if (+this.fundTransferModel.payAmt <= this.transAmtLimit) {
-                //if (+this.fundTransferModel.payAmt <= +this.fromAmount) {
+                if ((this.glType == "L" || this.glType == "I")) {
+                    if (+this.fundTransferModel.payAmt <= +this.fromAmount) {
+                        this.fromGl = this.glList.find(it => {
+                            return it.value.toLowerCase().includes(this.fundTransferModel.fromSysCoaCode.toLowerCase());
+                        }).label;
+
+                        this.toGl = this.glList.find(it => {
+                            return it.value.toLowerCase().includes(this.fundTransferModel.toSysCoaCode.toLowerCase());
+                        }).label;
+                    }
+                    else {
+                        this.messageService.add({ severity: 'warn', summary: 'Exceed from amount', detail: 'Cannot be greater than from amount :' + this.fromAmount });
+                        this.fundTransferModel.payAmt = 0;
+                    }
+                }
+                else {
                     this.fromGl = this.glList.find(it => {
                         return it.value.toLowerCase().includes(this.fundTransferModel.fromSysCoaCode.toLowerCase());
                     }).label;
@@ -147,11 +167,8 @@ export class FundEntryComponent implements OnInit {
                     this.toGl = this.glList.find(it => {
                         return it.value.toLowerCase().includes(this.fundTransferModel.toSysCoaCode.toLowerCase());
                     }).label;
-                //}
-                //else {
-                //    this.messageService.add({ severity: 'warn', summary: 'Exceed from amount', detail: 'Cannot be greater than from amount :' + this.fromAmount });
-                //    this.fundTransferModel.payAmt = 0;
-                //}
+                }
+                
             }
             else {
                 this.messageService.add({ severity: 'warn', summary: 'Exceed Limit', detail: 'Your Limit Amount :' + this.transAmtLimit });

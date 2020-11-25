@@ -17,7 +17,7 @@ export class CustomerListComponent implements OnInit {
     currentUserModel: any = {};
     searchOptionType: any;
     regInfoModel: any = {};
-    isAllowUser: boolean = false;
+    isAllowUser: boolean = true;
     @ViewChild(GenericGridComponent) child: GenericGridComponent;
     constructor(private customerService: CustomerService,
         private gridSettingService: GridSettingService,
@@ -34,9 +34,9 @@ export class CustomerListComponent implements OnInit {
 
     ngOnInit() {
         this.initialiseGridConfig();
-        if (this.currentUserModel.user.branchCode === '0000') {
-            this.isAllowUser = true;
-        }
+        //if (this.currentUserModel.user.branchCode === '0000') {
+        //    this.isAllowUser = true;
+        //}
         this.searchOptionType = [
             { label: 'All', value: 'A' },
             { label: 'Pending', value: 'P' }
@@ -62,7 +62,7 @@ export class CustomerListComponent implements OnInit {
             { field: 'photoId', header: 'Photo Id No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'mphone', header: 'Details', width: '7%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() },
             ////{ field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' }
-            { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone()}
+            { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'status', disableValue: 'C'}
 
         ];
     };

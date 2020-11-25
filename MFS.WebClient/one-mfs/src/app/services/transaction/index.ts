@@ -6,3 +6,4 @@ export * from './chart-of-accounts.service';
 export * from './branch-cash-in.service';
 export * from './disbursement.service';
 export * from './process.service';
+export * from './bill-collection-common.service';

@@ -59,7 +59,7 @@ export class MerchantAddoreditComponent implements OnInit {
     positveNumber: RegExp;
     isLoading: boolean = false;
     selectedCycleWeekDay: SelectItem[];
-    disabledEdit: boolean= true;
+    disabledEdit: boolean = true;
     constructor(private merchantService: MerchantService,
         private distributorService: DistributorService,
         private router: Router,
@@ -116,7 +116,9 @@ export class MerchantAddoreditComponent implements OnInit {
         this.mCatList = [
             { label: 'Individual Merchant', value: 'M' },
             { label: 'Chain (Parent) Merchant', value: 'C' },
-            { label: 'E-Commerce Merchant', value: 'E' }
+            { label: 'E-Commerce Merchant', value: 'E' },
+            { label: 'EMS Mercahnt Module', value: 'EMSM' },
+            { label: 'EMS Bill Payment Module', value: 'EMSC' }
         ]
 
         this.mAreaList = [
@@ -135,7 +137,7 @@ export class MerchantAddoreditComponent implements OnInit {
         if (this.entityId) {
             this.isEditMode = true;
             this.getMerChantByMphone();
-            this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);            
+            this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
         }
         this.checkForSecureView();
     }
@@ -152,7 +154,7 @@ export class MerchantAddoreditComponent implements OnInit {
         else {
             this.disabledEdit = false;
         }
-        
+
     }
     viewWeeklyDate() {
         if (this.selectedCycle.toString() === 'weekly') {
@@ -360,7 +362,7 @@ export class MerchantAddoreditComponent implements OnInit {
                         else {
                             this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
                         }
-                        
+
                     },
                     error => {
                         console.log(error);
@@ -445,9 +447,16 @@ export class MerchantAddoreditComponent implements OnInit {
                         this.error = true;
                         break;
                     } else {
-                        this.saveMerchant(event);
-                        this.error = false;
-                        break;
+                        if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM') && !this.regInfoModel._OrgCode) {
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                        }
+                        else {
+                            this.saveMerchant(event);
+                            this.error = false;
+                            break;
+                        }
+
                     }
                 }
 
@@ -551,7 +560,21 @@ export class MerchantAddoreditComponent implements OnInit {
                     console.log(error);
                 });
     }
-
+    checkSnameExist() {
+        this.merchantService.checkSnameExist(this.regInfoModel._OrgCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    if (data === false) {
+                        this.messageService.add({ severity: 'error', summary: 'Duplicate ID', detail: 'Code  Already Exists!', closable: true });
+                        this.regInfoModel._OrgCode = '';
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
     onDateListChange(e) {
         console.log(e);
         console.log(this.selectSettlementDate);

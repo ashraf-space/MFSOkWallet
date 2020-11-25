@@ -42,8 +42,9 @@ export class CreditBeftnComponent implements OnInit {
         }
         else {
             var obj: any = {};
+            obj.isNotValidated = true;
+            return obj;
         }
-        return this.model;
     }
     validate(): any {
         if (!this.model.fromDate || !this.model.toDate) {

@@ -220,7 +220,7 @@ export class MfsUtilityService {
     }
     validateDatePickerInput(dateOfBirth: any): any {
         if (dateOfBirth.day) {
-            if (+dateOfBirth.day > 30) {
+            if (+dateOfBirth.day > 31) {
                 return false;
             }
             else if (+dateOfBirth.month > 12) {

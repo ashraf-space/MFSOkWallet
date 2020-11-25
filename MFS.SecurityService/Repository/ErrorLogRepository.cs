@@ -31,7 +31,7 @@ namespace MFS.SecurityService.Repository
                     var dyParam = new OracleDynamicParameters();
                     dyParam.Add("FROM_DATE", OracleDbType.Date, ParameterDirection.Input, date.FromDate);
                     dyParam.Add("UPTO_DATE", OracleDbType.Date, ParameterDirection.Input, date.ToDate);
-                    dyParam.Add("USERID", OracleDbType.Varchar2, ParameterDirection.Input, user.Trim());
+                    dyParam.Add("USERID", OracleDbType.Varchar2, ParameterDirection.Input,user=="undefined"?null: user.Trim());
                     dyParam.Add("LOGS", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GET_ERRORLOG_BYFILTER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();

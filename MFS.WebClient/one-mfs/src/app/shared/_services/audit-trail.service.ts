@@ -63,9 +63,21 @@ export class AuditTrailService {
                 break;
             case 'Process':
                 whichParentMenuId = 10;
+                break;        
+            case 'Utility Bill Collection':
+                whichParentMenuId = 11;
+                break;
+            case 'Tuition Fee Collection':
+                whichParentMenuId = 12;
+                break;
+            case 'Credit Card Bill Collection':
+                whichParentMenuId = 13;
+                break;
+            case 'Other Bill/Fee Collection':
+                whichParentMenuId = 14;
                 break;
             default:
-                whichParentMenuId = 11;
+                whichParentMenuId = 15;
         }
         return whichParentMenuId;
     }

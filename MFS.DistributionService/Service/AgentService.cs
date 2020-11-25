@@ -17,6 +17,7 @@ namespace MFS.DistributionService.Service
 		object GetAgentByMobilePhone(string mPhone);
         object GetAgentListByClusterCode(string cluster);
         object GetAgentPhoneCodeListByCluster(string cluster);
+        object GetAgentPhoneCodeListByClusterDtor(string cluster, string mobileNo);
         object GetAgentListByParent(string code, string catId);
 		object GetDistCodeByAgentInfo(string territoryCode, string companyName, string offAddr);
 
@@ -41,6 +42,7 @@ namespace MFS.DistributionService.Service
 		{
 			return _repository.GetclusterByTerritoryCode(code);
 		}
+      
         public string GetClusterCodeByTerritoryCode(string code)
         {
             return _repository.GetClusterCodeByTerritoryCode(code);
@@ -69,6 +71,11 @@ namespace MFS.DistributionService.Service
         public object GetAgentPhoneCodeListByCluster(string cluster)
         {
             return _repository.GetAgentPhoneCodeListByCluster(cluster);
+        }
+
+        public object GetAgentPhoneCodeListByClusterDtor(string cluster, string mobileNo)
+        {
+            return _repository.GetAgentPhoneCodeListByClusterDtor(cluster, mobileNo);
         }
 
         public object GetAgentListByParent(string code, string catId)

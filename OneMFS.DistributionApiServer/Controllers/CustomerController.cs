@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using MFS.DistributionService.Models;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OneMFS.DistributionApiServer.Filters;
+using Newtonsoft.Json;
 
 namespace OneMFS.DistributionApiServer.Controllers
 {
@@ -71,6 +73,30 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 
+			}
+		}
+		[HttpGet]
+		[Route("GetCbsAccInfo")]
+		public async Task<object> GetCbsAccInfo(string mphone, string bankAcNo)
+		{
+			try
+			{
+				using (var httpClient = new HttpClient())
+				{
+					CbsApiInfo apiInfo = new CbsApiInfo();
+					dynamic apiResponse = null;
+					using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + mphone))
+					{
+						apiResponse = await response.Content.ReadAsStringAsync();
+						var result = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
+
+					}
+					return apiResponse;
+				}
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
 			}
 		}
 	}

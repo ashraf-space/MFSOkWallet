@@ -199,6 +199,20 @@ import { BlinkTopupStockEntryComponent } from './components/transaction/blink-to
 import { CreditBeftnComponent } from './components/reports/report-collection/credit-beftn/credit-beftn.component';
 import { ParticularWiseTransactionComponent } from './components/reports/report-collection/transaction-type/particular-wise-transaction/particular-wise-transaction.component';
 import { EdumanBillComponent } from './components/reports/report-collection/ems/eduman-bill/eduman-bill.component';
+import { DateWiseBalanceComponent } from './components/reports/report-collection/transaction-type/date-wise-balance/date-wise-balance.component';
+import { ItemWiseServicesComponent } from './components/reports/report-collection/item-wise-services/item-wise-services.component';
+import { RmgWiseSalaryDisbursementComponent } from './components/reports/report-collection/transaction-type/rmg-wise-salary-disbursement/rmg-wise-salary-disbursement.component';
+import { CommissionEntryComponent } from './components/transaction/fund-transfer/commission-entry/commission-entry.component';
+import { AirtelTopupStockEntryComponent } from './components/transaction/airtel-topup-stock-entry/airtel-topup-stock-entry.component';
+import { AppUserComponent } from './components/reports/report-collection/app-user/app-user.component';
+import { OnlineRegComponent } from './components/reports/report-collection/online-reg/online-reg.component';
+import { RegRptCatComponent } from './components/reports/report-collection/reg-rpt-cat/reg-rpt-cat.component';
+import { CommissionApprovalComponent } from './components/transaction/fund-transfer/commission-approval/commission-approval.component';
+import { PascalcaseDirective } from './shared/directives/pascalcase.directive';
+import { RptEmsComponent } from './components/reports/report-collection/ems/rpt-ems/rpt-ems.component';
+import { NidPaymentCollectionComponent } from './components/transaction/nid-payment-collection/nid-payment-collection.component';
+import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
+import { KycCbsComponent } from './components/distribution/customer/kyc-cbs/kyc-cbs.component';
 
 @NgModule({
     imports: [
@@ -395,7 +409,21 @@ import { EdumanBillComponent } from './components/reports/report-collection/ems/
         BlinkTopupStockEntryComponent,
         CreditBeftnComponent,
         ParticularWiseTransactionComponent,
-        EdumanBillComponent
+        EdumanBillComponent,
+        DateWiseBalanceComponent,
+        ItemWiseServicesComponent,
+        RmgWiseSalaryDisbursementComponent,
+        CommissionEntryComponent,
+        AirtelTopupStockEntryComponent,
+        AppUserComponent,
+        OnlineRegComponent,
+        RegRptCatComponent,
+        CommissionApprovalComponent,
+        PascalcaseDirective,
+        RptEmsComponent,
+        NidPaymentCollectionComponent,
+        BillCollectionCommonComponent,
+        KycCbsComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

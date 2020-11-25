@@ -1,0 +1,42 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> {{featurePayModel.TITLE}}</h6>
+            <p-fieldset>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label single-line">Enter {{featurePayModel.BILLTITLE}} <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="16" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.nidNumber">
+                        <p-message *ngIf="(billCollectionCommonModel.nidNumber==null || billCollectionCommonModel.nidNumber==''|| billCollectionCommonModel.nidNumber=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label single-line">Enter Amount <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.amount" (change)="GetAmountInWords();" [disabled]="true">
+                        <p-message *ngIf="(billCollectionCommonModel.amount==null || billCollectionCommonModel.amount==''|| billCollectionCommonModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="mphone" class="col-sm-2 col-form-label">Beneficiary Mobile Number <span class="mandatory">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.beneficiaryNumber" placeholder="01xxxxxxxxx" pKeyFilter="int" maxlength="11">
+                        <p-message *ngIf="(billCollectionCommonModel.beneficiaryNumber==null || billCollectionCommonModel.beneficiaryNumber=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+                <!--<div class="form-group row">
+                    <label class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" [(ngModel)]="amountInWords" [disabled]="true">
+                    </div>
+                </div>-->
+            </p-fieldset>
+
+        </div>
+
+    </p-card>
+</div>
+
+<app-generic-form-action [disableAction]="isActionDisabled" (onSave)="onNIDPaymentSave()"></app-generic-form-action>
+

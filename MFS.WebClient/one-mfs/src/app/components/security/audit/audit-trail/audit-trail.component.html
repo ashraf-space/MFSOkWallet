@@ -7,11 +7,11 @@
 			</div>
 			<div class="p-col-2">
 				<label for="float-input input-lg" class="col-form-label">Action </label>
-				<p-dropdown [options]="actionList" placeholder="Select Action" [(ngModel)]="auditObj.action" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
+				<p-dropdown [options]="actionList" placeholder="Select Action" [(ngModel)]="auditObj.action" [showClear]="true" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
 			</div>
 			<div class="p-col-2">
 				<label for="float-input input-lg" class="col-form-label">Parent Menu </label>
-				<p-dropdown [options]="parentMenuList" placeholder="Select Menu" [(ngModel)]="auditObj.menu" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
+				<p-dropdown [options]="parentMenuList" placeholder="Select Menu" [(ngModel)]="auditObj.menu" [showClear]="true" [style]="{display: 'grid'}" [filter]="true"></p-dropdown>
 			</div>
 			<div class="p-col-2">
 				<label for="float-input input-lg" class="col-form-label">From</label>

@@ -350,14 +350,23 @@ export class CbsAccRemapComponent implements OnInit {
                             sticky: true
                         });
                     }
+                    else if (data === 'NIDNULL') {
+                        this.loadingCbsInfo = false;
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Nid Not Found',
+                            detail: 'Nid information not found',
+                            sticky: true
+                        });
+                    }
                     else if (data === 500) {
                         this.loadingCbsInfo = false;
                         this.isSearchDisable = false;                      
                         this.isMapDisable = true;
                         this.messageService.add({
                             severity: 'error',
-                            summary: 'Not Found',
-                            detail: 'No cbs accont found',
+                            summary: 'Not Found Or Insufficient Data',
+                            detail: 'No CBS Account found Or Insufficient Data',
                             sticky: true
                         });
                     }

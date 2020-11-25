@@ -120,7 +120,7 @@
 						<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.companyName" uppercase
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.companyName" appPascalcase
 									   pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label gap">Company Name<span class="mandatory">*</span></label>
 							</span>
@@ -131,7 +131,7 @@
 						<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" id="OwnerName" [(ngModel)]="regInfoModel.name" uppercase
+								<input autocomplete="off" type="text" class="form-control" id="OwnerName" [(ngModel)]="regInfoModel.name" appPascalcase
 									   pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label gap">Agent First Name<span class="mandatory">*</span></label>
 							</span>
@@ -141,7 +141,7 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.lastName" uppercase [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.lastName" appPascalcase [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Agent Last Name </label>
 							</span>
 							<!--<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error" severity="error"
@@ -213,7 +213,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.fatherName" uppercase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.fatherName" appPascalcase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Father's Name</label>
 							</span>
 						</div>
@@ -222,7 +222,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.motherName" uppercase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.motherName" appPascalcase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Mother's Name</label>
 							</span>
 						</div>
@@ -230,7 +230,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.spouseName" uppercase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.spouseName" appPascalcase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Spouse Name </label>
 							</span>
 						</div>
@@ -248,7 +248,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.offAddr" uppercase
+								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.offAddr" appPascalcase
 										  pInputTextarea autoResize="autoResize" pInputText id="float-input"></textarea>
 								<label for="float-input input-lg" class="col-form-label">Business Address<span class="mandatory">*</span></label>
 							</span>
@@ -259,7 +259,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.perAddr" uppercase
+								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.perAddr" appPascalcase
 										  pInputTextarea autoResize="autoResize" pInputText id="float-input"></textarea>
 								<label for="float-input input-lg" class="col-form-label">Permanent Address <span class="mandatory">*</span></label>
 							</span>
@@ -275,7 +275,7 @@
 							<br />
 							<span class="ui-float-label ">
 								<textarea rows="1" cols="40" [(ngModel)]="regInfoModel.preAddr" pInputTextarea
-										  uppercase autoResize="autoResize" pInputText id="float-input"></textarea>
+										  appPascalcase autoResize="autoResize" pInputText id="float-input"></textarea>
 								<label for="float-input input-lg" class="col-form-label">Present Address </label>
 							</span>
 						</div>
@@ -315,7 +315,7 @@
 					<div class="p-grid">
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label">Trade Licence No <span class="mandatory">*</span></label>
-							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText [pKeyFilter]="positveNumber" id="float-input">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText  id="float-input">
 
 							<p-message *ngIf="(regInfoModel.tradeLicenseNo==null || regInfoModel.tradeLicenseNo=='')
 								   && error " severity="error" text="Cannot be left blank"></p-message>
@@ -347,7 +347,7 @@
 
 						<div class="p-col-6">
 							<label for="float-input input-lg" class="col-form-label">Name</label>
-							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.firstNomineeName" uppercase pInputText id="float-input">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.firstNomineeName" appPascalcase pInputText id="float-input">
 							<!--<p-message *ngIf="(regInfoModel.firstNomineeName==null || regInfoModel.firstNomineeName=='')  && error " severity="error" text="Cannot be left blank"></p-message>-->
 						</div>
 
@@ -379,7 +379,7 @@
 						</div>
 						<div class="p-col-6">
 							<label for="float-input input-lg" class="col-form-label">Address</label>
-							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.firstNomineeAddress" uppercase pInputText id="float-input">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.firstNomineeAddress" appPascalcase pInputText id="float-input">
 						</div>
 					</div>
 				</div>
@@ -408,7 +408,7 @@
 
 						<div class="p-col-6">
 							<label for="float-input input-lg" class="col-form-label">Account Name</label>
-							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.accountName" uppercase pInputText id="float-input">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.accountName" appPascalcase pInputText id="float-input">
 						</div>
 
 						<div class="p-col-6">

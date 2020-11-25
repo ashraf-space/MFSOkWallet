@@ -23,6 +23,7 @@ namespace MFS.DistributionService.Repository
         object GetAgentByMobilePhone(string mPhone);
         object GetAgentListByClusterCode(string cluster);
         object GetAgentPhoneCodeListByCluster(string cluster);
+        object GetAgentPhoneCodeListByClusterDtor(string cluster, string mobileNo);
 
         object GetAgentListByParent(string code, string catId);
         object GetDistCodeByAgentInfo(string territoryCode, string companyName, string offAddr);
@@ -100,6 +101,8 @@ namespace MFS.DistributionService.Repository
                 throw ex;
             }
         }
+
+
 
         public object GenerateAgentCode(string code)
         {
@@ -187,6 +190,25 @@ namespace MFS.DistributionService.Repository
             }
         }
 
+
+        public object GetAgentPhoneCodeListByClusterDtor(string cluster, string mobileNo)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = "select Mphone as AgentPhone,DistCode as AgentCode, '' as MakeStatus from " + dbUser + "REGINFOVIEW where catid = 'A' and substr(distCode,1,8) =" + "'" + cluster + "' and PMPhone='" + mobileNo + "'";
+                    var result = connection.Query<AgentPhoneCode>(query);
+
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public object GetAgentListByParent(string code, string catId)
         {
             try
@@ -253,7 +275,7 @@ namespace MFS.DistributionService.Repository
 
         }
 
-        public string ExecuteAgentReplace(string newMobileNo,string exCluster, string newCluster, AgentPhoneCode item)
+        public string ExecuteAgentReplace(string newMobileNo, string exCluster, string newCluster, AgentPhoneCode item)
         {
             try
             {
@@ -284,7 +306,7 @@ namespace MFS.DistributionService.Repository
                     return successOrErrorMsg;
                 }
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
 
                 throw ex;

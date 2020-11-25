@@ -1,0 +1,33 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Commision Approval</h6>
+            <!--<div class="p-grid">-->
+
+            <div class="p-grid">
+                <div class="p-col-9">
+                    <div>
+                        <p-dropdown [options]="commissionGlList" [(ngModel)]="sysCoaCode" placeholder="Select Gl Code" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="getCommssionMobileList()"></p-dropdown>
+                        <p-message *ngIf="(sysCoaCode==null || sysCoaCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    </div>
+                </div>
+                <div class="p-col-3">
+                    <div>
+                        <input type="text" class="form-control" [(ngModel)]="totalAmount" placeholder="Amount" [disabled]="true">
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-grid" style="margin:5px">
+                <generic-grid [gridConfig]="gridConfig">
+                </generic-grid>
+            </div>
+
+            <!--</div>-->
+
+
+        </div>
+    </p-card>
+</div>
+<app-generic-form-action [isRejectAllowed]="true"  (onSave)="AproveOrRejectCommissionEntry($event)" [disableAction]="isActionDisable"></app-generic-form-action>

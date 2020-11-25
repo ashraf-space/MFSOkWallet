@@ -67,6 +67,21 @@ namespace OneMFS.TransactionApiServer.Controllers
         }
 
         [HttpGet]
+        [Route("getGlDetailsForAirtel")]
+        public object getGlDetailsForAirtel()
+        {
+            try
+            {
+                return _fundTransferService.getGlDetailsForAirtel();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
+        [HttpGet]
         [Route("getGlDetailsForBlink")]
         public object getGlDetailsForBlink()
         {
@@ -359,6 +374,115 @@ namespace OneMFS.TransactionApiServer.Controllers
         }
 
         [HttpPost]
+        [Route("GetTransDtlForAirtelByPayAmount")]
+        public object GetTransDtlForAirtelByPayAmount([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
+        {
+            try
+            {
+                List<VMTransactionDetails> VMTransactionDetaillist = new List<VMTransactionDetails>();
+                if (robiTopupStockEntryModel.TransactionAmt == 0)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        objVMTransactionDetails.ACNo = "";
+                        objVMTransactionDetails.GLCode = "";
+                        objVMTransactionDetails.GLName = "";
+                        objVMTransactionDetails.DebitAmount = 0;
+                        objVMTransactionDetails.CreditAmount = 0;
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        //String result = null;
+                        double robiBalance = 0;
+                        robiBalance = robiTopupStockEntryModel.TransactionAmt / robiTopupStockEntryModel.DiscountRatio;
+                        double rowThreeFour = 0, rowFiveSix = 0;
+                        //rowFiveSix = Math.Round(((robiBalance * .016) * .1), 2);
+                        //rowThreeFour = Math.Round(((robiBalance * .016) - rowFiveSix), 2);
+                        rowFiveSix = (robiBalance * .016) * .1;
+                        rowThreeFour = (robiBalance * .016) - rowFiveSix;
+
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        if (i == 0)
+                        {
+                            objVMTransactionDetails.GLCode = robiTopupStockEntryModel.GlCode;
+                            objVMTransactionDetails.GLName = robiTopupStockEntryModel.GlName;
+                            objVMTransactionDetails.DebitAmount = robiTopupStockEntryModel.TransactionAmt;
+                            objVMTransactionDetails.CreditAmount = 0;
+
+                        }
+                        else if (i == 1)
+                        {
+                            objVMTransactionDetails.GLCode = "1020402";
+                            objVMTransactionDetails.GLName = "AIRTEL AIRTIME RECEIVEABLE";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = robiTopupStockEntryModel.TransactionAmt;
+                        }
+                        else if (i == 2)
+                        {
+                            objVMTransactionDetails.GLCode = "1010302";
+                            objVMTransactionDetails.GLName = "AIRTEL AIRTIME STOCK";
+                            objVMTransactionDetails.DebitAmount = rowThreeFour;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else if (i == 3)
+                        {
+                            objVMTransactionDetails.GLCode = "2030502";
+                            objVMTransactionDetails.GLName = "PRE PAID INCOME FROM AIRTEL";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowThreeFour;
+                        }
+                        else if (i == 4)
+                        {
+                            objVMTransactionDetails.GLCode = "1020501";
+                            objVMTransactionDetails.GLName = "ADVANCE TAX ON AIRTIME COMMISSION";
+                            objVMTransactionDetails.DebitAmount = rowFiveSix;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else
+                        {
+                            objVMTransactionDetails.GLCode = "2030502";
+                            objVMTransactionDetails.GLName = "PRE PAID INCOME FROM AIRTEL";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowFiveSix;
+                        }
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                double totalDebitAmt = 0;
+                double totalCreditAmt = 0;
+                foreach (var item in VMTransactionDetaillist)
+                {
+                    totalDebitAmt += item.DebitAmount;
+                    totalCreditAmt += item.CreditAmount;
+                }
+
+                VMTransactionDetails obj = new VMTransactionDetails();
+                obj.GLCode = "";
+                obj.GLName = "Total :";
+                obj.DebitAmount = totalDebitAmt;
+                obj.CreditAmount = totalCreditAmt;
+                string totalAmt = totalDebitAmt.ToString("N2");
+
+                NumericWordConversion numericWordConversion = new NumericWordConversion();
+                obj.InWords = numericWordConversion.InWords(Convert.ToDecimal(totalAmt));
+
+                VMTransactionDetaillist.Add(obj);
+
+                return VMTransactionDetaillist;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
+        [HttpPost]
         [Route("GetTransDtlForBlinkByPayAmount")]
         public object GetTransDtlForBlinkByPayAmount([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
         {
@@ -385,7 +509,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         //String result = null;
                         double blBalance = 0;
                         blBalance = robiTopupStockEntryModel.TransactionAmt / robiTopupStockEntryModel.DiscountRatio;
-                        double rowThreeFour = 0, rowFiveSix = 0;                       
+                        double rowThreeFour = 0, rowFiveSix = 0;
                         rowFiveSix = (blBalance * 0.0099108027750248) * .1;
                         rowThreeFour = (blBalance * 0.0099108027750248) - rowFiveSix;
 
@@ -839,6 +963,21 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("CheckData")]
+        public string CheckData(string transNo, string mphone, double amount)
+        {
+            try
+            {
+                return _fundTransferService.CheckData(transNo,mphone,amount);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
+            }
+        }
+
         [ApiGuardAuth]
         [HttpPost]
         [Route("saveRobiTopupStockEntry")]
@@ -850,16 +989,19 @@ namespace OneMFS.TransactionApiServer.Controllers
 
                 //Insert into audit trial audit and detail
                 string response = null;
-                if (successOrErrorMsg == "1")
-                {
-                    response = "Added Successfully";
-                }
-                else 
+                string whichId = null;
+                if (successOrErrorMsg == "Failed")
                 {
                     response = "Failed";
+                    whichId = robiTopupStockEntryModel.GlName;
                 }
-               
-                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Robi Topup Stock Entry", robiTopupStockEntryModel.GlName, response);
+                else
+                {
+                    response = "Added Successfully";
+                    whichId = successOrErrorMsg;
+                }
+
+                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Robi Topup Stock Entry", whichId, response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)
@@ -873,6 +1015,40 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         [ApiGuardAuth]
         [HttpPost]
+        [Route("saveAirtelTopupStockEntry")]
+        public object saveAirtelTopupStockEntry([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
+        {
+            try
+            {
+                string successOrErrorMsg = _fundTransferService.saveAirtelTopupStockEntry(robiTopupStockEntryModel).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                string whichId = null;
+                if (successOrErrorMsg == "Failed")
+                {
+                    response = "Failed";
+                    whichId = robiTopupStockEntryModel.GlName;
+                }
+                else
+                {
+                    response = "Added Successfully";
+                    whichId = successOrErrorMsg;
+                }
+
+                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Airtel Topup Stock Entry", whichId, response);
+                return successOrErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+
+        }
+
+        [ApiGuardAuth]
+        [HttpPost]
         [Route("saveBlinkTopupStockEntry")]
         public object saveBlinkTopupStockEntry([FromBody]RobiTopupStockEntry robiTopupStockEntryModel)
         {
@@ -882,16 +1058,19 @@ namespace OneMFS.TransactionApiServer.Controllers
 
                 //Insert into audit trial audit and detail
                 string response = null;
-                if (successOrErrorMsg == "1")
+                string whichId = null;
+                if (successOrErrorMsg == "Failed")
                 {
-                    response = "Added Successfully";
+                    response = "Failed";
+                    whichId = robiTopupStockEntryModel.GlName;
                 }
                 else
                 {
-                    response = "Failed";
+                    response = "Added Successfully";
+                    whichId = successOrErrorMsg;
                 }
 
-                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Banglalink Topup Stock Entry", robiTopupStockEntryModel.GlName, response);
+                _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Banglalink Topup Stock Entry", whichId, response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)
@@ -933,5 +1112,118 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetCommissionGlListForDDL")]
+        public object GetCommissionGlListForDDL()
+        {
+            try
+            {
+                return _fundTransferService.GetCommissionGlListForDDL();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
+        [HttpGet]
+        [Route("GetCommssionMobileList")]
+        public object GetCommssionMobileList(string sysCoaCode, string entryOrApproval)
+        {
+            try
+            {
+                return _fundTransferService.GetCommssionMobileList(sysCoaCode, entryOrApproval);
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("SaveCommissionEntry")]
+        public object SaveCommissionEntry(string entryBy, string toCatId, string entrybrCode, [FromBody]List<CommissionMobile> commissionMobileList)
+        {
+            try
+            {
+                foreach (var item in commissionMobileList)
+                {
+                    string transNo = _distributorDepositService.GetTransactionNo();
+                    _fundTransferService.SaveCommissionEntry(item, entryBy, toCatId, entrybrCode, transNo);
+                    //Insert into audit trial audit and detail
+                    item.Status = "M";
+                    _auditTrailService.InsertModelToAuditTrail(item, entryBy, 9, 3, "Commission Entry", item.Mphone, "Saved Successfully!");
+                }               
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("CheckPendingApproval")]
+        public string CheckPendingApproval()
+        {
+            string status = null;
+            try
+            {
+                status = _fundTransferService.CheckPendingApproval();
+                return status;
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
+            }
+        }
+
+
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("AproveOrRejectCommissionEntry")]
+        public object AproveOrRejectCommissionEntry(string evnt, string entryBy, [FromBody]List<CommissionMobile> commissionMobileList)
+        {
+            try
+            {
+                string successOrErrorMsg = null;
+                foreach (var item in commissionMobileList)
+                {
+                    if (evnt == "register")
+                    {
+                        successOrErrorMsg = _fundTransferService.AproveOrRejectCommissionEntry(item, entryBy);
+
+                        //Insert into audit trial audit and detail
+                        item.Status = "A";
+                        string response = successOrErrorMsg.ToString() == "1" ? "Approved Successfully!" : successOrErrorMsg.ToString();
+                        CommissionMobile prevModel = new CommissionMobile();
+                        prevModel.Status = "M";//insert for only audit trail
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(item, prevModel, entryBy, 9, 4, "Commission Approval", item.TransNo, response);
+                    }
+                    else //if (evnt == "reject")
+                    {
+
+                        _fundTransferService.UpdateCommissionEntry(item, entryBy);
+
+                        item.Status = "R";
+                        //Insert into audit trial audit and detail
+                        CommissionMobile prevModel = new CommissionMobile();
+                        prevModel.Status = "M";//insert for only audit trail
+                        _auditTrailService.InsertUpdatedModelToAuditTrail(item, prevModel, entryBy, 9, 4, "Commission Approval", item.TransNo, "Rejected Successfully!");
+                    }
+
+                }
+
+                return successOrErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
     }
 }

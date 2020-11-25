@@ -42,8 +42,8 @@ export class ApplicationUserService {
             }));
     }
 
-    changePassword(changePasswordModel: any): any {
-        return this.http.post<any>(this.setting.securityApiServer + '/ApplicationUser/ChangePassword', changePasswordModel)
+    changePassword(changePasswordModel: any, passwordChangedBy: string): any {
+        return this.http.post<any>(this.setting.securityApiServer + '/ApplicationUser/ChangePassword?passwordChangedBy=' + passwordChangedBy, changePasswordModel)
             .pipe(map(model => {
                 return model;
             }));

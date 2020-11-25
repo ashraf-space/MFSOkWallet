@@ -17,6 +17,7 @@ namespace MFS.TransactionService.Repository
     {
         object GetGlList();
         object getGlDetailsForRobi();
+        object getGlDetailsForAirtel();
         object getGlDetailsForBlink();
         object GetAmountByGL(string sysCode);
         object GetACList();
@@ -27,10 +28,18 @@ namespace MFS.TransactionService.Repository
         object saveBranchCashIn(BranchCashIn branchCashIn);
         object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt);
         object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
+        object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
         object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
         object getAmountByTransNo(string transNo, string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
+        object GetCommissionGlListForDDL();
+        object GetCommssionMobileList(string sysCoaCode, string entryOrApproval);
+        void SaveCommissionEntry(CommissionMobile item, string entryBy, string toCatId, string entrybrCode, string transNo);
+        string CheckPendingApproval();
+        void UpdateCommissionEntry(CommissionMobile item, string entryBy);
+        string AproveOrRejectCommissionEntry(CommissionMobile item, string entryBy);
+        string CheckData(string transNo, string mphone, double amount);
     }
     public class FundTransferRepository : BaseRepository<FundTransfer>, IFundTransferRepository
     {
@@ -69,6 +78,24 @@ namespace MFS.TransactionService.Repository
 
                     connection.Close();
 
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object getGlDetailsForAirtel()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var result = connection.QueryFirstOrDefault<dynamic>("Select g.Coa_code as GLCODE,g.sys_coa_code as SysCoaCode,g.coa_desc GLName,round((Select SUM(DR_AMT) - SUM(CR_AMT) from" + mainDbUser.DbUser + "GL_Trans_DTL where SYS_COA_CODE = g.sys_coa_code), 2) as Amount from " + mainDbUser.DbUser + "GL_COA g where g.coa_code ='1010302'");
+                    connection.Close();
                     return result;
                 }
             }
@@ -430,7 +457,80 @@ namespace MFS.TransactionService.Repository
                     }
                     else
                     {
-                        successOrErrorMsg = "1";
+                        //successOrErrorMsg = "1";
+                        successOrErrorMsg = transactionNo;
+                    }
+                    return successOrErrorMsg;
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry)
+        {
+            string successOrErrorMsg = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    // string newID = "";
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, "A2G");
+                    //parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.FromSysCoaCode);
+                    parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "01638462835");
+                    parameter.Add("V_CR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "A40000000149");
+                    parameter.Add("V_AMT", OracleDbType.Double, ParameterDirection.Input, robiTopupStockEntry.TransactionAmt);
+                    parameter.Add("V_HOTKEY", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.Hotkey);
+                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
+                    parameter.Add("V_ENTRY_USER", OracleDbType.Varchar2, ParameterDirection.Input, robiTopupStockEntry.EntryUser);
+                    parameter.Add("V_PARTICULAR", OracleDbType.Varchar2, ParameterDirection.Input);
+
+                    SqlMapper.Query<string>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    //string newID = parameter.<string>("V_FLAG");
+                    string transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+
+                    if (transactionNo != null)
+                    {
+                        //parameter.oracleParameters[1].Value = robiTopupStockEntry.FromSysCoaCode;
+                        parameter.oracleParameters[1].Value = "01638462835";
+                        parameter.oracleParameters[2].Value = "L40000000151";
+                        parameter.oracleParameters[3].Value = robiTopupStockEntry.RowThreeFour;
+                        parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, transactionNo);
+                        parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input, 3);
+
+                        SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
+                        transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+                        if (transactionNo != null)
+                        {
+                            parameter.oracleParameters[0].Value = "G2G";
+                            parameter.oracleParameters[1].Value = "A40000000137";
+                            parameter.oracleParameters[2].Value = "L40000000151";
+                            parameter.oracleParameters[3].Value = robiTopupStockEntry.RowFiveSix;
+                            parameter.oracleParameters[8].Value = transactionNo;
+                            parameter.oracleParameters[9].Value = 5;
+
+                            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
+                        }
+
+
+                    }
+
+                    connection.Close();
+                    string flag = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+
+                    if (flag == "0")
+                    {
+                        successOrErrorMsg = "Failed";
+                    }
+                    else
+                    {
+                        //successOrErrorMsg = "1";
+                        successOrErrorMsg = transactionNo;
                     }
                     return successOrErrorMsg;
 
@@ -502,7 +602,8 @@ namespace MFS.TransactionService.Repository
                     }
                     else
                     {
-                        successOrErrorMsg = "1";
+                        //successOrErrorMsg = "1";
+                        successOrErrorMsg = transactionNo;
                     }
                     return successOrErrorMsg;
 
@@ -590,5 +691,201 @@ namespace MFS.TransactionService.Repository
                 throw;
             }
         }
+
+        public object GetCommissionGlListForDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select sys_coa_code as Value, concat(concat(concat(Coa_desc,' ('),coa_code),')') as Label  from " + mainDbUser.DbUser + "gl_coa where Sys_coa_code in ('L40000000087','L40000000046')";
+
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetCommssionMobileList(string sysCoaCode, string entryOrApproval)
+        {
+            string query = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    if (entryOrApproval == "ForEntry")
+                    {
+                        query = @"SELECT GL.COA_CODE GlCode, R.NAME,D.MPHONE,TRUNC(SUM(NVL(CR_AMT, 0)-NVL(DR_AMT, 0)), 2) AS Amount, '' as MakeStatus FROM " + mainDbUser.DbUser + "GL_TRANS_DTL D, " + mainDbUser.DbUser + "GL_TRANS_MST M, " + mainDbUser.DbUser + "REGINFO R , " + mainDbUser.DbUser + "GL_COA GL WHERE D.SYS_COA_CODE = " + "'" + sysCoaCode + "'" + " AND D.TRANS_NO = M.TRANS_NO AND D.MPHONE = R.MPHONE AND R.REG_STATUS = 'P' AND R.STATUS IN('A','I') AND D.SYS_COA_CODE = GL.SYS_COA_CODE GROUP BY GL.COA_CODE, R.NAME,D.MPHONE HAVING TRUNC(SUM(NVL(CR_AMT, 0) - NVL(DR_AMT, 0)), 2) > 0 ORDER BY TRUNC(SUM(NVL(CR_AMT, 0) - NVL(DR_AMT, 0)), 2) DESC";
+                    }
+                    else
+                    {
+                        query = @"SELECT CPN.TRANS_NO  as TransNo, R.NAME,CPN.TRANS_TO AS MPHONE,CPN.MSG_AMT AS Amount, '' as MakeStatus FROM " + mainDbUser.DbUser + "COMMISSION_POSTING_NEW CPN INNER JOIN " + mainDbUser.DbUser + "REGINFO R ON CPN.TRANS_TO=R.MPHONE WHERE CPN.STATUS='M' AND CPN.TO_CAT_ID=" + "'" + sysCoaCode + "'";
+                    }
+
+
+                    var result = connection.Query<CommissionMobile>(query).ToList();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public void SaveCommissionEntry(CommissionMobile item, string entryBy, string toCatId, string entrybrCode, string transNo)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"insert into " + mainDbUser.DbUser + "COMMISSION_POSTING_NEW (Trans_no,Trans_to,To_cat_id,Status,msg_amt,entry_user,Entry_br_code) values (" + "'" + transNo + "'," + "'" + item.Mphone + "'," + "'" + toCatId + "','M'," + "'" + item.Amount + "'," + "'" + entryBy + "'," + "'" + entrybrCode + "')";
+
+                    var result = connection.Query<dynamic>(query).ToList();
+                    connection.Close();
+
+                    //return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public string CheckPendingApproval()
+        {
+            string result = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Select distinct Status from " + mainDbUser.DbUser + "COMMISSION_POSTING_NEW where Status='M'";
+
+                    result = connection.Query<string>(query).FirstOrDefault();
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public void UpdateCommissionEntry(CommissionMobile item, string entryBy)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    string query = @"Update " + mainDbUser.DbUser + "COMMISSION_POSTING_NEW set status='R', CHECK_USER='" + entryBy + "', CHECK_DATE=SYSDATE where Trans_no=" + "'" + item.TransNo + "'";
+
+                    var result = connection.Query<dynamic>(query).FirstOrDefault();
+                    connection.Close();
+
+                    //return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public string AproveOrRejectCommissionEntry(CommissionMobile item, string entryBy)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("V_TRANS_NO", OracleDbType.Double, ParameterDirection.InputOutput, Convert.ToDouble(item.TransNo));
+                    parameter.Add("V_TO_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, item.Mphone);
+                    parameter.Add("V_MSG_AMT", OracleDbType.Double, ParameterDirection.Input, item.Amount);
+                    parameter.Add("MSGID", OracleDbType.Varchar2, ParameterDirection.Input, "999999999");
+                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
+                    parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
+                    parameter.Add("V_CHECKED_USER", OracleDbType.Varchar2, ParameterDirection.Input, entryBy);
+
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_DISBURSE_COMMISSION", param: parameter, commandType: CommandType.StoredProcedure);
+                    connection.Close();
+                    string flag = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
+                    string successOrErrorMsg = null;
+                    if (flag == "0")
+                    {
+                        successOrErrorMsg = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+                    }
+                    else
+                    {
+                        successOrErrorMsg = flag;
+                    }
+                    return successOrErrorMsg;
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public string CheckData(string transNo, string mphone, double amount)
+        {
+            string result = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    //string query = @"Select Trans_no from " + mainDbUser.DbUser + "tbl_portal_cashout  where status is null and trans_no=" + "'" + transNo + "' and Mphone=" + "'" + mphone + "' and amount=" + amount;
+                    string query = @"Select Trans_no from " + mainDbUser.DbUser + "tbl_portal_cashout where status is null and trans_no=" + "'" + transNo + "' and Mphone=" + "'" + mphone + "' ";
+
+                    result = connection.Query<string>(query).FirstOrDefault();
+                    connection.Close();
+
+                    if (result != null)
+                    {
+                        result = "1";
+                    }
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

@@ -1,32 +1,32 @@
 <mfs-pdf-viewer [src]="pdf" #mfsPdfViewer></mfs-pdf-viewer>
 <div class="p-grid">
-    <div class="p-col-12">
-        <p-card>
-            <div class="p-grid">
-                <div class="p-col-2">
-                    <button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
-                </div>
-                <div class="p-col-7">
-                    <h5 style="text-align:center">{{model.ReportName}}</h5>
-                </div>
-                <div class="p-col-3">
-                    <p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
-                </div>
-                <div class="p-col-12">
-                    <hr />
-                </div>
-                <div class="p-col-12">
-                    <h6 class="report-description">
-                        {{model.ReportDescription}}
-                    </h6>
-                </div>
-                <div class="p-col-12">
-                    <hr />
-                </div>
-                <div class="p-col-12">
-                    <div class="p-grid">
-                        <div class="p-col-12">
-                            <!--<div [ngSwitch]="model.Id" *ngIf="model.Id">-->
+	<div class="p-col-12">
+		<p-card>
+			<div class="p-grid">
+				<div class="p-col-2">
+					<button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
+				</div>
+				<div class="p-col-7">
+					<h5 style="text-align:center">{{model.ReportName}}</h5>
+				</div>
+				<div class="p-col-3">
+					<p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
+				</div>
+				<div class="p-col-12">
+					<hr />
+				</div>
+				<div class="p-col-12">
+					<h6 class="report-description">
+						{{model.ReportDescription}}
+					</h6>
+				</div>
+				<div class="p-col-12">
+					<hr />
+				</div>
+				<div class="p-col-12">
+					<div class="p-grid">
+						<div class="p-col-12">
+							<!--<div [ngSwitch]="model.Id" *ngIf="model.Id">-->
 							<div [ngSwitch]="model.CallingApi" *ngIf="model.CallingApi">
 								<!--<div *ngSwitchCase="1">
 		<transaction-history-report #form></transaction-history-report>
@@ -86,18 +86,39 @@
 								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/EdumanBillReport'">
 									<app-eduman-bill #form></app-eduman-bill>
 								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/DateWiseBalance'">
+									<app-date-wise-balance #form></app-date-wise-balance>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/ItemWiseServices'">
+									<app-item-wise-services #form></app-item-wise-services>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/RmgWiseSalaryDisbursement'">
+									<app-rmg-wise-salary-disbursement #form></app-rmg-wise-salary-disbursement>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Home/ApplicationUserReport'">
+									<app-app-user #form></app-app-user>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/OnlineRegistration'">
+									<app-online-reg #form></app-online-reg>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/RegistrationReportByCategory'">
+									<app-reg-rpt-cat #form></app-reg-rpt-cat>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Ems/EmsReport'">
+									<app-rpt-ems #form></app-rpt-ems>
+								</div>								
 							</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-col-12">
-                    <hr />
-                </div>
-                <div class="p-col-12">
-                    <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
-                </div>
-            </div>
-        </p-card>
-    </div>
+						</div>
+					</div>
+				</div>
+				<div class="p-col-12">
+					<hr />
+				</div>
+				<div class="p-col-12">
+					<button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
+				</div>
+			</div>
+		</p-card>
+	</div>
 </div>
 <mfs-loader *ngIf="isLoading"></mfs-loader>

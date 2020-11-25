@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class MerchantService {
+    
    
      
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
@@ -160,6 +161,12 @@ export class MerchantService {
     }
     getMerchantList() {
         return this.http.get<any>(this.distribution.distributionApiServer + '/Merchant/getMerchantListForUser')
+            .pipe(map(merchant => {
+                return merchant;
+            }));
+    }
+    checkSnameExist(orgCode: any) {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Merchant/checkSnameExist?orgCode=' + orgCode)
             .pipe(map(merchant => {
                 return merchant;
             }));

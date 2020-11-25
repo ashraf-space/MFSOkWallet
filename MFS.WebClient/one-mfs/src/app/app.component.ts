@@ -63,6 +63,8 @@ export class AppComponent implements OnInit {
     userActivity;
     userInactive: Subject<any> = new Subject();
     currentMenu: any;
+    validationMsg: any;
+    passwordChangedBy: string;
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
@@ -175,7 +177,7 @@ export class AppComponent implements OnInit {
                 menuCategory = this.findMenuCategory(obj.CATEGORYNAME);
                 if (menuCategory != null) {
                     this.menuObj = {
-                        label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, routerLink: [obj.FEATURELINK],
+                        label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, featureId: obj.FEATUREID, routerLink: [obj.FEATURELINK],
                         command: (event) => {
                             this.display = false;                           
                             this.insertIntoAuditTrail(event);
@@ -189,7 +191,7 @@ export class AppComponent implements OnInit {
                     this.menuObj = {
                         label: ' ' + obj.CATEGORYNAME, icon: obj.CATEGORYICON,
                         items: [{
-                            label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, routerLink: [obj.FEATURELINK],
+                            label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, featureId: obj.FEATUREID, routerLink: [obj.FEATURELINK],
                             command: (event) => {
                                 this.display = false;
                                 this.insertIntoAuditTrail(event);
@@ -250,16 +252,27 @@ export class AppComponent implements OnInit {
 
     confirmPasswordChange() {
         this.changePasswordModel.ApplicationUserId = this.currentUser.user.id;
-        this.applicationUserService.changePassword(this.changePasswordModel).pipe(first())
+        this.passwordChangedBy = this.currentUser.user.username;
+        this.applicationUserService.changePassword(this.changePasswordModel, this.passwordChangedBy).pipe(first())
             .subscribe(
                 data => {
-                    if (data == 'Old Password is Invalid') {
-                        this.invalidCredentials = true;
-                    }
-                    else {
+                    //if (data == 'Old Password is Invalid') {
+                    //    this.invalidCredentials = true;
+                    //}
+                    //else {
+                    //    this.messageService.add({ severity: 'success', summary: 'Success', detail: this.currentUser.user.name + ' password changed Successfully' });
+                    //    this.promptChangePasswordModal = false;
+                    //    this.logout();
+                    //}
+                    if (data == 'Valid') {
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: this.currentUser.user.name + ' password changed Successfully' });
                         this.promptChangePasswordModal = false;
                         this.logout();
+                        
+                    }
+                    else {
+                        this.invalidCredentials = true;
+                        this.validationMsg = data.toString();
                     }
                 },
                 error => {

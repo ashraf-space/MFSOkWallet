@@ -16,6 +16,7 @@ namespace MFS.SecurityService.Service
 		object IsProceedToController(List<string> userInfos);
 		object GetAppUserListDdl();
         object GetAllApplicationUserList();
+        PasswordPolicy GetPasswordPolicy();
     }
 
     public class ApplicationUserService : BaseService<ApplicationUser>, IApplicationUserService
@@ -103,6 +104,19 @@ namespace MFS.SecurityService.Service
         public object GetAllApplicationUserList()
         {
             return usersRepo.GetAllApplicationUserList();
+        }
+
+        public PasswordPolicy GetPasswordPolicy()
+        {
+            try
+            {
+                return usersRepo.GetPasswordPolicy();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
     }

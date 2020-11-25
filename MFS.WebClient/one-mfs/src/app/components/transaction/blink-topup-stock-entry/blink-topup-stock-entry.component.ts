@@ -132,7 +132,13 @@ export class BlinkTopupStockEntryComponent implements OnInit {
             this.fundTransferService.saveBlinkTopupStockEntry(this.blinkTopupStockEntryModel).pipe(first())
                 .subscribe(
                     data => {
-                        this.messageService.add({ severity: 'success', summary: 'Save Successfully', detail: 'Banglalink TopUp stock entry added' });
+                        if (data == 'Failed') {
+                            this.messageService.add({ severity: 'error', summary: 'Not Saved', detail: 'Sorry! Banglalink Topup Stock Entry Failed.' });
+                        }
+                        else {
+                            this.messageService.add({ severity: 'success', summary: 'Save Successfully', detail: 'Banglalink TopUp stock entry added' });
+                        }
+                        
 
                         setTimeout(() => {
                             this.isLoading = false;

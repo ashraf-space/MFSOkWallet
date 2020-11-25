@@ -40,6 +40,7 @@ namespace MFS.DistributionService.Service
 		object GetMerchantUserList();
 		object GetMerChantUserByMphone(string mphone);
 		object GetMerchantListForUser();
+		object CheckSnameExist(string orgCode);
 	}
 	public class MerchantService : BaseService<Reginfo>, IMerchantService
 	{
@@ -136,17 +137,48 @@ namespace MFS.DistributionService.Service
 
 				if (isEditMode != true)
 				{
-					regInfo.CatId = "M";
+					
 					regInfo.RegSource = "P";
 					regInfo.AcTypeCode = 1;
 					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.EntryDate = System.DateTime.Now;
+					var currentMcode = _MerchantRepository.GenerateMerchantCode(regInfo._MCategory);
+					var Heading = ((IDictionary<string, object>)currentMcode).Keys.ToArray();
+					var details = ((IDictionary<string, object>)currentMcode);
+					var values = details[Heading[0]];
+					var mcode = values;
+					if (!string.IsNullOrEmpty(mcode.ToString()))
+					{
+						regInfo._Mcode = mcode.ToString();
+					}
 					if (regInfo.SelectedCycleWeekDay != null)
 					{
 						regInfo.SelectedCycleWeekDay = string.Join(",", regInfo._SelectedCycleWeekDay);
-					}					
+					}
 					MerchantConfig merchantConfig = new MerchantConfig();
-					merchantConfig.Mcode = regInfo._Mcode;
-					merchantConfig.Category = regInfo._MCategory;
+					if (regInfo._MCategory== "EMSM" || regInfo._MCategory== "EMSC")
+					{
+						merchantConfig.Sname = "EMS." + regInfo._OrgCode;
+						merchantConfig.Ci = "CUSTOMER_SERVICE_CHARGE_MIN";
+						merchantConfig.PreFuncProcName = "PROC_COMMUNICATOR_EMS";
+						merchantConfig.Di = "CUSTOMER_SERVICE_CHARGE_MAX";
+						merchantConfig.SchargeFormula = "FUNC_CHECK_MIN_MAX_CHARGE(:A*:B,:C,:D)";
+						merchantConfig.PostFuncProcName = "PROC_REMOVE_LIEN";
+						merchantConfig.Category = "S";
+						regInfo.CatId = regInfo._MCategory;
+					}
+					else
+					{
+						merchantConfig.Sname = null;
+						merchantConfig.Ci = null;
+						merchantConfig.PreFuncProcName = null;
+						merchantConfig.Di = null;
+						merchantConfig.SchargeFormula = null;
+						merchantConfig.PostFuncProcName = null;
+						merchantConfig.Category = regInfo._MCategory;
+						regInfo.CatId = "M";
+					}
+					merchantConfig.Mcode = regInfo._Mcode;					
 					merchantConfig.Mphone = regInfo.Mphone;
 					try
 					{
@@ -156,10 +188,10 @@ namespace MFS.DistributionService.Service
 						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
 
 					}
-					catch (Exception)
+					catch (Exception ex)
 					{
 
-						throw;
+						throw ex;
 					}
 
 					return HttpStatusCode.OK;
@@ -192,7 +224,7 @@ namespace MFS.DistributionService.Service
 							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 							_MerchantRepository.UpdateRegInfo(regInfo);
 							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
 							int fourDigitRandomNo = new Random().Next(1000, 9999);
 							_MerchantRepository.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
@@ -230,10 +262,22 @@ namespace MFS.DistributionService.Service
 			{
 				reginfo._SelectedCycleWeekDay = reginfo.SelectedCycleWeekDay.Split(',').ToList();
 			}
+			if (!string.IsNullOrEmpty(merchantConfig.Sname))
+			{
+				reginfo._OrgCode = merchantConfig.Sname.Split('.')[1];
+			}
 			if (merchantConfig != null && reginfo != null)
 			{
 				reginfo._Mcode = merchantConfig.Mcode;
-				reginfo._MCategory = merchantConfig.Category;
+				if (merchantConfig.Category == "S")
+				{
+					reginfo._MCategory = reginfo.CatId;
+				}
+				else
+				{
+					reginfo._MCategory = merchantConfig.Category;
+				}
+								
 			}
 			return reginfo;
 		}
@@ -261,10 +305,14 @@ namespace MFS.DistributionService.Service
 						reginfo._Mcode = merchantConfig.Mcode;
 						reginfo._MCategory = merchantConfig.Category;
 					}
-					var countChild = _MerchantRepository.GetChildCountByMcode(merchantConfig.Mcode.Substring(0, 12));
-					int code = Convert.ToInt32(countChild) + 1;
-					string childCode = code.ToString("D4");
-					reginfo._OutletCode = merchantConfig.Mcode.Substring(0, 12) + childCode;
+					//var countChild = _MerchantRepository.GetChildCountByMcode(merchantConfig.Mcode.Substring(0, 12));
+					//int code = Convert.ToInt32(countChild) + 1;
+					//string childCode = code.ToString("D4");
+					//reginfo._OutletCode = merchantConfig.Mcode.Substring(0, 12) + childCode;
+
+					//New mcode for child
+					var childCode = _MerchantRepository.GetChildCountByMcode(merchantConfig.Mcode);
+					reginfo._OutletCode = Convert.ToString(childCode);
 					return reginfo;
 				}
 				else
@@ -285,21 +333,29 @@ namespace MFS.DistributionService.Service
 			{
 
 				if (isEditMode != true)
-				{
+				{					
 					regInfo.CatId = "M";
-					regInfo.Mphone = regInfo.EftAccNo;
+					regInfo.Mphone = regInfo._ChildMphone;
 					regInfo.AcTypeCode = 1;
-					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.EntryDate = System.DateTime.Now;					
 					MerchantConfig merchantConfig = new MerchantConfig();
 					merchantConfig.Mcode = regInfo._OutletCode;
 					merchantConfig.Category = "M";
 					merchantConfig.Mphone = regInfo.Mphone;
 					try
 					{
-						_merchantConfigService.Add(merchantConfig);
-						_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Merchant Config", merchantConfig.Mphone, "Merchant Added");
-						_MerchantRepository.Add(regInfo);
-						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
+						if (regInfo.Mphone != null && !string.IsNullOrEmpty(regInfo.EntryBy))
+						{
+							_merchantConfigService.Add(merchantConfig);
+							_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Child Merchant", merchantConfig.Mphone, "Child Merchant Added");
+							_MerchantRepository.Add(regInfo);
+							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
+
+						}
+						else
+						{
+							return null;
+						}
 					}
 					catch (Exception ex)
 					{
@@ -307,17 +363,17 @@ namespace MFS.DistributionService.Service
 						throw ex;
 					}
 
-					return true;
+					return HttpStatusCode.OK;
 
 				}
 				else
 				{
-					if (evnt == "edit")
+					if (evnt == "edit" && !string.IsNullOrEmpty(regInfo.UpdateBy))
 					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_MerchantRepository.UpdateRegInfo(regInfo);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Merchant updated");
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Child Merchant", regInfo.Mphone, "Merchant updated");
 						return HttpStatusCode.OK;
 					}
 					else
@@ -328,7 +384,7 @@ namespace MFS.DistributionService.Service
 						//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "M");
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_MerchantRepository.UpdateRegInfo(regInfo);
-						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.UpdateBy, 5, 4, "Merchant", regInfo.Mphone, "Register successfully");
+						_kycService.InsertUpdatedModelToAuditTrail(regInfo, prevModel, regInfo.AuthoBy, 5, 4, "Child Merchant", regInfo.Mphone, "Register successfully");
 						int fourDigitRandomNo = new Random().Next(1000, 9999);
 						_MerchantRepository.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 						MessageService service = new MessageService();
@@ -339,7 +395,7 @@ namespace MFS.DistributionService.Service
 							MessageBody = "Congratulations! Your OK wallet has been opened successfully." + " Your Pin is "
 							+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
 						});
-						return true;
+						return HttpStatusCode.OK;
 					}
 
 				}
@@ -348,7 +404,7 @@ namespace MFS.DistributionService.Service
 			{
 
 				throw ex;
-			}
+			}			
 		}
 
 		public object GetChildMerChantByMphone(string mPhone)
@@ -363,6 +419,7 @@ namespace MFS.DistributionService.Service
 					reginfo._Mcode = merchantConfig.Mcode;
 					reginfo._MCategory = merchantConfig.Category;
 					reginfo.Pmphone = parentMphone.ToString();
+					reginfo._ChildMphone = reginfo.Mphone;
 				}
 				return reginfo;
 			}
@@ -387,14 +444,18 @@ namespace MFS.DistributionService.Service
 		public object OnMerchantConfigUpdate(MerchantConfig merchantConfig)
 		{
 			merchantConfig.UpdateTime = DateTime.Now;
+			object prevModel = null;
+			object currentModel = null;
 			try
 			{
-				_merchantConfigService.UpdateByStringField(merchantConfig, "mphone");
-
+				prevModel = _merchantConfigService.GetMerchantConfigDetails(merchantConfig.Mphone, merchantConfig.Mcode);
+				_merchantConfigService.OnMerchantConfigUpdate(merchantConfig);
+				currentModel = _merchantConfigService.GetMerchantConfigDetails(merchantConfig.Mphone, merchantConfig.Mcode);
+				_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, merchantConfig.UpdateBy, 5, 4, "Merchant Config", merchantConfig.Mphone, "Merchant Config Updated");
 			}
 			catch (Exception ex)
 			{
-				return ex.ToString();
+				throw ex;
 			}
 
 			return true;
@@ -418,6 +479,11 @@ namespace MFS.DistributionService.Service
 		public object GetMerchantListForUser()
 		{
 			return _MerchantRepository.GetMerchantListForUser();
+		}
+
+		public object CheckSnameExist(string orgCode)
+		{
+			return _MerchantRepository.CheckSnameExist(orgCode);
 		}
 	}
 }
