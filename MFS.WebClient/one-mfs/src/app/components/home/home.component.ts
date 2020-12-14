@@ -20,9 +20,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     dashboardModel: any;
     isLoading: boolean;
     clientCountList: any;
-    
+
     isBranchTeller: boolean = false;
     userPStatus: any;
+    utilityBillCollectionMenus: any;
+    tuitionFeeCollectionMenus: any;
+    creditCardBillCollectionMenus: any;
+    OtherBillFeeCollectionMenus: any;
 
     constructor(
         private authenticationService: AuthenticationService,
@@ -31,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private router: Router
     ) {
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-            this.currentUser = user;   
+            this.currentUser = user;
             this.currentUserModel = user;
             this.dashboardModel = {};
             this.clientCountList = [];
@@ -40,15 +44,15 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        
+
         this.userPStatus = this.currentUserModel.user.pstatus;
         this.isBranchTeller = this.currentUserModel.user.role_Name == 'Branch Teller' ? true : false;
-       
-       
+
+
 
         this.getDataForDashboard();
         this.pieData = {
-            labels: ['Agent','Customer','Distributor','DSR','Merchant'],
+            labels: ['Agent', 'Customer', 'Distributor', 'DSR', 'Merchant'],
             datasets: [
                 {
                     data: [],
@@ -94,7 +98,25 @@ export class HomeComponent implements OnInit, OnDestroy {
             ]
         };
 
-        
+        this.authenticationService.GetBillCollectionMenus()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    if (data) {
+                        this.utilityBillCollectionMenus = data.filter(x => x.CATEGORYID == 31);
+                        this.tuitionFeeCollectionMenus = data.filter(x => x.CATEGORYID == 32);
+                        this.creditCardBillCollectionMenus = data.filter(x => x.CATEGORYID == 33);
+                        this.OtherBillFeeCollectionMenus = data.filter(x => x.CATEGORYID == 34);
+                    }
+
+
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+
+
     }
 
     ngOnDestroy() {
@@ -111,22 +133,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         obj.pending = this.dashboardModel.pendingClientCount[e];
 
         switch (e) {
-            case 'DISTRIBUTOR':                
+            case 'DISTRIBUTOR':
                 obj.icon = 'fas fa-building';
                 break;
             case 'AGENT':
                 obj.icon = 'fas fa-street-view';
                 break;
-            case 'MERCHANT':                
+            case 'MERCHANT':
                 obj.icon = 'fas fa-store';
                 break;
-            case 'DSR':                
+            case 'DSR':
                 obj.icon = 'fas fa-truck';
                 break;
-            case 'CUSTOMER':                
+            case 'CUSTOMER':
                 obj.icon = 'fas fa-user';
                 break;
-            case 'TOTAL':                
+            case 'TOTAL':
                 obj.icon = 'fas fa-users';
                 obj.thisYear = this.dashboardModel.totalClientCount.CLIENTTHISYEAR;
                 obj.thisMonth = this.dashboardModel.totalClientCount.CLIENTTHISMONTH;
@@ -134,7 +156,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             default:
                 break;
         }
-        
+
         return obj;
     }
 
@@ -178,7 +200,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                         console.log(error);
                     });
         }
-        
+
     }
 
     goToBranchCashIn() {
@@ -186,13 +208,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         //this.router.navigateByUrl('../feature-category/worklist');
     }
 
-   
 
-    goToBranchCashOut() {        
+
+    goToBranchCashOut() {
         this.router.navigate(['/transfer/branch-cash-out']);
     }
 
     goToReport() {
         this.router.navigate(['/reports/branch-cashin-cashout']);
+    }
+
+    //filterItemsOfCategory(categoryId) {
+    //    return this.billCollectionMenus.filter(x => x.CATEGORYID == categoryId);
+    //}
+
+    goToBillCollectionMenu(url) {
+        this.router.navigate(['/' + url]);
     }
 }

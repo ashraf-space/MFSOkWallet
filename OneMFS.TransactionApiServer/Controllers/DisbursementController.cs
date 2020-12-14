@@ -326,6 +326,40 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("ApproveRefundDisburseAmount")]
+        public object ApproveRefundDisburseAmount(string branchCode, [FromBody]TblDisburseCompanyInfo objTblDisburseCompanyInfo)
+        {
+
+            try
+            {
+                string TransNo = _distributorDepositService.GetTransactionNo();
+                string PhoneNo = objTblDisburseCompanyInfo.CabAcc ?? objTblDisburseCompanyInfo.CatAcc ?? objTblDisburseCompanyInfo.EftAcc ?? objTblDisburseCompanyInfo.IncAcc ??
+                    objTblDisburseCompanyInfo.RemAcc ?? objTblDisburseCompanyInfo.RwdAcc ?? objTblDisburseCompanyInfo.SalAcc;
+
+                string successOrErrorMsg = _disbursementService.AproveRefundDisburseAmount(TransNo, PhoneNo, branchCode, objTblDisburseCompanyInfo).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                if (successOrErrorMsg == "1")
+                {
+                    response = "Refunded successfully";
+                }
+                else
+                {
+                    response = successOrErrorMsg;
+                }
+                _auditTrailService.InsertModelToAuditTrail(objTblDisburseCompanyInfo, objTblDisburseCompanyInfo.entry_user, 10, 3, "Refund disbursement amount", TransNo, response);
+                return successOrErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
         [HttpGet]
         [Route("getBatchNo")]
         public object getBatchNo(int id, string tp)
@@ -511,5 +545,21 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetCompanyInfoByCompanyId")]
+        public object GetCompanyInfoByCompanyId(int companyId)
+        {
+            try
+            {
+                return _disbursementService.GetCompanyInfoByCompanyId(companyId);
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
     }
+
 }

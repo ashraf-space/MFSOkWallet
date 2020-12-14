@@ -172,7 +172,8 @@ namespace OneMFS.ReportingApiServer.Controllers
 				netBalance = accountStatementList[accountStatementList.Count - 1].Balance;
 
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAccountStatement.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, accountStatementList.Count() > 1 ? accountStatementList[1].CustomerName : null));
+				reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, accountStatementList.Count() > 1 ? accountStatementList[1].CustomerName : null
+                    , accountStatementList.Count() > 1 ? accountStatementList[1].PresentAddress : null, accountStatementList.Count() > 1 ? accountStatementList[1].LogicalDate : null));
 				ReportDataSource A = new ReportDataSource("AccountStatement", accountStatementList);
 				reportViewer.LocalReport.DataSources.Add(A);
 			}
@@ -183,7 +184,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return reportUtility.GenerateReport(reportViewer, model.FileType);
 		}
 
-		public List<ReportParameter> GetReportParameter(string mphone, string fromDate, string toDate, double netBalance, string CustomerName)
+		public List<ReportParameter> GetReportParameter(string mphone, string fromDate, string toDate, double netBalance, string CustomerName, string presentAddress=null, DateTime? logicalDate=null)
 		{
 
 
@@ -194,9 +195,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 			paraList.Add(new ReportParameter("ToDate", toDate));
 			paraList.Add(new ReportParameter("netBalance", netBalance.ToString()));
 			paraList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+            paraList.Add(new ReportParameter("presentAddress", presentAddress));
+            paraList.Add(new ReportParameter("logicalDate", logicalDate.ToString()));
 
 
-			return paraList;
+            return paraList;
 		}
 
 		[HttpPost]

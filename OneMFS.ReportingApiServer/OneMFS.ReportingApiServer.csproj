@@ -387,6 +387,9 @@
     <EmbeddedResource Include="Reports\RDLC\RPTAccStatMst.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAgentDsr.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTNescoMDS.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTNescoDSS.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTNescoDDR.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTEmsInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTRegInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTChainMerTranSumByOutlet.rdlc" />

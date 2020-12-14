@@ -28,5 +28,6 @@ namespace MFS.TransactionService.Models
         public double bala_nce { get; set; }
         public string entry_user { get; set; }
         public string enterprize_AccCode { get; set; }
+        public double refund_amt { get; set; }
     }
 }

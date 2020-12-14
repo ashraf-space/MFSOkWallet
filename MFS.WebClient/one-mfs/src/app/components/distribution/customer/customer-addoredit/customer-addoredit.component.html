@@ -449,7 +449,7 @@
 		</div>-->
 	</div>
 </fieldset>
-<app-generic-stepper-form-action [activeIndex]="reginfo.activeIndex" [maxIndex]="4" [isRejectAllowed]="isReject" (onSaveAction)="SaveCustomer($event)" (onStepAhead)="onStepAhead($event)" (onStepBack)="onStepBack()" [disableAction]="!reginfo.isNidVerified"></app-generic-stepper-form-action>
+<app-generic-stepper-form-action [activeIndex]="reginfo.activeIndex" [maxIndex]="4" [isRejectAllowed]="reginfo.isReject" (onSaveAction)="SaveCustomer($event)" (onStepAhead)="onStepAhead($event)" (onStepBack)="onStepBack()" [disableAction]="!reginfo.isNidVerified"></app-generic-stepper-form-action>
 
 <app-generic-modal [initiateModal]="showRejectModal" [header]="'Reject Remarks'" (onDestroy)="showRejectModal=false" (onConfirm)="onRejectCustomer('reject')" [disableConfirm]="reginfo.regInfoModel.remarks=='' || disableButton" *ngIf="showRejectModal">
 	<div style="margin-bottom:2rem">

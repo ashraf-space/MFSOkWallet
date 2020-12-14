@@ -9,16 +9,23 @@ namespace MFS.SecurityService.Service
 {
     public interface IRoleService : IBaseService<Role>
     {
-        
+        object GetDropdownListByRoleName(string roleName);
     }
 
     public class RoleService : BaseService<Role>, IRoleService
     {
+
         public IRoleRepository repo;
         public RoleService(IRoleRepository _repo)
         {
             repo = _repo;
         }
-        
+
+        public object GetDropdownListByRoleName(string roleName)
+        {
+            return repo.GetDropdownListByRoleName(roleName);
+        }
+
+
     }
 }

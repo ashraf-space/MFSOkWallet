@@ -13,6 +13,7 @@ namespace MFS.ClientService.Repository
     {
         Task<object> GetDataForDashboard();
         object GetGlobalSearchResult(string option, string criteria, string filter);
+        object GetBillCollectionMenus();
     }
 
     public class DashboardRepository : BaseRepository<DashboardViewModel>, IDashboardRepository
@@ -32,18 +33,18 @@ namespace MFS.ClientService.Repository
                 {
                     DashboardViewModel model = new DashboardViewModel();
 
-                string totalCountSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
+                    string totalCountSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
                 count(merchant.mphone) as Merchant, count(dsr.mphone) as DSR,
                 count(r.mphone) as Total, count(mon.mphone) as clientThisMonth,
                 count(year.mphone) as clientThisYear from " + dbUser + "reginfo r LEFT JOIN " + dbUser + "RegInfo dist on dist.Mphone = r.mphone and dist.Cat_ID='D' LEFT JOIN " + dbUser + "RegInfo cust on cust.Mphone = r.mphone and cust.Cat_ID='C' LEFT JOIN " + dbUser + "RegInfo agent on agent.Mphone = r.mphone and agent.Cat_ID='A' LEFT JOIN " + dbUser + "RegInfo merchant on merchant.Mphone = r.mphone and merchant.Cat_ID='M' LEFT JOIN " + dbUser + "RegInfo dsr on dsr.Mphone = r.mphone and dsr.Cat_ID='R' LEFT JOIN " + dbUser + "REGInFO mon on mon.mphone = r.mphone and to_char(mon.Autho_DATE,'MM') = to_CHAR(SYSDATE,'MM') and to_char(mon.Autho_DATE,'YYYY') = to_CHAR(SYSDATE,'YYYY')LEFT JOIN " + dbUser + "REGInFO year on year.mphone = r.mphone and to_char(year.Autho_date,'YYYY') = to_CHAR(SYSDATE,'YYYY') where r.reg_Status = 'P'";
 
-                string clientCountByYearSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
+                    string clientCountByYearSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
                     count(merchant.mphone) as Merchant, count(dsr.mphone) as DSR from " + dbUser + "reginfo r LEFT JOIN " + dbUser + "RegInfo dist on dist.Mphone = r.mphone and dist.Cat_ID='D' LEFT JOIN " + dbUser + "RegInfo cust on cust.Mphone = r.mphone and cust.Cat_ID='C' LEFT JOIN " + dbUser + "RegInfo agent on agent.Mphone = r.mphone and agent.Cat_ID='A' LEFT JOIN " + dbUser + "RegInfo merchant on merchant.Mphone = r.mphone and merchant.Cat_ID='M' LEFT JOIN " + dbUser + "RegInfo dsr on dsr.Mphone = r.mphone and dsr.Cat_ID='R' where to_char(r.Autho_DATE,'YYYY') = to_CHAR(SYSDATE,'YYYY')";
 
-                string clientCountByMonthSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
+                    string clientCountByMonthSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
                     count(merchant.mphone) as Merchant, count(dsr.mphone) as DSR, count(r.mphone) from " + dbUser + "reginfo r LEFT JOIN " + dbUser + "RegInfo dist on dist.Mphone = r.mphone and dist.Cat_ID='D' LEFT JOIN " + dbUser + "RegInfo cust on cust.Mphone = r.mphone and cust.Cat_ID='C' LEFT JOIN " + dbUser + "RegInfo agent on agent.Mphone = r.mphone and agent.Cat_ID='A' LEFT JOIN " + dbUser + "RegInfo merchant on merchant.Mphone = r.mphone and merchant.Cat_ID='M' LEFT JOIN " + dbUser + "RegInfo dsr on dsr.Mphone = r.mphone and dsr.Cat_ID='R' where to_char(r.Autho_DATE,'MM') = to_CHAR(SYSDATE,'MM') and to_char(r.Autho_DATE,'YYYY') = to_CHAR(SYSDATE,'YYYY')";
 
-                string pendingClientCountSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
+                    string pendingClientCountSQL = @"select count(dist.mphone) as distributor, count(agent.mphone) as Agent, count(cust.mphone) as Customer,
                 count(merchant.mphone) as Merchant, count(dsr.mphone) as DSR, count(r.mphone) as Total from " + dbUser + "reginfo r LEFT JOIN " + dbUser + "RegInfo dist on dist.Mphone = r.mphone and dist.Cat_ID='D' LEFT JOIN " + dbUser + "RegInfo cust on cust.Mphone = r.mphone and cust.Cat_ID='C' LEFT JOIN " + dbUser + "RegInfo agent on agent.Mphone = r.mphone and agent.Cat_ID='A' LEFT JOIN " + dbUser + "RegInfo merchant on merchant.Mphone = r.mphone and merchant.Cat_ID='M' LEFT JOIN " + dbUser + "RegInfo dsr on dsr.Mphone = r.mphone and dsr.Cat_ID='R' where r.reg_status = 'L'";
 
                     string transactionByMonth = @"select to_char(a.Trans_Date, 'MON') as Month, ROUND(sum(a.Pay_Amt)/100000,2) as transaction
@@ -114,6 +115,29 @@ namespace MFS.ClientService.Repository
                 throw;
             }
 
+        }
+
+        public object GetBillCollectionMenus()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query;
+
+                    query = "Select category_id as CategoryId,alias as FeatureName,url from " + dbUser + "feature  where Category_id in (31,32,33,34) order by category_id , order_no";
+
+
+                    var result = connection.Query(query);
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 

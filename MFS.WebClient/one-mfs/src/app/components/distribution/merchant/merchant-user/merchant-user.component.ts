@@ -52,11 +52,40 @@ export class MerchantUserComponent implements OnInit {
         this.entityId = this.route.snapshot.paramMap.get('id');
         if (this.entityId) {
             this.isEditMode = true;
-            this.getMerChantUserByMphone();
+            //this.getMerChantUserByMphone();
             this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
         }
         else {
-            this.merchantUserModel = {};           
+            this.merchantUserModel = {};
+        }
+    }
+    checkMphoneAlreadyExist(): any {        
+        if (this.merchantUserModel.mobileNo.toString().substring(0, 2) == "01" && this.merchantUserModel.mobileNo.toString().substring(0, 3) != "012") {
+            this.distributorService.GetDistributorByMphone(this.merchantUserModel.mobileNo)
+                .pipe(first())
+                .subscribe(
+                    data => {
+                        if (data != null) {
+                            if (this.merchantService.isMerchantAllow(data.catId)) {
+                                this.checkMerchantUserAlreadyExist();
+                            }
+                            else {
+                                this.merchantUserModel.mobileNo = '';
+                                this.messageService.add({ severity: 'error', summary: 'Invalid User', detail: 'Invalid User For Portal', closable: true });
+                            }
+                        }
+                        else {
+                            
+                        }
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+        }
+        else {
+            this.merchantUserModel.mobileNo = '';
+            this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Mobiel No', closable: true });
         }
     }
     getMerchantList() {
@@ -118,7 +147,7 @@ export class MerchantUserComponent implements OnInit {
         }
         else {
             this.messageService.add({ severity: 'error', summary: 'Input Password', detail: 'Please Input Password Correctly' });
-        }      
+        }
 
     }
 

@@ -9,8 +9,6 @@ import { MfsSettingService } from '../../services/mfs-setting.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    
-    
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
 
@@ -118,6 +116,13 @@ export class AuthenticationService {
 
     getGlobalSearchResult(model: any): any {
         return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetGlobalSearchResult?option=' + model.option + '&criteria=' + model.criteria + '&filter=' + model.filter)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+    GetBillCollectionMenus(): any {
+        return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetBillCollectionMenus')
             .pipe(map(model => {
                 return model;
             }));

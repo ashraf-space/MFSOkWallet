@@ -7,9 +7,7 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class MerchantService {
-    
    
-     
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
 
     }
@@ -171,5 +169,12 @@ export class MerchantService {
                 return merchant;
             }));
     }
-
+    isMerchantAllow(catId: any) {
+        if (catId === 'M' || catId === 'PR' || catId === 'D') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

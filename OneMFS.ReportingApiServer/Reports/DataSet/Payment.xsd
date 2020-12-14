@@ -64,6 +64,26 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="NescoBillPayment" msprop:Generator_TableClassName="NescoBillPaymentDataTable" msprop:Generator_TableVarName="tableNescoBillPayment" msprop:Generator_RowChangedName="NescoBillPaymentRowChanged" msprop:Generator_TablePropName="NescoBillPayment" msprop:Generator_RowDeletingName="NescoBillPaymentRowDeleting" msprop:Generator_RowChangingName="NescoBillPaymentRowChanging" msprop:Generator_RowEvHandlerName="NescoBillPaymentRowChangeEventHandler" msprop:Generator_RowDeletedName="NescoBillPaymentRowDeleted" msprop:Generator_RowClassName="NescoBillPaymentRow" msprop:Generator_UserTableName="NescoBillPayment" msprop:Generator_RowEvArgName="NescoBillPaymentRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Location" msprop:Generator_ColumnVarNameInTable="columnLocation" msprop:Generator_ColumnPropNameInRow="Location" msprop:Generator_ColumnPropNameInTable="LocationColumn" msprop:Generator_UserColumnName="Location" type="xs:string" minOccurs="0" />
+              <xs:element name="TransNo" msprop:Generator_ColumnVarNameInTable="columnTransNo" msprop:Generator_ColumnPropNameInRow="TransNo" msprop:Generator_ColumnPropNameInTable="TransNoColumn" msprop:Generator_UserColumnName="TransNo" type="xs:string" minOccurs="0" />
+              <xs:element name="NescoTxId" msprop:Generator_ColumnVarNameInTable="columnNescoTxId" msprop:Generator_ColumnPropNameInRow="NescoTxId" msprop:Generator_ColumnPropNameInTable="NescoTxIdColumn" msprop:Generator_UserColumnName="NescoTxId" type="xs:string" minOccurs="0" />
+              <xs:element name="Collection" msprop:Generator_ColumnVarNameInTable="columnCollection" msprop:Generator_ColumnPropNameInRow="Collection" msprop:Generator_ColumnPropNameInTable="CollectionColumn" msprop:Generator_UserColumnName="Collection" type="xs:double" minOccurs="0" />
+              <xs:element name="Principle" msprop:Generator_ColumnVarNameInTable="columnPrinciple" msprop:Generator_ColumnPropNameInRow="Principle" msprop:Generator_ColumnPropNameInTable="PrincipleColumn" msprop:Generator_UserColumnName="Principle" type="xs:double" minOccurs="0" />
+              <xs:element name="Vat" msprop:Generator_ColumnVarNameInTable="columnVat" msprop:Generator_ColumnPropNameInRow="Vat" msprop:Generator_ColumnPropNameInTable="VatColumn" msprop:Generator_UserColumnName="Vat" type="xs:double" minOccurs="0" />
+              <xs:element name="Lpc" msprop:Generator_ColumnVarNameInTable="columnLpc" msprop:Generator_ColumnPropNameInRow="Lpc" msprop:Generator_ColumnPropNameInTable="LpcColumn" msprop:Generator_UserColumnName="Lpc" type="xs:double" minOccurs="0" />
+              <xs:element name="Stamp" msprop:Generator_ColumnVarNameInTable="columnStamp" msprop:Generator_ColumnPropNameInRow="Stamp" msprop:Generator_ColumnPropNameInTable="StampColumn" msprop:Generator_UserColumnName="Stamp" type="xs:double" minOccurs="0" />
+              <xs:element name="NetAmount" msprop:Generator_ColumnVarNameInTable="columnNetAmount" msprop:Generator_ColumnPropNameInRow="NetAmount" msprop:Generator_ColumnPropNameInTable="NetAmountColumn" msprop:Generator_UserColumnName="NetAmount" type="xs:double" minOccurs="0" />
+              <xs:element name="SndName" msprop:Generator_ColumnVarNameInTable="columnSndName" msprop:Generator_ColumnPropNameInRow="SndName" msprop:Generator_ColumnPropNameInTable="SndNameColumn" msprop:Generator_UserColumnName="SndName" type="xs:string" minOccurs="0" />
+              <xs:element name="BillNo" msprop:Generator_ColumnVarNameInTable="columnBillNo" msprop:Generator_ColumnPropNameInRow="BillNo" msprop:Generator_ColumnPropNameInTable="BillNoColumn" msprop:Generator_UserColumnName="BillNo" type="xs:string" minOccurs="0" />
+              <xs:element name="TxnCount" msprop:Generator_ColumnVarNameInTable="columnTxnCount" msprop:Generator_ColumnPropNameInRow="TxnCount" msprop:Generator_ColumnPropNameInTable="TxnCountColumn" msprop:Generator_UserColumnName="TxnCount" type="xs:int" minOccurs="0" />
+              <xs:element name="CcName" msprop:Generator_ColumnVarNameInTable="columnCcName" msprop:Generator_ColumnPropNameInRow="CcName" msprop:Generator_ColumnPropNameInTable="CcNameColumn" msprop:Generator_UserColumnName="CcName" type="xs:string" minOccurs="0" />
+              <xs:element name="TransDate" msprop:Generator_ColumnVarNameInTable="columnTransDate" msprop:Generator_ColumnPropNameInRow="TransDate" msprop:Generator_ColumnPropNameInTable="TransDateColumn" msprop:Generator_UserColumnName="TransDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

@@ -51,5 +51,17 @@ namespace OneMFS.ReportingApiServer.Controllers
 			paraList.Add(new ReportParameter("distMobile", clientInfo.Mphone));
 			return paraList;
 		}
+		[HttpGet]
+		[Route("api/DistributorPortal/GetBalanceInformation")]
+		public object GetBalanceInformation(string mphone, string filterId)
+		{
+			return service.GetBalanceInformation(mphone,filterId);
+		}
+		[HttpGet]
+		[Route("api/DistributorPortal/GetDistPortalInfo")]
+		public object GetDistPortalInfo(string mphone)
+		{
+			return service.GetDistPortalInfo(mphone);
+		}
 	}
 }

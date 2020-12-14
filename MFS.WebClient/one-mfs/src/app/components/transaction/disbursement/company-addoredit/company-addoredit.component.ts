@@ -21,6 +21,9 @@ export class CompanyAddoreditComponent implements OnInit {
     isActionDisabled: boolean = true;
     accountNo: string = "";
     TargetCatTypeList: any;
+    entityId: string;
+    isRegistrationPermitted: boolean = false;
+    branchCode: any;
 
     constructor(private disbursementService: disbursementService, private messageService: MessageService, private route: ActivatedRoute, private authService: AuthenticationService) {
         this.authService.currentUser.subscribe(x => {
@@ -37,35 +40,89 @@ export class CompanyAddoreditComponent implements OnInit {
             { label: 'Merchant', value: 'M' },
             { label: 'Any', value: '' }
         ];
+
+        this.entityId = this.route.snapshot.paramMap.get('id');
+        if (this.entityId) {
+            this.isEditMode = true;
+            this.getCompanyInfoByCompanyId();
+
+            this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
+        }
     }
+
+    getCompanyInfoByCompanyId(): any {
+        this.disbursementService.getCompanyInfoByCompanyId(this.entityId)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.tblDisburseCompanyInfoModel = data;
+
+                },
+                error => {
+                    console.log(error);
+                }
+            )
+    }
+
+
     companySave() {
 
-        if (!this.tblDisburseCompanyInfoModel.companyName
-            || !this.tblDisburseCompanyInfoModel.address
-            //|| !this.tblDisburseCompanyInfoModel.targetCatId || this.tblDisburseCompanyInfoModel.targetCatId == ''
-            || !this.tblDisburseCompanyInfoModel.phone) {
-            this.msgs = [];
-            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
-            this.error = true;
+        if (!this.isEditMode) {
+            if (!this.tblDisburseCompanyInfoModel.companyName
+                || !this.tblDisburseCompanyInfoModel.address
+                //|| !this.tblDisburseCompanyInfoModel.targetCatId || this.tblDisburseCompanyInfoModel.targetCatId == ''
+                || !this.tblDisburseCompanyInfoModel.phone) {
+                this.msgs = [];
+                this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                this.error = true;
+            }
+            else {
+                this.isLoading = true;
+                this.tblDisburseCompanyInfoModel.entry_user = this.currentUserModel.user.username;
+                this.disbursementService.save(this.tblDisburseCompanyInfoModel).pipe(first())
+                    .subscribe(
+                        data => {
+                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Disburse company info added' });
+
+                            setTimeout(() => {
+                                this.isLoading = false;
+                                location.reload();
+                            }, 5000);
+                        },
+                        error => {
+                            console.log(error);
+                            this.isLoading = false;
+                        });
+            }
         }
         else {
             this.isLoading = true;
+            this.branchCode = this.currentUserModel.user.branchCode;
             this.tblDisburseCompanyInfoModel.entry_user = this.currentUserModel.user.username;
-            this.disbursementService.save(this.tblDisburseCompanyInfoModel).pipe(first())
+            this.disbursementService.ApproveRefundDisburseAmount(this.tblDisburseCompanyInfoModel, this.branchCode).pipe(first())
                 .subscribe(
                     data => {
-                        this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Disburse company info added' });
 
+                        if (this.isRegistrationPermitted) {
+                            if (data == "1") {
+                                this.messageService.add({ severity: 'success', summary: 'Refunded successfully', detail: 'Disbursement amount refunded' });
+                            }
+                            else {
+                                this.messageService.add({ severity: 'error', summary: 'Not Approved', detail: data });
+                            }
+                        }
                         setTimeout(() => {
                             this.isLoading = false;
                             location.reload();
                         }, 5000);
+                        //window.history.back();
                     },
                     error => {
                         console.log(error);
-                        this.isLoading = false;
                     });
         }
+
+        
     }
     companyDelete(event) {
 
@@ -119,5 +176,23 @@ export class CompanyAddoreditComponent implements OnInit {
                 );
 
         }
+    }
+
+    checkAndEnableApprove() {
+
+        this.isLoading = true;
+        if (this.tblDisburseCompanyInfoModel.refund_amt <= this.tblDisburseCompanyInfoModel.bala_nce) {
+            this.isActionDisabled = false;
+            this.isLoading = false;
+        }
+        else {
+            this.messageService.add({ severity: 'warn', summary: 'Exceed Limit', detail: 'Refund Amount can not be greater than balance' });
+            this.tblDisburseCompanyInfoModel.refund_amt = null;
+            this.isLoading = false;
+            this.isActionDisabled = true;
+        }
+
+
+
     }
 }

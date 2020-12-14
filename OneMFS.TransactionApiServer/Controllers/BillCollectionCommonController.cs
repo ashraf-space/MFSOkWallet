@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
 using MFS.SecurityService.Service;
@@ -10,6 +14,7 @@ using MFS.TransactionService.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OneMFS.SharedResources.CommonService;
 using OneMFS.SharedResources.Utility;
 using OneMFS.TransactionApiServer.Filters;
@@ -17,8 +22,8 @@ using OneMFS.TransactionApiServer.Filters;
 namespace OneMFS.TransactionApiServer.Controllers
 {
     [Authorize]
-	//[ApiGuardAuth]
-	[Produces("application/json")]
+    //[ApiGuardAuth]
+    [Produces("application/json")]
     [Route("api/BillCollectionCommon")]
     public class BillCollectionCommonController : Controller
     {
@@ -47,6 +52,115 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("GetMonthYearList")]
+        public object GetMonthYearList()
+        {
+            List<CustomDropDownModel> monthYearList = new List<CustomDropDownModel>();
+            try
+            {
+                for (int i = 0; i <= 12; i++)
+                {
+                    CustomDropDownModel customDropDownModel = new CustomDropDownModel();
+                    customDropDownModel.label = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year;
+                    customDropDownModel.value = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year;
+                    //monthYearList.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year);
+                    monthYearList.Add(customDropDownModel);
+                }
+                return monthYearList;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetSubMenuDDL")]
+        public object GetSubMenuDDL(int featureId)
+        {
+            try
+            {
+                return _BillCollectionCommonService.GetSubMenuDDL(featureId);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpPost]
+        [Route("CheckBillInfo")]
+        public async Task<object> CheckBillInfo([FromBody]BillCollectionCommon objBillCollectionCommon)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    string[] ss = new string[6];
+                    //ss[0]= "112233445566";
+                    //ss[0] = "200600405623";
+                    ss[0] = "000";
+                    List<BillApiCalling> billApiCallingList = new List<BillApiCalling>();
+                    BillApiCalling objBillApiCalling = new BillApiCalling();
+                    objBillApiCalling.appid = "payapicall";
+                    objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
+                    objBillApiCalling.call = "method";
+                    objBillApiCalling.method = "DHAKAWASA";
+                    objBillApiCalling.billID = ss.Where(c => c != null).ToArray();
+                    billApiCallingList.Add(objBillApiCalling);
+
+                    string json = JsonConvert.SerializeObject(objBillApiCalling);
+                    string base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+                    HttpContent httpContent = new StringContent(base64Encoded, Encoding.UTF8);
+                    //HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(telemetry), Encoding.UTF8);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+
+                    BillApiInfo apiInfo = new BillApiInfo();
+                    dynamic apiResponse = null;
+                    using (var response = await httpClient.PostAsync(apiInfo.Ip + apiInfo.ApiUrl, httpContent))
+                    {
+                        apiResponse = await response.Content.ReadAsStringAsync();
+                        byte[] data = Convert.FromBase64String(apiResponse);
+                        string decodedString = Encoding.UTF8.GetString(data);
+                        var result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
+
+                    }
+                    return apiResponse;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+            }
+        }
+
+        //public async Task<object> GetCbsAccInfo(string mphone, string bankAcNo)
+        //{
+        //    try
+        //    {
+        //        using (var httpClient = new HttpClient())
+        //        {
+        //            CbsApiInfo apiInfo = new CbsApiInfo();
+        //            dynamic apiResponse = null;
+        //            using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + mphone))
+        //            {
+        //                apiResponse = await response.Content.ReadAsStringAsync();
+        //                var result = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
+
+        //            }
+        //            return apiResponse;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+        //    }
+        //}
 
         //[ApiGuardAuth]
         //[HttpPost]
@@ -108,7 +222,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         //                //insert into gl_trans_dtl and gl_trans_mst and RegInfo 
         //                var successOrErrorMsg = _BillCollectionCommonService.DataInsertToTransMSTandDTL(cashEntry);
-                        
+
         //                //Insert into audit trial audit and detail
         //                TblCashEntry prevModel = _BillCollectionCommonService.GetDestributorDepositByTransNo(cashEntry.TransNo);
         //                prevModel.Status = "default";//insert for only audit trail
@@ -170,7 +284,7 @@ namespace OneMFS.TransactionApiServer.Controllers
         //    {
         //        return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
         //    }
-            
+
         //}
 
     }

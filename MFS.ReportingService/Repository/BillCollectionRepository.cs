@@ -19,6 +19,9 @@ namespace MFS.ReportingService.Repository
 		List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
 		List<JalalabadGasBillPayment> GetJgtdReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
 		List<EdumanBillPayment> EdumanBillReport(string studentId, string fromDate, string toDate, string instituteId, string dateType, string catType);
+		List<NescoRpt> NescoDailyDetailReport(string transNo, string fromDate, string toDate);
+		List<NescoRpt> NescoDSSReport(string fromDate, string toDate);
+		List<NescoRpt> NescoMDSReport(string fromDate, string toDate);
 	}
 	public class BillCollectionRepository : BaseRepository<BillCollection>, IBillCollectionRepository
 	{
@@ -181,6 +184,77 @@ namespace MFS.ReportingService.Repository
 
 					List<EdumanBillPayment> result = SqlMapper.Query<EdumanBillPayment>(connection, dbUser + "RPT_EDUMAN_BILL", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 					//List<BillCollection> result = null;
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<NescoRpt> NescoDailyDetailReport(string transNo, string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo=="null"?null:transNo);
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));					
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<NescoRpt> result = SqlMapper.Query<NescoRpt>(connection, dbUser + "RPT_NESCO_DDR", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<NescoRpt> NescoDSSReport(string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();					
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<NescoRpt> result = SqlMapper.Query<NescoRpt>(connection, dbUser + "RPT_NESCO_DSS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<NescoRpt> NescoMDSReport(string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<NescoRpt> result = SqlMapper.Query<NescoRpt>(connection, dbUser + "RPT_NESCO_MDS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+
 					this.CloseConnection(connection);
 					return result;
 				}

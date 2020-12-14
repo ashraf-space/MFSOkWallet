@@ -51,6 +51,20 @@ namespace OneMFS.SecurityApiServer.Controllers
 		}
 
         [HttpGet]
+        [Route("GetDropdownListByRoleName")]
+        public object GetDropdownListByRoleName(string roleName = null)
+        {
+            try
+            {
+                return roleService.GetDropdownListByRoleName(roleName);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
         [Route("GetRoleById")]
         public object GetRoleById(int id)
         {

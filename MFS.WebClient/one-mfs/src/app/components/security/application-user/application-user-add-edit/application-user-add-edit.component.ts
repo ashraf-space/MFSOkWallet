@@ -34,6 +34,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
     blockSpace: RegExp = /[^\s]/; 
     logInStatusList: any;
     passwordChangedBy: string;
+    roleName: any;
     constructor(private applicationUserService: ApplicationUserService, private router: Router,
         private route: ActivatedRoute, private bankBranchService: BankBranchService, private roleService: RoleService,
         private authenticationService: AuthenticationService, private messageService: MessageService, private confirmationService: ConfirmationService) {
@@ -67,7 +68,8 @@ export class ApplicationUserAddEditComponent implements OnInit {
     }
 
     async SecuredRoleList() {
-        this.roleService.getRoleListForDDL().pipe(first())
+        this.roleName = this.currentUserModel.user.role_Name;
+        this.roleService.GetDropdownListByRoleName(this.roleName).pipe(first())
             .subscribe(
                 data => {
                     this.securedRoleList = data;

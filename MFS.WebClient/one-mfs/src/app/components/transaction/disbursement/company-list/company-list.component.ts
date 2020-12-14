@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GridSettingService } from 'src/app/services/grid-setting.service';
 import { MfsSettingService } from 'src/app/services/mfs-setting.service';
+import { AuthenticationService } from 'src/app/shared/_services';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-company-list',
@@ -11,14 +13,18 @@ export class CompanyListComponent implements OnInit {
 
     gridConfig: any;
     ProgressSpinnerDlg: boolean = false;
+    isRegistrationPermitted: boolean = false;
 
-    constructor(private gridSettingService: GridSettingService, private mfsSettingService: MfsSettingService) {
+    constructor(private gridSettingService: GridSettingService, private mfsSettingService: MfsSettingService,
+        private authService: AuthenticationService, private route: ActivatedRoute) {
         this.gridConfig = {};
     }
 
 
     ngOnInit() {
+        this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
         this.initialiseGridConfig();
+        
     }
 
     initialiseGridConfig(): any {
@@ -44,7 +50,13 @@ export class CompanyListComponent implements OnInit {
             { field: 'address', header: 'Address', width: '40%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'phone', header: 'Phone', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'fax', header: 'Fax', width: '5%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getYesNoTemplateForRowData() }
+            
         ];
+
+        if (this.isRegistrationPermitted) {
+            this.gridConfig.columnList.push(
+                { field: 'companyId', header: 'Refund', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone() });
+        }
 
     };
 

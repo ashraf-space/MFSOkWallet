@@ -16,6 +16,9 @@ namespace MFS.ReportingService.Service
 		List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
 		List<JalalabadGasBillPayment> GetJgtdReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType);
 		List<EdumanBillPayment> EdumanBillReport(string studentId, string fromDate, string toDate, string instituteId, string dateType, string catType);
+		List<NescoRpt> NescoDailyDetailReport(string transNo, string fromDate, string toDate);
+		List<NescoRpt> NescoDSSReport(string fromDate, string toDate);
+		List<NescoRpt> NescoMDSReport(string fromDate, string toDate);
 	}
 	public class BillCollectionService : IBillCollectionService
 	{
@@ -53,6 +56,21 @@ namespace MFS.ReportingService.Service
 		public List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
 		{
 			return billCollectionRepository.GetWasaReport(utility, fromDate, toDate, gateway, dateType, catType);
+		}
+
+		public List<NescoRpt> NescoDailyDetailReport(string transNo, string fromDate, string toDate)
+		{
+			return billCollectionRepository.NescoDailyDetailReport(transNo, fromDate, toDate);
+		}
+
+		public List<NescoRpt> NescoDSSReport(string fromDate, string toDate)
+		{
+			return billCollectionRepository.NescoDSSReport(fromDate,toDate);
+		}
+
+		public List<NescoRpt> NescoMDSReport(string fromDate, string toDate)
+		{
+			return billCollectionRepository.NescoMDSReport(fromDate, toDate);
 		}
 	}
 }

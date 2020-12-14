@@ -58,6 +58,7 @@
     <Compile Include="Models\CreditCardReport.cs" />
     <Compile Include="Models\CurrentAffairsFirst.cs" />
     <Compile Include="Models\CurrentAffairsStatement.cs" />
+    <Compile Include="Models\DistPortalInfo.cs" />
     <Compile Include="Models\DistributorPortal.cs" />
     <Compile Include="Models\EdumanBillPayment.cs" />
     <Compile Include="Models\EmsReport.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Models\MasterWallet.cs" />
     <Compile Include="Models\MerchantTransaction.cs" />
     <Compile Include="Models\MerchantTransactionSummary.cs" />
+    <Compile Include="Models\NescoRpt.cs" />
     <Compile Include="Models\OnlineRegistration.cs" />
     <Compile Include="Models\OutletDailySummaryTransaction.cs" />
     <Compile Include="Models\OutletDetailsTransaction.cs" />

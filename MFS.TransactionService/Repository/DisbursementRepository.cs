@@ -19,6 +19,7 @@ namespace MFS.TransactionService.Repository
         object getDisburseCompanyList();
         object getDisburseNameCodeList();
         object DataInsertToTransMSTandDTL(TblDisburseAmtDtlMake objTblDisburseAmtDtlMake);
+        object AproveRefundDisburseAmount(string TransNo, string PhoneNo,string  branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo);
         object GetCompnayNameById(int companyId);
         object GetDisburseTypeList();
         object getBatchNo(int id, string tp);
@@ -31,6 +32,7 @@ namespace MFS.TransactionService.Repository
         object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
         string GetTargetCatIdByCompany(string onlyCompanyName);
+        TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId);
     }
     public class DisbursementRepository : BaseRepository<TblDisburseCompanyInfo>, IDisbursementRepository
     {
@@ -68,7 +70,7 @@ namespace MFS.TransactionService.Repository
                     var maxCompanyId = connection.QueryFirstOrDefault<int>(query);
 
                     return maxCompanyId;
-                }               
+                }
             }
             catch (Exception ex)
             {
@@ -167,6 +169,49 @@ namespace MFS.TransactionService.Repository
                     if (flag == "0")
                     {
                         successOrErrorMsg = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+                    }
+                    else
+                    {
+                        successOrErrorMsg = flag;
+                    }
+                    return successOrErrorMsg;
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public object AproveRefundDisburseAmount(string TransNo, string PhoneNo, string branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("V_TRANS_NO", OracleDbType.Double, ParameterDirection.InputOutput, Convert.ToDouble(TransNo));
+                    parameter.Add("V_FR_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, PhoneNo);
+                    parameter.Add("V_BALANCE_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, "M");
+                    parameter.Add("V_MSG_AMT", OracleDbType.Double, ParameterDirection.Input, objTblDisburseCompanyInfo.refund_amt);
+                    parameter.Add("MSGID", OracleDbType.Varchar2, ParameterDirection.Input, "999999999");
+                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
+                    parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
+                    parameter.Add("V_TO_CATID", OracleDbType.Varchar2, ParameterDirection.Input, "S");
+                    parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
+                    parameter.Add("V_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, "C");
+                    parameter.Add("V_COMPANYID", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.CompanyId);
+                    parameter.Add("V_CHECKEDUSER", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.entry_user);
+                    parameter.Add("V_DISBURSETYPE", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.enterprize_AccCode);
+
+                    SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disburse_Amount_Refunding", param: parameter, commandType: CommandType.StoredProcedure);
+                    connection.Close();
+                    string flag = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+                    string successOrErrorMsg = null;
+                    if (flag == "0")
+                    {
+                        successOrErrorMsg = parameter.oracleParameters[6].Value != null ? parameter.oracleParameters[6].Value.ToString() : null;
                     }
                     else
                     {
@@ -378,7 +423,7 @@ namespace MFS.TransactionService.Repository
                     }
                     return successOrErrorMsg;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -450,6 +495,28 @@ namespace MFS.TransactionService.Repository
             catch (Exception ex)
             {
                 return ex.ToString();
+            }
+        }
+
+        public TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select Company_Id as CompanyId, Company_Name as CompanyName, Address, Phone, Fax, Sal_Acc as SalAcc,
+                        REM_ACC as RemAcc, Cab_Acc as CabAcc, Cat_Acc as CatAcc, RWD_Acc as RwdAcc, Inc_Acc as IncAcc, Eft_Acc as EftAcc, Target_Cat_Id as TargetCatId,
+                        (select Sum(Amount_cr) - sum(amount_dr) from " + mainDbUser.DbUser + "tbl_disburse_amt_dtl where company_id=c.company_id group by company_id) as Bala_nce from " + mainDbUser.DbUser +
+                        "tbl_disburse_company_info c where company_id = " + companyId;
+                    var result = connection.Query<TblDisburseCompanyInfo>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
     }

@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BillApiCalling.cs" />
+    <Compile Include="Models\BillApiInfo.cs" />
+    <Compile Include="Models\BillCollectionCheckResponse.cs" />
+    <Compile Include="Models\BillCollectionCommon.cs" />
     <Compile Include="Models\BranchCashIn.cs" />
     <Compile Include="Models\CommissionMobile.cs" />
     <Compile Include="Models\DisbursementPostingAudit.cs" />

@@ -11,6 +11,8 @@ namespace MFS.ReportingService.Service
 	public interface IDistributorPortalService
 	{
 		List<AgentDsrList> GetAgentDsrListByPmphone(string mphone);
+		object GetBalanceInformation(string mphone, string filterId);
+		object GetDistPortalInfo(string mphone);
 	}
 	public class DistributorPortalService : IDistributorPortalService
 	{
@@ -22,6 +24,16 @@ namespace MFS.ReportingService.Service
 		public List<AgentDsrList> GetAgentDsrListByPmphone(string mphone)
 		{
 			return repository.GetAgentDsrListByPmphone(mphone);
+		}
+
+		public object GetBalanceInformation(string mphone, string filterId)
+		{
+			return repository.GetBalanceInformation(mphone,filterId);
+		}
+
+		public object GetDistPortalInfo(string mphone)
+		{
+			return repository.GetDistPortalInfo(mphone);
 		}
 	}
 }

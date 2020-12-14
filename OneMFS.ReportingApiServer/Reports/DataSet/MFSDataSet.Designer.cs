@@ -1323,6 +1323,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnBalance;
             
+            private global::System.Data.DataColumn columnTansactionWith;
+            
+            private global::System.Data.DataColumn columnPresentAddress;
+            
+            private global::System.Data.DataColumn columnLogicalDate;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public AccountStatementDataTable() {
@@ -1438,6 +1444,30 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TansactionWithColumn {
+                get {
+                    return this.columnTansactionWith;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PresentAddressColumn {
+                get {
+                    return this.columnPresentAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LogicalDateColumn {
+                get {
+                    return this.columnLogicalDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1473,7 +1503,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public AccountStatementRow AddAccountStatementRow(System.DateTime TransDate, string Description, string TransNo, string Gateway, string TransFrom, string TransTo, System.DateTime ValueDate, double DebitAmt, double CreditAmt, double Balance) {
+            public AccountStatementRow AddAccountStatementRow(System.DateTime TransDate, string Description, string TransNo, string Gateway, string TransFrom, string TransTo, System.DateTime ValueDate, double DebitAmt, double CreditAmt, double Balance, string TansactionWith, string PresentAddress, System.DateTime LogicalDate) {
                 AccountStatementRow rowAccountStatementRow = ((AccountStatementRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransDate,
@@ -1485,7 +1515,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         ValueDate,
                         DebitAmt,
                         CreditAmt,
-                        Balance};
+                        Balance,
+                        TansactionWith,
+                        PresentAddress,
+                        LogicalDate};
                 rowAccountStatementRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowAccountStatementRow);
                 return rowAccountStatementRow;
@@ -1518,6 +1551,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnDebitAmt = base.Columns["DebitAmt"];
                 this.columnCreditAmt = base.Columns["CreditAmt"];
                 this.columnBalance = base.Columns["Balance"];
+                this.columnTansactionWith = base.Columns["TansactionWith"];
+                this.columnPresentAddress = base.Columns["PresentAddress"];
+                this.columnLogicalDate = base.Columns["LogicalDate"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1543,6 +1579,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnCreditAmt);
                 this.columnBalance = new global::System.Data.DataColumn("Balance", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBalance);
+                this.columnTansactionWith = new global::System.Data.DataColumn("TansactionWith", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTansactionWith);
+                this.columnPresentAddress = new global::System.Data.DataColumn("PresentAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPresentAddress);
+                this.columnLogicalDate = new global::System.Data.DataColumn("LogicalDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogicalDate);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9298,6 +9340,54 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string TansactionWith {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.TansactionWithColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TansactionWith\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.TansactionWithColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PresentAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.PresentAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PresentAddress\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.PresentAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public System.DateTime LogicalDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableAccountStatement.LogicalDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LogicalDate\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.LogicalDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsTransDateNull() {
                 return this.IsNull(this.tableAccountStatement.TransDateColumn);
             }
@@ -9414,6 +9504,42 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetBalanceNull() {
                 this[this.tableAccountStatement.BalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTansactionWithNull() {
+                return this.IsNull(this.tableAccountStatement.TansactionWithColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTansactionWithNull() {
+                this[this.tableAccountStatement.TansactionWithColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPresentAddressNull() {
+                return this.IsNull(this.tableAccountStatement.PresentAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPresentAddressNull() {
+                this[this.tableAccountStatement.PresentAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLogicalDateNull() {
+                return this.IsNull(this.tableAccountStatement.LogicalDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLogicalDateNull() {
+                this[this.tableAccountStatement.LogicalDateColumn] = global::System.Convert.DBNull;
             }
         }
         

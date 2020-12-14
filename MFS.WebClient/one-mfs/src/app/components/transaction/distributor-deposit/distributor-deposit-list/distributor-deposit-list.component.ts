@@ -17,7 +17,7 @@ export class DistributorDepositListComponent implements OnInit {
     transAmtLimit: any;
 
     constructor(private gridSettingService: GridSettingService, private authService: AuthenticationService
-        , private mfsSettingService: MfsSettingService, private route: ActivatedRoute,) {
+        , private mfsSettingService: MfsSettingService, private route: ActivatedRoute) {
         this.gridConfig = {};
 
         this.authService.currentUser.subscribe(x => {

@@ -52,5 +52,20 @@ namespace OneMFS.ClientApiServer.Controllers
 
 			}
 		}
+
+        [HttpGet]
+        [Route("GetBillCollectionMenus")]
+        public object GetBillCollectionMenus()
+        {
+            try
+            {
+                return dashboardService.GetBillCollectionMenus();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+
+            }
+        }
     }
 }

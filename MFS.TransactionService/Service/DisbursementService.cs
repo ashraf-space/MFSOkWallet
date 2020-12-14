@@ -16,6 +16,7 @@ namespace MFS.TransactionService.Service
         object getDisburseCompanyList();
         object getDisburseNameCodeList();       
         object DataInsertToTransMSTandDTL(TblDisburseAmtDtlMake objTblDisburseAmtDtlMake);
+        object AproveRefundDisburseAmount(string TransNo,string PhoneNo,string branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo);
         object GetCompnayNameById(int companyId);
         object GetDisburseTypeList();
         object getBatchNo(int id, string tp);
@@ -28,6 +29,7 @@ namespace MFS.TransactionService.Service
         object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
         string GetTargetCatIdByCompany(string onlyCompanyName);
+        TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId);
     }
     public class DisbursementService : BaseService<TblDisburseCompanyInfo>, IDisbursementService
     {
@@ -88,6 +90,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _DisbursementRepository.DataInsertToTransMSTandDTL(objTblDisburseAmtDtlMake);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object AproveRefundDisburseAmount(string TransNo, string PhoneNo, string branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo)
+        {
+            try
+            {
+                return _DisbursementRepository.AproveRefundDisburseAmount(TransNo, PhoneNo, branchCode,  objTblDisburseCompanyInfo);
             }
             catch (Exception ex)
             {
@@ -228,6 +243,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _DisbursementRepository.GetTargetCatIdByCompany(onlyCompanyName);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+       
+        public TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId)
+        {
+            try
+            {
+                return _DisbursementRepository.GetCompanyInfoByCompanyId(companyId);
             }
             catch (Exception ex)
             {

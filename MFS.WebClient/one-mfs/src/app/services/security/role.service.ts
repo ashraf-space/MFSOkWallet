@@ -48,4 +48,11 @@ export class RoleService {
                 return roleList;
             }));
     }
+
+    GetDropdownListByRoleName(roleName: string = null) {
+        return this.http.get<any>(this.setting.securityApiServer + '/Role/GetDropdownListByRoleName?roleName=' + roleName)
+            .pipe(map(roleList => {
+                return roleList;
+            }));
+    }
 }

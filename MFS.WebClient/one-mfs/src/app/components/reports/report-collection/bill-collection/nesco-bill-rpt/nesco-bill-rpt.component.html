@@ -1,0 +1,37 @@
+<div class="form-group">
+	<div class="p-grid">
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">Report Type<span class="mandatory">*</span></label>
+			<p-dropdown [options]="rptTypeList" placeholder="Select Type" [(ngModel)]="model.reportType"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-6">
+			<label for="float-input input-lg" class="col-form-label">Transaction No</label>
+			<div class="input-group">
+				<input type="text" class="form-control form-input" [(ngModel)]="model.transNo" pInputText />
+			</div>
+
+		</div>
+	</div>
+	<div class="p-grid">
+
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">From <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From" [disabled]="isDateDisabled"
+					   name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">To <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To" [disabled]="isDateDisabled"
+					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+					   (click)="h.toggle()" id="float-input">
+			</div>
+		</div>
+
+	</div>
+</div>

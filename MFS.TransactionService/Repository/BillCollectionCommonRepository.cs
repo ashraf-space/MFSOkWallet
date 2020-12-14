@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using MFS.TransactionService.Models;
 using OneMFS.SharedResources;
+using OneMFS.SharedResources.Utility;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace MFS.TransactionService.Repository
         //TblCashEntry GetDestributorDepositByTransNo(string transNo);
         //object DataInsertToTransMSTandDTL(TblCashEntry cashEntry);
         object GetFeaturePayDetails(int featureId);
+        object GetSubMenuDDL(int featureId);
     }
     public class BillCollectionCommonRepository : BaseRepository<TblCashEntry>, IBillCollectionCommonRepository
     {
@@ -32,6 +34,26 @@ namespace MFS.TransactionService.Repository
                 {
                     string query = @"Select * from " + mainDbUser.DbUser + "FEATURE_PAY where FEATURE_ID= " + featureId;
                     var result = connection.Query<dynamic>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetSubMenuDDL(int featureId)
+        {
+            //List<CustomDropDownModel> monthYearList = new List<CustomDropDownModel>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select name as label,subMenuId as value from " + mainDbUser.DbUser + "feature_pay_submenu where FEATURE_ID= " + featureId;
+                    var result = connection.Query<CustomDropDownModel>(query);
                     this.CloseConnection(connection);
                     return result;
                 }

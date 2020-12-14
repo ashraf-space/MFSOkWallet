@@ -19,5 +19,10 @@ namespace MFS.ReportingService.Models
         public double DebitAmt { get; set; }
         public double CreditAmt { get; set; }
         public double Balance { get; set; }
+        public string TansactionWith { get; set; }
+        public string PresentAddress { get; set; }
+        public DateTime? LogicalDate { get; set; }
+
+
     }
 }

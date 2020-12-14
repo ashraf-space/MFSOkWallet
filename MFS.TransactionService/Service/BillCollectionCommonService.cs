@@ -16,6 +16,7 @@ namespace MFS.TransactionService.Service
         //TblCashEntry GetDestributorDepositByTransNo(string transNo);
         //object DataInsertToTransMSTandDTL(TblCashEntry cashEntry);
         object GetFeaturePayDetails(int featureId);
+        object GetSubMenuDDL(int featureId);
     }
     public class BillCollectionCommonService:BaseService<TblCashEntry>, IBillCollectionCommonService
     {
@@ -27,6 +28,11 @@ namespace MFS.TransactionService.Service
         public object GetFeaturePayDetails(int featureId)
         {
             return _BillCollectionCommonRepository.GetFeaturePayDetails(featureId);
+        }
+
+        public object GetSubMenuDDL(int featureId)
+        {
+            return _BillCollectionCommonRepository.GetSubMenuDDL( featureId);
         }
 
         //public string GetTransactionNo()

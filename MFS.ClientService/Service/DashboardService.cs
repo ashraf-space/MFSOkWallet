@@ -12,6 +12,7 @@ namespace MFS.ClientService.Service
     {
         Task<object> GetDataForDashboard();
         object GetGlobalSearchResult(string option, string criteria, string filter);
+        object GetBillCollectionMenus();
     }
 
     public class DashboardService : BaseService<DashboardViewModel>, IDashboardService
@@ -30,6 +31,11 @@ namespace MFS.ClientService.Service
         public object GetGlobalSearchResult(string option, string criteria, string filter)
         {
             return repo.GetGlobalSearchResult(option, criteria, filter);
+        }
+
+        public object GetBillCollectionMenus()
+        {
+            return repo.GetBillCollectionMenus();
         }
     }    
 }

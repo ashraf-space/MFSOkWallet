@@ -8,7 +8,6 @@ import { HttpHeaders } from '@angular/common/http';
     providedIn: 'root'
 })
 export class disbursementService {
-
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     save(tblDisburseCompanyInfoModel: any) {
@@ -69,6 +68,13 @@ export class disbursementService {
 
     AproveOrRejectDisburseAmountPosting(fundTransferModel: any, event: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/Disbursement/AproveOrRejectDisburseAmountPosting?evnt=' + event, fundTransferModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    ApproveRefundDisburseAmount(tblDisburseCompanyInfoModel: any, branchCode: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/Disbursement/ApproveRefundDisburseAmount?branchCode=' + branchCode, tblDisburseCompanyInfoModel)
             .pipe(map(model => {
                 return model;
             }))
@@ -142,6 +148,13 @@ export class disbursementService {
 
     GetAccountDetails(accountNo:  string): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/Disbursement/GetAccountDetails?accountNo=' + accountNo)
+            .pipe(map(data => {
+                return data;
+            }))
+    }
+
+    getCompanyInfoByCompanyId(entityId: string): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/Disbursement/GetCompanyInfoByCompanyId?companyId=' + entityId)
             .pipe(map(data => {
                 return data;
             }))

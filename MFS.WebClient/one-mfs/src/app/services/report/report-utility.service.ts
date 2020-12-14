@@ -8,6 +8,7 @@ import { MfsSettingService } from '../mfs-setting.service';
   providedIn: 'root'
 })
 export class ReportUtilityService {
+    
     fileExtensionList: any;
     constructor(private http: HttpClient, private setting: MfsSettingService) {
         this.fileExtensionList = [
@@ -26,5 +27,11 @@ export class ReportUtilityService {
             .pipe(map(data => {
                 return data;
             }));
+    }
+    diffBetweenDate(fromDate: any, toDate: any) {
+        let vFromDate = new Date(fromDate);
+        let vToDate = new Date(toDate);
+        return Math.floor((Date.UTC(vToDate.getFullYear(), vToDate.getMonth(), vToDate.getDate()) - Date.UTC(vFromDate.getFullYear(), vFromDate.getMonth(), vFromDate.getDate())) / (1000 * 60 * 60 * 24));
+
     }
 }

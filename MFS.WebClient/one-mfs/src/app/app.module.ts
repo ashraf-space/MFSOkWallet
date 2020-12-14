@@ -213,6 +213,7 @@ import { RptEmsComponent } from './components/reports/report-collection/ems/rpt-
 import { NidPaymentCollectionComponent } from './components/transaction/nid-payment-collection/nid-payment-collection.component';
 import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
 import { KycCbsComponent } from './components/distribution/customer/kyc-cbs/kyc-cbs.component';
+import { NescoBillRptComponent } from './components/reports/report-collection/bill-collection/nesco-bill-rpt/nesco-bill-rpt.component';
 
 @NgModule({
     imports: [
@@ -423,7 +424,8 @@ import { KycCbsComponent } from './components/distribution/customer/kyc-cbs/kyc-
         RptEmsComponent,
         NidPaymentCollectionComponent,
         BillCollectionCommonComponent,
-        KycCbsComponent
+        KycCbsComponent,
+        NescoBillRptComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

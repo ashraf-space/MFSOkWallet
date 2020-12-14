@@ -7,15 +7,25 @@
 			<div class="p-grid">
 
 				<div class="p-col-6">
+					<br />
+					<span class="ui-float-label ">
+						<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="merchantUserModel.mobileNo" (change)="checkMphoneAlreadyExist()"
+									 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
+						<label for="float-input input-lg" class="col-form-label">OK AC No<span class="mandatory">*</span></label>
+					</span>
+					<p-message *ngIf="(merchantUserModel.mobileNo==null || merchantUserModel.mobileNo=='')" severity="error" text="Cannot be left blank"></p-message>
+
+				</div>
+				<!--<div class="p-col-6">
 					<label for="float-input input-lg" class=" col-form-label-dd">Merchant Mobile No<span class="mandatory">*</span></label>
-					<!--<p-inputMask type="text" mask="01999999999" [style]="{'width':'100%'}" [(ngModel)]="merchantUserModel.mphone" (change)="checkMerchantUserAlreadyExist()"
-								 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>-->
+					<p-inputMask type="text" mask="01999999999" [style]="{'width':'100%'}" [(ngModel)]="merchantUserModel.mphone" (change)="checkMerchantUserAlreadyExist()"
+					 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
 					<p-dropdown [options]="merchantList" [(ngModel)]="merchantUserModel.mobileNo" placeholder="Please Select"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 								(onChange)="checkMerchantUserAlreadyExist()"
 								id="float-input"></p-dropdown>
 					<p-message *ngIf="(merchantUserModel.mobileNo == null || merchantUserModel.mobileNo == '') && error" severity="error" text="Cannot be left blank"></p-message>
-				</div>
+				</div>-->
 
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">User Id<span class="mandatory">*</span></label>

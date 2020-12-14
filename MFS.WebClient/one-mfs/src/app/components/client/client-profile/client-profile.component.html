@@ -14,18 +14,18 @@
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode  || isHidefromCustomerCare || isKycExecutive" (click)="openModal('black')">Black Listed {{blackListed}} <i class="far fa-lightbulb"></i></button>
 		</div>
-		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
+		<!--<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode  || isHidefromCustomerCare || isKycExecutive" (click)="openModal('close')">Client {{closeStatus}} <i class="far fa-lightbulb"></i></button>
-		</div>
+		</div>-->
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('dormant')">{{dormantStatus}} Dormant <i class="far fa-lightbulb"></i></button>
 		</div>
-		<div class="btn-group edit-group" role="group" aria-label="Basic example">
+		<!--<div class="btn-group edit-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode || isKycExecutive" (click)="openModal('generate-request')">Request <i class="far fa-bell"></i></button>
-		</div>
-		<div class="btn-group edit-group" role="group" aria-label="Basic example">
+		</div>-->
+		<!--<div class="btn-group edit-group" role="group" aria-label="Basic example">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="true" (click)="openModal('lien')">Un-Lien <i class="fab fa-modx"></i></button>
-		</div>
+		</div>-->
 		<div class="btn-group edit-group" role="group" aria-label="Basic example" style="margin-left:1em;">
 			<button type="button" class="btn btn-blue btn-sm btn-reverse" [disabled]="isDetailMode" (click)="openModal('pin-reset')">Pin Reset <i class="fas fa-sync"></i></button>
 		</div>
@@ -367,7 +367,7 @@
 				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
 			</div>
 			<div class="p-col-9">
-				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+				<textarea rows="5" cols="100" maxlength="99" pInputTextarea [(ngModel)]="remarks"></textarea>
 			</div>
 			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
 		</div>
@@ -383,7 +383,7 @@
 				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
 			</div>
 			<div class="p-col-9">
-				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+				<textarea rows="5" cols="100" maxlength="99" pInputTextarea [(ngModel)]="remarks"></textarea>
 			</div>
 			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
 		</div>
@@ -415,7 +415,7 @@
 				<h5 style="text-align:center;color:cadetblue">Remarks:</h5>
 			</div>
 			<div class="p-col-9">
-				<textarea rows="5" cols="100" pInputTextarea [(ngModel)]="remarks"></textarea>
+				<textarea rows="5" cols="100" maxlength="99" pInputTextarea [(ngModel)]="remarks"></textarea>
 			</div>
 			<div class="p-col-12"><h6 style="text-align:center;color:cadetblue;font-size: 90%;">*Please State a reason for this action</h6></div>
 		</div>

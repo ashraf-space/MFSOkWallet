@@ -37,16 +37,7 @@ export class CompanyDisbursementLimitComponent implements OnInit {
 
     ngOnInit() {
         this.getDisburseCompanyList();
-        this.getDisburseTypeList();
-        //this.disburseTypeList = [
-        //    { label: 'Salary', value: 'SAL' },
-        //    { label: 'Remittance', value: 'REM' },
-        //    { label: 'Cash Back', value: 'CAB' },
-        //    { label: 'Customer Activation', value: 'CAT' },
-        //    { label: 'Reward', value: 'RWD' },
-        //    { label: 'Remittance Incentive', value: 'INC' },
-        //    { label: 'EFT Inward', value: 'EFT' }
-        //];
+        this.getDisburseTypeList();        
         this.getDisburseNameCodeList();
         this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
     }
