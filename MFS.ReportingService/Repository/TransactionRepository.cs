@@ -349,7 +349,7 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("dateType", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
                     dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
                     dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
-                    dyParam.Add("gateway", OracleDbType.Char, ParameterDirection.Input, character);
+                    dyParam.Add("V_gateway", OracleDbType.Char, ParameterDirection.Input, character);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     result = SqlMapper.Query<TransactionSummary>(connection, mainDbUser.DbUser + "RPT_TransactionSummary", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
@@ -380,7 +380,7 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("dateType", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
                     dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
                     dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
-                    dyParam.Add("gateway", OracleDbType.Char, ParameterDirection.Input, character);
+                    dyParam.Add("V_gateway", OracleDbType.Char, ParameterDirection.Input, character);
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     result = SqlMapper.Query<TransactionDetails>(connection, mainDbUser.DbUser + "RPT_TransactionDetails", param: dyParam, commandType: CommandType.StoredProcedure).ToList();

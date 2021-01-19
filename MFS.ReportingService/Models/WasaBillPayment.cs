@@ -21,6 +21,9 @@ namespace MFS.ReportingService.Models
 		public decimal NetServiceFee { get; set; }
 		public string BillNo { get; set; }
 		public string AccountNumber { get; set; }
-		public string Gateway { get; set; }				
+		public string Gateway { get; set; }
+		public string BranchCode { get; set; }
+		public string PaidBy { get; set; }
+		public string ExtraId { get; set; }
 	}
 }

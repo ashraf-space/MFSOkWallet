@@ -59,6 +59,10 @@ namespace MFS.DistributionService.Service
 						reginfoModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						if (reginfoModel == null)
 						{
+							if (string.IsNullOrEmpty(aReginfo.EntryBy))
+							{
+								return HttpStatusCode.Unauthorized;
+							}
 							_customerRepository.Add(aReginfo);
 							kycService.UpdatePinNo(aReginfo.Mphone, fourDigitRandomNo.ToString());
 							kycService.InsertModelToAuditTrail(aReginfo, aReginfo.EntryBy, 3, 3, "Customer", aReginfo.Mphone, "Save successfully");
@@ -104,6 +108,10 @@ namespace MFS.DistributionService.Service
 								Request = "Reject",
 								Status = "Y"
 							};
+							if (string.IsNullOrEmpty(aReginfo.UpdateBy))
+							{
+								return HttpStatusCode.Unauthorized;
+							}
 							customerRequestService.Add(customerRequest);
 							prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 							_customerRepository.UpdateRegInfo(aReginfo);
@@ -114,7 +122,11 @@ namespace MFS.DistributionService.Service
 						return HttpStatusCode.OK;
 					}
 					else if (evnt == "edit")
-					{
+					{						
+						if (string.IsNullOrEmpty(aReginfo.UpdateBy))
+						{
+							return HttpStatusCode.Unauthorized;
+						}
 						aReginfo.UpdateDate = System.DateTime.Now;
 						prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						_customerRepository.UpdateRegInfo(aReginfo);
@@ -132,6 +144,10 @@ namespace MFS.DistributionService.Service
 							aReginfo.RegStatus = "P";
 							aReginfo.AuthoDate = System.DateTime.Now;
 							//aReginfo.RegDate = kycService.GetRegDataByMphoneCatID(aReginfo.Mphone, "C");
+							if (string.IsNullOrEmpty(aReginfo.AuthoBy))
+							{
+								return HttpStatusCode.Unauthorized;
+							}
 							prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 							_customerRepository.UpdateRegInfo(aReginfo);
 							currentModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);

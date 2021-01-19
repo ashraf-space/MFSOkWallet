@@ -190,6 +190,19 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 		}
 		[HttpGet]
+		[Route("checkMerchantUserAlreadyExist")]
+		public object checkMerchantUserAlreadyExist(string username)
+		{
+			try
+			{
+				return _MerchantUserService.CheckMerchantUserAlreadyExist(username);
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+		[HttpGet]
 		[Route("GetRoutingNo")]
 		public object GetRoutingNo(string eftBankCode,string eftDistCode, string eftBranchCode)
 		{
@@ -344,7 +357,17 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				if (model.Id != 0)
 				{
-					return _MerchantUserService.Update(model);
+					if (string.IsNullOrEmpty(model.PlainPassword))
+					{
+						return _MerchantUserService.Update(model);
+					}
+					else
+					{
+						model = generateSecuredCredentials(model);
+					    _MerchantUserService.Update(model);
+						return HttpStatusCode.OK;
+					}
+					
 				}
 				else
 				{
@@ -354,19 +377,27 @@ namespace OneMFS.DistributionApiServer.Controllers
 					model = generateSecuredCredentials(model);
 					model = _MerchantUserService.Add(model);
 
-					string messagePrefix = ", Your Account Has been Created on OK Wallet Admin Application. Your username is " + model.MobileNo + " and password is " + model.PlainPassword;
-
-					MessageModel messageModel = new MessageModel()
+					if (!string.IsNullOrEmpty(model.MobileNo))
 					{
-						Mphone = model.MobileNo,
-						MessageId = "999",
-						MessageBody = "Dear " + model.Name + messagePrefix + ". Thank you."
-					};
+						string messagePrefix = ", Your Account Has been Created on OK Wallet Admin Application. Your username is " + model.MobileNo + " and password is " + model.PlainPassword;
 
-					MessageService messageService = new MessageService();
-					messageService.SendMessage(messageModel);
+						MessageModel messageModel = new MessageModel()
+						{
+							Mphone = model.MobileNo,
+							MessageId = "999",
+							MessageBody = "Dear " + model.Name + messagePrefix + ". Thank you."
+						};
 
-					return HttpStatusCode.OK;
+						MessageService messageService = new MessageService();
+						messageService.SendMessage(messageModel);
+
+						return HttpStatusCode.OK;
+					}
+					else
+					{
+						return HttpStatusCode.OK;
+					}
+					
 				}
 
 			}
@@ -414,6 +445,20 @@ namespace OneMFS.DistributionApiServer.Controllers
 		public object CheckSnameExist(string orgCode)
 		{
 			return _MerchantService.CheckSnameExist(orgCode);
+		}
+		[ApiGuardAuth]
+		[HttpGet]
+		[Route("GetMerChantUserById")]
+		public object GetMerChantUserById(int id)
+		{
+			try
+			{
+				return _MerchantUserService.SingleOrDefault(id, new MerchantUser());
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
 		}
 	}
 }

@@ -26,7 +26,8 @@ namespace OneMFS.ReportingApiServer.IOMapper
 			kernel.Bind<IChainMerchantService>().To<ChainMerchantService>();
 			kernel.Bind<IAuditTrailService>().To<AuditTrailService>();
 			kernel.Bind<IDistributorPortalService>().To<DistributorPortalService>();
-			kernel.Bind<IEmsService>().To<EmsService>();			
+			kernel.Bind<IEmsService>().To<EmsService>();
+			kernel.Bind<ILankaBanglaService>().To<LankaBanglaService>();
 		}
 	}
 }

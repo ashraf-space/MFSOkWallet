@@ -1329,6 +1329,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnLogicalDate;
             
+            private global::System.Data.DataColumn columnFromCategory;
+            
+            private global::System.Data.DataColumn columnToCategory;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public AccountStatementDataTable() {
@@ -1468,6 +1472,22 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn FromCategoryColumn {
+                get {
+                    return this.columnFromCategory;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ToCategoryColumn {
+                get {
+                    return this.columnToCategory;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1503,7 +1523,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public AccountStatementRow AddAccountStatementRow(System.DateTime TransDate, string Description, string TransNo, string Gateway, string TransFrom, string TransTo, System.DateTime ValueDate, double DebitAmt, double CreditAmt, double Balance, string TansactionWith, string PresentAddress, System.DateTime LogicalDate) {
+            public AccountStatementRow AddAccountStatementRow(System.DateTime TransDate, string Description, string TransNo, string Gateway, string TransFrom, string TransTo, System.DateTime ValueDate, double DebitAmt, double CreditAmt, double Balance, string TansactionWith, string PresentAddress, System.DateTime LogicalDate, string FromCategory, string ToCategory) {
                 AccountStatementRow rowAccountStatementRow = ((AccountStatementRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransDate,
@@ -1518,7 +1538,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         Balance,
                         TansactionWith,
                         PresentAddress,
-                        LogicalDate};
+                        LogicalDate,
+                        FromCategory,
+                        ToCategory};
                 rowAccountStatementRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowAccountStatementRow);
                 return rowAccountStatementRow;
@@ -1554,6 +1576,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnTansactionWith = base.Columns["TansactionWith"];
                 this.columnPresentAddress = base.Columns["PresentAddress"];
                 this.columnLogicalDate = base.Columns["LogicalDate"];
+                this.columnFromCategory = base.Columns["FromCategory"];
+                this.columnToCategory = base.Columns["ToCategory"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1585,6 +1609,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnPresentAddress);
                 this.columnLogicalDate = new global::System.Data.DataColumn("LogicalDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLogicalDate);
+                this.columnFromCategory = new global::System.Data.DataColumn("FromCategory", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFromCategory);
+                this.columnToCategory = new global::System.Data.DataColumn("ToCategory", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnToCategory);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3916,6 +3944,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnMnoBl;
             
+            private global::System.Data.DataColumn columnParticular;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public TransactionSummaryDataTable() {
@@ -4071,6 +4101,14 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ParticularColumn {
+                get {
+                    return this.columnParticular;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4106,7 +4144,23 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public TransactionSummaryRow AddTransactionSummaryRow(string OkService, string Gateway, int TotalCount, double TotalAmount, double TotalFees, double TotalVat, double TotalNetFees, double ITCLCommission, double Distributors, double Agent, double MnoGp, double MnoRobi, double MnoAirtel, double OBLRevenue, double MnoBl) {
+            public TransactionSummaryRow AddTransactionSummaryRow(
+                        string OkService, 
+                        string Gateway, 
+                        int TotalCount, 
+                        double TotalAmount, 
+                        double TotalFees, 
+                        double TotalVat, 
+                        double TotalNetFees, 
+                        double ITCLCommission, 
+                        double Distributors, 
+                        double Agent, 
+                        double MnoGp, 
+                        double MnoRobi, 
+                        double MnoAirtel, 
+                        double OBLRevenue, 
+                        double MnoBl, 
+                        string Particular) {
                 TransactionSummaryRow rowTransactionSummaryRow = ((TransactionSummaryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OkService,
@@ -4123,7 +4177,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         MnoRobi,
                         MnoAirtel,
                         OBLRevenue,
-                        MnoBl};
+                        MnoBl,
+                        Particular};
                 rowTransactionSummaryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowTransactionSummaryRow);
                 return rowTransactionSummaryRow;
@@ -4161,6 +4216,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnMnoAirtel = base.Columns["MnoAirtel"];
                 this.columnOBLRevenue = base.Columns["OBLRevenue"];
                 this.columnMnoBl = base.Columns["MnoBl"];
+                this.columnParticular = base.Columns["Particular"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4196,6 +4252,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnOBLRevenue);
                 this.columnMnoBl = new global::System.Data.DataColumn("MnoBl", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMnoBl);
+                this.columnParticular = new global::System.Data.DataColumn("Particular", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnParticular);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4608,18 +4666,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         System.DateTime TransactionDate, 
                         string TransactionId, 
                         int TotalCount, 
-                        string TotalAmount, 
-                        string TotalFees, 
-                        string TotalVat, 
-                        string TotalNetFees, 
-                        string ITCLCommission, 
-                        string Distributors, 
-                        string Agent, 
-                        string MnoGp, 
-                        string MnoRobi, 
-                        string MnoAirtel, 
-                        string OBLRevenue, 
-                        string MnoBl) {
+                        double TotalAmount, 
+                        double TotalFees, 
+                        double TotalVat, 
+                        double TotalNetFees, 
+                        double ITCLCommission, 
+                        double Distributors, 
+                        double Agent, 
+                        double MnoGp, 
+                        double MnoRobi, 
+                        double MnoAirtel, 
+                        double OBLRevenue, 
+                        double MnoBl) {
                 TransactionDetailsRow rowTransactionDetailsRow = ((TransactionDetailsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         OkService,
@@ -4705,29 +4763,29 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnTransactionId);
                 this.columnTotalCount = new global::System.Data.DataColumn("TotalCount", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalCount);
-                this.columnTotalAmount = new global::System.Data.DataColumn("TotalAmount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalAmount = new global::System.Data.DataColumn("TotalAmount", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalAmount);
-                this.columnTotalFees = new global::System.Data.DataColumn("TotalFees", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalFees = new global::System.Data.DataColumn("TotalFees", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalFees);
-                this.columnTotalVat = new global::System.Data.DataColumn("TotalVat", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalVat = new global::System.Data.DataColumn("TotalVat", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalVat);
-                this.columnTotalNetFees = new global::System.Data.DataColumn("TotalNetFees", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalNetFees = new global::System.Data.DataColumn("TotalNetFees", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalNetFees);
-                this.columnITCLCommission = new global::System.Data.DataColumn("ITCLCommission", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnITCLCommission = new global::System.Data.DataColumn("ITCLCommission", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnITCLCommission);
-                this.columnDistributors = new global::System.Data.DataColumn("Distributors", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnDistributors = new global::System.Data.DataColumn("Distributors", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDistributors);
-                this.columnAgent = new global::System.Data.DataColumn("Agent", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnAgent = new global::System.Data.DataColumn("Agent", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAgent);
-                this.columnMnoGp = new global::System.Data.DataColumn("MnoGp", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnMnoGp = new global::System.Data.DataColumn("MnoGp", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMnoGp);
-                this.columnMnoRobi = new global::System.Data.DataColumn("MnoRobi", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnMnoRobi = new global::System.Data.DataColumn("MnoRobi", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMnoRobi);
-                this.columnMnoAirtel = new global::System.Data.DataColumn("MnoAirtel", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnMnoAirtel = new global::System.Data.DataColumn("MnoAirtel", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMnoAirtel);
-                this.columnOBLRevenue = new global::System.Data.DataColumn("OBLRevenue", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnOBLRevenue = new global::System.Data.DataColumn("OBLRevenue", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOBLRevenue);
-                this.columnMnoBl = new global::System.Data.DataColumn("MnoBl", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnMnoBl = new global::System.Data.DataColumn("MnoBl", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMnoBl);
             }
             
@@ -4888,6 +4946,28 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnVatOnCharge;
             
+            private global::System.Data.DataColumn columnPaidBy;
+            
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnCustomerNo;
+            
+            private global::System.Data.DataColumn columnMeterNo;
+            
+            private global::System.Data.DataColumn columnEnergyCost;
+            
+            private global::System.Data.DataColumn columnPenalty;
+            
+            private global::System.Data.DataColumn columnSequences;
+            
+            private global::System.Data.DataColumn columnTotalFee;
+            
+            private global::System.Data.DataColumn columnOrderId;
+            
+            private global::System.Data.DataColumn columnAmount;
+            
+            private global::System.Data.DataColumn columnExtraId;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public BillCollectionDataTable() {
@@ -5027,6 +5107,94 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PaidByColumn {
+                get {
+                    return this.columnPaidBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CustomerNoColumn {
+                get {
+                    return this.columnCustomerNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MeterNoColumn {
+                get {
+                    return this.columnMeterNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn EnergyCostColumn {
+                get {
+                    return this.columnEnergyCost;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PenaltyColumn {
+                get {
+                    return this.columnPenalty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SequencesColumn {
+                get {
+                    return this.columnSequences;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TotalFeeColumn {
+                get {
+                    return this.columnTotalFee;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OrderIdColumn {
+                get {
+                    return this.columnOrderId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AmountColumn {
+                get {
+                    return this.columnAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ExtraIdColumn {
+                get {
+                    return this.columnExtraId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5062,7 +5230,31 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public BillCollectionRow AddBillCollectionRow(string TransDate, string TransNo, string TransFrom, string FromCatId, string TotalPayAmount, string VatAmt, string SchargeAmt, string NetServiceFee, string BillNo, string AccountNumber, string Gateway, string RevenueStampAmount, string VatOnCharge) {
+            public BillCollectionRow AddBillCollectionRow(
+                        string TransDate, 
+                        string TransNo, 
+                        string TransFrom, 
+                        string FromCatId, 
+                        double TotalPayAmount, 
+                        double VatAmt, 
+                        double SchargeAmt, 
+                        double NetServiceFee, 
+                        string BillNo, 
+                        string AccountNumber, 
+                        string Gateway, 
+                        double RevenueStampAmount, 
+                        double VatOnCharge, 
+                        string PaidBy, 
+                        string BranchCode, 
+                        string CustomerNo, 
+                        string MeterNo, 
+                        decimal EnergyCost, 
+                        decimal Penalty, 
+                        string Sequences, 
+                        decimal TotalFee, 
+                        string OrderId, 
+                        decimal Amount, 
+                        string ExtraId) {
                 BillCollectionRow rowBillCollectionRow = ((BillCollectionRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransDate,
@@ -5077,7 +5269,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         AccountNumber,
                         Gateway,
                         RevenueStampAmount,
-                        VatOnCharge};
+                        VatOnCharge,
+                        PaidBy,
+                        BranchCode,
+                        CustomerNo,
+                        MeterNo,
+                        EnergyCost,
+                        Penalty,
+                        Sequences,
+                        TotalFee,
+                        OrderId,
+                        Amount,
+                        ExtraId};
                 rowBillCollectionRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowBillCollectionRow);
                 return rowBillCollectionRow;
@@ -5113,6 +5316,17 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnGateway = base.Columns["Gateway"];
                 this.columnRevenueStampAmount = base.Columns["RevenueStampAmount"];
                 this.columnVatOnCharge = base.Columns["VatOnCharge"];
+                this.columnPaidBy = base.Columns["PaidBy"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnCustomerNo = base.Columns["CustomerNo"];
+                this.columnMeterNo = base.Columns["MeterNo"];
+                this.columnEnergyCost = base.Columns["EnergyCost"];
+                this.columnPenalty = base.Columns["Penalty"];
+                this.columnSequences = base.Columns["Sequences"];
+                this.columnTotalFee = base.Columns["TotalFee"];
+                this.columnOrderId = base.Columns["OrderId"];
+                this.columnAmount = base.Columns["Amount"];
+                this.columnExtraId = base.Columns["ExtraId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5126,13 +5340,13 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnTransFrom);
                 this.columnFromCatId = new global::System.Data.DataColumn("FromCatId", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnFromCatId);
-                this.columnTotalPayAmount = new global::System.Data.DataColumn("TotalPayAmount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnTotalPayAmount = new global::System.Data.DataColumn("TotalPayAmount", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnTotalPayAmount);
-                this.columnVatAmt = new global::System.Data.DataColumn("VatAmt", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnVatAmt = new global::System.Data.DataColumn("VatAmt", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVatAmt);
-                this.columnSchargeAmt = new global::System.Data.DataColumn("SchargeAmt", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnSchargeAmt = new global::System.Data.DataColumn("SchargeAmt", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSchargeAmt);
-                this.columnNetServiceFee = new global::System.Data.DataColumn("NetServiceFee", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnNetServiceFee = new global::System.Data.DataColumn("NetServiceFee", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNetServiceFee);
                 this.columnBillNo = new global::System.Data.DataColumn("BillNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBillNo);
@@ -5140,10 +5354,32 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnAccountNumber);
                 this.columnGateway = new global::System.Data.DataColumn("Gateway", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGateway);
-                this.columnRevenueStampAmount = new global::System.Data.DataColumn("RevenueStampAmount", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnRevenueStampAmount = new global::System.Data.DataColumn("RevenueStampAmount", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRevenueStampAmount);
-                this.columnVatOnCharge = new global::System.Data.DataColumn("VatOnCharge", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnVatOnCharge = new global::System.Data.DataColumn("VatOnCharge", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVatOnCharge);
+                this.columnPaidBy = new global::System.Data.DataColumn("PaidBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPaidBy);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnCustomerNo = new global::System.Data.DataColumn("CustomerNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCustomerNo);
+                this.columnMeterNo = new global::System.Data.DataColumn("MeterNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMeterNo);
+                this.columnEnergyCost = new global::System.Data.DataColumn("EnergyCost", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEnergyCost);
+                this.columnPenalty = new global::System.Data.DataColumn("Penalty", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPenalty);
+                this.columnSequences = new global::System.Data.DataColumn("Sequences", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSequences);
+                this.columnTotalFee = new global::System.Data.DataColumn("TotalFee", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTotalFee);
+                this.columnOrderId = new global::System.Data.DataColumn("OrderId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrderId);
+                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmount);
+                this.columnExtraId = new global::System.Data.DataColumn("ExtraId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExtraId);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5682,6 +5918,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnAvailableBalance;
             
+            private global::System.Data.DataColumn columnBillNo;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public MerchantTransferDataTable() {
@@ -5789,6 +6027,14 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BillNoColumn {
+                get {
+                    return this.columnBillNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5824,7 +6070,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public MerchantTransferRow AddMerchantTransferRow(System.DateTime TransactionDate, string TransactionTime, string MerchantName, string MerchantCode, string TransactionId, double TransAmt, string TransFrom, string BalanceType, double AvailableBalance) {
+            public MerchantTransferRow AddMerchantTransferRow(System.DateTime TransactionDate, string TransactionTime, string MerchantName, string MerchantCode, string TransactionId, double TransAmt, string TransFrom, string BalanceType, double AvailableBalance, string BillNo) {
                 MerchantTransferRow rowMerchantTransferRow = ((MerchantTransferRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransactionDate,
@@ -5835,7 +6081,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         TransAmt,
                         TransFrom,
                         BalanceType,
-                        AvailableBalance};
+                        AvailableBalance,
+                        BillNo};
                 rowMerchantTransferRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowMerchantTransferRow);
                 return rowMerchantTransferRow;
@@ -5867,6 +6114,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnTransFrom = base.Columns["TransFrom"];
                 this.columnBalanceType = base.Columns["BalanceType"];
                 this.columnAvailableBalance = base.Columns["AvailableBalance"];
+                this.columnBillNo = base.Columns["BillNo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5890,6 +6138,8 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnBalanceType);
                 this.columnAvailableBalance = new global::System.Data.DataColumn("AvailableBalance", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAvailableBalance);
+                this.columnBillNo = new global::System.Data.DataColumn("BillNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBillNo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7048,6 +7298,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnName;
             
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnPaidBy;
+            
+            private global::System.Data.DataColumn columnExtraId;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public CreditCardReportDataTable() {
@@ -7155,6 +7411,30 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PaidByColumn {
+                get {
+                    return this.columnPaidBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ExtraIdColumn {
+                get {
+                    return this.columnExtraId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -7190,7 +7470,7 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public CreditCardReportRow AddCreditCardReportRow(string TransDate, string TransNo, string TransFrom, string TransTo, string PayAmount, string Particular, string BillNo, string Gateway, string Name) {
+            public CreditCardReportRow AddCreditCardReportRow(string TransDate, string TransNo, string TransFrom, string TransTo, string PayAmount, string Particular, string BillNo, string Gateway, string Name, string BranchCode, string PaidBy, string ExtraId) {
                 CreditCardReportRow rowCreditCardReportRow = ((CreditCardReportRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TransDate,
@@ -7201,7 +7481,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         Particular,
                         BillNo,
                         Gateway,
-                        Name};
+                        Name,
+                        BranchCode,
+                        PaidBy,
+                        ExtraId};
                 rowCreditCardReportRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCreditCardReportRow);
                 return rowCreditCardReportRow;
@@ -7233,6 +7516,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnBillNo = base.Columns["BillNo"];
                 this.columnGateway = base.Columns["Gateway"];
                 this.columnName = base.Columns["Name"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnPaidBy = base.Columns["PaidBy"];
+                this.columnExtraId = base.Columns["ExtraId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7256,6 +7542,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnGateway);
                 this.columnName = new global::System.Data.DataColumn("Name", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnName);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnPaidBy = new global::System.Data.DataColumn("PaidBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPaidBy);
+                this.columnExtraId = new global::System.Data.DataColumn("ExtraId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExtraId);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7397,6 +7689,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnAmount;
             
+            private global::System.Data.DataColumn columnBranchCode;
+            
+            private global::System.Data.DataColumn columnPaidBy;
+            
+            private global::System.Data.DataColumn columnExtraId;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public CreditCardBeftnReportDataTable() {
@@ -7464,6 +7762,30 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BranchCodeColumn {
+                get {
+                    return this.columnBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PaidByColumn {
+                get {
+                    return this.columnPaidBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ExtraIdColumn {
+                get {
+                    return this.columnExtraId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -7499,13 +7821,16 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public CreditCardBeftnReportRow AddCreditCardBeftnReportRow(string Name, string CardNo, string RoutingNo, string Amount) {
+            public CreditCardBeftnReportRow AddCreditCardBeftnReportRow(string Name, string CardNo, string RoutingNo, string Amount, string BranchCode, string PaidBy, string ExtraId) {
                 CreditCardBeftnReportRow rowCreditCardBeftnReportRow = ((CreditCardBeftnReportRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         Name,
                         CardNo,
                         RoutingNo,
-                        Amount};
+                        Amount,
+                        BranchCode,
+                        PaidBy,
+                        ExtraId};
                 rowCreditCardBeftnReportRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCreditCardBeftnReportRow);
                 return rowCreditCardBeftnReportRow;
@@ -7532,6 +7857,9 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnCardNo = base.Columns["CardNo"];
                 this.columnRoutingNo = base.Columns["RoutingNo"];
                 this.columnAmount = base.Columns["Amount"];
+                this.columnBranchCode = base.Columns["BranchCode"];
+                this.columnPaidBy = base.Columns["PaidBy"];
+                this.columnExtraId = base.Columns["ExtraId"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -7545,6 +7873,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnRoutingNo);
                 this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAmount);
+                this.columnBranchCode = new global::System.Data.DataColumn("BranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBranchCode);
+                this.columnPaidBy = new global::System.Data.DataColumn("PaidBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPaidBy);
+                this.columnExtraId = new global::System.Data.DataColumn("ExtraId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExtraId);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -9388,6 +9722,38 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string FromCategory {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.FromCategoryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FromCategory\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.FromCategoryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ToCategory {
+                get {
+                    try {
+                        return ((string)(this[this.tableAccountStatement.ToCategoryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ToCategory\' in table \'AccountStatement\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableAccountStatement.ToCategoryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsTransDateNull() {
                 return this.IsNull(this.tableAccountStatement.TransDateColumn);
             }
@@ -9540,6 +9906,30 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetLogicalDateNull() {
                 this[this.tableAccountStatement.LogicalDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsFromCategoryNull() {
+                return this.IsNull(this.tableAccountStatement.FromCategoryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetFromCategoryNull() {
+                this[this.tableAccountStatement.FromCategoryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsToCategoryNull() {
+                return this.IsNull(this.tableAccountStatement.ToCategoryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetToCategoryNull() {
+                this[this.tableAccountStatement.ToCategoryColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -11431,6 +11821,22 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string Particular {
+                get {
+                    try {
+                        return ((string)(this[this.tableTransactionSummary.ParticularColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Particular\' in table \'TransactionSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableTransactionSummary.ParticularColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsOkServiceNull() {
                 return this.IsNull(this.tableTransactionSummary.OkServiceColumn);
             }
@@ -11608,6 +12014,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             public void SetMnoBlNull() {
                 this[this.tableTransactionSummary.MnoBlColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsParticularNull() {
+                return this.IsNull(this.tableTransactionSummary.ParticularColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetParticularNull() {
+                this[this.tableTransactionSummary.ParticularColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -11754,10 +12172,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string TotalAmount {
+            public double TotalAmount {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.TotalAmountColumn]));
+                        return ((double)(this[this.tableTransactionDetails.TotalAmountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalAmount\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11770,10 +12188,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string TotalFees {
+            public double TotalFees {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.TotalFeesColumn]));
+                        return ((double)(this[this.tableTransactionDetails.TotalFeesColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalFees\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11786,10 +12204,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string TotalVat {
+            public double TotalVat {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.TotalVatColumn]));
+                        return ((double)(this[this.tableTransactionDetails.TotalVatColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalVat\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11802,10 +12220,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string TotalNetFees {
+            public double TotalNetFees {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.TotalNetFeesColumn]));
+                        return ((double)(this[this.tableTransactionDetails.TotalNetFeesColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalNetFees\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11818,10 +12236,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string ITCLCommission {
+            public double ITCLCommission {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.ITCLCommissionColumn]));
+                        return ((double)(this[this.tableTransactionDetails.ITCLCommissionColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'ITCLCommission\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11834,10 +12252,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string Distributors {
+            public double Distributors {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.DistributorsColumn]));
+                        return ((double)(this[this.tableTransactionDetails.DistributorsColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Distributors\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11850,10 +12268,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string Agent {
+            public double Agent {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.AgentColumn]));
+                        return ((double)(this[this.tableTransactionDetails.AgentColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Agent\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11866,10 +12284,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string MnoGp {
+            public double MnoGp {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.MnoGpColumn]));
+                        return ((double)(this[this.tableTransactionDetails.MnoGpColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'MnoGp\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11882,10 +12300,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string MnoRobi {
+            public double MnoRobi {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.MnoRobiColumn]));
+                        return ((double)(this[this.tableTransactionDetails.MnoRobiColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'MnoRobi\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11898,10 +12316,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string MnoAirtel {
+            public double MnoAirtel {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.MnoAirtelColumn]));
+                        return ((double)(this[this.tableTransactionDetails.MnoAirtelColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'MnoAirtel\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11914,10 +12332,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string OBLRevenue {
+            public double OBLRevenue {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.OBLRevenueColumn]));
+                        return ((double)(this[this.tableTransactionDetails.OBLRevenueColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'OBLRevenue\' in table \'TransactionDetails\' is DBNull.", e);
@@ -11930,10 +12348,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string MnoBl {
+            public double MnoBl {
                 get {
                     try {
-                        return ((string)(this[this.tableTransactionDetails.MnoBlColumn]));
+                        return ((double)(this[this.tableTransactionDetails.MnoBlColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'MnoBl\' in table \'TransactionDetails\' is DBNull.", e);
@@ -12265,10 +12683,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string TotalPayAmount {
+            public double TotalPayAmount {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.TotalPayAmountColumn]));
+                        return ((double)(this[this.tableBillCollection.TotalPayAmountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'TotalPayAmount\' in table \'BillCollection\' is DBNull.", e);
@@ -12281,10 +12699,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string VatAmt {
+            public double VatAmt {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.VatAmtColumn]));
+                        return ((double)(this[this.tableBillCollection.VatAmtColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'VatAmt\' in table \'BillCollection\' is DBNull.", e);
@@ -12297,10 +12715,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string SchargeAmt {
+            public double SchargeAmt {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.SchargeAmtColumn]));
+                        return ((double)(this[this.tableBillCollection.SchargeAmtColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'SchargeAmt\' in table \'BillCollection\' is DBNull.", e);
@@ -12313,10 +12731,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string NetServiceFee {
+            public double NetServiceFee {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.NetServiceFeeColumn]));
+                        return ((double)(this[this.tableBillCollection.NetServiceFeeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'NetServiceFee\' in table \'BillCollection\' is DBNull.", e);
@@ -12377,10 +12795,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string RevenueStampAmount {
+            public double RevenueStampAmount {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.RevenueStampAmountColumn]));
+                        return ((double)(this[this.tableBillCollection.RevenueStampAmountColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'RevenueStampAmount\' in table \'BillCollection\' is DBNull.", e);
@@ -12393,10 +12811,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
-            public string VatOnCharge {
+            public double VatOnCharge {
                 get {
                     try {
-                        return ((string)(this[this.tableBillCollection.VatOnChargeColumn]));
+                        return ((double)(this[this.tableBillCollection.VatOnChargeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'VatOnCharge\' in table \'BillCollection\' is DBNull.", e);
@@ -12404,6 +12822,182 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 }
                 set {
                     this[this.tableBillCollection.VatOnChargeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PaidBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.PaidByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PaidBy\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.PaidByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CustomerNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.CustomerNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CustomerNo\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.CustomerNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MeterNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.MeterNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MeterNo\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.MeterNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal EnergyCost {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBillCollection.EnergyCostColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EnergyCost\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.EnergyCostColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal Penalty {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBillCollection.PenaltyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Penalty\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.PenaltyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string Sequences {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.SequencesColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Sequences\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.SequencesColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal TotalFee {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBillCollection.TotalFeeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TotalFee\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.TotalFeeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OrderId {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.OrderIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OrderId\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.OrderIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal Amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableBillCollection.AmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.AmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ExtraId {
+                get {
+                    try {
+                        return ((string)(this[this.tableBillCollection.ExtraIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExtraId\' in table \'BillCollection\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableBillCollection.ExtraIdColumn] = value;
                 }
             }
             
@@ -12561,6 +13155,138 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetVatOnChargeNull() {
                 this[this.tableBillCollection.VatOnChargeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPaidByNull() {
+                return this.IsNull(this.tableBillCollection.PaidByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPaidByNull() {
+                this[this.tableBillCollection.PaidByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableBillCollection.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableBillCollection.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCustomerNoNull() {
+                return this.IsNull(this.tableBillCollection.CustomerNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCustomerNoNull() {
+                this[this.tableBillCollection.CustomerNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMeterNoNull() {
+                return this.IsNull(this.tableBillCollection.MeterNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMeterNoNull() {
+                this[this.tableBillCollection.MeterNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsEnergyCostNull() {
+                return this.IsNull(this.tableBillCollection.EnergyCostColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetEnergyCostNull() {
+                this[this.tableBillCollection.EnergyCostColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPenaltyNull() {
+                return this.IsNull(this.tableBillCollection.PenaltyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPenaltyNull() {
+                this[this.tableBillCollection.PenaltyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSequencesNull() {
+                return this.IsNull(this.tableBillCollection.SequencesColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSequencesNull() {
+                this[this.tableBillCollection.SequencesColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTotalFeeNull() {
+                return this.IsNull(this.tableBillCollection.TotalFeeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTotalFeeNull() {
+                this[this.tableBillCollection.TotalFeeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOrderIdNull() {
+                return this.IsNull(this.tableBillCollection.OrderIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOrderIdNull() {
+                this[this.tableBillCollection.OrderIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAmountNull() {
+                return this.IsNull(this.tableBillCollection.AmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAmountNull() {
+                this[this.tableBillCollection.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsExtraIdNull() {
+                return this.IsNull(this.tableBillCollection.ExtraIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetExtraIdNull() {
+                this[this.tableBillCollection.ExtraIdColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -13047,6 +13773,22 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BillNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantTransfer.BillNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BillNo\' in table \'MerchantTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantTransfer.BillNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsTransactionDateNull() {
                 return this.IsNull(this.tableMerchantTransfer.TransactionDateColumn);
             }
@@ -13151,6 +13893,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetAvailableBalanceNull() {
                 this[this.tableMerchantTransfer.AvailableBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBillNoNull() {
+                return this.IsNull(this.tableMerchantTransfer.BillNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBillNoNull() {
+                this[this.tableMerchantTransfer.BillNoColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -13986,6 +14740,54 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardReport.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'CreditCardReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardReport.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PaidBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardReport.PaidByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PaidBy\' in table \'CreditCardReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardReport.PaidByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ExtraId {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardReport.ExtraIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExtraId\' in table \'CreditCardReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardReport.ExtraIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsTransDateNull() {
                 return this.IsNull(this.tableCreditCardReport.TransDateColumn);
             }
@@ -14091,6 +14893,42 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             public void SetNameNull() {
                 this[this.tableCreditCardReport.NameColumn] = global::System.Convert.DBNull;
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableCreditCardReport.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableCreditCardReport.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPaidByNull() {
+                return this.IsNull(this.tableCreditCardReport.PaidByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPaidByNull() {
+                this[this.tableCreditCardReport.PaidByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsExtraIdNull() {
+                return this.IsNull(this.tableCreditCardReport.ExtraIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetExtraIdNull() {
+                this[this.tableCreditCardReport.ExtraIdColumn] = global::System.Convert.DBNull;
+            }
         }
         
         /// <summary>
@@ -14173,6 +15011,54 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardBeftnReport.BranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BranchCode\' in table \'CreditCardBeftnReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardBeftnReport.BranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PaidBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardBeftnReport.PaidByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PaidBy\' in table \'CreditCardBeftnReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardBeftnReport.PaidByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ExtraId {
+                get {
+                    try {
+                        return ((string)(this[this.tableCreditCardBeftnReport.ExtraIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExtraId\' in table \'CreditCardBeftnReport\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCreditCardBeftnReport.ExtraIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsNameNull() {
                 return this.IsNull(this.tableCreditCardBeftnReport.NameColumn);
             }
@@ -14217,6 +15103,42 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetAmountNull() {
                 this[this.tableCreditCardBeftnReport.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBranchCodeNull() {
+                return this.IsNull(this.tableCreditCardBeftnReport.BranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBranchCodeNull() {
+                this[this.tableCreditCardBeftnReport.BranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPaidByNull() {
+                return this.IsNull(this.tableCreditCardBeftnReport.PaidByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPaidByNull() {
+                this[this.tableCreditCardBeftnReport.PaidByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsExtraIdNull() {
+                return this.IsNull(this.tableCreditCardBeftnReport.ExtraIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetExtraIdNull() {
+                this[this.tableCreditCardBeftnReport.ExtraIdColumn] = global::System.Convert.DBNull;
             }
         }
         

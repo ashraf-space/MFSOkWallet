@@ -16,7 +16,7 @@ export class TransactionComponent implements OnInit {
     dateTypeDDL: any;
     gatewayDDL: any;
     tansactionTypeDDL: any;
-    isDisableService: boolean = true;
+    //isDisableService: boolean = true;
     constructor(private transactionReportService: TransactionReportService, private mfsUtilityService: MfsUtilityService) {
         this.model = {};
     }
@@ -27,6 +27,7 @@ export class TransactionComponent implements OnInit {
             { label: 'Transaction Date', value: 'Transaction Date' }
         ];
         this.gatewayDDL = [
+            { label: 'All', value: 'L' },
             { label: 'APPS', value: 'A' },
             { label: 'USSD', value: 'U' },
             { label: 'COMMON', value: 'C' }
@@ -47,6 +48,9 @@ export class TransactionComponent implements OnInit {
                 data => {
                     this.isLoading = false;
                     this.okServicesList = data;
+                    if (data) {
+                        this.okServicesList.unshift({ label: 'All', value: 'All' });
+                    }
                 },
                 error => {
                     console.log(error);
@@ -54,15 +58,15 @@ export class TransactionComponent implements OnInit {
             );
     }
 
-    enableDisableService() {
-        if (this.model.tansactionType == "Transaction Summary") {
-            this.isDisableService = true;
-            this.model.okServices = null;
-        }
-        else {
-            this.isDisableService = false;
-        }
-    }
+    //enableDisableService() {
+    //    if (this.model.tansactionType == "Transaction Summary") {
+    //        this.isDisableService = true;
+    //        this.model.okServices = null;
+    //    }
+    //    else {
+    //        this.isDisableService = false;
+    //    }
+    //}
 
     getReportParam() {
         if (this.validate()) {
@@ -91,8 +95,8 @@ export class TransactionComponent implements OnInit {
     validate(): any {
         if (this.model.tansactionType == "Transaction Summary") {
             if (!this.model.fromDate || !this.model.toDate
-                || !this.model.tansactionType || this.model.tansactionType == '0'               
-                || !this.model.dateType || this.model.dateType == '0'               
+                || !this.model.tansactionType || this.model.tansactionType == '0'
+                || !this.model.dateType || this.model.dateType == '0'
                 || !this.model.gateway || this.model.gateway == '0') {
                 return false;
             }
@@ -104,7 +108,7 @@ export class TransactionComponent implements OnInit {
             if (!this.model.fromDate || !this.model.toDate
                 || !this.model.tansactionType || this.model.tansactionType == '0'
                 || !this.model.okServices || this.model.okServices == '0'
-                || !this.model.dateType || this.model.dateType == '0'               
+                || !this.model.dateType || this.model.dateType == '0'
                 || !this.model.gateway || this.model.gateway == '0') {
                 return false;
             }

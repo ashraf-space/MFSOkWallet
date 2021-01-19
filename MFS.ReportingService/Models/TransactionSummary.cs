@@ -9,6 +9,7 @@ namespace MFS.ReportingService.Models
     public class TransactionSummary
     {
         public string OkService { get; set; }
+        public string Particular { get; set; }
         public string Gateway { get; set; }
         public int TotalCount { get; set; }
         public double TotalAmount { get; set; }

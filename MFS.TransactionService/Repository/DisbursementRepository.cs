@@ -203,7 +203,7 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("V_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, "C");
                     parameter.Add("V_COMPANYID", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.CompanyId);
                     parameter.Add("V_CHECKEDUSER", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.entry_user);
-                    parameter.Add("V_DISBURSETYPE", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.enterprize_AccCode);
+                    parameter.Add("V_DISBURSETYPE", OracleDbType.Varchar2, ParameterDirection.Input, objTblDisburseCompanyInfo.disburse_type);
 
                     SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_Disburse_Amount_Refunding", param: parameter, commandType: CommandType.StoredProcedure);
                     connection.Close();

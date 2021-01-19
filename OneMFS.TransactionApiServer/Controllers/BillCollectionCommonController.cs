@@ -64,7 +64,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 {
                     CustomDropDownModel customDropDownModel = new CustomDropDownModel();
                     customDropDownModel.label = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year;
-                    customDropDownModel.value = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year;
+                    customDropDownModel.value = DateTime.Now.AddMonths(-i).Month.ToString("#00") + "" + DateTime.Now.AddMonths(-i).ToString("yy");
                     //monthYearList.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DateTime.Now.AddMonths(-i).Month) + " " + DateTime.Now.AddMonths(-i).Year);
                     monthYearList.Add(customDropDownModel);
                 }
@@ -99,18 +99,29 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    string[] ss = new string[6];
+                    string[] param = new string[3];
                     //ss[0]= "112233445566";
                     //ss[0] = "200600405623";
-                    ss[0] = "000";
+                    param[0] = objBillCollectionCommon.BillId;
+                    param[1] = objBillCollectionCommon.SubMenuId;
+                    param[2] = objBillCollectionCommon.Month;
+                    //param[3] = objBillCollectionCommon.CardHolderName;
+                    //param[4] = objBillCollectionCommon.MethodName;
+                    //param[5] = objBillCollectionCommon.OnlineCall;
+
                     List<BillApiCalling> billApiCallingList = new List<BillApiCalling>();
                     BillApiCalling objBillApiCalling = new BillApiCalling();
-                    objBillApiCalling.appid = "payapicall";
-                    objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
+                    //objBillApiCalling.appid = "payapicall";
+                    //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
+                    //for live
+                    objBillApiCalling.appid = "payapiLIVEcall";
+                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
                     objBillApiCalling.call = "method";
-                    objBillApiCalling.method = "DHAKAWASA";
-                    objBillApiCalling.billID = ss.Where(c => c != null).ToArray();
-                    billApiCallingList.Add(objBillApiCalling);
+                    //objBillApiCalling.method = "DHAKAWASA";
+                    objBillApiCalling.method = objBillCollectionCommon.MethodName;
+                    //objBillApiCalling.billID = param.Where(c => c != null).ToArray();
+                    objBillApiCalling.billID = param;
+
 
                     string json = JsonConvert.SerializeObject(objBillApiCalling);
                     string base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
@@ -122,15 +133,16 @@ namespace OneMFS.TransactionApiServer.Controllers
 
                     BillApiInfo apiInfo = new BillApiInfo();
                     dynamic apiResponse = null;
+                    BillCollectionCheckResponse result = new BillCollectionCheckResponse();
                     using (var response = await httpClient.PostAsync(apiInfo.Ip + apiInfo.ApiUrl, httpContent))
                     {
                         apiResponse = await response.Content.ReadAsStringAsync();
                         byte[] data = Convert.FromBase64String(apiResponse);
                         string decodedString = Encoding.UTF8.GetString(data);
-                        var result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
+                        result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
 
                     }
-                    return apiResponse;
+                    return result;
                 }
             }
             catch (Exception ex)
@@ -139,153 +151,150 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
-        //public async Task<object> GetCbsAccInfo(string mphone, string bankAcNo)
-        //{
-        //    try
-        //    {
-        //        using (var httpClient = new HttpClient())
-        //        {
-        //            CbsApiInfo apiInfo = new CbsApiInfo();
-        //            dynamic apiResponse = null;
-        //            using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + mphone))
-        //            {
-        //                apiResponse = await response.Content.ReadAsStringAsync();
-        //                var result = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
-
-        //            }
-        //            return apiResponse;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
-        //    }
-        //}
-
-        //[ApiGuardAuth]
-        //[HttpPost]
-        //[Route("Save")]
-        //public object Save(bool isEditMode, string evnt, [FromBody]TblCashEntry cashEntry)
-        //{
-        //    try
-        //    {
-        //        if (isEditMode != true)
-        //        {
-        //            try
-        //            {
-        //                cashEntry.Status = "";
-        //                cashEntry.TransNo = _BillCollectionCommonService.GetTransactionNo();
-        //                cashEntry.TransDate = System.DateTime.Now;
-        //                _BillCollectionCommonService.Add(cashEntry);
-
-        //                //Insert into audit trial audit and detail
-        //                cashEntry.Status = "default";//insert for only audit trail
-        //                _auditTrailService.InsertModelToAuditTrail(cashEntry, cashEntry.CreateUser, 9, 3, "Distributor Deposit",cashEntry.AcNo,"Saved Successfully!");
-        //            }
-        //            catch (Exception)
-        //            {
-
-        //                throw;
-        //            }
-
-        //            return true;
-
-        //        }
-        //        else
-        //        {
-        //            if (evnt == "edit")
-        //            {
-        //                try
-        //                {
-        //                    cashEntry.Status = "";
-        //                    cashEntry.UpdateDate = System.DateTime.Now;
-        //                    _BillCollectionCommonService.UpdateByStringField(cashEntry, "TransNo");
-
-        //                    //Insert into audit trial audit and detail
-        //                    cashEntry.Status = "default";//insert for only audit trail
-        //                    TblCashEntry prevModel = _BillCollectionCommonService.GetDestributorDepositByTransNo(cashEntry.TransNo);
-        //                    prevModel.Status = "default";//insert for only audit trail
-        //                    _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.UpdateUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Updated Successfully!");
-        //                }
-        //                catch (Exception ex)
-        //                {
-
-        //                    throw;
-        //                }
-
-        //                return true;
-        //            }
-        //            else if (evnt == "register")
-        //            {
-        //                cashEntry.Status = "P";
-        //                cashEntry.CheckedDate = System.DateTime.Now;
-
-        //                //insert into gl_trans_dtl and gl_trans_mst and RegInfo 
-        //                var successOrErrorMsg = _BillCollectionCommonService.DataInsertToTransMSTandDTL(cashEntry);
-
-        //                //Insert into audit trial audit and detail
-        //                TblCashEntry prevModel = _BillCollectionCommonService.GetDestributorDepositByTransNo(cashEntry.TransNo);
-        //                prevModel.Status = "default";//insert for only audit trail
-        //                prevModel.CheckedUser = "";
-        //                _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.CheckedUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Approved Successfully!");
+        [HttpPost]
+        [Route("GetFeeInfo")]
+        public async Task<object> GetFeeInfo([FromBody]BillCollectionCommon objBillCollectionCommon)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    string[] param = new string[9];                   
+                    param[0] = "PAY";
+                    //param[1] = objBillCollectionCommon.MethodName;
+                    if (objBillCollectionCommon.MethodName.Contains("."))
+                    {
+                        param[1] = objBillCollectionCommon.MethodName + objBillCollectionCommon.SubMenuId;
+                    }
+                    else
+                    {
+                        param[1] = objBillCollectionCommon.MethodName;
+                    }
+                    param[2] = objBillCollectionCommon.BillId;
+                    param[3] = objBillCollectionCommon.bill2;
+                    param[4] = "M";
+                    param[5] = objBillCollectionCommon.Amount.ToString();
+                    param[6] = "";
+                    param[7] = "";
+                    param[8] = "";
 
 
-        //                return successOrErrorMsg;
-        //            }
-        //            else
-        //            {
-        //                cashEntry.Status = "M";// M means pass to maker
-        //                cashEntry.CheckedDate = System.DateTime.Now;
-        //                _BillCollectionCommonService.UpdateByStringField(cashEntry, "TransNo");
+                    List<BillApiCalling> billApiCallingList = new List<BillApiCalling>();
+                    BillApiCalling objBillApiCalling = new BillApiCalling();
+                    //objBillApiCalling.appid = "payapicall";
+                    //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
+                    //for live
+                    objBillApiCalling.appid = "payapiLIVEcall";
+                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
+                    objBillApiCalling.call = "getFee";
+                    objBillApiCalling.mphone = "BP";                   
+                    objBillApiCalling.parts = param;
 
-        //                //Insert into audit trial audit and detail
-        //                TblCashEntry prevModel = _BillCollectionCommonService.GetDestributorDepositByTransNo(cashEntry.TransNo);
-        //                prevModel.Status = "default";//insert for only audit trail
-        //                prevModel.CheckedUser = "";
-        //                _auditTrailService.InsertUpdatedModelToAuditTrail(cashEntry, prevModel, cashEntry.CheckedUser, 9, 4, "Distributor Deposit",cashEntry.AcNo,"Pass to Maker Successfully!");
 
-        //                return true;
-        //            }
+                    string json = JsonConvert.SerializeObject(objBillApiCalling);
+                    string base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
 
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-        //    }
-        //}
+                    HttpContent httpContent = new StringContent(base64Encoded, Encoding.UTF8);
+                    //HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(telemetry), Encoding.UTF8);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-        //[HttpGet]
-        //[Route("GetAmountInWords")]
-        //public object GetAmountInWords(decimal amount)
-        //{
-        //    try
-        //    {
-        //        string totalAmt = amount.ToString("N2");
-        //        NumericWordConversion numericWordConversion = new NumericWordConversion();
-        //        return numericWordConversion.InWords(Convert.ToDecimal(totalAmt));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-        //    }
 
-        //}
+                    BillApiInfo apiInfo = new BillApiInfo();
+                    dynamic apiResponse = null;
+                    BillCollectionCheckResponse result = new BillCollectionCheckResponse();
+                    using (var response = await httpClient.PostAsync(apiInfo.Ip + apiInfo.ApiUrl, httpContent))
+                    {
+                        apiResponse = await response.Content.ReadAsStringAsync();
+                        byte[] data = Convert.FromBase64String(apiResponse);
+                        string decodedString = Encoding.UTF8.GetString(data);
+                        result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
 
-        //[HttpGet]
-        //[Route("GetDestributorDepositByTransNo")]
-        //public object GetDestributorDepositByTransNo(string transNo)
-        //{
-        //    try
-        //    {
-        //        return _BillCollectionCommonService.GetDestributorDepositByTransNo(transNo);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
-        //    }
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+            }
+        }
 
-        //}
+        [HttpPost]
+        [Route("ConfirmBill")]
+        public async Task<object> ConfirmBill([FromBody]BillCollectionCommon objBillCollectionCommon)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    string[] param = new string[9];
+                    param[0] = "PAY";
+                    if(objBillCollectionCommon.MethodName.Contains("."))
+                    {
+                        param[1] = objBillCollectionCommon.MethodName + objBillCollectionCommon.SubMenuId;
+                    }
+                    else
+                    {
+                        param[1] = objBillCollectionCommon.MethodName;
+                    }
+                    
+                    param[2] = objBillCollectionCommon.BillId;
+                    param[3] = objBillCollectionCommon.bill2;
+                    param[4] = "M";
+                    param[5] = objBillCollectionCommon.Amount.ToString();
+                    param[6] = "5555";
+                    param[7] = objBillCollectionCommon.BeneficiaryNumber;
+                    param[8] = "";
+
+
+                    List<BillApiCalling> billApiCallingList = new List<BillApiCalling>();
+                    BillApiCalling objBillApiCalling = new BillApiCalling();
+                    //objBillApiCalling.appid = "payapicall";
+                    //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
+                    //for live
+                    objBillApiCalling.appid = "payapiLIVEcall";
+                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
+                    objBillApiCalling.call = "msgin";
+                    objBillApiCalling.mphone = "BP";
+                    objBillApiCalling.parts = param;
+
+
+                    string json = JsonConvert.SerializeObject(objBillApiCalling);
+                    string base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+                    HttpContent httpContent = new StringContent(base64Encoded, Encoding.UTF8);
+                    //HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(telemetry), Encoding.UTF8);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                     
+                    BillApiInfo apiInfo = new BillApiInfo();
+                    dynamic apiResponse = null;
+                    BillCollectionCheckResponse result = new BillCollectionCheckResponse();
+                    using (var response = await httpClient.PostAsync(apiInfo.Ip + apiInfo.ApiUrl, httpContent))
+                    {
+                        apiResponse = await response.Content.ReadAsStringAsync();
+                        byte[] data = Convert.FromBase64String(apiResponse);
+                        string decodedString = Encoding.UTF8.GetString(data);
+                        result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
+
+                    }
+
+
+                    //Insert into audit trial audit and detail                      
+                    _auditTrailService.InsertModelToAuditTrail(objBillCollectionCommon, objBillCollectionCommon.EntryUser, objBillCollectionCommon.ParentPenuId, 3, objBillCollectionCommon.Title, objBillCollectionCommon.BillId, result.msg);
+
+
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+            }
+        }
+
+        
 
     }
 }

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LankaBanglaDataSet" targetNamespace="http://tempuri.org/LankaBanglaDataSet.xsd" xmlns:mstns="http://tempuri.org/LankaBanglaDataSet.xsd" xmlns="http://tempuri.org/LankaBanglaDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="LankaBanglaDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="LankaBanglaDataSet" msprop:Generator_UserDSName="LankaBanglaDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="LankaBangla" msprop:Generator_TableClassName="LankaBanglaDataTable" msprop:Generator_TableVarName="tableLankaBangla" msprop:Generator_TablePropName="LankaBangla" msprop:Generator_RowDeletingName="LankaBanglaRowDeleting" msprop:Generator_RowChangingName="LankaBanglaRowChanging" msprop:Generator_RowEvHandlerName="LankaBanglaRowChangeEventHandler" msprop:Generator_RowDeletedName="LankaBanglaRowDeleted" msprop:Generator_UserTableName="LankaBangla" msprop:Generator_RowChangedName="LankaBanglaRowChanged" msprop:Generator_RowEvArgName="LankaBanglaRowChangeEvent" msprop:Generator_RowClassName="LankaBanglaRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="VALUE_DATE" msprop:Generator_ColumnVarNameInTable="columnVALUE_DATE" msprop:Generator_ColumnPropNameInRow="VALUE_DATE" msprop:Generator_ColumnPropNameInTable="VALUE_DATEColumn" msprop:Generator_UserColumnName="VALUE_DATE" type="xs:string" minOccurs="0" />
+              <xs:element name="BRANCH" msprop:Generator_ColumnVarNameInTable="columnBRANCH" msprop:Generator_ColumnPropNameInRow="BRANCH" msprop:Generator_ColumnPropNameInTable="BRANCHColumn" msprop:Generator_UserColumnName="BRANCH" type="xs:string" minOccurs="0" />
+              <xs:element name="ACCOUNT" msprop:Generator_ColumnVarNameInTable="columnACCOUNT" msprop:Generator_ColumnPropNameInRow="ACCOUNT" msprop:Generator_ColumnPropNameInTable="ACCOUNTColumn" msprop:Generator_UserColumnName="ACCOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="TR_TYPE" msprop:Generator_ColumnVarNameInTable="columnTR_TYPE" msprop:Generator_ColumnPropNameInRow="TR_TYPE" msprop:Generator_ColumnPropNameInTable="TR_TYPEColumn" msprop:Generator_UserColumnName="TR_TYPE" type="xs:string" minOccurs="0" />
+              <xs:element name="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT" msprop:Generator_ColumnPropNameInRow="AMOUNT" msprop:Generator_ColumnPropNameInTable="AMOUNTColumn" msprop:Generator_UserColumnName="AMOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="NARRATION" msprop:Generator_ColumnVarNameInTable="columnNARRATION" msprop:Generator_ColumnPropNameInRow="NARRATION" msprop:Generator_ColumnPropNameInTable="NARRATIONColumn" msprop:Generator_UserColumnName="NARRATION" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

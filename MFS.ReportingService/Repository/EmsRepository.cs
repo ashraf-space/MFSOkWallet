@@ -13,7 +13,7 @@ namespace MFS.ReportingService.Repository
 {
 	public interface IEmsRepository : IBaseRepository<EmsReport>
 	{
-		List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId);
+		List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId, string branchCode);
 	}
 	public class EmsRepository : BaseRepository<EmsReport>, IEmsRepository
 	{
@@ -22,7 +22,7 @@ namespace MFS.ReportingService.Repository
 		{
 			dbUser = objMainDbUser.DbUser;
 		}
-		public List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId)
+		public List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId, string branchCode)
 		{
 			try
 			{
@@ -34,7 +34,8 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
 					dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo=="null"?null:transNo);
 					dyParam.Add("V_STUDENTID", OracleDbType.Varchar2, ParameterDirection.Input, studentId=="null"?null:studentId);
-					dyParam.Add("V_SCHOOLID", OracleDbType.Varchar2, ParameterDirection.Input, schoolId=="null"?null:schoolId);		
+					dyParam.Add("V_SCHOOLID", OracleDbType.Varchar2, ParameterDirection.Input, schoolId=="null"?null:schoolId);
+					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
 					List<EmsReport> result = SqlMapper.Query<EmsReport>(connection, dbUser + "RPT_EMS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();

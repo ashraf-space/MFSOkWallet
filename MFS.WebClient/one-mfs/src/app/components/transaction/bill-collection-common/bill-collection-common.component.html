@@ -1,62 +1,87 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
 <div class="form-elements">
     <p-card [style]="{'margin-bottom':'20px'}">
         <div class="form-group">
             <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> {{featurePayModel.TITLE}}</h6>
             <p-fieldset>
-                <div class="form-group row" *ngIf="isShowSubMenuDDL">
-                    <label for="name" class="col-sm-3 col-form-label single-line">Select {{featurePayModel.SUBMENUTITLE}} <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <p-dropdown [options]="subMenuList" [(ngModel)]="billCollectionCommonModel.subMenuId" placeholder="Select {{featurePayModel.SUBMENUTITLE}}" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
-                        <p-message *ngIf="(billCollectionCommonModel.subMenuId==null || billCollectionCommonModel.subMenuId=='') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>
-                </div>
+                <div class="p-grid">
+                    <div class="p-col-8">
+                        <div class="form-group row" *ngIf="isShowSubMenuDDL">
+                            <label for="name" class="col-sm-4 col-form-label single-line">Select {{featurePayModel.SUBMENUTITLE}} <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <p-dropdown [options]="subMenuList" [(ngModel)]="billCollectionCommonModel.subMenuId" placeholder="Select {{featurePayModel.SUBMENUTITLE}}" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isDisabledSubMenuDDL"></p-dropdown>
+                                <p-message *ngIf="(billCollectionCommonModel.subMenuId==null || billCollectionCommonModel.subMenuId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                            </div>
+                        </div>
 
-                <div class="form-group row" *ngIf="isShowMonth">
-                    <label for="name" class="col-sm-3 col-form-label single-line">Bill Month <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <p-dropdown [options]="monthYearList" [(ngModel)]="billCollectionCommonModel.month" [filter]="true" placeholder="Select {{featurePayModel.MONTHTITLE}}" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
-                        <p-message *ngIf="(billCollectionCommonModel.month==null || billCollectionCommonModel.month=='') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>
-                </div>
+                        <div class="form-group row" *ngIf="isShowMonth">
+                            <label for="name" class="col-sm-4 col-form-label single-line">Bill Month <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <p-dropdown [options]="monthYearList" [(ngModel)]="billCollectionCommonModel.month" [filter]="true" placeholder="Select {{featurePayModel.MONTHTITLE}}" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isDisabledMonth"></p-dropdown>
+                                <p-message *ngIf="(billCollectionCommonModel.month==null || billCollectionCommonModel.month=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                            </div>
+                        </div>
 
-                <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label single-line">Enter {{featurePayModel.BILLTITLE}} <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <input type="text" maxlength="16" class="form-control form-input" placeholder="Enter {{featurePayModel.BILLTITLE}}" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.billId">
-                        <p-message *ngIf="(billCollectionCommonModel.billId==null || billCollectionCommonModel.billId==''|| billCollectionCommonModel.billId=='0') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>
-                </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-4 col-form-label single-line">Enter {{featurePayModel.BILLTITLE}} <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="30" class="form-control form-input" placeholder="Enter {{featurePayModel.BILLTITLE}}" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.billId" [disabled]="isDisabledBillId">
+                                <p-message *ngIf="(billCollectionCommonModel.billId==null || billCollectionCommonModel.billId==''|| billCollectionCommonModel.billId=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                            </div>
+                        </div>
 
-                <div class="form-group row" *ngIf="isShowCardHolder">
-                    <label for="mphone" class="col-sm-3 col-form-label">Enter Card Holder Name <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.cardHolderName" pKeyFilter="text">
+                        <div class="form-group row" *ngIf="isShowCardHolder">
+                            <label for="mphone" class="col-sm-4 col-form-label">Enter Card Holder Name <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.cardHolderName" [disabled]="isDisabledCard">
+                                <p-message *ngIf="(billCollectionCommonModel.cardHolderName==null || billCollectionCommonModel.cardHolderName==''|| billCollectionCommonModel.cardHolderName=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="mphone" class="col-sm-4 col-form-label">Beneficiary Mobile Number <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.beneficiaryNumber" placeholder="01xxxxxxxxx" pKeyFilter="int" maxlength="11" [disabled]="isDisabledBeneficiary">
+                                <p-message *ngIf="(billCollectionCommonModel.beneficiaryNumber==null || billCollectionCommonModel.beneficiaryNumber=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-4 col-form-label single-line">Enter Amount <span class="mandatory">*</span></label>
+                            <div class="col-sm-8">
+                                <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.amount" [disabled]="isAmountDisabled">
+                                <!--<p-message *ngIf="(billCollectionCommonModel.amount==null || billCollectionCommonModel.amount==''|| billCollectionCommonModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="mphone" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-2">
+                                <button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="refresh()"><i class="fas fa-caret-left"></i>Refresh</button>
+                            </div>
+                            <div class="col-sm-2">
+
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" [disabled]="isCheckDisabled" class="btn btn-blue btn-sm btn-block" (click)="onCheck()"><i class="fas fa-check"></i> Check</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" [disabled]="isNextDisabled" class="btn btn-blue btn-sm btn-block" (click)="onNext()"><i class="fas fa-check"></i> Next</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="p-col-4" *ngIf="isShowMessage">
+                        <p-card [style]="{width: '300px'}">
+                            <div *ngIf="isBgColorYellow" style="background-color:yellow">
+                                {{message}}
+                            </div>
+                            <div *ngIf="!isBgColorYellow" style="background-color:orangered">
+                                {{message}}
+                            </div>
+                        </p-card>
+                    </div>
 
 
-
-                <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label single-line">Enter Amount <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.amount" (change)="GetAmountInWords();" [disabled]="true">
-                        <p-message *ngIf="(billCollectionCommonModel.amount==null || billCollectionCommonModel.amount==''|| billCollectionCommonModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="mphone" class="col-sm-3 col-form-label">Beneficiary Mobile Number <span class="mandatory">*</span></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.beneficiaryNumber" placeholder="01xxxxxxxxx" pKeyFilter="int" maxlength="11">
-                        <p-message *ngIf="(billCollectionCommonModel.beneficiaryNumber==null || billCollectionCommonModel.beneficiaryNumber=='') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="mphone" class="col-sm-3 col-form-label"></label>
-                    <div class="col-sm-4">
-                    </div>
-                    <div class="col-sm-2">
-                        <button type="button" class="btn btn-blue btn-sm btn-block" (click)="onCheck()"><i class="fas fa-check"></i> Check</button>
-                    </div>
                 </div>
 
 
@@ -67,5 +92,23 @@
     </p-card>
 </div>
 
-<!--<app-generic-form-action [disableAction]="isActionDisabled" (onSave)="onNIDPaymentSave()"></app-generic-form-action>-->
+<p-dialog header="Confirmation" [(visible)]="initiateModal" [modal]="true" [style]="{width: '30vw'}" [maximizable]="true" [baseZIndex]="10000"
+          [draggable]="false" [resizable]="false">
 
+    <div style="text-align:left; font-weight:bold; margin:20px;">
+        <p>{{featurePayModel.BILLTITLE}} : {{billCollectionCommonModel.billId}}</p>
+        <br>
+        <p>Amount : {{billCollectionCommonModel.amount}}</p>
+        <br>
+        <p>Service Charge : {{fee}}</p>
+        <br>
+        <p>Total : {{total}}</p>
+    </div>
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" [disabled]="isConfirmDisabled" (click)="onConfirmClick()" label="Confirm" class="ui-button-success"></button>
+        <button type="button" pButton (click)="initiateModal=false" label="Cancel" class="ui-button-info"></button>
+    </p-footer>
+</p-dialog>
+
+<!--<app-generic-form-action [disableAction]="isActionDisabled" (onSave)="onBillPaymentSave()"></app-generic-form-action>-->

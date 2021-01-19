@@ -18,5 +18,6 @@ namespace MFS.ReportingService.Models
 		public string OrganizationCode { get; set; }
 		public string BillNo { get; set; }
 		public string Gateway { get; set; }
+		public string ExtraId { get; set; }
 	}
 }

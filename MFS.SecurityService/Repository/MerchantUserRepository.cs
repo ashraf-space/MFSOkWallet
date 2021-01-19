@@ -15,9 +15,9 @@ namespace MFS.SecurityService.Repository
     {
         MerchantUser validateLogin(string userName, string password);
 		object GetRegInfoByMphone(string mobileNo);
-		//string GetTransAmtLimit(string createUser);
-		//object IsProceedToController(List<string> userInfos);
-		//object GetAppUserListDdl();
+		object GetMerChantUserById(string id);
+		object CheckMerchantUserAlreadyExist(string username);
+		
 	}
 
     public class MerchantUserRepository : BaseRepository<MerchantUser>, IMerchantUserRepository
@@ -27,6 +27,46 @@ namespace MFS.SecurityService.Repository
         {
             dbUser = objMainDbUser.DbUser;
         }
+
+		public object CheckMerchantUserAlreadyExist(string username)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.* from " + dbUser + "merchant_user t where LOWER(t.username) = '" + username.ToLower()+"'";
+					var result = connection.Query<MerchantUser>(query).FirstOrDefault();
+					this.CloseConnection(connection);
+					return result;
+				}
+
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+
+		public object GetMerChantUserById(string id)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.* from " + dbUser + "merchant_user t where t.id = " + Convert.ToInt32(id) + "";
+					var result = connection.Query<MerchantUser>(query).FirstOrDefault();
+					this.CloseConnection(connection);
+					return result;
+				}
+
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
 
 		public dynamic GetRegInfoByMphone(string mobileNo)
 		{
@@ -56,7 +96,7 @@ namespace MFS.SecurityService.Repository
                 using (var conn = this.GetConnection())
                 {
                     var dyParam = new OracleDynamicParameters();
-                    dyParam.Add("UACC", OracleDbType.Varchar2, ParameterDirection.Input, userName);
+                    dyParam.Add("UACC", OracleDbType.Varchar2, ParameterDirection.Input, userName.Trim());
 					//dyParam.Add("UNAME", OracleDbType.Varchar2, ParameterDirection.Input, userName);
 					dyParam.Add("PWD", OracleDbType.Varchar2, ParameterDirection.Input, password);
                     dyParam.Add("LOGIN_RESULT", OracleDbType.RefCursor, ParameterDirection.Output);

@@ -305,6 +305,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 else if (evnt == "reject")
                 {
                     objTblDisburseAmtDtlMake.Status = "R";
+                    objTblDisburseAmtDtlMake.CheckerId = checkedUser;
                     objTblDisburseAmtDtlMake.CheckTime = System.DateTime.Now;
                     _disburseAmtDtlMakeService.UpdateByStringField(objTblDisburseAmtDtlMake, "Tranno");
 
@@ -338,6 +339,34 @@ namespace OneMFS.TransactionApiServer.Controllers
                 string TransNo = _distributorDepositService.GetTransactionNo();
                 string PhoneNo = objTblDisburseCompanyInfo.CabAcc ?? objTblDisburseCompanyInfo.CatAcc ?? objTblDisburseCompanyInfo.EftAcc ?? objTblDisburseCompanyInfo.IncAcc ??
                     objTblDisburseCompanyInfo.RemAcc ?? objTblDisburseCompanyInfo.RwdAcc ?? objTblDisburseCompanyInfo.SalAcc;
+                if(!string.IsNullOrEmpty(objTblDisburseCompanyInfo.CabAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "CAB";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.CatAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "CAT";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.EftAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "EFT";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.IncAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "INC";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.RemAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "REM";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.RwdAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "RWD";
+                }
+                else if (!string.IsNullOrEmpty(objTblDisburseCompanyInfo.SalAcc))
+                {
+                    objTblDisburseCompanyInfo.disburse_type = "SAL";
+                }
 
                 string successOrErrorMsg = _disbursementService.AproveRefundDisburseAmount(TransNo, PhoneNo, branchCode, objTblDisburseCompanyInfo).ToString();
 

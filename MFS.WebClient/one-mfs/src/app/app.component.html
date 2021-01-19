@@ -15,7 +15,7 @@
                 <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="initiateGlobalSearch()"><i class="fas fa-search"></i> </button>
             </li>-->
             <li class="nav-item">
-                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="onProfileVisit()"> <i class="fas fa-user-circle"></i> {{currentUser.user.name}} </button>
+                <button type="button" class="btn btn-outline-dark btn-block nav-item nav-link" (click)="onProfileVisit()"> <i class="fas fa-user-circle"></i> {{currentUser.user.name}} | {{currentUser.user.branch_Name}} </button>
             </li>
             <li class="nav-item">
                 <p-menu #menu [popup]="true" [model]="settingItems"></p-menu>

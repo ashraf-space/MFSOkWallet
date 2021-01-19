@@ -391,7 +391,7 @@
                                     <FontFamily>tahoma</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>=IIF(Fields!Balance.Value &lt; 0,"Bold","Normal")</FontWeight>
-                                    <Format>#,0.0000</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -518,7 +518,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -533,7 +533,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -614,7 +614,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -629,7 +629,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -698,7 +698,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -734,7 +734,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -810,7 +810,7 @@
                     <Style>
                       <FontFamily>tahoma</FontFamily>
                       <FontWeight>Bold</FontWeight>
-                      <Format>#,0.0000</Format>
+                      <Format>#,0.00</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1061,31 +1061,38 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalAsset">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalLiability">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalIncome">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalExpense">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalLiabilityIncome">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="totalAssetExpense">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="netProfit">
-      <DataType>String</DataType>
+      <DataType>Float</DataType>
+      <Nullable>true</Nullable>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="currentOrEOD">

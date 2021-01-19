@@ -3,6 +3,7 @@ import { ApplicationUserService } from '../../../../services/security';
 import { first } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GridSettingService } from '../../../../services/grid-setting.service';
+import { AuthenticationService } from 'src/app/shared/_services';
 
 @Component({
   selector: 'app-application-user-list',
@@ -12,13 +13,21 @@ import { GridSettingService } from '../../../../services/grid-setting.service';
 export class ApplicationUserListComponent implements OnInit {
 
     gridConfig: any;
+    roleName: any;
+    currentUserModel: any = {};
 
-    constructor(private applicationUserService: ApplicationUserService, private gridSettingService: GridSettingService) {
+    constructor(private applicationUserService: ApplicationUserService, private gridSettingService: GridSettingService,
+        private authenticationService: AuthenticationService) {
         this.gridConfig = {};
+        this.authenticationService.currentUser.subscribe(x => {
+            this.currentUserModel = x;
+        });
     }
 
     ngOnInit() {
+        this.roleName = this.currentUserModel.user.role_Name;
         this.initialiseGridConfig();
+
     }
 
     initialiseGridConfig(): any {
@@ -42,7 +51,7 @@ export class ApplicationUserListComponent implements OnInit {
             //{ field: 'id', header: 'Details', width: '15%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() }
         ];
 
-        this.applicationUserService.getApplicationUserWorklist().pipe()
+        this.applicationUserService.getApplicationUserWorklist(this.roleName).pipe()
             .subscribe(data => {
                 this.gridConfig.dataSource = data;
             })

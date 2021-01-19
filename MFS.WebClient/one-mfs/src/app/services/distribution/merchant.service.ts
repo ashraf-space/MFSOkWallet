@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class MerchantService {
+    
+   
    
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
 
@@ -176,5 +178,17 @@ export class MerchantService {
         else {
             return false;
         }
+    }
+    getMerChantUserById(entityId: any) {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Merchant/getMerChantUserById?id=' + entityId)
+            .pipe(map(merchant => {
+                return merchant;
+            }));
+    }
+    checkMerchantUserAlreadyExist(username: any) {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Merchant/checkMerchantUserAlreadyExist?username=' + username)
+            .pipe(map(merchant => {
+                return merchant;
+            }));
     }
 }

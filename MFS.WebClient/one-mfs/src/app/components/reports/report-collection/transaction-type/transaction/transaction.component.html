@@ -3,14 +3,14 @@
     <div class="p-grid">
         <div class="p-col-4">
             <label for="float-input" class="col-form-label">Transaction Type <span class="mandatory">*</span></label>
-            <p-dropdown [options]="tansactionTypeDDL" placeholder="Select Tansaction Type" [(ngModel)]="model.tansactionType" (onChange)="enableDisableService();"
+            <p-dropdown [options]="tansactionTypeDDL" placeholder="Select Tansaction Type" [(ngModel)]="model.tansactionType"
                         [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.tansactionType==null || model.tansactionType=='') && error " severity="error" text="Cannot be left blank"></p-message>
         </div>
 
         <div class="p-col-4">
             <label for="float-input" class="col-form-label">OK Service <span class="mandatory">*</span></label>
-            <p-dropdown [options]="okServicesList" placeholder="Select OK Services" [(ngModel)]="model.okServices" [disabled]="isDisableService"
+            <p-dropdown [options]="okServicesList" placeholder="Select OK Services" [(ngModel)]="model.okServices" 
                         [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.okServices==null || model.okServices=='') && error " severity="error" text="Cannot be left blank"></p-message>
         </div>

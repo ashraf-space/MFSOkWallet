@@ -23,6 +23,9 @@ namespace MFS.ReportingService.Models
         public string PresentAddress { get; set; }
         public DateTime? LogicalDate { get; set; }
 
+        public string FromCategory { get; set; }
+        public string ToCategory { get; set; }
+
 
     }
 }

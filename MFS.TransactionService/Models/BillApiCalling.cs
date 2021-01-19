@@ -11,7 +11,14 @@ namespace MFS.TransactionService.Models
         public string appid { get; set; }
         public string appchk { get; set; }
         public string call { get; set; }
+
+        public string mphone { get; set; }
+        
+
         public string method { get; set; }
         public string[] billID { get; set; }
+        public string[] parts { get; set; }
+
+
     }
 }

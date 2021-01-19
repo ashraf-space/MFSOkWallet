@@ -13,6 +13,7 @@ namespace MFS.ReportingService.Service
 		List<AgentDsrList> GetAgentDsrListByPmphone(string mphone);
 		object GetBalanceInformation(string mphone, string filterId);
 		object GetDistPortalInfo(string mphone);
+		List<CustomerRegDistPort> CustomerRegistration(string mphone, string fromDate, string toDate, string agentNo);
 	}
 	public class DistributorPortalService : IDistributorPortalService
 	{
@@ -21,6 +22,33 @@ namespace MFS.ReportingService.Service
 		{
 			this.repository = _repository;
 		}
+
+		public List<CustomerRegDistPort> CustomerRegistration(string mphone, string fromDate, string toDate, string agentNo)
+		{
+			if (string.IsNullOrEmpty(agentNo))
+			{
+				List<AgentDsrList> agentDsrLists = repository.GetAgentDsrListByPmphone(mphone);
+
+				List<CustomerRegDistPort> customerRegDistPorts = new List<CustomerRegDistPort>();
+				foreach (var item in agentDsrLists)
+				{
+					List<CustomerRegDistPort> customerRegDistPortsByAgent = new List<CustomerRegDistPort>();
+				    customerRegDistPortsByAgent = repository.GetCustomerListByAgent(item.Mphone, fromDate, toDate, agentNo);
+					customerRegDistPorts.AddRange(customerRegDistPortsByAgent);
+				}
+
+				return customerRegDistPorts;
+			}
+			else
+			{
+				List<CustomerRegDistPort> customerRegDistPortsByAgent = new List<CustomerRegDistPort>();
+				customerRegDistPortsByAgent = repository.GetCustomerListByAgent(mphone, fromDate, toDate, agentNo);
+				return customerRegDistPortsByAgent;
+			}
+			
+			
+		}
+
 		public List<AgentDsrList> GetAgentDsrListByPmphone(string mphone)
 		{
 			return repository.GetAgentDsrListByPmphone(mphone);

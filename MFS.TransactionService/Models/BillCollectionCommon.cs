@@ -14,5 +14,13 @@ namespace MFS.TransactionService.Models
         public string CardHolderName { get; set; }
         public double Amount { get; set; }
         public string BeneficiaryNumber { get; set; }
+        public string MethodName { get; set; }
+        public string OnlineCall { get; set; }
+
+
+        public string bill2 { get; set; }
+        public int ParentPenuId { get; set; }
+        public string Title { get; set; }
+        public string EntryUser { get; set; }
     }
 }

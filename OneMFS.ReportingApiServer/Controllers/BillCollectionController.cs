@@ -32,34 +32,38 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 			string gateway = builder.ExtractText(Convert.ToString(model.ReportOption), "gateway", ",");
 			string catType = builder.ExtractText(Convert.ToString(model.ReportOption), "catType", ",");
-			string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", "}");
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", "}");
+			string dateType = builder.ExtractText(Convert.ToString(model.ReportOption), "dateType", ",");
 
-
+			int clientSum = 0;
 			if (utility == "dpdc" || utility == "desco")
 			{
-				decimal TotalPaymentSum = 0;
-				decimal TotalVatSum = 0;
-				decimal TotalServChrgSum = 0;
-				decimal VatOnChrgSum = 0;
-				decimal NetServFeeSum = 0;
-				decimal ClientSum = 0;
-				decimal RevStampAmountSum = 0;
 
-				List<BillCollection> dpdcDescoReportsList = billCollectionService.GetDpdcDescoReport(utility, fromDate, toDate, gateway, dateType, catType);
+				List<BillCollection> dpdcDescoReportsList = billCollectionService.GetDpdcDescoReport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
 				if (dpdcDescoReportsList.Count() > 0)
 				{
-					TotalPaymentSum = dpdcDescoReportsList.Sum(x => x.TotalPayAmount);
-					TotalVatSum = dpdcDescoReportsList.Sum(x => x.VatAmt);
-					TotalServChrgSum = dpdcDescoReportsList.Sum(x => x.SchargeAmt);
-					VatOnChrgSum = dpdcDescoReportsList.Sum(x => x.VatOnCharge);
-					NetServFeeSum = dpdcDescoReportsList.Sum(x => x.NetServiceFee);
-					RevStampAmountSum = dpdcDescoReportsList.Sum(x => x.RevenueStampAmount);
-					ClientSum = dpdcDescoReportsList.Count();
+					clientSum = dpdcDescoReportsList.Count();
 				}
 				ReportViewer reportViewer = new ReportViewer();
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTDpdcDescoBillInfo.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(GetDpdcDescoReportParameter(utility, fromDate, toDate, gateway, dateType, catType, TotalPaymentSum,
-					TotalVatSum, TotalServChrgSum, VatOnChrgSum, NetServFeeSum, ClientSum, RevStampAmountSum));
+				reportViewer.LocalReport.SetParameters(GetDpdcDescoReportParameter(utility, fromDate, toDate, gateway, dateType, catType, clientSum));
+				ReportDataSource A = new ReportDataSource("BillCollection", dpdcDescoReportsList);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			else if (utility == "dpdck")
+			{
+				List<BillCollection> dpdcDescoReportsList = billCollectionService.GetDpdcDescoReport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+				if (dpdcDescoReportsList.Count() > 0)
+				{
+
+					clientSum = dpdcDescoReportsList.Count();
+				}
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTDpdcKBillInfo.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetDpdcDescoReportParameter(utility, fromDate, toDate, gateway, dateType, catType, clientSum));
 				ReportDataSource A = new ReportDataSource("BillCollection", dpdcDescoReportsList);
 				reportViewer.LocalReport.DataSources.Add(A);
 				ReportUtility reportUtility = new ReportUtility();
@@ -68,8 +72,8 @@ namespace OneMFS.ReportingApiServer.Controllers
 			}
 			else if (utility == "wasa")
 			{
-				List<WasaBillPayment> wasaReportsList = billCollectionService.GetWasaReport(utility, fromDate, toDate, gateway, dateType, catType);
-				
+				List<WasaBillPayment> wasaReportsList = billCollectionService.GetWasaReport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+
 				ReportViewer reportViewer = new ReportViewer();
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTWasaBillInfo.rdlc");  //Request.RequestUri("");
 				reportViewer.LocalReport.SetParameters(GetWasaReportParameter(utility, fromDate, toDate, gateway, dateType, catType));
@@ -81,7 +85,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 			}
 			else if (utility == "jgtd")
 			{
-				List<JalalabadGasBillPayment> JgtdReportsList = billCollectionService.GetJgtdReport(utility, fromDate, toDate, gateway, dateType, catType);
+				List<JalalabadGasBillPayment> JgtdReportsList = billCollectionService.GetJgtdReport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
 
 				ReportViewer reportViewer = new ReportViewer();
 				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTJgtdBillInfo.rdlc");  //Request.RequestUri("");
@@ -125,7 +129,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 			if (utility == "jgtd")
 			{
 				paraList.Add(new ReportParameter("utility", "JGTD"));
-			}			
+			}
 			else
 			{
 				paraList.Add(new ReportParameter("utility", "All"));
@@ -193,18 +197,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return paraList;
 		}
 
-		public List<ReportParameter> GetDpdcDescoReportParameter(string utility, string fromDate, string toDate, string gateway,
-			string dateType, string catType, decimal TotalPaymentSum, decimal TotalVatSum, decimal TotalServChrgSum,
-			decimal VatOnChrgSum, decimal NetServFeeSum, decimal ClientSum, decimal RevStampAmountSum)
+		public List<ReportParameter> GetDpdcDescoReportParameter(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, int clientSum)
 		{
 			List<ReportParameter> paraList = new List<ReportParameter>();
-			paraList.Add(new ReportParameter("TotalPaymentSum", TotalPaymentSum.ToString()));
-			paraList.Add(new ReportParameter("TotalVatSum", TotalVatSum.ToString()));
-			paraList.Add(new ReportParameter("TotalServChrgSum", TotalServChrgSum.ToString()));
-			paraList.Add(new ReportParameter("VatOnChrgSum", VatOnChrgSum.ToString()));
-			paraList.Add(new ReportParameter("NetServFeeSum", NetServFeeSum.ToString()));
-			paraList.Add(new ReportParameter("ClientSum", ClientSum.ToString()));
-			paraList.Add(new ReportParameter("RevStampAmountSum", RevStampAmountSum.ToString()));
+			paraList.Add(new ReportParameter("ClientSum", clientSum.ToString()));
 			if (dateType == "eod")
 			{
 				paraList.Add(new ReportParameter("dateType", "EOD Date"));
@@ -260,12 +256,13 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
 			if (transNo == "null")
 			{
 				transNo = null;
 			}
 			List<CreditCardReport> creditCardReports = new List<CreditCardReport>();
-			creditCardReports = billCollectionService.GetCreditPaymentReport(transNo, fromDate, toDate);
+			creditCardReports = billCollectionService.GetCreditPaymentReport(transNo, fromDate, toDate, branchCode);
 
 			ReportViewer reportViewer = new ReportViewer();
 			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTCreditCardInfo.rdlc");  //Request.RequestUri("");
@@ -290,10 +287,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			}
 			paraList.Add(new ReportParameter("transNo", transNo));
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
-            string generateDate = DateTime.Now.Year.ToString().Substring(2,2) + (DateTime.Now.Month.ToString().Length==1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString()) 
-                + (DateTime.Now.Day.ToString().Length == 1 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString()) ;
-            paraList.Add(new ReportParameter("generateDate", generateDate));
-            return paraList;
+			string generateDate = DateTime.Now.Year.ToString().Substring(2, 2) + (DateTime.Now.Month.ToString().Length == 1 ? "0" + DateTime.Now.Month.ToString() : DateTime.Now.Month.ToString())
+				+ (DateTime.Now.Day.ToString().Length == 1 ? "0" + DateTime.Now.Day.ToString() : DateTime.Now.Day.ToString());
+			paraList.Add(new ReportParameter("generateDate", generateDate));
+			return paraList;
 		}
 
 		[HttpPost]
@@ -305,12 +302,13 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
 			if (transNo == "null")
 			{
 				transNo = null;
 			}
 			List<CreditCardReport> creditCardReports = new List<CreditCardReport>();
-			creditCardReports = billCollectionService.GetCreditBeftnPaymentReport(transNo, fromDate, toDate);
+			creditCardReports = billCollectionService.GetCreditBeftnPaymentReport(transNo, fromDate, toDate, branchCode);
 
 			ReportViewer reportViewer = new ReportViewer();
 			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTCreditCardInfoBEFTN.rdlc");  //Request.RequestUri("");
@@ -348,11 +346,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 				MFSFileManager fileManager = new MFSFileManager();
 				return reportUtility.GenerateReport(reportViewer, model.FileType);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw ex;
 			}
-			
+
 		}
 
 		private IEnumerable<ReportParameter> GetEdumanBillReportParameter(string studentId, string fromDate, string toDate, string instituteId, string dateType, string catType)
@@ -378,7 +376,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 			{
 				paraList.Add(new ReportParameter("catType", "All"));
 			}
-			
+
 			if (fromDate != null && fromDate != "")
 			{
 				paraList.Add(new ReportParameter("fromDate", fromDate));
@@ -400,13 +398,13 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", ",");
 			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
-	        string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", "}");
-
+			string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", "}");
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
 			try
 			{
 				if (reportType == "DDR")
 				{
-					List<NescoRpt> nescoRpts = billCollectionService.NescoDailyDetailReport(transNo, fromDate, toDate);
+					List<NescoRpt> nescoRpts = billCollectionService.NescoDailyDetailReport(transNo, fromDate, toDate,branchCode);
 					ReportViewer reportViewer = new ReportViewer();
 					reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTNescoDDR.rdlc");  //Request.RequestUri("");
 					reportViewer.LocalReport.SetParameters(GetNescoBillReportParameter(transNo, fromDate, toDate));
@@ -416,19 +414,19 @@ namespace OneMFS.ReportingApiServer.Controllers
 					MFSFileManager fileManager = new MFSFileManager();
 					return reportUtility.GenerateReport(reportViewer, model.FileType);
 				}
-				else if (reportType == "DSS" || reportType=="MSS")
+				else if (reportType == "DSS" || reportType == "MSS")
 				{
 					List<NescoRpt> nescoRpts = billCollectionService.NescoDSSReport(fromDate, toDate);
 					ReportViewer reportViewer = new ReportViewer();
 					reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTNescoDSS.rdlc");  //Request.RequestUri("");
-					reportViewer.LocalReport.SetParameters(GetNescoBillReportParameter(transNo, fromDate, toDate,reportType));
+					reportViewer.LocalReport.SetParameters(GetNescoBillReportParameter(transNo, fromDate, toDate, reportType));
 					ReportDataSource A = new ReportDataSource("NescoBillPayment", nescoRpts);
 					reportViewer.LocalReport.DataSources.Add(A);
 					ReportUtility reportUtility = new ReportUtility();
 					MFSFileManager fileManager = new MFSFileManager();
 					return reportUtility.GenerateReport(reportViewer, model.FileType);
 				}
-				else 
+				else
 				{
 					List<NescoRpt> nescoRpts = billCollectionService.NescoMDSReport(fromDate, toDate);
 					ReportViewer reportViewer = new ReportViewer();
@@ -440,7 +438,7 @@ namespace OneMFS.ReportingApiServer.Controllers
 					MFSFileManager fileManager = new MFSFileManager();
 					return reportUtility.GenerateReport(reportViewer, model.FileType);
 				}
-				
+
 			}
 			catch (Exception ex)
 			{
@@ -467,12 +465,89 @@ namespace OneMFS.ReportingApiServer.Controllers
 			else if (reportType == "MSS")
 			{
 				paraList.Add(new ReportParameter("rptName", "Monthly S&D-wise Summary (MSS)"));
-			}			
+			}
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
 			return paraList;
 		}
 
 		private IEnumerable<ReportParameter> GetNescoBillReportParameter(string transNo, string fromDate, string toDate)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("transNo", transNo));
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
+		}
+
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/BillCollection/CommonBillReport")]
+		public byte[] CommonBillReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");			
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
+			string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", ",");
+			string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", "}");
+
+			if (reportType == "NID")
+			{
+				List<NidBill> nidBills = new List<NidBill>();
+				nidBills = billCollectionService.GetNidReports(transNo, fromDate, toDate, branchCode);
+
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTNidBillInfo.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetNidBillReportParameter(fromDate, toDate, transNo));
+				ReportDataSource A = new ReportDataSource("NidBillReport", nidBills);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			else if(reportType == "LBC")
+			{
+				List<LankaBanglaCredit> lankaBanglaCredits = new List<LankaBanglaCredit>();
+				lankaBanglaCredits = billCollectionService.GetLbcReports(transNo, fromDate, toDate, branchCode);
+
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTLbcBillInfo.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetNidBillReportParameter(fromDate, toDate, transNo));
+				ReportDataSource A = new ReportDataSource("LankaBanglaCredit", lankaBanglaCredits);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			else if (reportType == "LBD")
+			{
+				List<LankaBanglaCredit> lankaBanglaCredits = new List<LankaBanglaCredit>();
+				lankaBanglaCredits = billCollectionService.GetLbcReports(transNo, fromDate, toDate, branchCode);
+
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTLbDpsInfo.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetNidBillReportParameter(fromDate, toDate, transNo));
+				ReportDataSource A = new ReportDataSource("LankaBanglaCredit", lankaBanglaCredits);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			else
+			{
+				return null;
+			}
+			
+		}
+
+		private IEnumerable<ReportParameter> GetNidBillReportParameter(string fromDate, string toDate, string transNo)
 		{
 			List<ReportParameter> paraList = new List<ReportParameter>();
 			if (fromDate != null && fromDate != "")

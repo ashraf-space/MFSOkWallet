@@ -106,6 +106,8 @@ import { AirtelTopupStockEntryComponent } from './components/transaction/airtel-
 import { CommissionApprovalComponent } from './components/transaction/fund-transfer/commission-approval/commission-approval.component';
 import { NidPaymentCollectionComponent } from './components/transaction/nid-payment-collection/nid-payment-collection.component';
 import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
+import { DisbursementUserListComponent } from './components/security/disbursement-user/disbursement-user-list/disbursement-user-list.component';
+import { DisbursementUserAddEditComponent } from './components/security/disbursement-user/disbursement-user-add-edit/disbursement-user-add-edit.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -216,6 +218,8 @@ const appRoutes: Routes = [
     { path: 'fund-transfer/commission-approval', component: CommissionApprovalComponent, canActivate: [AuthGuard] },
     { path: 'transaction/nid-payment-collection', component: NidPaymentCollectionComponent, canActivate: [AuthGuard] },
     { path: 'transaction/bill-collection-common/:id', component: BillCollectionCommonComponent, canActivate: [AuthGuard] },
+    { path: 'disbursement-user/list', component: DisbursementUserListComponent, canActivate: [AuthGuard] },
+    { path: 'disbursement-user/add-edit/:id', component: DisbursementUserAddEditComponent, canActivate: [AuthGuard] },
    
     {
         path: "",

@@ -32,10 +32,11 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
 			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
 			string studentId = builder.ExtractText(Convert.ToString(model.ReportOption), "studentId", ",");
-			string schoolId = builder.ExtractText(Convert.ToString(model.ReportOption), "schoolId", "}");
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", "}");
+			string schoolId = builder.ExtractText(Convert.ToString(model.ReportOption), "schoolId", ",");
 			
 
-			List<EmsReport> emsReports = emsService.GetEmsReport(fromDate,toDate,transNo,studentId,schoolId);
+			List<EmsReport> emsReports = emsService.GetEmsReport(fromDate,toDate,transNo,studentId,schoolId,branchCode);
 			ReportViewer reportViewer = new ReportViewer();
 			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTEmsInfo.rdlc");  //Request.RequestUri("");
 			reportViewer.LocalReport.SetParameters(GetEmsRptParameter(fromDate, toDate, transNo, studentId, schoolId));

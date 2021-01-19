@@ -12,5 +12,8 @@ namespace MFS.TransactionService.Models
         public string bill2 { get; set; }
         public string amount { get; set; }
         public string msg { get; set; }
+
+        public string fee { get; set; }
+        public string glue { get; set; }
     }
 }

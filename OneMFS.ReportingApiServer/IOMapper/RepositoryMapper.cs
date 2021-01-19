@@ -27,7 +27,7 @@ namespace OneMFS.ReportingApiServer.IOMapper
 			kernel.Bind<IAuditTrailRepository>().To<AuditTrailRepository>();
 			kernel.Bind<IDistributorPortalRepository>().To<DistributorPortalRepository>();
 			kernel.Bind<IEmsRepository>().To<EmsRepository>();
-			
+			kernel.Bind<ILankaBanglaRepository>().To<LankaBanglaRepository>();						
 		}
 	}
 }

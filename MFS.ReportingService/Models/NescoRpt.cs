@@ -22,6 +22,9 @@ namespace MFS.ReportingService.Models
 		public int TxnCount { get; set; }
 		public string CcName { get; set; }
 		public DateTime? TransDate { get; set; }
+		public string ExtraId { get; set; }
+		public string PaidBy { get; set; }
+		public string BranchCode { get; set; }
 
 	}
 }

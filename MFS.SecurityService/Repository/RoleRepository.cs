@@ -30,7 +30,7 @@ namespace MFS.SecurityService.Repository
                 }
                 else
                 {
-                    query = "Select Name as Label, Id as Value from " + mainDbUser.DbUser + "role where Name not in ('Admin','System Admin','Super Admin')";
+                    query = "Select Name as Label, Id as Value from " + mainDbUser.DbUser + "role where Name in ('Branch Teller','Branch KYC Maker','Branch KYC Checker')";
                 }
 
 

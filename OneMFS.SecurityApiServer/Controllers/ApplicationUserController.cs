@@ -36,12 +36,12 @@ namespace OneMFS.SecurityApiServer.Controllers
 
         [HttpGet]
         [Route("GetAllApplicationUserList")]
-        public object GetAllApplicationUserList()
+        public object GetAllApplicationUserList(string roleName=null)
         {
             try
             {
                 //return usersService.GetAll(new ApplicationUser());
-                return usersService.GetAllApplicationUserList();
+                return usersService.GetAllApplicationUserList(roleName);
 
             }
             catch (Exception ex)

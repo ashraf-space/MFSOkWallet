@@ -36,5 +36,19 @@ export class BillCollectionCommonService {
                 return model;
             }));
     }
+
+    GetFeeInfo(billCollectionCommonModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/GetFeeInfo', billCollectionCommonModel)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+    confirmBill(billCollectionCommonModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/ConfirmBill', billCollectionCommonModel)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
    
 }

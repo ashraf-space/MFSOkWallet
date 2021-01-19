@@ -29,5 +29,6 @@ namespace MFS.TransactionService.Models
         public string entry_user { get; set; }
         public string enterprize_AccCode { get; set; }
         public double refund_amt { get; set; }
+        public string  disburse_type { get; set; }
     }
 }

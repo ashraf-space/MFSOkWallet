@@ -34,5 +34,7 @@ namespace MFS.SecurityService.Models
         public string UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
 
+        public string Branch_Name { get; set; }
+
     }
 }

@@ -49,15 +49,34 @@ export class MerchantUserComponent implements OnInit {
             { label: 'Distributor', value: 'D' },
         ]
         this.getMerchantList();
-        this.entityId = this.route.snapshot.paramMap.get('id');
+        this.entityId = +this.route.snapshot.paramMap.get('id');
         if (this.entityId) {
             this.isEditMode = true;
-            //this.getMerChantUserByMphone();
+            this.getMerChantUserById();
             this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
         }
         else {
             this.merchantUserModel = {};
         }
+    }
+    getMerChantUserById() {
+        this.isLoading = true;
+        this.merchantService.getMerChantUserById(this.entityId)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    if (data) {
+                        this.merchantUserModel = data;
+                        this.merchantUserModel.password = data.plainPassword;
+                        this.merchantUserModel.confirmpassword = data.plainPassword;
+                        this.isLoading = false;
+                    }
+
+                },
+                error => {
+                    console.log(error);
+                }
+            )
     }
     checkMphoneAlreadyExist(): any {        
         if (this.merchantUserModel.mobileNo.toString().substring(0, 2) == "01" && this.merchantUserModel.mobileNo.toString().substring(0, 3) != "012") {
@@ -121,7 +140,7 @@ export class MerchantUserComponent implements OnInit {
             )
     }
     onMerchantUserSave(event) {
-        if ((this.merchantUserModel.password && this.merchantUserModel.confirmpassword) && (this.merchantUserModel.password === this.merchantUserModel.confirmpassword)) {
+        if ((this.merchantUserModel.password && this.merchantUserModel.confirmpassword && this.merchantUserModel.username) && (this.merchantUserModel.password === this.merchantUserModel.confirmpassword)) {
             this.merchantUserModel.insertBy = this.currentUserModel.user.username;
             if (this.entityId) {
                 this.merchantUserModel.updateBy = this.currentUserModel.user.username;
@@ -146,20 +165,20 @@ export class MerchantUserComponent implements OnInit {
                     });
         }
         else {
-            this.messageService.add({ severity: 'error', summary: 'Input Password', detail: 'Please Input Password Correctly' });
+            this.messageService.add({ severity: 'error', summary: 'Input Password', detail: 'Please Input Information Correctly' });
         }
 
     }
 
     checkMerchantUserAlreadyExist() {
         this.isLoading = true;
-        this.merchantService.getMerChantUserByMphone(this.merchantUserModel.mphone)
+        this.merchantService.checkMerchantUserAlreadyExist(this.merchantUserModel.username)
             .pipe(first())
             .subscribe(
                 data => {
                     if (data) {
                         this.isLoading = false;
-                        this.merchantUserModel.mphone = '';
+                        this.merchantUserModel.username = '';
                         this.messageService.add({ severity: 'error', summary: 'Exist', detail: 'User is already exist' });
                     }
                     else {

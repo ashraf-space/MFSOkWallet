@@ -19,6 +19,9 @@ namespace MFS.ReportingService.Models
 		public string Name { get; set; }
 		public string CardNo { get; set; }
 		public string RoutingNo { get; set; }
+		public string BranchNo { get; set; }
+		public string PaidBy { get; set; }
+		public string ExtraId { get; set; }
 		public decimal Amount { get; set; }
 
 

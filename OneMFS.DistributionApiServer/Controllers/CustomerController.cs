@@ -49,7 +49,15 @@ namespace OneMFS.DistributionApiServer.Controllers
 		{
 			try
 			{
-				return _customerSevice.SaveCustomer(aReginfo, isEdit, evnt);
+				var result = _customerSevice.SaveCustomer(aReginfo, isEdit, evnt);
+				if(result.ToString()== "Unauthorized")
+				{
+					return  StatusCode(StatusCodes.Status401Unauthorized);
+				}
+				else
+				{
+					return result;
+				}
 			}
 			catch (Exception ex)
 			{

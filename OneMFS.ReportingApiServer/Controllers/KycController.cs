@@ -36,6 +36,13 @@ namespace OneMFS.ReportingApiServer.Controllers
 			return service.GetCurrentBalance(mphone);
 		}
 		[HttpGet]
+		[Route("api/Kyc/GetComissionBalance")]
+		public object GetComissionBalance(string mphone)
+		{
+			return service.GetComissionBalance(mphone);
+		}
+		
+		[HttpGet]
 		[AcceptVerbs("GET", "POST")]
 		[Route("api/Kyc/GetMerchantKycInfoByMphone")]
 		public object GetMerchantKycInfoByMphone(string mphone)

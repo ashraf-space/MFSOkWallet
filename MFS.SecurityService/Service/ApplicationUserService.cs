@@ -15,7 +15,7 @@ namespace MFS.SecurityService.Service
         string GetTransAmtLimit(string createUser);
 		object IsProceedToController(List<string> userInfos);
 		object GetAppUserListDdl();
-        object GetAllApplicationUserList();
+        object GetAllApplicationUserList(string roleName);
         PasswordPolicy GetPasswordPolicy();
     }
 
@@ -101,9 +101,9 @@ namespace MFS.SecurityService.Service
 			return usersRepo.GetAppUserListDdl();
 		}
 
-        public object GetAllApplicationUserList()
+        public object GetAllApplicationUserList(string roleName)
         {
-            return usersRepo.GetAllApplicationUserList();
+            return usersRepo.GetAllApplicationUserList(roleName);
         }
 
         public PasswordPolicy GetPasswordPolicy()

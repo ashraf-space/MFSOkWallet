@@ -32,7 +32,13 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = @"Select * from " + mainDbUser.DbUser + "FEATURE_PAY where FEATURE_ID= " + featureId;
+                    //string query = @"Select * from " + mainDbUser.DbUser + "FEATURE_PAY where FEATURE_ID= " + featureId;
+                    string query = @"Select fp.*, 
+                        case  fc.name when 'Utility Bill Collection' then 11
+                          when 'Tuition Fee Collection' then 12
+                            when 'Credit Card Bill Collection' then 13
+                              when 'Other Bill/Fee Collection' then 14
+                          end as ParentPenuId from " + mainDbUser.DbUser + "FEATURE_PAY fp inner join " + mainDbUser.DbUser + "feature f on fp.feature_id = f.id inner join" + mainDbUser.DbUser + "feature_category fc on f.category_id = fc.id where FEATURE_ID= " + featureId;
                     var result = connection.Query<dynamic>(query).FirstOrDefault();
                     this.CloseConnection(connection);
                     return result;
@@ -52,7 +58,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = @"Select name as label,subMenuId as value from " + mainDbUser.DbUser + "feature_pay_submenu where FEATURE_ID= " + featureId;
+                    string query = @"Select name as label,subMenuId as value from " + mainDbUser.DbUser + "feature_pay_submenu where FEATURE_ID= " + featureId + " order by serial,name";
                     var result = connection.Query<CustomDropDownModel>(query);
                     this.CloseConnection(connection);
                     return result;

@@ -12,7 +12,7 @@
   <xs:element name="DistPortalDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DistPortalDataset" msprop:Generator_UserDSName="DistPortalDataset">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="AgentDsrList" msprop:Generator_TableClassName="AgentDsrListDataTable" msprop:Generator_TableVarName="tableAgentDsrList" msprop:Generator_RowChangedName="AgentDsrListRowChanged" msprop:Generator_TablePropName="AgentDsrList" msprop:Generator_RowDeletingName="AgentDsrListRowDeleting" msprop:Generator_RowChangingName="AgentDsrListRowChanging" msprop:Generator_RowEvHandlerName="AgentDsrListRowChangeEventHandler" msprop:Generator_RowDeletedName="AgentDsrListRowDeleted" msprop:Generator_RowClassName="AgentDsrListRow" msprop:Generator_UserTableName="AgentDsrList" msprop:Generator_RowEvArgName="AgentDsrListRowChangeEvent">
+        <xs:element name="AgentDsrList" msprop:Generator_TableClassName="AgentDsrListDataTable" msprop:Generator_TableVarName="tableAgentDsrList" msprop:Generator_TablePropName="AgentDsrList" msprop:Generator_RowDeletingName="AgentDsrListRowDeleting" msprop:Generator_RowChangingName="AgentDsrListRowChanging" msprop:Generator_RowEvHandlerName="AgentDsrListRowChangeEventHandler" msprop:Generator_RowDeletedName="AgentDsrListRowDeleted" msprop:Generator_UserTableName="AgentDsrList" msprop:Generator_RowChangedName="AgentDsrListRowChanged" msprop:Generator_RowEvArgName="AgentDsrListRowChangeEvent" msprop:Generator_RowClassName="AgentDsrListRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="AgentName" msprop:Generator_ColumnVarNameInTable="columnAgentName" msprop:Generator_ColumnPropNameInRow="AgentName" msprop:Generator_ColumnPropNameInTable="AgentNameColumn" msprop:Generator_UserColumnName="AgentName" type="xs:string" minOccurs="0" />
@@ -23,6 +23,16 @@
               <xs:element name="ThanaName" msprop:Generator_ColumnVarNameInTable="columnThanaName" msprop:Generator_ColumnPropNameInRow="ThanaName" msprop:Generator_ColumnPropNameInTable="ThanaNameColumn" msprop:Generator_UserColumnName="ThanaName" type="xs:string" minOccurs="0" />
               <xs:element name="Balance" msprop:Generator_ColumnVarNameInTable="columnBalance" msprop:Generator_ColumnPropNameInRow="Balance" msprop:Generator_ColumnPropNameInTable="BalanceColumn" msprop:Generator_UserColumnName="Balance" type="xs:string" minOccurs="0" />
               <xs:element name="Category" msprop:Generator_ColumnVarNameInTable="columnCategory" msprop:Generator_ColumnPropNameInRow="Category" msprop:Generator_ColumnPropNameInTable="CategoryColumn" msprop:Generator_UserColumnName="Category" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CustomerRegDistPort" msprop:Generator_TableClassName="CustomerRegDistPortDataTable" msprop:Generator_TableVarName="tableCustomerRegDistPort" msprop:Generator_TablePropName="CustomerRegDistPort" msprop:Generator_RowDeletingName="CustomerRegDistPortRowDeleting" msprop:Generator_RowChangingName="CustomerRegDistPortRowChanging" msprop:Generator_RowEvHandlerName="CustomerRegDistPortRowChangeEventHandler" msprop:Generator_RowDeletedName="CustomerRegDistPortRowDeleted" msprop:Generator_UserTableName="CustomerRegDistPort" msprop:Generator_RowChangedName="CustomerRegDistPortRowChanged" msprop:Generator_RowEvArgName="CustomerRegDistPortRowChangeEvent" msprop:Generator_RowClassName="CustomerRegDistPortRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CustomerAcc" msprop:Generator_ColumnVarNameInTable="columnCustomerAcc" msprop:Generator_ColumnPropNameInRow="CustomerAcc" msprop:Generator_ColumnPropNameInTable="CustomerAccColumn" msprop:Generator_UserColumnName="CustomerAcc" type="xs:string" minOccurs="0" />
+              <xs:element name="AgentAcc" msprop:Generator_ColumnVarNameInTable="columnAgentAcc" msprop:Generator_ColumnPropNameInRow="AgentAcc" msprop:Generator_ColumnPropNameInTable="AgentAccColumn" msprop:Generator_UserColumnName="AgentAcc" type="xs:string" minOccurs="0" />
+              <xs:element name="AccOpenDate" msprop:Generator_ColumnVarNameInTable="columnAccOpenDate" msprop:Generator_ColumnPropNameInRow="AccOpenDate" msprop:Generator_ColumnPropNameInTable="AccOpenDateColumn" msprop:Generator_UserColumnName="AccOpenDate" type="xs:string" minOccurs="0" />
+              <xs:element name="AgentName" msprop:Generator_ColumnVarNameInTable="columnAgentName" msprop:Generator_ColumnPropNameInRow="AgentName" msprop:Generator_ColumnPropNameInTable="AgentNameColumn" msprop:Generator_UserColumnName="AgentName" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

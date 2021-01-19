@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { KycService } from 'src/app/services/distribution/kyc.service';
 import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from 'src/app/shared/_services';
 
 @Component({
   selector: 'app-credit-beftn',
@@ -13,9 +14,14 @@ import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class CreditBeftnComponent implements OnInit {
 
     model: any;
+    currentUserModel: any = {};
     constructor(private mfsUtilityService: MfsUtilityService,
         private kycReportService: KycReportService,
+        private authService: AuthenticationService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
+        this.authService.currentUser.subscribe(x => {
+            this.currentUserModel = x;
+        });
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -27,6 +33,7 @@ export class CreditBeftnComponent implements OnInit {
     getReportParam() {
         if (this.validate()) {
             var obj: any = {};
+            obj.branchCode = this.currentUserModel.user.branchCode;
             if (this.model.fromDate && this.model.toDate) {
                 obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
                 obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);

@@ -21,5 +21,16 @@ namespace MFS.ReportingService.Models
 		public string Gateway { get; set; } 
 		public decimal RevenueStampAmount { get; set; }
 		public decimal VatOnCharge { get; set; }
+		public string BranchCode { get; set; }
+		public string PaidBy { get; set; }		
+		public string ExtraId { get; set; }
+		public string CustomerNo { get; set; }
+		public string MeterNo { get; set; }
+		public decimal EnergyCost { get; set; }
+		public decimal Penalty { get; set; }
+		public decimal Sequences { get; set; }
+		public decimal TotalFee { get; set; }
+		public string OrderId { get; set; }
+		public decimal Amount { get; set; }
 	}
 }

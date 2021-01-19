@@ -250,6 +250,7 @@
     <Compile Include="Controllers\ExcelUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KycController.cs" />
+    <Compile Include="Controllers\LankaBanglaController.cs" />
     <Compile Include="Controllers\MasterWalletController.cs" />
     <Compile Include="Controllers\ReportInfoController.cs" />
     <Compile Include="Controllers\TransactionController.cs" />
@@ -266,6 +267,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DistPortalDataset.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSet\LankaBanglaDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LankaBanglaDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\DataSet\MerchantDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -327,9 +333,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Reports\DataSet\MFSDataSet.xsc">
-      <DependentUpon>MFSDataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Reports\DataSet\MerchantDataSet.xsc">
       <DependentUpon>MerchantDataSet.xsd</DependentUpon>
     </Content>
@@ -344,6 +347,17 @@
     <Content Include="Reports\DataSet\DistPortalDataset.xss">
       <DependentUpon>DistPortalDataset.xsd</DependentUpon>
     </Content>
+    <Content Include="Reports\DataSet\LankaBanglaDataSet.xsc">
+      <DependentUpon>LankaBanglaDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSet\LankaBanglaDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LankaBanglaDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSet\LankaBanglaDataSet.xss">
+      <DependentUpon>LankaBanglaDataSet.xsd</DependentUpon>
+    </Content>
     <None Include="Reports\DataSet\MerchantDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -352,19 +366,22 @@
     <Content Include="Reports\DataSet\MerchantDataSet.xss">
       <DependentUpon>MerchantDataSet.xsd</DependentUpon>
     </Content>
-    <None Include="Reports\DataSet\MFSDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>MFSDataSet.Designer.cs</LastGenOutput>
-    </None>
-    <Content Include="Reports\DataSet\MFSDataSet.xss">
-      <DependentUpon>MFSDataSet.xsd</DependentUpon>
-    </Content>
     <Content Include="Reports\DataSet\Payment.xsc">
       <DependentUpon>Payment.xsd</DependentUpon>
     </Content>
     <Content Include="Reports\DataSet\MFSV2DataSet.xsc">
       <DependentUpon>MFSV2DataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Reports\DataSet\MFSDataSet.xsc">
+      <DependentUpon>MFSDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\DataSet\MFSDataSet.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>MFSDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\DataSet\MFSDataSet.xss">
+      <DependentUpon>MFSDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Reports\DataSet\MFSV2DataSet.xsd">
       <SubType>Designer</SubType>
@@ -386,6 +403,13 @@
   <ItemGroup>
     <EmbeddedResource Include="Reports\RDLC\RPTAccStatMst.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTLbDpsInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTLbcBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTNidBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDpdckBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl_Excel.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDist_CustReg.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAgentDsr.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTNescoMDS.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTNescoDSS.rdlc" />

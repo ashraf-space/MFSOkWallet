@@ -21,6 +21,8 @@ namespace MFS.SecurityService.Service
 		AuthClientUser ClientLogIn(LoginModel model);
 		object Save(MerchantUser userDetails);
 		dynamic GetRegInfoByMphone(string mobileNo);
+		object GetMerChantUserById(string id);
+		object CheckMerchantUserAlreadyExist(string username);
 	}
 
 	public class MerchantUserService : BaseService<MerchantUser>, IMerchantUserService
@@ -66,38 +68,7 @@ namespace MFS.SecurityService.Service
 			return AuthClientUser;
 		}
 
-		//      public string GetTransAmtLimit(string createUser)
-		//      {
-		//          try
-		//          {
-		//              return usersRepo.GetTransAmtLimit(createUser);
-		//          }
-		//          catch (Exception)
-		//          {
-
-		//              throw;
-		//          }
-		//      }
-
-		//public object IsProceedToController(List<string> userInfos)
-		//{
-		//	var userId = userInfos[0];
-		//	var roleId = userInfos[1];
-		//	var userInfo = (Tuple<string,string>) usersRepo.IsProceedToController(userInfos);
-		//	if(userInfo.Item1 != roleId || userInfo.Item2 == "Y")
-		//	{
-		//		return false;
-		//	}
-		//	else
-		//	{
-		//		return true;
-		//	}
-		//}
-
-		//public object GetAppUserListDdl()
-		//{
-		//	return usersRepo.GetAppUserListDdl();
-		//}
+		
 
 		public AuthClientUser ClientLogIn(LoginModel model)
 		{
@@ -137,7 +108,7 @@ namespace MFS.SecurityService.Service
 			}
 			catch (Exception ex)
 			{
-				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, null);
+				throw ex;
 			}
 		}
 		private MerchantUser generateSecuredCredentials(MerchantUser model)
@@ -163,6 +134,16 @@ namespace MFS.SecurityService.Service
 		public dynamic GetRegInfoByMphone(string mobileNo)
 		{
 			return usersRepo.GetRegInfoByMphone(mobileNo);
+		}
+
+		public object GetMerChantUserById(string id)
+		{
+			return usersRepo.GetMerChantUserById(id);
+		}
+
+		public object CheckMerchantUserAlreadyExist(string username)
+		{
+			return usersRepo.CheckMerchantUserAlreadyExist(username);
 		}
 	}
 }

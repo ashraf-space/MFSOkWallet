@@ -772,11 +772,18 @@ namespace OneMFS.TransactionApiServer.Controllers
                         branchCashIn.TransNo = _distributorDepositService.GetTransactionNo();
                         string successOrErrorMsg = _fundTransferService.saveBranchCashIn(branchCashIn).ToString();
 
+                        string response = null;
                         if (successOrErrorMsg == "1")
                         {
-                            //Insert into audit trial audit and detail                      
-                            _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In (Deposit)", branchCashIn.Mphone, "Save Successfully!");
+                            response = "Save Successfully!";
                         }
+                        else
+                        {
+                            response = successOrErrorMsg;
+                        }
+
+                        //Insert into audit trial audit and detail                      
+                        _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Brach Cash In (Deposit)", branchCashIn.Mphone, response);
 
 
                         return successOrErrorMsg;
@@ -970,7 +977,7 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                return _fundTransferService.CheckData(transNo,mphone,amount);
+                return _fundTransferService.CheckData(transNo, mphone, amount);
             }
             catch (Exception ex)
             {
@@ -1156,7 +1163,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                     //Insert into audit trial audit and detail
                     item.Status = "M";
                     _auditTrailService.InsertModelToAuditTrail(item, entryBy, 9, 3, "Commission Entry", item.Mphone, "Saved Successfully!");
-                }               
+                }
                 return true;
             }
             catch (Exception ex)

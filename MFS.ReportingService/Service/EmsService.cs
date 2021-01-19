@@ -11,7 +11,7 @@ namespace MFS.ReportingService.Service
 {
 	public interface IEmsService:IBaseService<EmsReport>
 	{
-		List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId);
+		List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId, string branchCode);
 	}
 	public class EmsService : BaseService<EmsReport>, IEmsService
 	{
@@ -20,9 +20,9 @@ namespace MFS.ReportingService.Service
 		{
 			this.emsRepository = _emsRepository;
 		}
-		public List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId)
+		public List<EmsReport> GetEmsReport(string fromDate, string toDate, string transNo, string studentId, string schoolId, string branchCode)
 		{
-			return emsRepository.GetEmsReport(fromDate, toDate, transNo, studentId, schoolId);
+			return emsRepository.GetEmsReport(fromDate, toDate, transNo, studentId, schoolId,branchCode);
 		}
 	}
 }

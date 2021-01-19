@@ -4,6 +4,8 @@ import { first } from 'rxjs/operators';
 import { KycService } from 'src/app/services/distribution/kyc.service';
 import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from 'src/app/shared/_services';
+
 @Component({
   selector: 'app-rpt-ems',
   templateUrl: './rpt-ems.component.html',
@@ -16,9 +18,14 @@ export class RptEmsComponent implements OnInit {
     gatewayList: any;
     catTypeList: any;
     isDateDisabled: boolean = false;
+    currentUserModel: any = {};
     constructor(private mfsUtilityService: MfsUtilityService,
         private kycReportService: KycReportService,
+        private authService: AuthenticationService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
+        this.authService.currentUser.subscribe(x => {
+            this.currentUserModel = x;
+        });
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -52,7 +59,7 @@ export class RptEmsComponent implements OnInit {
             else {
                 obj.schoolId = this.model.schoolId
             }
-            
+            obj.branchCode = this.currentUserModel.user.branchCode;
             return obj;
         }
         else {

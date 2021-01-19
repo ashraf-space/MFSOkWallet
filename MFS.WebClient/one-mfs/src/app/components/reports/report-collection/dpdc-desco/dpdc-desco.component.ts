@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { KycService } from 'src/app/services/distribution/kyc.service';
 import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { AuthenticationService } from 'src/app/shared/_services';
 
 @Component({
   selector: 'app-dpdc-desco',
@@ -18,9 +19,14 @@ export class DpdcDescoComponent implements OnInit {
     gatewayList: any;
     catTypeList: any;
     isDateDisabled: boolean = false;
+    currentUserModel: any = {};
     constructor(private mfsUtilityService: MfsUtilityService,
+        private authService: AuthenticationService,
         private kycReportService: KycReportService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
+        this.authService.currentUser.subscribe(x => {
+            this.currentUserModel = x;
+        });
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -30,7 +36,8 @@ export class DpdcDescoComponent implements OnInit {
 
     ngOnInit() {
         this.utilityList = [
-            { label: 'DPDC', value: 'dpdc' },
+            { label: 'DPDC Postpaid', value: 'dpdc' },
+            { label: 'DPDC Prepaid', value: 'dpdck' },
             { label: 'DESCO', value: 'desco' },
             { label: 'WASA', value: 'wasa' },
             { label: 'JALALABAD GAS', value: 'jgtd' }
@@ -38,12 +45,14 @@ export class DpdcDescoComponent implements OnInit {
         this.gatewayList = [
             { label: 'USSD', value: 'U' },
             { label: 'APP', value: 'A' },
-            { label: 'ALL', value: 'All' }  
+            { label: 'ALL', value: 'All' },
+            { label: 'None', value: 'All' }  
         ];
         this.catTypeList = [
             { label: 'Agent', value: 'A' },
             { label: 'Customer', value: 'C' },
-            { label: 'ALL', value: 'All' }  
+            { label: 'ALL', value: 'All' },
+            { label: 'None', value: 'All' }  
         ];
         this.dateTypeList = [
             { label: 'EOD Date', value: 'eod' },
@@ -64,6 +73,7 @@ export class DpdcDescoComponent implements OnInit {
             obj.gateway = this.model.gateway;
             obj.catType = this.model.catType;
             obj.dateType = this.model.dateType;
+            obj.branchCode = this.currentUserModel.user.branchCode;
             return obj;
         }
         else {

@@ -214,6 +214,9 @@ import { NidPaymentCollectionComponent } from './components/transaction/nid-paym
 import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
 import { KycCbsComponent } from './components/distribution/customer/kyc-cbs/kyc-cbs.component';
 import { NescoBillRptComponent } from './components/reports/report-collection/bill-collection/nesco-bill-rpt/nesco-bill-rpt.component';
+import { ComBillColComponent } from './components/reports/report-collection/bill-collection/com-bill-col/com-bill-col.component';
+import { DisbursementUserListComponent } from './components/security/disbursement-user/disbursement-user-list/disbursement-user-list.component';
+import { DisbursementUserAddEditComponent } from './components/security/disbursement-user/disbursement-user-add-edit/disbursement-user-add-edit.component';
 
 @NgModule({
     imports: [
@@ -425,7 +428,10 @@ import { NescoBillRptComponent } from './components/reports/report-collection/bi
         NidPaymentCollectionComponent,
         BillCollectionCommonComponent,
         KycCbsComponent,
-        NescoBillRptComponent
+        NescoBillRptComponent,
+        ComBillColComponent,
+        DisbursementUserListComponent,
+        DisbursementUserAddEditComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

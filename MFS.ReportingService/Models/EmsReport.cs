@@ -18,5 +18,8 @@ namespace MFS.ReportingService.Models
 		public string SchoolCode { get; set; }
 		public string CompanyName { get; set; }
 		public string Gateway { get; set; }
+		public string BranchCode { get; set; }
+		public string PaidBy { get; set; }
+		public string ExtraId { get; set; }
 	}
 }

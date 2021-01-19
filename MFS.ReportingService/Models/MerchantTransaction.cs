@@ -17,5 +17,6 @@ namespace MFS.ReportingService.Models
         public string TransFrom { get; set; }
         public string BalanceType { get; set; }
         public double AvailableBalance { get; set; }
-    }
+		public string BillNo { get; set; }
+	}
 }

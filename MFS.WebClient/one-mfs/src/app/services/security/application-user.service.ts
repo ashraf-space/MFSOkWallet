@@ -28,8 +28,8 @@ export class ApplicationUserService {
             }));
     }
 
-    getApplicationUserWorklist() {
-        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/GetAllApplicationUserList')
+    getApplicationUserWorklist(roleName: string) {
+        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/GetAllApplicationUserList?roleName=' + roleName)
             .pipe(map(featureCategoryList => {
                 return featureCategoryList;
             }));
