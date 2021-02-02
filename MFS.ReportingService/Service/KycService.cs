@@ -1,8 +1,11 @@
 ﻿using MFS.ReportingService.Models;
 using MFS.ReportingService.Repository;
 using OneMFS.SharedResources;
+using QRCoder;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +26,8 @@ namespace MFS.ReportingService.Service
 		List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo);
 		object GetComissionBalance(string mphone);
 		List<RegInfoReport> GetRegReportByCategory(string fromDate, string toDate, string regSource, string status, string accCategory, string regStatus);
+		QrCode GenerateQrCode(string mphone);
+		string GetCompanyNameByMphone(string mphone);
 	}
 	public class KycService : BaseService<RegistrationReport>, IKycService
 	{
@@ -90,6 +95,43 @@ namespace MFS.ReportingService.Service
 		public object GetComissionBalance(string mphone)
 		{
 			return kycRepository.GetComissionBalance(mphone);
+		}
+
+		public QrCode GenerateQrCode(string mphone)
+		{
+			try
+			{
+
+				QRCodeGenerator qrGenerator = new QRCodeGenerator();
+				QRCodeData qrCodeData = qrGenerator.CreateQrCode(mphone.Trim(),
+				QRCodeGenerator.ECCLevel.Q);
+				QRCode qrCode = new QRCode(qrCodeData);
+				Bitmap qrCodeImage = qrCode.GetGraphic(9);
+				//return Convert.ToBase64String(BitmapToBytes(qrCodeImage));
+				return BitmapToBytes(qrCodeImage);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+		}
+		private QrCode BitmapToBytes(Bitmap img)
+		{
+			using (MemoryStream stream = new MemoryStream())
+			{
+				img.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+				QrCode qrCode = new QrCode
+				{
+					QrString = stream.ToArray()
+				};
+				return qrCode;
+			}
+		}
+
+		public string GetCompanyNameByMphone(string mphone)
+		{
+			return kycRepository.GetCompanyNameByMphone(mphone);
 		}
 	}
 }

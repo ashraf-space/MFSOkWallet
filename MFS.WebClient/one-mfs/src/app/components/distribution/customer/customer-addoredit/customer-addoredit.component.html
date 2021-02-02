@@ -1,5 +1,5 @@
 <p-messages [(value)]="msgs" *ngIf="showDuplicateMsg"></p-messages>
-<p-steps [model]="reginfo.items" [(activeIndex)]="reginfo.activeIndex"  [readonly]="!reginfo.isEditMode"></p-steps>
+<p-steps [model]="reginfo.items" [(activeIndex)]="reginfo.activeIndex" [readonly]="!reginfo.isEditMode"></p-steps>
 <mfs-loader *ngIf="reginfo.isLoading"></mfs-loader>
 <fieldset [disabled]="reginfo.isRegPermit ? 'disabled' : null">
 	<div class="form-elements">
@@ -15,7 +15,7 @@
 						<p-selectButton [options]="reginfo.kycTypes" [(ngModel)]="reginfo.selectedKycType" [disabled]="reginfo.isRegPermit" (onChange)="switchInputMethod()" [style]="{color: 'white'}"></p-selectButton>
 					</div>
 				</div>
-				</div>
+			</div>
 		</p-card>
 		<!--Primary Information-->
 		<div *ngIf="reginfo.activeIndex==0 && reginfo.selectedKycType==='K'">
@@ -469,7 +469,7 @@
 
 <app-generic-modal [initiateModal]="reginfo.showCbsModal" [header]="'CBS Information'" [hideConfirm]="true" (onShow)="ngOnInit()" (onDestroy)="reginfo.showCbsModal=false">
 	<div style="margin-bottom:8rem">
-		<app-kyc-cbs></app-kyc-cbs>
+		<app-kyc-cbs (onCbsDataUpdate)="updateValueFromCbs($event)"></app-kyc-cbs>
 	</div>
 </app-generic-modal>
 

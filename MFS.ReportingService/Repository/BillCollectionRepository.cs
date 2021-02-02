@@ -99,7 +99,7 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("P_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, gateway == "All" ? null : gateway);
 					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
 					dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
-					//dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
+					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
 					List<BillCollection> result = SqlMapper.Query<BillCollection>(connection, dbUser + "RPT_DESCODPDCBILL", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
@@ -129,7 +129,7 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("P_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, gateway == "All" ? null : gateway);
 					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
 					dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
-					//dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
+					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
 					List<JalalabadGasBillPayment> result = SqlMapper.Query<JalalabadGasBillPayment>(connection,
@@ -157,7 +157,7 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
 					dyParam.Add("P_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, gateway == "All" ? null : gateway);
 					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
-					//dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
+					dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
 					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
 
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);

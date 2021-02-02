@@ -92,14 +92,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 				using (var httpClient = new HttpClient())
 				{
 					CbsApiInfo apiInfo = new CbsApiInfo();
+					CbsCustomerInfo cbsCustomerInfo = new CbsCustomerInfo();
 					dynamic apiResponse = null;
 					using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + mphone))
 					{
 						apiResponse = await response.Content.ReadAsStringAsync();
-						var result = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
+					    cbsCustomerInfo = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
 
 					}
-					return apiResponse;
+					Reginfo reginfo = new Reginfo
+					{
+						Name = "Ashraf",
+						Mphone = "01682393688",
+						FatherName = "Shahjahan",
+						MotherName = "Shahana Akter",
+						PerAddr = "Shantibagh"
+					};
+					return reginfo;
 				}
 			}
 			catch (Exception ex)

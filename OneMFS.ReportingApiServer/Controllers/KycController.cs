@@ -5,6 +5,7 @@ using Microsoft.Reporting.WebForms;
 using OneMFS.ReportingApiServer.Utility;
 using OneMFS.SharedResources.CommonService;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -277,6 +278,42 @@ namespace OneMFS.ReportingApiServer.Controllers
 			MFSFileManager fileManager = new MFSFileManager();
 			return reportUtility.GenerateReport(reportViewer, model.FileType);			
 
+		}
+		[HttpGet]
+		[AcceptVerbs("GET", "POST")]
+		
+		[Route("api/Kyc/GenerateQrReceipt")]
+		public object GenerateQrReceipt(string mphone)
+		{
+			try
+			{
+				QrCode qrCode = service.GenerateQrCode(mphone);
+				List<QrCode> qrCodes = new List<QrCode>();
+				qrCodes.Add(qrCode);
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/MerchantSlip.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetGenerateQrReceiptParameter(mphone));
+				ReportDataSource A = new ReportDataSource("QrCode", qrCodes);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, "PDF");
+			}
+			//string mphone = "01682393688";
+			catch(Exception ex)
+			{
+				return ex.ToString();
+			}
+
+		}
+
+		private IEnumerable<ReportParameter> GetGenerateQrReceiptParameter(string mphone)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			string companyName = service.GetCompanyNameByMphone(mphone);
+			paraList.Add(new ReportParameter("clientName", companyName));
+			paraList.Add(new ReportParameter("clientMphone", mphone));
+			return paraList;
 		}
 	}
 

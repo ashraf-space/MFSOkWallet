@@ -97,6 +97,11 @@
     <Reference Include="Oracle.ManagedDataAccess, Version=2.0.19.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.Core.2.19.70\lib\netstandard2.0\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.1\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -202,6 +207,7 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
@@ -407,6 +413,7 @@
     <EmbeddedResource Include="Reports\RDLC\RPTLbcBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTNidBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdckBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\MerchantSlip.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl_Excel.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDist_CustReg.rdlc" />

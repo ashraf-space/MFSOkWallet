@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,Output,EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { error } from 'selenium-webdriver';
 import { first } from 'rxjs/operators';
@@ -17,6 +17,9 @@ import { Reginfo } from '../../../../shared/_models/reginfo';
 })
 export class KycCbsComponent implements OnInit {
     public reginfo: Reginfo;
+
+    @Output() onCbsDataUpdate = new EventEmitter<any>();
+
     constructor(private router: Router,
         private route: ActivatedRoute,
         private messageService: MessageService,
@@ -24,7 +27,7 @@ export class KycCbsComponent implements OnInit {
         private customerService: CustomerService,
         private mfsUtilityService: MfsUtilityService,
         private kycService: KycService) {
-        this.reginfo = new Reginfo();       
+        this.reginfo = new Reginfo();     
         this.authService.currentUser.subscribe(x => {
             this.reginfo.currentUserModel = x;
         });        
@@ -37,7 +40,8 @@ export class KycCbsComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.reginfo.regInfoModel.distCode = data;
+                    //this.reginfo.regInfoModel.distCode = data;
+                    this.onCbsDataUpdate.emit(data);
                 },
                 error => {
                     console.log(error);

@@ -597,4 +597,9 @@ export class CustomerAddoreditComponent implements OnInit {
                     console.log(error);
                 });
     }
+    updateValueFromCbs(event) {
+        this.reginfo.regInfoModel = event;
+        this.reginfo.showCbsModal = false;
+        this.reginfo.selectedKycType = 'K';
+    }
 }

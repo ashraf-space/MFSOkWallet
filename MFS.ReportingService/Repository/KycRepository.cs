@@ -27,6 +27,7 @@ namespace MFS.ReportingService.Repository
 		List<RegInfoReport> GetRegReportByCategory(string fromDate, string toDate, string regSource, string status, string accCategory, string regStatus);
 		object GetCurrentBalance(string mphone);
 		object GetComissionBalance(string mphone);
+		string GetCompanyNameByMphone(string mphone);
 	}
     public class KycRepository : BaseRepository<RegistrationReport>, IKycRepository
     {
@@ -290,6 +291,30 @@ namespace MFS.ReportingService.Repository
 					var details = ((IDictionary<string, object>)result);
 					var values = details[Heading[0]];
 					return values;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public string GetCompanyNameByMphone(string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"Select NVL(NVL(COMPANY_NAME, NAME), ACCOUNT_NAME) as ""Name""  from " + dbUser + "reginfo t where t.mphone= '" + mphone + "' ";
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					var Heading = ((IDictionary<string, object>)result).Keys.ToArray();
+					var details = ((IDictionary<string, object>)result);
+					var values = details[Heading[0]];
+					return values.ToString();
 				}
 
 			}
