@@ -1,0 +1,21 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+    <div class="p-grid">
+        <div class="p-col-4">
+            <label for="float-input" class="col-form-label">Year</label>
+            <p-dropdown [options]="yearList" placeholder="Select Year" [showClear]="true" [(ngModel)]="model.year" 
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+        </div>
+        <div class="p-col-4">
+            <label for="float-input" class="col-form-label">Month</label>
+            <p-dropdown [options]="monthList" placeholder="Select Month" [showClear]="true" [(ngModel)]="model.month"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+        </div>
+
+        
+
+    </div>
+
+</div>

@@ -55,7 +55,10 @@
     <Compile Include="Models\BalanceInfo.cs" />
     <Compile Include="Models\CbsApiInfo.cs" />
     <Compile Include="Models\CbsCustomerInfo.cs" />
+    <Compile Include="Models\CBSdbAccountInfoRes.cs" />
+    <Compile Include="Models\CLoseReginfo.cs" />
     <Compile Include="Models\CompanyAndHolderName.cs" />
+    <Compile Include="Models\DeviceInformation.cs" />
     <Compile Include="Models\DistributorReplace.cs" />
     <Compile Include="Models\DistrictLocation.cs" />
     <Compile Include="Models\DormantAcc.cs" />

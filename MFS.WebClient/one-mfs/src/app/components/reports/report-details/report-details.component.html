@@ -1,32 +1,32 @@
 <mfs-pdf-viewer [src]="pdf" #mfsPdfViewer></mfs-pdf-viewer>
 <div class="p-grid">
-	<div class="p-col-12">
-		<p-card>
-			<div class="p-grid">
-				<div class="p-col-2">
-					<button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
-				</div>
-				<div class="p-col-7">
-					<h5 style="text-align:center">{{model.ReportName}}</h5>
-				</div>
-				<div class="p-col-3">
-					<p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<h6 class="report-description">
-						{{model.ReportDescription}}
-					</h6>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<div class="p-grid">
-						<div class="p-col-12">
-							<!--<div [ngSwitch]="model.Id" *ngIf="model.Id">-->
+    <div class="p-col-12">
+        <p-card>
+            <div class="p-grid">
+                <div class="p-col-2">
+                    <button class="btn btn-danger btn-reverse btn-sm btn-block" (click)="cancel()"><i class="fas fa-caret-left"></i> Back</button>
+                </div>
+                <div class="p-col-7">
+                    <h5 style="text-align:center">{{model.ReportName}}</h5>
+                </div>
+                <div class="p-col-3">
+                    <p-selectButton [options]="fileOptionList" [(ngModel)]="reportObject.fileType"></p-selectButton>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <h6 class="report-description">
+                        {{model.ReportDescription}}
+                    </h6>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <!--<div [ngSwitch]="model.Id" *ngIf="model.Id">-->
 							<div [ngSwitch]="model.CallingApi" *ngIf="model.CallingApi">
 								<!--<div *ngSwitchCase="1">
 		<transaction-history-report #form></transaction-history-report>
@@ -113,18 +113,51 @@
 								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/CommonBillReport'">
 									<app-com-bill-col #form></app-com-bill-col>
 								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/SourseWiseRegistration'">
+									<app-sourse-wise-registration #form></app-sourse-wise-registration>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/BranchWiseCount'">
+									<app-branch-wise-count #form></app-branch-wise-count>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/MfsStatement'">
+									<app-mfs-statement #form></app-mfs-statement>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/JgBillDailyDetails'">
+									<app-jgbill-daily-details #form></app-jgbill-daily-details>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/CreditCommon'">
+									<app-credit-common #form></app-credit-common>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/MmsReport'">
+									<app-rpt-mms #form></app-rpt-mms>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/GenerateQrForBackOff'">
+									<app-qr-code #form></app-qr-code>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/CommissionReport'">
+									<app-commission-rpt #form></app-commission-rpt>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Home/AuditTrailReport'">
+									<app-rpt-audit #form></app-rpt-audit>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/BankConnectivityReport'">
+									<app-bank-connect-rpt #form></app-bank-connect-rpt>
+								</div>
+                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BackOffTransfer'">
+                                    <app-backoff-transaction #form></app-backoff-transaction>
+                                </div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="p-col-12">
-					<hr />
-				</div>
-				<div class="p-col-12">
-					<button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
-				</div>
-			</div>
-		</p-card>
-	</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-col-12">
+                    <hr />
+                </div>
+                <div class="p-col-12">
+                    <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="generateReport()">Generate Report <i class="fas fa-download"></i></button>
+                </div>
+            </div>
+        </p-card>
+    </div>
 </div>
 <mfs-loader *ngIf="isLoading"></mfs-loader>

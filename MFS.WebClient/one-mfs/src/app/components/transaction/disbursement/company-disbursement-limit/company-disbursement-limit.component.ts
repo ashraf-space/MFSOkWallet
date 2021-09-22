@@ -24,6 +24,7 @@ export class CompanyDisbursementLimitComponent implements OnInit {
     currentUserModel: any = {};
     isRegistrationPermitted: boolean = false;
     isEditMode: any;
+    transAmtLimit: any;
     constructor(private messageService: MessageService, private disbursementService: disbursementService
         , private gridSettingService: GridSettingService, private mfsSettingService: MfsSettingService
         , private authService: AuthenticationService, private route: ActivatedRoute,) {
@@ -37,7 +38,7 @@ export class CompanyDisbursementLimitComponent implements OnInit {
 
     ngOnInit() {
         this.getDisburseCompanyList();
-        this.getDisburseTypeList();        
+        this.getDisburseTypeList();
         this.getDisburseNameCodeList();
         this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
     }
@@ -118,6 +119,26 @@ export class CompanyDisbursementLimitComponent implements OnInit {
     }
     cancel() {
         window.history.back();
+    }
+
+
+    async checkAmountWithLimit() {
+        if (this.tblDisburseAmtDtlMakeModel.amountCr == '') {
+            this.tblDisburseAmtDtlMakeModel.amountCr = 0;
+        }
+        this.transAmtLimit = this.currentUserModel.user.tranAmtLimit;
+        if (+this.tblDisburseAmtDtlMakeModel.amountCr > this.transAmtLimit) {
+            this.messageService.add({ severity: 'warn', summary: 'Exceed Limit', detail: 'Your Limit Amount :' + this.transAmtLimit });
+            this.tblDisburseAmtDtlMakeModel.amountCr = 0;
+        }
+        else {
+
+        }
+
+
+
+
+
     }
 
 }

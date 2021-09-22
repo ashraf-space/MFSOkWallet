@@ -33,7 +33,9 @@ export class ComBillColComponent implements OnInit {
         this.rptTypeList = [
             { label: 'NID Bill', value: 'NID' },
             { label: 'Lankabangla Credit Card', value: 'LBC' },
-            { label: 'Lankabangla DPS', value: 'LBD' }
+            { label: 'Lankabangla DPS', value: 'LBD' },
+            { label: 'Passport', value: 'MRP' },
+            { label: 'Foster Isp', value: 'FPISP' }
             
         ];
 

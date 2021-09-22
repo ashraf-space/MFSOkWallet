@@ -38,6 +38,7 @@ export class DisburseProcessComponent implements OnInit {
     validOrInvalid: string = "";
     totalSum: number = 0;
     companyName: string = null;
+    accountNo: any;
 
     constructor(private http: HttpClient, private disbursementService: disbursementService, private gridSettingService: GridSettingService,
         private authService: AuthenticationService, private messageService: MessageService) {
@@ -101,10 +102,18 @@ export class DisburseProcessComponent implements OnInit {
                 .subscribe(
                     data => {
                         this.isLoading = false;
-                        this.tblDisburseModel.Batchno = data[":B1"];
-                        this.tblDisburseModel.Amount = data[":B2"];
-                        //this.distCode = data["dist_code"];
-
+                        this.accountNo = data["AccountNo"];
+                        if (this.accountNo) {
+                            this.tblDisburseModel.Batchno = data[":B1"];
+                            this.tblDisburseModel.Amount = data[":B2"];
+                        }
+                        else {
+                            this.tblDisburseModel.Batchno = null;
+                            this.tblDisburseModel.Amount = 0;   
+                            this.accountNo = 'No account found';
+                        }
+                                            
+                        
                     },
                     error => {
                         console.log(error);

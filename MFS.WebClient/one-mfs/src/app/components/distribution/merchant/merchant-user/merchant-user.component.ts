@@ -26,6 +26,7 @@ export class MerchantUserComponent implements OnInit {
     selectedSmsStatus: any;
     isLoading: boolean = false;
     merchantTypeList: any;
+    merchantSubTypeList: any;
     constructor(private merchantService: MerchantService, private distributorService: DistributorService, private router: Router,
         private route: ActivatedRoute, private messageService: MessageService, private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService) {
@@ -47,6 +48,13 @@ export class MerchantUserComponent implements OnInit {
             { label: 'Child Merchantt', value: 'CM' },
             { label: 'Master Wallet', value: 'MW' },
             { label: 'Distributor', value: 'D' },
+            { label: 'Bank', value: 'BNK' },
+            { label: 'Donation', value: 'DON' },
+            { label: 'Ekpay', value: 'EKPAY' }
+        ]
+        this.merchantSubTypeList = [
+            { label: 'Jamuna Bank', value: 'JBL' },
+            { label: 'Mutual Trust Bank', value: 'MTB' }    
         ]
         this.getMerchantList();
         this.entityId = +this.route.snapshot.paramMap.get('id');
@@ -140,7 +148,7 @@ export class MerchantUserComponent implements OnInit {
             )
     }
     onMerchantUserSave(event) {
-        if ((this.merchantUserModel.password && this.merchantUserModel.confirmpassword && this.merchantUserModel.username) && (this.merchantUserModel.password === this.merchantUserModel.confirmpassword)) {
+        if ((this.merchantUserModel.password && this.merchantUserModel.confirmpassword && this.merchantUserModel.username && this.merchantUserModel.mtype) && (this.merchantUserModel.password === this.merchantUserModel.confirmpassword)) {
             this.merchantUserModel.insertBy = this.currentUserModel.user.username;
             if (this.entityId) {
                 this.merchantUserModel.updateBy = this.currentUserModel.user.username;
@@ -165,7 +173,7 @@ export class MerchantUserComponent implements OnInit {
                     });
         }
         else {
-            this.messageService.add({ severity: 'error', summary: 'Input Password', detail: 'Please Input Information Correctly' });
+            this.messageService.add({ severity: 'error', summary: 'Input Properly', detail: 'Please Input Information Correctly' });
         }
 
     }

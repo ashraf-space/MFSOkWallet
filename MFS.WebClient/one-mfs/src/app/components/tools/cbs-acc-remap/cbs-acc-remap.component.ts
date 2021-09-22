@@ -127,7 +127,7 @@ export class CbsAccRemapComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    if (data != 'PEXIST') {
+                    if (data && data != 'PEXIST') {
                         this.mtCbsName = '';
                         this.loading = false;
                         this.mtCbsName = data.NAME;
@@ -146,6 +146,7 @@ export class CbsAccRemapComponent implements OnInit {
                     else {
                         this.loading = false;
                         this.mtCbsName = 'No Data Found';
+                        this.clearGrid();
                     }
                 },
                 error => {
@@ -159,7 +160,13 @@ export class CbsAccRemapComponent implements OnInit {
             this.childGrid.updateDataSource();
         }
     }
-
+    clearGrid() {
+        this.gridConfig.dataSourcePath = this.mfsSettingService.transactionApiServer +
+            '/CbsMappedAccount/GetMappedAccountByMblNo?mblNo=' + '';
+        if (this.childGrid) {
+            this.childGrid.updateDataSource();           
+        }
+    }
 
     clearData(): any {
         this.mtCbsInfoModel = {};
@@ -359,6 +366,15 @@ export class CbsAccRemapComponent implements OnInit {
                             sticky: true
                         });
                     }
+                    else if (data === 'REGNOEXST') {
+                        this.loadingCbsInfo = false;
+                        this.messageService.add({
+                            severity: 'error',
+                            summary: 'Account Not found',
+                            detail: 'OK Account Not found',
+                            sticky: true
+                        });
+                    }
                     else if (data === 500) {
                         this.loadingCbsInfo = false;
                         this.isSearchDisable = false;                      
@@ -463,7 +479,7 @@ export class CbsAccRemapComponent implements OnInit {
                 error => {
                     console.log(error);
                 }
-            );
+        );
     }
 
     initialiseGridConfig(): any {
@@ -474,7 +490,7 @@ export class CbsAccRemapComponent implements OnInit {
             '/CbsMappedAccount/GetCbsCustomerInfo?accNo=' +
             this.mtCbsInfoModel.accno;
 
-        this.gridConfig.autoUpdateDataSource = false;
+        this.gridConfig.autoUpdateDataSource = true;
         this.gridConfig.autoIndexing = true;
 
         this.gridConfig.isBatchSwitchBoxEdit = true;
@@ -489,18 +505,18 @@ export class CbsAccRemapComponent implements OnInit {
         //this.gridConfig.paramForBatchUpdate = JSON.stringify(this.getParameter());
 
         this.gridConfig.columnList = [
-            { field: 'mobnum', header: 'Mobile No', width: '10%' },
+            { field: 'mobnum', header: 'Mobile No', width: '15%' },
             { field: 'custid', header: 'Customer Id', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'name', header: 'Customer Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'accno', header: 'Account No', width: '25%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'accno', header: 'Account No', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'branch', header: 'Branch Code', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'class', header: 'class', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'accstat', header: 'A/C Status', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'frozen', header: 'Frozen', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'dorm', header: 'Dorment ', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'nationid', header: 'National Id', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'dorm', header: 'Dorment ', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'nationid', header: 'National Id', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'checkStatus', header: 'Check Status', width: '13%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getCheckStatusTemplateForRowData() },
-            { field: 'status', header: 'Current status', width: '13%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getStatusTemplateForRowData() },
+            { field: 'status', header: 'Current status', width: '13%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getmapStatusTemplateForRowData() },
             { field: 'make_status_dump', header: 'Status', width: '10%', isSwitchBoxColumn: true, filter: this.gridSettingService.getDefaultFilterable() }
         ];
     };

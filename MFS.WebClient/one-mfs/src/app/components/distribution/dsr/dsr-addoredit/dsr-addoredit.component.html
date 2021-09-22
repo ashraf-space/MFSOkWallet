@@ -20,14 +20,14 @@
 							</span>
 							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
-						<div class="p-col-3">
+						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
 								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.formSerial" pInputText id="float-input">
 								<label for="float-input input-lg">Form Serial No </label>
 							</span>
 						</div>
-						<div class="p-col-3">
+						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label">
 								<input autocomplete="off" class="form-control" placement="down" pInputText id="float-input" [readonly]="true"
@@ -37,14 +37,23 @@
 							<p-message *ngIf="(regDate.year==null || regInfoModel.year=='') && error " severity="error" text="Cannot be left blank"></p-message>
 
 						</div>
-						<div class="p-col-3">
-							<br />
-							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="DistributorCode" pKeyFilter="int" pInputText id="float-input" (change)="getDistributorDataByDistributorCode()" [disabled]="isEditMode" />
-								<label for="float-input input-lg" class="col-form-label"> Distributor Code<span class="mandatory">*</span></label>
-							</span>
-							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+						<div class="p-col-5">
+							<label for="float-input input-lg" class=" col-form-label-dd">Distributor Code <span class="mandatory">*</span></label>
+							<p-dropdown [options]="distributorList" placeholder="Select Distributor" [(ngModel)]="DistributorCode"
+										[filter]="true" filterBy="label,value.name" [disabled]="isEditMode"
+										(onChange)="getDistributorDataByDistributorCode()"
+										[style]="{display: 'grid'}" id="float-input"></p-dropdown>
+							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
 						</div>
+						<!--<div class="p-col-3">
+		<br />
+		<span class="ui-float-label ">
+			<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="DistributorCode" pKeyFilter="int" pInputText id="float-input" (change)="getDistributorDataByDistributorCode()" [disabled]="isEditMode" />
+			<label for="float-input input-lg" class="col-form-label"> Distributor Code<span class="mandatory">*</span></label>
+		</span>
+		<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
+	</div>-->
 					</div>
 
 					<div class="p-grid">

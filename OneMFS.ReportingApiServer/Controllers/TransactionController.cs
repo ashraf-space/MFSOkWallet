@@ -8,6 +8,7 @@ using OneMFS.ReportingApiServer.Utility;
 using OneMFS.SharedResources.CommonService;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,6 +23,7 @@ namespace OneMFS.ReportingApiServer.Controllers
     {
         private readonly ITransactionService _TransactionService;
         private readonly IKycService kycService;
+        Base64Conversion objBase64Conversion = new Base64Conversion();
         public TransactionController(ITransactionService objTransactionService, IKycService _kycService)
         {
             this._TransactionService = objTransactionService;
@@ -138,6 +140,7 @@ namespace OneMFS.ReportingApiServer.Controllers
             List<AccountStatement> accountStatementList = new List<AccountStatement>();
             accountStatementList = _TransactionService.GetAccountStatementList(mphone, fromDate, toDate).ToList();
 
+            bool isBanglaBase64 = false;
             ReportViewer reportViewer = new ReportViewer();
             if (accountStatementList.Count() > 0)
             {
@@ -155,8 +158,28 @@ namespace OneMFS.ReportingApiServer.Controllers
                 }
                 if (accountStatementList.Count() > 1)
                 {
+                    //for decode bangla present address
+                    isBanglaBase64 = objBase64Conversion.IsBase64(accountStatementList[1].PresentAddress);
+                    accountStatementList[1].PresentAddress = isBanglaBase64
+                        ? objBase64Conversion.DecodeBase64(accountStatementList[1].PresentAddress)
+                        : accountStatementList[1].PresentAddress;
+
                     for (int i = 1; i < accountStatementList.Count(); i++)
                     {
+                        if (accountStatementList[i].Particular.Contains(" SERVICE FEE "))
+                        {
+                            accountStatementList[i].Description = "Service Charge on " + accountStatementList[i].Description;
+                        }
+                        else if (accountStatementList[i].Particular.Contains(" VAT "))
+                        {
+                            accountStatementList[i].Description = "VAT on Service Charge";
+                        }
+                        else
+                        {
+                            //accountStatementList[i].Description;
+                        }
+
+
                         if (accountStatementList[i].CreditAmt != 0)
                         {
                             accountStatementList[i].Balance = accountStatementList[i - 1].Balance + accountStatementList[i].CreditAmt;
@@ -171,9 +194,29 @@ namespace OneMFS.ReportingApiServer.Controllers
                 double netBalance = 0;
                 netBalance = accountStatementList[accountStatementList.Count - 1].Balance;
 
+
+
                 reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAccountStatement.rdlc");  //Request.RequestUri("");
                 reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, accountStatementList.Count() > 1 ? accountStatementList[1].CustomerName : null
-                    , accountStatementList.Count() > 1 ? accountStatementList[1].PresentAddress : null, accountStatementList.Count() > 1 ? accountStatementList[1].LogicalDate : null));
+                    , accountStatementList.Count() > 1 ? accountStatementList[1].PresentAddress : null, accountStatementList.Count() > 1 ? accountStatementList[1].LogicalDate : null, isBanglaBase64));
+                ReportDataSource A = new ReportDataSource("AccountStatement", accountStatementList);
+                reportViewer.LocalReport.DataSources.Add(A);
+            }
+            else
+            {
+                double netBalance = 0;
+                netBalance = 0;
+                var objReginfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
+
+                //for decode bangla present address     
+                isBanglaBase64 = objBase64Conversion.IsBase64(objReginfo.PreAddr);
+                objReginfo.PreAddr = isBanglaBase64
+                    ? objBase64Conversion.DecodeBase64(objReginfo.PreAddr)
+                    : objReginfo.PreAddr;
+
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAccountStatement.rdlc");  //Request.RequestUri("");
+                reportViewer.LocalReport.SetParameters(GetReportParameter(mphone, fromDate, toDate, netBalance, objReginfo != null ? objReginfo.Name : null
+                    , objReginfo != null ? objReginfo.PreAddr : null, objReginfo != null ? objReginfo.EntryDate : null, isBanglaBase64));
                 ReportDataSource A = new ReportDataSource("AccountStatement", accountStatementList);
                 reportViewer.LocalReport.DataSources.Add(A);
             }
@@ -184,7 +227,7 @@ namespace OneMFS.ReportingApiServer.Controllers
             return reportUtility.GenerateReport(reportViewer, model.FileType);
         }
 
-        public List<ReportParameter> GetReportParameter(string mphone, string fromDate, string toDate, double netBalance, string CustomerName, string presentAddress = null, DateTime? logicalDate = null)
+        public List<ReportParameter> GetReportParameter(string mphone, string fromDate, string toDate, double netBalance, string CustomerName, string presentAddress = null, DateTime? logicalDate = null, bool isBanglaBase64 = false)
         {
 
 
@@ -197,6 +240,7 @@ namespace OneMFS.ReportingApiServer.Controllers
             paraList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
             paraList.Add(new ReportParameter("presentAddress", presentAddress));
             paraList.Add(new ReportParameter("logicalDate", logicalDate.ToString()));
+            paraList.Add(new ReportParameter("BanglaOrEnglish", isBanglaBase64 == true ? "B" : "E"));
 
 
             return paraList;
@@ -454,7 +498,7 @@ namespace OneMFS.ReportingApiServer.Controllers
             string result = null, fromCat = null, toCat = null;
             if (okServices != "null")
             {
-                if(okServices != "All")
+                if (okServices != "All")
                 {
                     pFrom = okServices.IndexOf(" (") + " (".Length;
                     pTo = okServices.LastIndexOf(")");
@@ -463,11 +507,11 @@ namespace OneMFS.ReportingApiServer.Controllers
                     fromCat = result.Split(' ')[0];
                     toCat = result.Split(' ')[1];
                 }
-                
+
             }
 
             if (tansactionType == "Transaction Details")
-            {                
+            {
                 List<TransactionDetails> TransactionDetailsList = new List<TransactionDetails>();
                 TransactionDetailsList = _TransactionService.GetTransactionDetailsList(tansactionType, fromCat, toCat, dateType, fromDate, toDate, gateway).ToList();
 
@@ -573,6 +617,32 @@ namespace OneMFS.ReportingApiServer.Controllers
             return paraList;
         }
 
+        private IEnumerable<ReportParameter> GetReportParamForDisbursementUpload(string fileUpdateDate)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("fileUpdateDate", fileUpdateDate));
+
+            return paraList;
+        }
+
+        private IEnumerable<ReportParameter> GetReportParamForIndividualDisbursement(string fromDate, string toDate)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("fromDate", fromDate));
+            paraList.Add(new ReportParameter("toDate", toDate));
+
+            return paraList;
+        }
+        private IEnumerable<ReportParameter> GetReportParamForMfsStatement(string year, string month)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("year", year));
+            paraList.Add(new ReportParameter("month", CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(month))));
+
+            return paraList;
+        }
+
+
 
         [HttpPost]
         [Route("api/Transaction/FundTransfer")]
@@ -628,6 +698,50 @@ namespace OneMFS.ReportingApiServer.Controllers
 
             return reportUtility.GenerateReport(reportViewer, model.FileType);
         }
+
+
+        [HttpPost]
+        [Route("api/Transaction/BackOffTransfer")]
+        public byte[] BackOffTransfer(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+            if (fromDate == "null")
+            {
+                fromDate = DateTime.Now.AddYears(-99).ToString("yyyy/MM/dd");
+            }
+            if (toDate == "null")
+            {
+                toDate = DateTime.Now.ToString("yyyy/MM/dd");
+            }
+
+            ReportViewer reportViewer = new ReportViewer();
+
+
+
+            List<BackOffTransaction> BackOffTransactionList = new List<BackOffTransaction>();
+            BackOffTransactionList = _TransactionService.GetBackOffTransactionList(fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTBackOffTransaction.rdlc");
+            reportViewer.LocalReport.SetParameters(GetReportParamForFundTransfer(fromDate, toDate, null, null));
+            ReportDataSource A = new ReportDataSource("BackOffTransaction", BackOffTransactionList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+
         [HttpPost]
         [Route("api/Transaction/MerchantTransactionReport")]
         public object MerchantTransactionReport(ReportModel model)
@@ -975,6 +1089,301 @@ namespace OneMFS.ReportingApiServer.Controllers
             return reportUtility.GenerateReport(reportViewer, model.FileType);
         }
 
+
+
+        [HttpPost]
+        [Route("api/Transaction/GenerateDisbursementUpload")]
+        public byte[] GenerateDisbursementUpload(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+
+            string fileUploadDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fileUploadDate", ",");
+            string batchNumber = builder.ExtractText(Convert.ToString(model.ReportOption), "batchNumber", ",");
+            string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", ",");
+            string companyId = builder.ExtractText(Convert.ToString(model.ReportOption), "companyId", "}");
+
+            ReportViewer reportViewer = new ReportViewer();
+
+            List<DisbursementUploadDetails> disbursementUploadDetailsList = new List<DisbursementUploadDetails>();
+            disbursementUploadDetailsList = _TransactionService.GetDisbursementUpload(fileUploadDate, batchNumber, reportType, Convert.ToInt32(companyId)).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            if (reportType == "Details")
+            {
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTDisbursementUploadDetails.rdlc");
+            }
+            else
+            {
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTDisbursementUploadSummary.rdlc");
+            }
+
+            reportViewer.LocalReport.SetParameters(GetReportParamForDisbursementUpload(fileUploadDate));
+            ReportDataSource A = new ReportDataSource("DisbursementUploadDetails", disbursementUploadDetailsList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+
+        [HttpPost]
+        [Route("api/Transaction/IndividualDisbursement")]
+        public byte[] IndividualDisbursement(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+            string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", ",");
+            string status = builder.ExtractText(Convert.ToString(model.ReportOption), "status", ",");
+            string okWalletNo = builder.ExtractText(Convert.ToString(model.ReportOption), "okWalletNo", ",");
+            string companyId = builder.ExtractText(Convert.ToString(model.ReportOption), "companyId", "}");
+
+            ReportViewer reportViewer = new ReportViewer();
+
+            List<IndividualDisbursement> individualDisbursementList = new List<IndividualDisbursement>();
+            individualDisbursementList = _TransactionService.GetIndividualDisbursement(fromDate, toDate, reportType, status, okWalletNo, Convert.ToInt32(companyId)).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+            if (reportType == "Details")
+            {
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTIndividualDisbursementDetails.rdlc");
+            }
+            else
+            {
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTIndividualDisbursementSummary.rdlc");
+            }
+
+            reportViewer.LocalReport.SetParameters(GetReportParamForIndividualDisbursement(fromDate, toDate));
+            ReportDataSource A = new ReportDataSource("IndividualDisbursement", individualDisbursementList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+
+        [HttpPost]
+        [Route("api/Transaction/MfsStatement")]
+        public byte[] MfsStatement(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+
+            string year = builder.ExtractText(Convert.ToString(model.ReportOption), "year", ",");
+            string month = builder.ExtractText(Convert.ToString(model.ReportOption), "month", "}");
+
+            ReportViewer reportViewer = new ReportViewer();
+
+
+            List<MfsStatement> mfsStatementList = new List<MfsStatement>();
+            mfsStatementList = _TransactionService.GetMfsStatement(year, month).ToList();
+
+            #region from E-money
+            List<CurrentAffairsStatement> currentAffairsStatementList = new List<CurrentAffairsStatement>();
+            string currentOrEOD = "Current";
+            var startDate = new DateTime(Convert.ToInt32(year), Convert.ToInt32(month), 1);
+            string endDate = startDate.AddMonths(1).AddDays(-1).ToString();
+            currentAffairsStatementList = _TransactionService.CurrentAffairsStatement(endDate, currentOrEOD).ToList();
+            MfsStatement objMfsStatement = new MfsStatement();
+            objMfsStatement.Agent = mfsStatementList.Count() > 0 ? mfsStatementList[0].Agent : 0;
+            objMfsStatement.ActiveCustomer = mfsStatementList.Count() > 0 ? mfsStatementList[0].ActiveCustomer : 0;
+            objMfsStatement.InactiveCustomer = mfsStatementList.Count() > 0 ? mfsStatementList[0].InactiveCustomer : 0;
+            objMfsStatement.TotalRetailMfsAcc = mfsStatementList.Count() > 0 ? mfsStatementList[0].TotalRetailMfsAcc : 0;
+            objMfsStatement.SL = 3;
+            objMfsStatement.ProductType = "E-Money Balance";
+            objMfsStatement.ProductName = "E-Money Balance";
+            objMfsStatement.TotalTransaction = 0;
+            objMfsStatement.TransactionAmount = currentAffairsStatementList.Where(a => a.AccountsCode == "1010101").Select(b => b.Balance).SingleOrDefault();
+            #endregion
+
+
+            mfsStatementList.Add(objMfsStatement);
+
+
+
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTMfsStatement.rdlc");
+
+
+            reportViewer.LocalReport.SetParameters(GetReportParamForMfsStatement(year, month));
+            ReportDataSource A = new ReportDataSource("MfsStatement", mfsStatementList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+        [HttpPost]
+        [Route("api/Transaction/JgBillDailyDetails")]
+        public byte[] JgBillDailyDetails(ReportModel model)
+        {
+            StringBuilderService builder = new StringBuilderService();
+            string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+            string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+            ReportViewer reportViewer = new ReportViewer();
+
+            List<JgBillDailyDetails> jgBillDailyDetailsList = new List<JgBillDailyDetails>();
+            jgBillDailyDetailsList = _TransactionService.GetJgBillDailyDetailsList(fromDate, toDate).ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTJgBillDailyDetails.rdlc");
+
+
+            reportViewer.LocalReport.SetParameters(GetReportParamForIndividualDisbursement(fromDate, toDate));
+            ReportDataSource A = new ReportDataSource("JgBillDailyDetails", jgBillDailyDetailsList);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, model.FileType);
+        }
+
+        [HttpGet]
+        [Route("api/Transaction/TransactionAnalysis")]
+        public byte[] TransactionAnalysis()
+        {
+            //StringBuilderService builder = new StringBuilderService();
+
+            //string year = builder.ExtractText(Convert.ToString(model.ReportOption), "year", ",");
+            //string month = builder.ExtractText(Convert.ToString(model.ReportOption), "month", "}");
+
+            ReportViewer reportViewer = new ReportViewer();
+
+
+            List<TransactionAnalysis> transactionAnalysislist = new List<TransactionAnalysis>();
+            transactionAnalysislist = _TransactionService.GetTransactinAnalysisList().ToList();
+
+            //if (TransactionDetailsList.Count() > 0)
+            //{
+
+            reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTTransactionAnalysis.rdlc");
+
+
+            //reportViewer.LocalReport.SetParameters(GetReportParamForMfsStatement());
+            ReportDataSource A = new ReportDataSource("TransactionAnalysis", transactionAnalysislist);
+            reportViewer.LocalReport.DataSources.Add(A);
+            //}               
+
+
+
+
+            ReportUtility reportUtility = new ReportUtility();
+            MFSFileManager fileManager = new MFSFileManager();
+
+            return reportUtility.GenerateReport(reportViewer, "PDF");
+
+        }
+        [HttpPost]
+        [Route("api/Transaction/DonationMerchantTransactionReport")]
+        public object DonationMerchantTransactionReport(ReportModel model)
+        {
+            try
+            {
+                StringBuilderService builder = new StringBuilderService();
+                string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", "}");
+                string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+                string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+
+                var clientInfo = (Reginfo)kycService.GetClientInfoByMphone(mphone);
+
+                if (clientInfo.CatId != "M")
+                {
+                    return "NOTM";
+                }
+                List<MerchantTransaction> merchantTransactionList = new List<MerchantTransaction>();
+                merchantTransactionList = _TransactionService.GetDonationMerchantTransactionReport(mphone, fromDate, toDate).ToList();
+
+                ReportViewer reportViewer = new ReportViewer();
+                if (merchantTransactionList.Count() > 0)
+                {
+                    //if opening balance not coming then add 
+                    if (merchantTransactionList[0].BalanceType != "Previous Balance")
+                    {
+                        MerchantTransaction objMerchantTransaction = new MerchantTransaction();
+                        objMerchantTransaction.TransactionDate = Convert.ToDateTime(fromDate);
+                        objMerchantTransaction.BalanceType = "PREVIOUS BALANCE";
+                        objMerchantTransaction.TransAmt = 0;
+                        objMerchantTransaction.AvailableBalance = 0;
+
+                        merchantTransactionList.Insert(0, objMerchantTransaction);
+                    }
+                    if (merchantTransactionList.Count() > 1)
+                    {
+                        for (int i = 1; i < merchantTransactionList.Count(); i++)
+                        {
+                            if (merchantTransactionList[i].TransAmt != 0)
+                            {
+                                merchantTransactionList[i].AvailableBalance = merchantTransactionList[i - 1].AvailableBalance + merchantTransactionList[i].TransAmt;
+                            }
+                        }
+                    }
+
+                    double netBalance = 0;
+                    netBalance = merchantTransactionList[merchantTransactionList.Count - 1].AvailableBalance;
+
+                    reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTMerDonationTrans.rdlc");
+                    reportViewer.LocalReport.SetParameters(GetReportParameterDonationMerchant(mphone, fromDate, toDate, netBalance, merchantTransactionList.Count() > 1 ? merchantTransactionList[1].MerchantName : null, merchantTransactionList.Count() > 1 ? merchantTransactionList[1].MerchantCode : null));
+                    ReportDataSource A = new ReportDataSource("MerchantTransfer", merchantTransactionList);
+                    reportViewer.LocalReport.DataSources.Add(A);
+                }
+
+                ReportUtility reportUtility = new ReportUtility();
+                MFSFileManager fileManager = new MFSFileManager();
+
+                return reportUtility.GenerateReport(reportViewer, model.FileType);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
+        private IEnumerable<ReportParameter> GetReportParameterDonationMerchant(string mphone, string fromDate, string toDate, double netBalance, string merchantName, string merchantCode)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+            paraList.Add(new ReportParameter("MerchantNumber", mphone));
+            paraList.Add(new ReportParameter("FromDate", fromDate));
+            paraList.Add(new ReportParameter("ToDate", toDate));
+            paraList.Add(new ReportParameter("netBalance", netBalance.ToString()));
+            paraList.Add(new ReportParameter("MerchantName", merchantName));
+            paraList.Add(new ReportParameter("MerchantCode", merchantCode));
+            paraList.Add(new ReportParameter("GenerationDate", Convert.ToString(System.DateTime.Now)));
+
+
+            return paraList;
+        }
 
     }
 }

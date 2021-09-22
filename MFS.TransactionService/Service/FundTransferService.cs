@@ -17,6 +17,7 @@ namespace MFS.TransactionService.Service
         object getGlDetailsForRobi();
         object getGlDetailsForAirtel();
         object getGlDetailsForBlink();
+        object getGlDetailsForTtalk();
         object GetAmountByGL(string sysCode);
         object GetACList();
         object GetAmountByAC(string mPhone);
@@ -31,6 +32,7 @@ namespace MFS.TransactionService.Service
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
         object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
+        object saveTtalkTopupStockEntry(RobiTopupStockEntry ttalkTopupStockEntryModel);
         object GetCommissionGlListForDDL();
         object GetCommssionMobileList(string sysCoaCode, string entryOrApproval);
         void SaveCommissionEntry(CommissionMobile item,string entryBy,string toCatId, string entrybrCode,string transNo);
@@ -83,6 +85,20 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _FundTransferRepository.getGlDetailsForBlink();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public object getGlDetailsForTtalk()
+        {
+            try
+            {
+                return _FundTransferRepository.getGlDetailsForTtalk();
             }
             catch (Exception)
             {
@@ -216,6 +232,19 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _FundTransferRepository.saveBlinkTopupStockEntry(robiTopupStockEntry);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object saveTtalkTopupStockEntry(RobiTopupStockEntry ttalkTopupStockEntry)
+        {
+            try
+            {
+                return _FundTransferRepository.saveTtalkTopupStockEntry(ttalkTopupStockEntry);
             }
             catch (Exception)
             {

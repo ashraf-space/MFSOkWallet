@@ -1,0 +1,38 @@
+<div class="form-elements">
+    <p-card [style]="{'margin-bottom':'5px'}">
+        <div class="form-group">
+            <h6 class="form-header">Download Receipt</h6>
+            <!--<div *ngIf="loading">
+                <p><p-progressSpinner [style]="{width: '50px', height: '50px'}" strokeWidth="8" fill="#EEEEEE" animationDuration=".5s"></p-progressSpinner></p>
+            </div>-->
+            <div class="p-grid">
+                <div class="p-col-3">
+                    <label for="float-input input-lg" class="col-form-label-dd">Select Category<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="categoryList" placeholder="Select Category" [(ngModel)]="selectedCategory" (onChange)="ChangeTitle();"
+                                 [showClear]="true" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                    <p-message *ngIf="(selectedCategory == '0' ||selectedCategory == ''||selectedCategory == null) && error"
+                               severity="error" text="Cannot be left blank"></p-message>
+                </div>
+                <div class="p-col-3">
+                    <label for="float-input input-lg" class="col-form-label-dd"> {{billTitle}} <span class="mandatory">*</span></label>
+                    <input type="text" maxlength="30" class="form-control form-input" pInputText pKeyFilter="money" [(ngModel)]="billNo">
+                    <p-message *ngIf="(billNo==null || billNo=='' || billNo=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+
+                <div class="p-col-3">
+                    <br />
+                    <button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"
+                            [disabled]="!billNo && selectedCategory =='0'"
+                            (click)="getReceiptListBySearch()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card [style]="{'margin-bottom':'5px'}">
+        <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)">
+        </generic-grid>
+    </p-card>
+</div>

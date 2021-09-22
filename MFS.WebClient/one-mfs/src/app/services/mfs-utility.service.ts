@@ -83,7 +83,8 @@ export class MfsUtilityService {
             { label: 'CHANGE', value: 'CHANGE' }
         ];
         this.parentMenuList = [
-            { label: 'Dashboard', value: 'Dashboard' },
+            //{ label: 'Dashboard', value: 'Dashboard' },
+            { label: 'Home', value: 'Home' },
             { label: 'Customer Care', value: 'Customer Care' },
             { label: 'Channels', value: 'Channels' },
             { label: 'Environment', value: 'Environment' },
@@ -92,7 +93,8 @@ export class MfsUtilityService {
             { label: 'Settings', value: 'Settings' },
             { label: 'Tools', value: 'Tools' },
             { label: 'Transaction', value: 'Transaction' },
-            { label: 'Process', value: 'Process' }
+            { label: 'Process', value: 'Process' },
+            { label: 'Dashboard', value: 'Dashboard' }
 
         ];
     }

@@ -22,6 +22,7 @@ namespace MFS.EnvironmentService.Repository
 		object GetChildDataByParent(string code);
 		object GetBankBranchListForDDL();
 		object GenerateDistributorCode(string territoryCode);
+		object GenerateB2bDistributorCode(string territoryCode);
 		string GetAreaCode(string code);
 		object GetAllAreas();
 		object GetAreabyid(string code);
@@ -268,7 +269,18 @@ namespace MFS.EnvironmentService.Repository
 				return result;
 			}
 		}
-
+		public object GenerateB2bDistributorCode(string territoryCode)
+		{
+			using (var connection = this.GetConnection())
+			{
+				var parameter = new OracleDynamicParameters();
+				parameter.Add("DigitNo", OracleDbType.Int32, ParameterDirection.Input, territoryCode.Length);
+				parameter.Add("TerritoryCode", OracleDbType.Varchar2, ParameterDirection.Input, territoryCode);
+				parameter.Add("DistributorCode_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
+				var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GENERATE_B2B_DIST_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+				return result;
+			}
+		}
 		public object GetTerritoryCode(string code)
 		{
 			using (var connection = this.GetConnection())

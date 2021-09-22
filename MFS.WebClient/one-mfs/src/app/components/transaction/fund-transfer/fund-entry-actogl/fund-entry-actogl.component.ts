@@ -229,10 +229,10 @@ export class FundEntryActoglComponent implements OnInit {
             );
 
         this.cols = [
-            { field: 'glCode', header: 'GL No', width: '30%' },
-            { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone() },
-            { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone() },
-            { field: 'creditAmount', header: 'Credit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone() }
+            { field: 'glCode', header: 'GL No', width: '30%', template: 'none'  },
+            { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone(), template: 'none'  },
+            { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() },
+            { field: 'creditAmount', header: 'Credit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() }
         ];
 
     };

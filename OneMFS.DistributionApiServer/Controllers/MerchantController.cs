@@ -51,8 +51,23 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 
 		}
+		[ApiGuardAuth]
+		[HttpGet]
+		[Route("GetRetailList")]
+		public object GetRetailList(string filterId)
+		{
+			try
+			{
+				return _MerchantService.GetRetailList(filterId);
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
 
-        [HttpGet]
+		}
+
+		[HttpGet]
         [Route("GetMerchantListData")]
         public object GetMerchantListData()
         {
@@ -270,7 +285,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
-
+			 
 		}
 		[ApiGuardAuth]
 		[HttpGet]
@@ -371,12 +386,20 @@ namespace OneMFS.DistributionApiServer.Controllers
 				}
 				else
 				{
-					dynamic reginfoModel = _MerchantUserService.GetRegInfoByMphone(model.MobileNo);
-					model.Name = reginfoModel.NAME;
-					model.BranchCode = reginfoModel.BRANCH_CODE;
-					model = generateSecuredCredentials(model);
-					model = _MerchantUserService.Add(model);
-
+					if (string.IsNullOrEmpty(model.MobileNo))
+					{
+						model = generateSecuredCredentials(model);
+						model = _MerchantUserService.Add(model);
+					}
+					else
+					{
+						dynamic reginfoModel = _MerchantUserService.GetRegInfoByMphone(model.MobileNo);
+						model.Name = reginfoModel.NAME;
+						model.BranchCode = reginfoModel.BRANCH_CODE;
+						model = generateSecuredCredentials(model);
+						model = _MerchantUserService.Add(model);
+					}
+					
 					if (!string.IsNullOrEmpty(model.MobileNo))
 					{
 						string messagePrefix = ", Your Account Has been Created on OK Wallet Admin Application. Your username is " + model.MobileNo + " and password is " + model.PlainPassword;
@@ -458,6 +481,21 @@ namespace OneMFS.DistributionApiServer.Controllers
 			catch (Exception ex)
 			{
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+		[ApiGuardAuth]
+		[HttpPost]
+		[Route("saveRetail")]
+		public object SaveRetail(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		{
+			try
+			{
+				return _MerchantService.SaveRetail(isEditMode, evnt, regInfo);
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
 			}
 		}
 	}

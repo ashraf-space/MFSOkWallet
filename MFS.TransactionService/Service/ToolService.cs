@@ -221,41 +221,7 @@ namespace MFS.TransactionService.Service
 			return _repository.CheckAccountValidityByCount(mblNo);
 		}
 
-		//public object SaveRemapCbsAccount(BatchUpdateModel model)
-		//{
-		//	StringBuilderService builder = new StringBuilderService();
-		//	var cbsInfosList = ConvertBatchUpdateModelToMtCbsinfoModel(model);
-		//	string inactiveCbsAccountNo = null;
-		//	foreach (var mtCbsinfo in cbsInfosList)
-		//	{
-		//		if (mtCbsinfo.MakeStatus == "I")
-		//		{
-		//			inactiveCbsAccountNo = mtCbsinfo.Accno;
-		//		}
-		//	}
-
-		//	int inactiveCbsAccStatus = _repository.InactiveCbsAccountByAccountNo(inactiveCbsAccountNo);
-		//	if (inactiveCbsAccStatus == 1)
-		//	{
-		//		var mtCbsinfo = ConvertBatchUpdateParameterToMtCbsinfoModel(model);
-		//		try
-		//		{
-		//			if (mtCbsinfo.MakeStatus == "A")
-		//			{
-		//				_repository.Add(mtCbsinfo);
-		//			}
-		//			return HttpStatusCode.OK;
-		//		}
-		//		catch (Exception e)
-		//		{
-		//			return HttpStatusCode.InternalServerError;
-		//		}
-		//	}
-		//	else
-		//	{
-		//		return HttpStatusCode.InternalServerError;
-		//	}
-		//}
+		
 
 		public List<MtCbsinfo> ConvertBatchUpdateModelToMtCbsinfoModelForCheck(BatchUpdateModel model)
 		{
@@ -333,10 +299,44 @@ namespace MFS.TransactionService.Service
 			var cbsInfosList = ConvertBatchUpdateModelToMtCbsinfoModel(model);
 
 			string inactiveCbsAccountNo = string.Empty;
+			int allowAccNo = 3;
 			int count=0;
-			int countPending = 0;			
+			int countPending = 0;
+			int totalCount = 0;
+			bool allowMap = false;
+			count = _repository.CheckEligibilityMappingByMphone(cbsInfosList[0].Mphone);
+			foreach (var value in cbsInfosList)
+			{
+				if (value.MakeStatus == "A")
+				{
+					countPending++;
+				}
+			}
+		    totalCount = count + countPending;
+			if(count <= 2 && totalCount <= 3)
+			{
+				allowMap = true;
+			}
+			if (totalCount > 3)
+			{
+				return "Please do not try to activate more than three account";
+			}
+			if (countPending > 3)
+			{
+				return "Please do not try to activate more than three account";
+			}
+			if (count > 3)
+			{
+				return "Three accont activated already";
+			}
 			foreach (var item in cbsInfosList)
-			{				
+			{
+				bool isRegInfoExist = _repository.IsRegInfoExist(item.Mphone);
+
+				if (!isRegInfoExist)
+				{
+					return "Ok Account: "+ item.Mphone +" is Not exist"; //reginfo not exist
+				}
 				if (String.IsNullOrEmpty(item.MakeBy))
 				{
 					return HttpStatusCode.Unauthorized;
@@ -349,17 +349,8 @@ namespace MFS.TransactionService.Service
 				if((item.Status != item.MakeStatus) && item.Status != null)
 				{
 					if(item.MakeStatus == "A")
-					{
-					    count = _repository.CheckEligibilityMappingByMphone(item.Mphone);
-						foreach(var value in cbsInfosList)
-						{
-							if(value.MakeStatus == "A" && value.Mphone == item.Mphone && ((item.Status != item.MakeStatus) && item.Status != null))
-							{
-								countPending++;
-							}
-						}
-
-						if (count <= 1 && count+countPending<=2)
+					{					    
+						if (allowMap)
 						{
 							var cbsInfoPrev = _repository.GetMappedAccountByAccNo(item.Accno);
 							_repository.ActiveCbsAccountByAccountNo(item.Accno,item.MakeBy,item.Ubranch);
@@ -381,20 +372,8 @@ namespace MFS.TransactionService.Service
 					}
 				}
 				
-			}
-			if(countPending >= 2)
-			{
-				return "Please do not try to activate more than two account";
-			}
-			if(count >= 2)
-			{
-				return "More than two accont activated already";
-			}
-			else
-			{
-				return HttpStatusCode.OK;
-			}
-			
+			}						
+				return HttpStatusCode.OK;						
 		}
 
 		public object CheckPendingAccountByMphone(string mblAcc)
@@ -412,7 +391,13 @@ namespace MFS.TransactionService.Service
 			try
 			{
 				var cbsCustomerInfo = (MtCbsinfo) _repository.GetCbsCustomerInfo(accno);
-				
+				bool isRegInfoExist = _repository.IsRegInfoExist(mblAcc);
+
+				if (!isRegInfoExist)
+				{
+					return "REGNOEXST"; //reginfo not exist
+				}
+
 				if (cbsCustomerInfo != null)
 				{
 					var isPendingExist = _repository.CheckPendingAccountByMphone(mblAcc);
@@ -425,7 +410,7 @@ namespace MFS.TransactionService.Service
 						return "MMCAMA"; // miss match cbs account mobile no and ok wallet mobile no
 					}
 					var IsActiveAccountExist = _repository.CheckActivatdAccountByMphone(mblAcc);
-					if (Convert.ToInt32(IsActiveAccountExist) >= 2)
+					if (Convert.ToInt32(IsActiveAccountExist) >= 3)
 					{
 						return "EACCM3"; // Exist Account more than 2
 					}

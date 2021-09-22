@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class BillCollectionCommonService {
+   
+   
     constructor(private http: HttpClient, private transactionService: MfsSettingService) { }
 
     GetFeaturePayDetails(featureId: number): any {
@@ -30,6 +32,14 @@ export class BillCollectionCommonService {
             }));
     }
 
+    GetBillPayCategoriesDDL(userId: number): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/GetBillPayCategoriesDDL?userId=' + userId)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+
     CheckBillInfo(billCollectionCommonModel: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/CheckBillInfo', billCollectionCommonModel)
             .pipe(map(model => {
@@ -50,5 +60,25 @@ export class BillCollectionCommonService {
                 return model;
             }));
     }
+
+    GetDataForCommonGrid(username: any, MethodName: any, countLimit: any, billNo: string = null) {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/GetDataForCommonGrid?username=' + username + '&MethodName=' + MethodName + '&countLimit=' + countLimit + '&billNo=' + billNo)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+    GenerateReceipt(branchPortalReceipt: any) {
+        return this.http.get<any>('http://10.20.32.118/NEW/ok_api/receipt/view.php?mphone=' + branchPortalReceipt.ref_Phone + '&Trans_ID=' + branchPortalReceipt.trans_No);
+       
+    }
+
+    GetTitleSubmenuTitleByMethod(methodName: string) {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/BillCollectionCommon/GetTitleSubmenuTitleByMethod?methodName=' + methodName)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
    
 }

@@ -26,6 +26,7 @@
     <Folder Include="one-mfs\src\app\components\environment\merchant-config\" />
     <Folder Include="one-mfs\src\app\components\process\" />
     <Folder Include="one-mfs\src\app\components\reports\report-collection\transaction-type\" />
+    <Folder Include="one-mfs\src\app\components\security\disbursement-user\" />
     <Folder Include="one-mfs\src\app\components\security\role\" />
     <Folder Include="one-mfs\src\app\components\transaction\chart-of-accounts\" />
     <Folder Include="one-mfs\src\app\components\transaction\rate-config\" />

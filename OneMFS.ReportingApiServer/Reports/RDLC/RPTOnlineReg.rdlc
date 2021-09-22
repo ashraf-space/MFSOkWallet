@@ -134,6 +134,10 @@
           <DataField>ReferralNo</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="NomineePhoto">
+          <DataField>NomineePhoto</DataField>
+          <rd:TypeName>System.Byte[]</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>MFSV2DataSet</rd:DataSetName>
@@ -153,61 +157,101 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.83333in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>0.59375in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>0.84797in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>0.45832in</Width>
-                </TablixColumn>
-                <TablixColumn>
                   <Width>0.54167in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.57292in</Width>
+                  <Width>1.45717in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.625in</Width>
+                  <Width>1.46906in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.96875in</Width>
+                  <Width>1.10723in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.6875in</Width>
+                  <Width>1.627in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.85542in</Width>
+                  <Width>0.97685in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.60291in</Width>
+                  <Width>1.0081in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.72917in</Width>
+                  <Width>0.9572in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.80209in</Width>
+                  <Width>1.11951in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.61459in</Width>
+                  <Width>1.13426in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.47791in</Width>
+                  <Width>1.29977in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.51661in</Width>
+                  <Width>1.30093in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.52083in</Width>
+                  <Width>1.03809in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.04051in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.51968in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.91552in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.23717in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.15087in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.92592in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
                   <Height>0.25in</Height>
                   <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>#SL</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox1">
@@ -217,7 +261,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Name</Value>
+                                  <Value>Full Name</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -455,7 +499,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Client Photo</Value>
+                                  <Value>Customer Photo</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -489,7 +533,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Nid Front</Value>
+                                  <Value>NID Front</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -523,7 +567,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Nid Back</Value>
+                                  <Value>NID Back</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -535,6 +579,40 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox40</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Nominee Photo</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -625,7 +703,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Address</Value>
+                                  <Value>Permanent Address</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -793,6 +871,38 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox12">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=RowNumber(nothing)</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Name">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -834,7 +944,7 @@
                                 <TextRun>
                                   <Value>=Fields!RegDate.Value</Value>
                                   <Style>
-                                    <Format>g</Format>
+                                    <Format>f</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -963,7 +1073,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!DateOfBirth.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>d MMMM, yyyy</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1064,6 +1176,21 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Image Name="Image2">
+                          <Source>Database</Source>
+                          <Value>=Fields!NomineePhoto.Value</Value>
+                          <MIMEType>image/jpeg</MIMEType>
+                          <Sizing>FitProportional</Sizing>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Image>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="ReferralNo">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1075,7 +1202,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>ReferralNo</rd:DefaultName>
@@ -1104,7 +1233,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>NomineeName</rd:DefaultName>
@@ -1130,7 +1261,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Address.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>kalpurush</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1298,12 +1431,15 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
@@ -1313,7 +1449,7 @@
             <DataSetName>OnlineRegistration</DataSetName>
             <Top>0.20833in</Top>
             <Height>1.25in</Height>
-            <Width>11.24874in</Width>
+            <Width>21.82651in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1324,7 +1460,7 @@
         <Height>1.45833in</Height>
         <Style />
       </Body>
-      <Width>11.30084in</Width>
+      <Width>21.82651in</Width>
       <Page>
         <PageHeader>
           <Height>1.24875in</Height>
@@ -1338,7 +1474,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Online Registration </Value>
+                      <Value>EKYC Registration </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>11pt</FontSize>
@@ -1369,11 +1505,34 @@
                       </Style>
                     </TextRun>
                     <TextRun>
+                      <Value>Customer </Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Registration Source: </Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
                       <Value>=Parameters!category.Value</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1404,7 +1563,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                     <TextRun>
@@ -1412,7 +1571,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                     <TextRun>
@@ -1420,7 +1579,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1467,7 +1626,7 @@
               </Paragraphs>
               <rd:DefaultName>Textbox26</rd:DefaultName>
               <Top>0.12722in</Top>
-              <Left>2.30283in</Left>
+              <Left>5.55283in</Left>
               <Height>1.05209in</Height>
               <Width>8.02925in</Width>
               <Style>
@@ -1485,7 +1644,7 @@
               <Value>OKWallet</Value>
               <Sizing>FitProportional</Sizing>
               <Top>0.12722in</Top>
-              <Left>1.65005in</Left>
+              <Left>4.90005in</Left>
               <Height>0.625in</Height>
               <Width>0.625in</Width>
               <ZIndex>1</ZIndex>

@@ -7,6 +7,7 @@ import { MfsSettingService } from '../mfs-setting.service';
   providedIn: 'root'
 })
 export class KycService {
+   
     
     getBalanceInfoByMphone(entity: any) {
         return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/getBalanceInfoByMphone?mphone=' + entity)
@@ -87,5 +88,18 @@ export class KycService {
                 return model;
             }))
     }
+    getSubCatNameById(mphone: any) {
+        return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/getSubCatNameById?mphone=' + mphone)
+            .pipe(map(regInfoModel => {
+                return regInfoModel;
+            }));
+    }
+    changeStatus(model: any, remarks: any) {
+        return this.http.post(this.environment.distributionApiServer + '/Kyc/changeStatus?remarks=' + remarks, model)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
 
 }

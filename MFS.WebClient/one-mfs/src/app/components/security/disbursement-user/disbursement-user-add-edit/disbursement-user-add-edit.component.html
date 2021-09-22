@@ -1,3 +1,78 @@
-<p>
-  disbursement-user-add-edit works!
-</p>
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<!--<fieldset [disabled]="isRegistrationPermitted && isEditMode ? 'disabled' : null">-->
+<fieldset>
+    <p-card [style]="{'margin-bottom':'20px'}">
+        <div class="form-group">
+            <h6 class="form-header">Office use only</h6>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">User Name<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control" [disabled]="isEditMode" (change)="checkDisbursementUserAlreadyExist()" [(ngModel)]="disbursementUserModel.username"
+                           pInputText id="float-input">
+                </div>
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">OK AC No<span class="mandatory">*</span></label>
+                    <p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="disbursementUserModel.mobileNo" (change)="checkMphoneAlreadyExist()"
+                                 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
+                    <p-message *ngIf="(disbursementUserModel.mobileNo==null || disbursementUserModel.mobileNo=='')" severity="error" text="Cannot be left blank"></p-message>
+
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Password<span class="mandatory">*</span></label>
+                    <input type="password" [(ngModel)]="disbursementUserModel.password" name="password" placeholder="Password" class="form-control" required #password="ngModel" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" />
+                    <div *ngIf="password.invalid && ( password.touched)" autocomplete="new-password" class="alert alert-danger">
+                        <div *ngIf="password.errors.required"> Password is required. </div>
+                        <div *ngIf="password.errors.pattern"> Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.</div>
+                    </div>
+                </div>
+
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Confirm Password<span class="mandatory">*</span></label>
+                    <input type="password" [(ngModel)]="disbursementUserModel.confirmpassword" autocomplete="new-password" name="confirmpassword" placeholder="Confirm Password" class="form-control" required #confirmpassword="ngModel" pattern="{{ password.value }}" />
+                    <div *ngIf=" confirmpassword.invalid && ( confirmpassword.touched)" class="alert alert-danger">
+                        <div *ngIf="confirmpassword.errors.required"> Confirm password is required. </div>
+                        <div *ngIf="confirmpassword.errors.pattern"> Password & Confirm Password does not match.</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class=" col-form-label-dd">Status</label>
+                    <p-dropdown [options]="statusList" [(ngModel)]="disbursementUserModel.ustatus" placeholder="Please Select"
+                                [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+                                [disabled]="isRegistrationPermitted"
+                                id="float-input"></p-dropdown>
+                </div>
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class=" col-form-label-dd">Company Name<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="disburseCompanyList" [(ngModel)]="disbursementUserModel.companyId" placeholder="Please Select"
+                                [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+                                [disabled]="isRegistrationPermitted"
+                                id="float-input"></p-dropdown>
+                    <p-message *ngIf="(disbursementUserModel.companyId==null || disbursementUserModel.companyId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+            </div>
+            <div class="p-grid">
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class=" col-form-label-dd">Role Name<span class="mandatory">*</span></label>
+                    <p-dropdown [options]="roleNameList" [(ngModel)]="disbursementUserModel.roleName" placeholder="Please Select Role Name"
+                                [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+                                id="float-input"></p-dropdown>
+                    <p-message *ngIf="(disbursementUserModel.roleName==null || disbursementUserModel.roleName=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                </div>
+                <div class="p-col-6">
+                    <label for="float-input input-lg" class="col-form-label-dd">Transaction Amount Limit<span class="mandatory">*</span></label>
+                    <input type="text" class="form-control" [(ngModel)]="disbursementUserModel.tranAmtLimit" pInputText pKeyFilter="money"
+                            id="float-input">
+                </div>
+            </div>
+
+        </div>
+    </p-card>
+</fieldset>
+<app-generic-form-action (onSave)="onDisbursementUserSave($event)"></app-generic-form-action>

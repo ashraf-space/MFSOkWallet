@@ -103,7 +103,12 @@
                     <ng-template pTemplate="body" let-rowData>
                         <tr>
                             <td *ngFor="let col of cols" style="text-align:right">
-                                {{rowData[col.field]}}
+                                <div [ngSwitch]="col.template.name">
+                                    <p *ngSwitchCase="'money'">
+                                        <span [innerHtml]="rowData[col.field] | number:'1.2-2' | bdtCurrency"></span>
+                                    </p>
+                                </div>
+                                <span *ngIf="col.template=='none'">{{rowData[col.field]}}</span>
                             </td>
                         </tr>
                     </ng-template>

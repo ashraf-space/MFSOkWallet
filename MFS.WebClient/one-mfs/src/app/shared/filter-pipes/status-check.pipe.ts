@@ -15,8 +15,29 @@ export class StatusCheckPipe implements PipeTransform {
                         return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:green;color:white;padding:0.5em'> Active </span>");
                         break;
                     case 'I':
-                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'> Inactive </span>");
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'> Inward Block </span>");
                         break;
+                    case 'O':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'> Outward Block </span>");
+                        break;
+                    case 'D':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:#96961e;color:white;padding:0.5em'> Dormant </span>");
+                        break;
+                    case 'C':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'> Close </span>");
+                        break;
+                    default:
+                        return value;
+                }
+                break;
+            case 'mapStatus':
+                switch (value) {
+                    case 'A':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:green;color:white;padding:0.5em'> Active </span>");
+                        break;
+                    case 'I':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'>Inactive</span>");
+                        break;           
                     case 'D':
                         return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:#96961e;color:white;padding:0.5em'> Dormant </span>");
                         break;
@@ -146,6 +167,9 @@ export class StatusCheckPipe implements PipeTransform {
                         break;
                     case 'E':
                         return 'E-KYC';
+                        break;
+                    case 'EA':
+                        return 'Agent E-KYC';
                         break;
                     case 'P':
                         return 'Bank User';

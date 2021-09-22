@@ -16,6 +16,8 @@ namespace MFS.ReportingService.Service
 		string GetCategoryNameById(string accCategory);
 		List<ReportInfo> GetReportListByRole(IEnumerable<ReportInfo> reportInfos, string role);
 		List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName);
+		List<AuditTrailReport> GetAuditTrailReport(string branchCode, string user, string parentMenu, string action, string fromDate, string toDate, string auditId);
+		string GetRegSourceNameById(string regStatus);
 	}
 	public class ReportShareService : BaseService<ReportInfo>, IReportShareService
 	{
@@ -23,7 +25,7 @@ namespace MFS.ReportingService.Service
 		public ReportShareService(IReportShareRepository repository)
 		{
 			this._repository = repository;
-		}		
+		}
 
 		public object SaveReportInfo(ReportInfo reportInfo, bool isEditMode, string evnt)
 		{
@@ -51,9 +53,9 @@ namespace MFS.ReportingService.Service
 					//}
 					return true;
 				}
-				
+
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return ex;
 			}
@@ -68,40 +70,40 @@ namespace MFS.ReportingService.Service
 				reportInfo._Roles = reportInfo.Roles.Split(',').ToList().ConvertAll(int.Parse);
 				return reportInfo;
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				return e.ToString();
 			}
-			
+
 		}
 
 		public string GetCategoryNameById(string accCategory)
 		{
-			if(accCategory == "D")
+			if (accCategory == "D")
 			{
 				return "Distributor";
 			}
-			else if(accCategory == "R")
+			else if (accCategory == "R")
 			{
 				return "DSR";
 			}
-			else if(accCategory == "A")
+			else if (accCategory == "A")
 			{
 				return "Agent";
 			}
-			else if(accCategory == "C")
+			else if (accCategory == "C")
 			{
 				return "Customer";
 			}
-			else if(accCategory == "M")
+			else if (accCategory == "M")
 			{
 				return "Merchant";
 			}
-			else if(accCategory == "GP")
+			else if (accCategory == "GP")
 			{
 				return "GP-Mobicash";
 			}
-			else if(accCategory == "GPA")
+			else if (accCategory == "GPA")
 			{
 				return "GP-Mobicash Agent";
 			}
@@ -117,9 +119,9 @@ namespace MFS.ReportingService.Service
 			var roleId = roleInfo[1];
 			List<ReportInfo> reportInfosByList = new List<ReportInfo>();
 
-			foreach(var item in reportInfos)
+			foreach (var item in reportInfos)
 			{
-				if (IsRoleExist(item.Roles,roleId))
+				if (IsRoleExist(item.Roles, roleId))
 				{
 					reportInfosByList.Add(item);
 				}
@@ -131,12 +133,35 @@ namespace MFS.ReportingService.Service
 		{
 			var reportRole = roles.Split(',').Select(int.Parse).ToList();
 			return reportRole.Contains(Convert.ToInt32(roleId));
-			
+
 		}
 
 		public List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName)
 		{
 			return _repository.GetApplicationUserReports(branchCode, userName, name, mobileNo, fromDate, toDate, roleName);
+		}
+
+		public List<AuditTrailReport> GetAuditTrailReport(string branchCode, string user, string parentMenu, string action, string fromDate, string toDate, string auditId)
+		{
+			return _repository.GetAuditTrailReport(branchCode, user, parentMenu, action, fromDate, toDate, auditId);
+		}
+
+		public string GetRegSourceNameById(string regStatus)
+		{
+			switch (regStatus)
+			{
+				case "E":
+					return "Customer Registration E-KYC";
+				case "EA":
+					return "Agent Registration E-KYC";
+				case "Q":
+					return "Agent Registration";
+				case "O":
+					return "Customer Self Registration";
+				default:
+					return string.Empty;
+			}
+
 		}
 	}
 }

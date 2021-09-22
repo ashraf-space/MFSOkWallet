@@ -88,7 +88,7 @@ namespace OneMFS.ReportingApiServer.Controllers
                         for (int i = 1; i < finalRecords.Rows.Count - 1; i++)
                         {
                             TblDisburseTmp objTblDisburseTmp = new TblDisburseTmp();
-                            objTblDisburseTmp.AcNo = finalRecords.Rows[i][1].ToString();
+                            objTblDisburseTmp.AcNo = finalRecords.Rows[i][1].ToString().Trim();
                             objTblDisburseTmp.Amount = Convert.ToDouble(finalRecords.Rows[i][2]);
                             objTblDisburseTmp.MakerId = makerId.ToString();
                             objTblDisburseTmp.Batchno = batchno.ToString();
@@ -275,6 +275,62 @@ namespace OneMFS.ReportingApiServer.Controllers
             }
 
             return message;
+        }
+
+
+        [HttpPost]
+        [AcceptVerbs("GET", "POST")]
+        [Route("api/ExcelUpload/SaveFinalRecords")]
+        public string SaveFinalRecords(List<TblDisburseTmp> list)
+        {
+            try
+            {
+                foreach (var item in list)
+                {
+                    //TblDisburseTmp objTblDisburseTmp = new TblDisburseTmp();
+                    //objTblDisburseTmp.AcNo = item.AcNo.ToString();
+                    //objTblDisburseTmp.Amount = item.Amount;
+                    //objTblDisburseTmp.MakerId = makerId.ToString();
+                    //objTblDisburseTmp.Batchno = batchno.ToString();
+                    //objTblDisburseTmp.Sl = Convert.ToInt16(finalRecords.Rows[i][0]);
+                    //objTblDisburseTmp.OrganizationId = organizationId;
+
+                    _TblDisburseTmpService.Add(item);
+                }
+                return "Excel file has been successfully uploaded";
+            }
+            catch (Exception ex)
+            {
+
+                return "Excel file uploaded has failed";
+            }
+            
+
+            
+        }
+
+        [HttpPost]
+        [AcceptVerbs("GET", "POST")]
+        [Route("api/ExcelUpload/SaveManualDisbursement")]
+        public string SaveManualDisbursement(List<TblDisburseTmp> list)
+        {
+            try
+            {
+                foreach (var item in list)
+                {
+
+                    _TblDisburseTmpService.Add(item);
+                }
+                return "Saved successfully";
+            }
+            catch (Exception ex)
+            {
+
+                return "Failed";
+            }
+
+
+
         }
     }
 

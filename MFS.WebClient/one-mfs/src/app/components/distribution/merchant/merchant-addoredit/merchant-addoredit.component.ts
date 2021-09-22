@@ -118,7 +118,9 @@ export class MerchantAddoreditComponent implements OnInit {
             { label: 'Chain (Parent) Merchant', value: 'C' },
             { label: 'E-Commerce Merchant', value: 'E' },
             { label: 'EMS Mercahnt Module', value: 'EMSM' },
-            { label: 'EMS Bill Payment Module', value: 'EMSC' }
+            { label: 'EMS Bill Payment Module', value: 'EMSC' },
+            { label: 'MMS Mercahnt Module', value: 'MMSM' },
+            { label: 'MMS Bill Payment Module', value: 'MMSC' }
         ]
 
         this.mAreaList = [
@@ -390,9 +392,16 @@ export class MerchantAddoreditComponent implements OnInit {
                         break;
                     }
                     else {
-                        this.activeIndex++;
-                        this.error = false;
-                        break;
+                        if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM' ||
+                            this.selectedCategory === 'MMSC' || this.selectedCategory === 'MMSM') && !this.regInfoModel._OrgCode) {
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                        }
+                        else {
+                            this.activeIndex++;
+                            this.error = false;
+                            break;
+                        }
                     }
                 }
             case 1:
@@ -419,9 +428,16 @@ export class MerchantAddoreditComponent implements OnInit {
                         this.error = true;
                         break;
                     } else {
-                        this.activeIndex++;
-                        this.error = false;
-                        break;
+                        if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM' ||
+                            this.selectedCategory === 'MMSC' || this.selectedCategory === 'MMSM') && !this.regInfoModel._OrgCode) {
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                        }
+                        else {
+                            this.activeIndex++;
+                            this.error = false;
+                            break;
+                        }
                     }
                 }
             case 2:
@@ -447,7 +463,8 @@ export class MerchantAddoreditComponent implements OnInit {
                         this.error = true;
                         break;
                     } else {
-                        if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM') && !this.regInfoModel._OrgCode) {
+                        if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM' ||
+                            this.selectedCategory === 'MMSC' || this.selectedCategory === 'MMSM') && !this.regInfoModel._OrgCode) {
                             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
                             this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
                         }

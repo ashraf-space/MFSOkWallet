@@ -19,20 +19,25 @@ namespace MFS.TransactionService.Repository
         object getDisburseCompanyList();
         object getDisburseNameCodeList();
         object DataInsertToTransMSTandDTL(TblDisburseAmtDtlMake objTblDisburseAmtDtlMake);
-        object AproveRefundDisburseAmount(string TransNo, string PhoneNo,string  branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo);
+        object AproveRefundDisburseAmount(string TransNo, string PhoneNo, string branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo);
         object GetCompnayNameById(int companyId);
         object GetDisburseTypeList();
+        object GetDisburseTypeListForOnline();
         object getBatchNo(int id, string tp);
-        object Process(string batchno, string catId);
+        string Process(string batchno, string catId);
         object getCompanyAndBatchNoList(string forPosting);
+        object getBatchNoDDLByCompanyId(int companyId, string fileUploadDate);
+        object getCompanyAndBatchNoListByCmpId(string forPosting, int companyId);
         bool checkProcess(string batchno);
         List<TblDisburseInvalidData> getValidOrInvalidData(string processBatchNo, string validOrInvalid, string forPosting);
         string SendToPostingLevel(string processBatchNo, double totalSum);
         string AllSend(string processBatchNo, string brCode, string checkerId, double totalSum);
-        object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
+        string BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
         string GetTargetCatIdByCompany(string onlyCompanyName);
         TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId);
+        object GetDisbursementAmountStatusList(int companyId);
+        object GetDataForDisbursementDashboard(int companyId);
     }
     public class DisbursementRepository : BaseRepository<TblDisburseCompanyInfo>, IDisbursementRepository
     {
@@ -69,6 +74,7 @@ namespace MFS.TransactionService.Repository
                     string query = "Select Max(company_id) from" + mainDbUser.DbUser + "tbl_disburse_company_info";
                     var maxCompanyId = connection.QueryFirstOrDefault<int>(query);
 
+                    connection.Close();
                     return maxCompanyId;
                 }
             }
@@ -111,6 +117,26 @@ namespace MFS.TransactionService.Repository
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
                     var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetDisburseTypeDDL", param: parameter, commandType: CommandType.StoredProcedure);
 
+                    connection.Close();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object GetDisburseTypeListForOnline()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = "Select  Disburse_value as Value,CONCAT(CONCAT(CONCAT(disburse_type, ' ('), Disburse_value), ')') as Label from " + mainDbUser.DbUser + "TBL_DISBURSE_TYPE where Status = 'O'";
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
                     connection.Close();
 
                     return result;
@@ -246,18 +272,24 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public object getBatchNo(int id, string tp)
+        public object getBatchNo(int companyId, string disburseType)
         {
             try
             {
                 using (var connection = this.GetConnection())
                 {
+                    string query = null;
+                    query = "Select " + disburseType + "_ACC from " + mainDbUser.DbUser + "tbl_disburse_company_info where Company_Id=" + companyId;
+                    var accountNo = connection.QueryFirstOrDefault<string>(query);
+
+
+
                     var parameter = new OracleDynamicParameters();
-                    parameter.Add("CompanyId", OracleDbType.Int16, ParameterDirection.Input, id);
-                    parameter.Add("DisburseType", OracleDbType.Varchar2, ParameterDirection.Input, tp);
+                    parameter.Add("CompanyId", OracleDbType.Int16, ParameterDirection.Input, companyId);
+                    parameter.Add("DisburseType", OracleDbType.Varchar2, ParameterDirection.Input, disburseType);
                     parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
                     var result = SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_GetBatchNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
-
+                    result.AccountNo = accountNo;
                     connection.Close();
 
                     return result;
@@ -270,7 +302,7 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public object Process(string batchno, string catId)
+        public string Process(string batchno, string catId)
         {
             try
             {
@@ -309,6 +341,72 @@ namespace MFS.TransactionService.Repository
 
                     connection.Close();
 
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+        public object getBatchNoDDLByCompanyId(int companyId, string fileUploadDate)
+        {
+            try
+            {
+                //string query = null;
+                using (var connection = this.GetConnection())
+                {
+                    //query = @"Select distinct batchno as Value ,batchno as Label from " + mainDbUser.DbUser + "tbl_disburse_invalid_data where organization_id =" + companyId + " and TO_DATE(EntryDate,'DD-MM-RRRR')=TO_DATE(" + Convert.ToDateTime(fileUploadDate) + ",'DD-MM-RRRR')";
+                    //var result = connection.Query<CustomDropDownModel>(query);
+                    //this.CloseConnection(connection);
+                    //return result;
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("V_CompanyId", OracleDbType.Int32, ParameterDirection.Input, companyId);
+                    parameter.Add("V_FileUploadDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fileUploadDate));
+                    parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+                    var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GETBatchDDLByCmpIdDate", param: parameter, commandType: CommandType.StoredProcedure);
+
+                    connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object getCompanyAndBatchNoListByCmpId(string forPosting, int companyId)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    //var parameter = new OracleDynamicParameters();
+                    //parameter.Add("forPosting", OracleDbType.Varchar2, ParameterDirection.Input, forPosting);
+                    //parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+                    //var result = SqlMapper.Query<CustomDropDownModel>(connection, mainDbUser.DbUser + "SP_GetCompanyAndBatchNoDDL", param: parameter, commandType: CommandType.StoredProcedure);
+
+                    //connection.Close();
+
+                    //return result;
+                    string query = null;
+                    if (forPosting == "null")
+                    {
+                        //query = @"Select distinct tmp.batchno as Value, CONCAT(CONCAT(CONCAT(c.company_name, ' ('), tmp.batchno), ')') as Label from " + mainDbUser.DbUser + "Tbl_Disburse_Tmp tmp inner join " + mainDbUser.DbUser + "tbl_disburse_company_info c on tmp.Organization_Id = c.company_id where tmp.c_m_status = 'M' and tmp.Batchno not in (Select distinct BatchNo from " + mainDbUser.DbUser + "Tbl_Disburse_Invalid_Data where Trans_No is not null) and c.company_id =" + companyId;
+                        query = @"select distinct newTable.batchno as Value, CONCAT(CONCAT(CONCAT(c.company_name, ' ('), newTable.batchno), ')') as Label from ( (Select distinct tmp.batchno,tmp.organization_id,tmp.c_m_status from " + mainDbUser.DbUser + "Tbl_Disburse_Tmp tmp where tmp.organization_id=" + companyId + ") union (Select distinct vi.batchno,vi.organization_id,vi.c_m_status from " + mainDbUser.DbUser + "Tbl_Disburse_Invalid_Data vi where Trans_No is null and vi.organization_id=" + companyId + ") ) newTable  inner join " + mainDbUser.DbUser + "tbl_disburse_company_info c on newTable.Organization_Id = c.company_id where  batchNo not in (select batchNo from " + mainDbUser.DbUser + "tbl_disburse d where d.batchno= batchNo and d.organization_id = organization_id)";
+                    }
+                    else
+                    {
+                        query = @"Select distinct d.batchno as Value ,CONCAT(CONCAT(CONCAT(c.company_name, ' ('), d.batchno), ')') as Label from " + mainDbUser.DbUser + "Tbl_Disburse d inner join " + mainDbUser.DbUser + "tbl_disburse_company_info c on d.Organization_Id = c.company_id where d.status = 'N' and c.company_id =" + companyId;
+                    }
+
+                    var result = connection.Query<CustomDropDownModel>(query);
+                    this.CloseConnection(connection);
                     return result;
                 }
             }
@@ -432,7 +530,7 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        public object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
+        public string BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
         {
             try
             {
@@ -519,5 +617,50 @@ namespace MFS.TransactionService.Repository
                 throw;
             }
         }
+
+        public object GetDisbursementAmountStatusList(int companyId)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select Entry_date as EntryDate,
+                        Check_Time as CheckedDate, Amount_Cr as Amount,
+                         case when status ='M' then 'Processing'
+                           when status='C' then 'Approved'
+                             else 'Rejected'
+                           end OverallStatus from " + mainDbUser.DbUser + "tbl_disburse_amt_dtl_make where Company_id=" + companyId + " order by Entry_Date desc";
+                    var result = connection.Query<dynamic>(query);
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex.ToString();
+            }
+        }
+
+
+        public object GetDataForDisbursementDashboard(int companyId)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select  (Select  SUM(amount) from " + mainDbUser.DbUser + "tbl_disburse where organization_id =" + companyId + ") as Total, (Select  SUM(amount) from " + mainDbUser.DbUser + "tbl_disburse where organization_id = " + companyId + " and EXTRACT(month FROM ckeck_Date) = EXTRACT(month from SYSDATE)) as CurrentMonth, NVL((Select SUM(amount) from " + mainDbUser.DbUser + "tbl_disburse_invalid_data where organization_id = " + companyId + " and C_M_Status = 'V' and BatchNo not in (select BatchNo from " + mainDbUser.DbUser + "tbl_disburse where c_m_status in ('C', 'V', 'B'))),0)  as OnProcessAmt from dual";
+                    var result = connection.Query<dynamic>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return ex.ToString();
+            }
+        }
+
     }
 }

@@ -1,0 +1,404 @@
+﻿<div>
+    <mfs-pdf-viewer [src]="pdf" #mfsPdfViewer></mfs-pdf-viewer>
+    <div class="p-grid" *ngIf="!isLoading">
+        <div class="p-col-12" *ngIf="!isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-12" style="text-align:center">
+                        <h6><b><i class="fas fa-tachometer-alt"></i> OK Wallet Dashboard</b></h6>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-4">
+                        <h6><b><i class="fa fa-th-list"></i> Cash In/Cash Out</b></h6>
+                    </div>
+
+                    <div class="p-col-8" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <!--<div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashIn()">Branch Cash In (Deposit)<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                        <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBranchCashOut()">Branch Cash Out (Withdrawal)<i class="fas fa-money-bill-alt"></i></button>
+                        </div>-->
+                        <div *ngFor="let item of cashInOutMenus" class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBillCollectionMenu(item.URL)">{{item.FEATURENAME}}<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Utility Bill Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div *ngFor="let item of utilityBillCollectionMenus" class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBillCollectionMenu(item.URL)">{{item.FEATURENAME}}<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Tuition Fee Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div *ngFor="let item of tuitionFeeCollectionMenus" class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBillCollectionMenu(item.URL)">{{item.FEATURENAME}}<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Credit Card Bill Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div *ngFor="let item of creditCardBillCollectionMenus" class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBillCollectionMenu(item.URL)">{{item.FEATURENAME}}<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+        <div class="p-col-12" *ngIf="isBranchTeller && userPStatus!=='N'">
+            <p-card>
+                <div class="p-grid">
+                    <div class="p-col-3">
+                        <h6><b><i class="fas fa-money-bill"></i> Other Bill/Fee Collection</b></h6>
+                    </div>
+
+                    <div class="p-col-9" *ngIf="isBranchTeller && userPStatus!=='N'">
+                        <div *ngFor="let item of OtherBillFeeCollectionMenus" class="btn-group edit-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="goToBillCollectionMenu(item.URL)">{{item.FEATURENAME}}<i class="fas fa-money-bill-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </p-card>
+        </div>
+
+
+
+
+
+
+        <div class="p-grid" *ngIf="!isBranchTeller && userPStatus!=='N'">
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-6">
+                            <h6 style="color:cadetblue">Total Customers</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:cadetblue">Total Merchants</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.CUSTOMER |number }}</b></h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.MERCHANT |number }}</b></h6>
+                        </div>
+                        <!--<div class="p-col-2">
+                            <h6 style="float:right"><i class="fas fa-users"></i></h6>
+                        </div>-->
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total Distributors</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total Agents</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.DISTRIBUTOR |number }}</b></h6>
+                        </div>
+
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.AGENT |number }}</b></h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">Total Transaction Volume(Crore)</h6>
+                        </div>
+                        <div class="p-col-7">
+                            <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalTransaction | number | bdtCurrency"></b> <b style="margin-left:0.2em;">Cr</b></h6>
+                        </div>
+                        <!--<div class="p-col-5">
+                            <h6 style="float:right"><i class="fas fa-comment-dollar"></i></h6>
+                        </div>-->
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total EMS</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total MMS</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.TOTALEMS |number }}</b></h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.TOTALMMS |number }}</b></h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card styleClass="ui-card-shadow">
+                    <div class="p-grid">
+                        <div class="p-col-6">
+                            <h6 style="color:cadetblue">Total No of Transactions</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:cadetblue">ASSET</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalTransactionNumber.TOTALTRANSACTIONNUMBER |number }}</b></h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalAsset.ASSET | number | bdtCurrency">৳</b></h6>
+                        </div>
+                        <!--<div class="p-col-2">
+                            <h6 style="float:right"><i class="fas fa-sort-numeric-down"></i></h6>
+                        </div>-->
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total Online Merchant</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <hr /><h6 style="color:cadetblue">Total Offline Merchant</h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.MERCHANTONLINE |number }}</b></h6>
+                        </div>
+                        <div class="p-col-6">
+                            <h6 style="color:blue"><b>{{dashboardModel.totalClientCount.MERCHANTOFFLINE |number }}</b></h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">Transaction Trend(Volume in BDT in Million)</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barTransData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">OK Wallet Customer</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barCustomerData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">OK Wallet Agent</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barAgentData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">OK Wallet Distributor</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barDistributorData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">OK Wallet Merchant(Online)</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barOnlineMerchantData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">OK Wallet Merchant(Offline)</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="bar" [data]="barOfflineMerchantData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">TOTAL TRANSACTION</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="line" [data]="barData2"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">TRANSACTIONS THIS YEAR</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <p-chart type="line" [data]="barData"></p-chart>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">TRANSACTION Analysis</h6>
+                        </div>
+                        <div class="p-col-12">
+                            <!--<p-chart type="line" [data]="barData2"></p-chart>-->
+                            <div class="btn-group edit-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-blue btn-sm btn-reverse" (click)="transactionAnalysis()">Transaction Analysis<i class="fas fa-chart-bar"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <!--<div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">ASSET</h6>
+                        </div>
+                        <div class="p-col-7">
+                            <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalAsset.ASSET | number | bdtCurrency">৳</b></h6>
+
+                        </div>
+                        <div class="p-col-5">
+                            <h6 style="float:right"><i class="fas fa-money-bill-wave"></i></h6>
+                        </div>
+                        <div class="p-col-12">
+                            <hr /><h6 style="color:cadetblue">ACTIVE</h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">TOTAL TRANSACTION (Crore)</h6>
+                        </div>
+                        <div class="p-col-7">
+                            <h6 style="color:blue"><b [innerHtml]="dashboardModel.totalTransaction | number | bdtCurrency"></b> <b style="margin-left:0.2em;">Cr</b></h6>
+                        </div>
+                        <div class="p-col-5">
+                            <h6 style="float:right"><i class="fas fa-comment-dollar"></i></h6>
+                        </div>
+                        <div class="p-col-12">
+                            <hr /><h6 style="color:cadetblue">ACTIVE</h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>
+            <div class="p-col-4">
+                <p-card>
+                    <div class="p-grid">
+                        <div class="p-col-12">
+                            <h6 style="color:cadetblue">PROMOTIONS AND CASHBACK</h6>
+                        </div>
+                        <div class="p-col-7">
+                            <h6 style="color:blue"><b>3</b></h6>
+                        </div>
+                        <div class="p-col-5">
+                            <h6 style="float:right"><i class="fab fa-battle-net"></i></h6>
+                        </div>
+                        <div class="p-col-12">
+                            <hr /><h6 style="color:cadetblue">ONGOING</h6>
+                        </div>
+                    </div>
+                </p-card>
+            </div>-->
+            <!--<div class="p-col-12">
+                <p-carousel headerText="Client Count" [value]="clientCountList" numVisible="7" *ngIf="!isLoading" easing="easeOutStrong">
+                    <ng-template let-client pTemplate="item">
+                        <p-card>
+                            <div class="p-grid" *ngIf="client.name != 'CLIENT'">
+                                <div class="p-col-12"> <h6 style="text-align:center"><i class="{{client.icon}}"></i></h6></div>
+                                <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.name}}</b></h6> </div>
+                                <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.count}}</b></h6> </div>
+                                <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.thisMonth}}</b></h6> </div>
+                                <div class="p-col-12"><h6 style="color:blue;text-align:center"><b>{{client.thisYear}}</b></h6> </div>
+                                <div class="p-col-12"><h6 style="color:red;text-align:center"><b>{{client.pending}}</b></h6> </div>
+                            </div>
+                            <div class="p-grid" *ngIf="client.name == 'CLIENT'">
+                                <div class="p-col-12"> <h6 style="color:cadetblue;text-align:center"><i class="{{client.icon}}"></i></h6></div>
+                                <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"><b>Client Type</b></h6></div>
+                                <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>Total Count</b></h6></div>
+                                <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>(+) This Month</b></h6></div>
+                                <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>(+) This Year</b></h6></div>
+                                <div class="p-col-12"><h6 style="color:cadetblue;text-align:center"> <b>Pending</b></h6></div>
+                            </div>
+                        </p-card>
+                    </ng-template>
+                </p-carousel>
+            </div>-->
+        </div>
+
+
+    </div>
+    <div class="loader-center" *ngIf="isLoading">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+
+
+</div>

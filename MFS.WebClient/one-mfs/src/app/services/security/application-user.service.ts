@@ -75,5 +75,12 @@ export class ApplicationUserService {
                 return model;
             }));
     }
+
+    getAppUserListDdlForStingValue(branchCode: string) {
+        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/GetAppUserListDdlForStingValue?branchCode=' + branchCode)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
     
 }

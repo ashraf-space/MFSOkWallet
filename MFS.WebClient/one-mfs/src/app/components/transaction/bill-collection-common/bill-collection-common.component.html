@@ -15,7 +15,7 @@
                         </div>
 
                         <div class="form-group row" *ngIf="isShowMonth">
-                            <label for="name" class="col-sm-4 col-form-label single-line">Bill Month <span class="mandatory">*</span></label>
+                            <label for="name" class="col-sm-4 col-form-label single-line">{{featurePayModel.MONTHTITLE}} <span class="mandatory">*</span></label>
                             <div class="col-sm-8">
                                 <p-dropdown [options]="monthYearList" [(ngModel)]="billCollectionCommonModel.month" [filter]="true" placeholder="Select {{featurePayModel.MONTHTITLE}}" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isDisabledMonth"></p-dropdown>
                                 <p-message *ngIf="(billCollectionCommonModel.month==null || billCollectionCommonModel.month=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group row" *ngIf="isShowCardHolder">
-                            <label for="mphone" class="col-sm-4 col-form-label">Enter Card Holder Name <span class="mandatory">*</span></label>
+                            <label for="mphone" class="col-sm-4 col-form-label"> {{featurePayModel.MOREBILLTITLE}} <span class="mandatory">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control form-input" [(ngModel)]="billCollectionCommonModel.cardHolderName" [disabled]="isDisabledCard">
                                 <p-message *ngIf="(billCollectionCommonModel.cardHolderName==null || billCollectionCommonModel.cardHolderName==''|| billCollectionCommonModel.cardHolderName=='0') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -46,11 +46,22 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row" *ngIf="isShowEnterAmount">
                             <label for="name" class="col-sm-4 col-form-label single-line">Enter Amount <span class="mandatory">*</span></label>
                             <div class="col-sm-8">
                                 <input type="text" maxlength="9" class="form-control form-input" placeholder="0" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.amount" [disabled]="isAmountDisabled">
                                 <!--<p-message *ngIf="(billCollectionCommonModel.amount==null || billCollectionCommonModel.amount==''|| billCollectionCommonModel.amount=='0') && error " severity="error" text="Cannot be left blank"></p-message>-->
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row" *ngIf="isShowMMSGrid">
+                            <label for="name" class="col-sm-2 col-form-label single-line">Select Fees <span class="mandatory">*</span></label>
+                            <div class="col-sm-10">
+                                <div class="p-grid" style="margin:5px">
+                                    <generic-grid [gridConfig]="exGridConfig">
+                                    </generic-grid>
+                                </div>
                             </div>
                         </div>
 
@@ -69,7 +80,11 @@
                                 <button type="button" [disabled]="isNextDisabled" class="btn btn-blue btn-sm btn-block" (click)="onNext()"><i class="fas fa-check"></i> Next</button>
                             </div>
                         </div>
+
+
+
                     </div>
+
                     <div class="p-col-4" *ngIf="isShowMessage">
                         <p-card [style]="{width: '300px'}">
                             <div *ngIf="isBgColorYellow" style="background-color:yellow">
@@ -79,6 +94,13 @@
                                 {{message}}
                             </div>
                         </p-card>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="p-grid" style="margin:5px">
+                            <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)">
+                            </generic-grid>
+                        </div>
                     </div>
 
 

@@ -188,6 +188,7 @@ export class ApplicationUserAddEditComponent implements OnInit {
     }
 
     confirmResetPassword() {
+        this.applicationUserModel.updatedBy = this.currentUserModel.user.username;
         this.applicationUserService.resetPassword(this.applicationUserModel).pipe(first())
             .subscribe(
             data => {

@@ -102,7 +102,11 @@ export class GridSettingService {
             name: 'check-status'
         };
     }
-
+    getmapStatusTemplateForRowData() {
+        return {
+            name: 'map-status'
+        };
+    }
     getPinStatusTemplateForRowData() {
         return {
             name: 'pin-status'

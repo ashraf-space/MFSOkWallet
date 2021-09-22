@@ -58,6 +58,7 @@
     <Compile Include="Models\BillCollectionCheckResponse.cs" />
     <Compile Include="Models\BillCollectionCommon.cs" />
     <Compile Include="Models\BranchCashIn.cs" />
+    <Compile Include="Models\BranchPortalReceipt.cs" />
     <Compile Include="Models\CommissionMobile.cs" />
     <Compile Include="Models\DisbursementPostingAudit.cs" />
     <Compile Include="Models\FundTransfer.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Models\MappingApiInfo.cs" />
     <Compile Include="Models\MtCbsinfo.cs" />
     <Compile Include="Models\RateconfigMst.cs" />
+    <Compile Include="Models\ReceiptApiInfo.cs" />
     <Compile Include="Models\RobiTopupStockEntry.cs" />
     <Compile Include="Models\TblBdStatus.cs" />
     <Compile Include="Models\TblCashEntry.cs" />

@@ -17,6 +17,9 @@ namespace MFS.TransactionService.Service
         //object DataInsertToTransMSTandDTL(TblCashEntry cashEntry);
         object GetFeaturePayDetails(int featureId);
         object GetSubMenuDDL(int featureId);
+        object GetBillPayCategoriesDDL(int userId);
+        object GetDataForCommonGrid(string username, string methodName, int? countLimit, string billNo);
+        object GetTitleSubmenuTitleByMethod(string methodName);
     }
     public class BillCollectionCommonService:BaseService<TblCashEntry>, IBillCollectionCommonService
     {
@@ -33,6 +36,11 @@ namespace MFS.TransactionService.Service
         public object GetSubMenuDDL(int featureId)
         {
             return _BillCollectionCommonRepository.GetSubMenuDDL( featureId);
+        }
+
+        public object GetBillPayCategoriesDDL(int userId)
+        {
+            return _BillCollectionCommonRepository.GetBillPayCategoriesDDL(userId);
         }
 
         //public string GetTransactionNo()
@@ -64,5 +72,15 @@ namespace MFS.TransactionService.Service
         //        throw;
         //    }
         //}
+        public object GetDataForCommonGrid(string username, string methodName, int? countLimit, string billNo)
+        {
+            return _BillCollectionCommonRepository.GetDataForCommonGrid(username, methodName, countLimit, billNo);
+        }
+
+        public object GetTitleSubmenuTitleByMethod(string methodName)
+        {
+            return _BillCollectionCommonRepository.GetTitleSubmenuTitleByMethod(methodName);
+        }
+
     }
 }

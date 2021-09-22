@@ -60,6 +60,7 @@ export class AgentAddoreditComponent implements OnInit {
     dobRegEx: RegExp;
     alphabetsWithSpace: any;
     checkedAsPresent: boolean = false;
+    distributorList: any;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -143,7 +144,7 @@ export class AgentAddoreditComponent implements OnInit {
         this.getRegionListForDDL();
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-
+        this.getDistributorForDDL();
         this.getPhotoIDTypeListForDDL();
         this.regInfoModel.nationality = 'Bangladeshi';
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -301,12 +302,14 @@ export class AgentAddoreditComponent implements OnInit {
                 });
     }
     GetInfoByDistributor(): any {
+        this.isLoading = true;
         this.dsrService.GetDistributorDataByDistributorCode(this.DistributorCode)
             .pipe(first())
             .subscribe(
                 data => {
                     //this.regInfoModel = data;
                     if (data) {
+                        this.isLoading = false;
                         if (data.catId === 'D') {
                             this.getRegionListForDDL();
                             this.selectedRegion = data.distCode.substring(0, 2);
@@ -328,6 +331,7 @@ export class AgentAddoreditComponent implements OnInit {
                         }
                     }
                     else {
+                        this.isLoading = false;
                         this.messageService.add({
                             severity: 'error', summary: 'Not Found',
                             detail: 'Distributor Not found', closable: true
@@ -339,6 +343,7 @@ export class AgentAddoreditComponent implements OnInit {
 
                 },
                 error => {
+                    this.isLoading = false;
                     console.log(error);
                 });
     }
@@ -386,6 +391,18 @@ export class AgentAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.territoryList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getDistributorForDDL() {
+        this.distributionService.getDistributorListWithDistCodeForDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.distributorList = data;
                 },
                 error => {
                     console.log(error);

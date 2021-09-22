@@ -8,8 +8,6 @@ import { map } from 'rxjs/operators';
 })
 export class MerchantService {
     
-   
-   
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
 
     }
@@ -190,5 +188,11 @@ export class MerchantService {
             .pipe(map(merchant => {
                 return merchant;
             }));
+    }
+    saveRetail(regInfoModel: any, isEditMode: boolean, event: any) {
+        return this.http.post<any>(this.distribution.distributionApiServer + '/Merchant/saveRetail?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
+            .pipe(map(model => {
+                return model;
+            }))
     }
 }

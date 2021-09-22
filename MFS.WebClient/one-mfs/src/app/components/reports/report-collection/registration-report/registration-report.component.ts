@@ -18,6 +18,7 @@ export class RegistrationReportComponent implements OnInit {
     regStatusList: any;
     optionList: any;
     isDateDisabled: boolean = false;
+    subAccList: any;
     constructor(private mfsUtilityService: MfsUtilityService,
         private kycReportService: KycReportService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
@@ -29,6 +30,7 @@ export class RegistrationReportComponent implements OnInit {
 
     ngOnInit() {
         this.getAccountCategoryDDL();
+        this.getSubAccountCategoryDDL();
         this.basedOnList = [
             { label: 'Create Date', value: 'CD' },
             { label: 'Approved Date', value: 'AD' }           
@@ -41,16 +43,42 @@ export class RegistrationReportComponent implements OnInit {
             { label: 'Reject', value: 'R' }
         ];
         this.optionList = [
-            { label: 'Cumulative', value: 'CL' },
-            { label: 'Period', value: 'P' }
+            { label: 'Period', value: 'P' },
+            { label: 'Cumulative', value: 'CL' }
+            
         ];
+        //this.subAccList = [
+        //    { label: 'All', value: 'All' },
+        //    { label: 'General', value: '1' },
+        //    { label: 'Corona RMG 0.40', value: '2' },
+        //    { label: 'PAYROLL 1.00', value: '3' },
+        //    { label: 'OBL Employee', value: '4' },
+        //    { label: 'Corona RMG 0.80', value: '5' },
+        //    { label: 'PAYROLL 0.90', value: '6' },
+        //    { label: 'Payroll 0.70 (Agent 0.90)', value: '7' },
+        //    { label: 'PAYROLL ATM Free (Br 0.5, Agent 0.9)', value: '8' }
+            
+        //];
     }
     getAccountCategoryDDL(): any {
         this.kycReportService.getAccountCategoryList()
             .pipe(first())
             .subscribe(
                 data => {
-                    this.accountCategoryList = data;
+                    this.accountCategoryList = data;                 
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getSubAccountCategoryDDL(): any {
+        this.kycReportService.getSubAccountCategoryDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.subAccList = data;
+                    this.subAccList.push({ label: 'All', value: 'All' });
                 },
                 error => {
                     console.log(error);
@@ -79,18 +107,19 @@ export class RegistrationReportComponent implements OnInit {
             obj.basedOn = this.model.basedOn;
             obj.options = this.model.options;
             obj.accCategory = this.model.accCategory;
+            obj.accCategorySub = this.model.accCategorySub;
             obj.regStatus = this.model.regStatus;
             return obj;
         }
         else {
             var obj: any = {};
             obj.isNotValidated = true;
-        }
-        return this.model;
+            return obj;
+        }    
     }
 
     validate(): any {
-        if (!this.model.basedOn || !this.model.regStatus || !this.model.accCategory || !this.model.options) {
+        if (!this.model.basedOn || !this.model.regStatus || !this.model.accCategory || !this.model.options || !this.model.accCategorySub) {
             return false;
         }
         else {

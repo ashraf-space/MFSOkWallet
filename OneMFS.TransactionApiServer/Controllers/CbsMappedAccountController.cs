@@ -175,6 +175,10 @@ namespace OneMFS.TransactionApiServer.Controllers
 		{
 			try
 			{
+				if (string.IsNullOrEmpty(mblNo))
+				{
+					return new List<dynamic>();
+				}
 				return _service.GetMappedAccountByMblNo(mblNo);
 			}
 			catch (Exception ex)

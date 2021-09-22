@@ -1,12 +1,12 @@
 <div class="form-group">
 	<div class="p-grid">
-		<div class="p-col-4">
+		<div class="p-col-6">
 			<label for="float-input" class="col-form-label">Utility<span class="mandatory">*</span></label>
 			<p-dropdown [options]="utilityList" placeholder="Select Utility" [(ngModel)]="model.utility"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
 		</div>
-		<div class="p-col-4">
+		<!--<div class="p-col-4">
 			<label for="float-input" class="col-form-label">Gateway<span class="mandatory">*</span></label>
 			<p-dropdown [options]="gatewayList" placeholder="Select Gateway" [(ngModel)]="model.gateway"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
@@ -17,27 +17,27 @@
 			<p-dropdown [options]="catTypeList" placeholder="Select Category" [(ngModel)]="model.catType"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
-		</div>
-
-	</div>
-	<div class="p-grid">
-		<div class="p-col-4">
+		</div>-->
+		<div class="p-col-6">
 			<label for="float-input" class="col-form-label">Select Date Type <span class="mandatory">*</span></label>
-			<p-dropdown [options]="dateTypeList" placeholder="Select Date Type" [(ngModel)]="model.dateType" 
+			<p-dropdown [options]="dateTypeList" placeholder="Select Date Type" [(ngModel)]="model.dateType"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
 		</div>
+	</div>
+	<div class="p-grid">
 
-		<div class="p-col-4">
-			<label for="float-input" class="col-form-label">From</label>
+
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">From<span class="mandatory">*</span></label>
 			<div class="input-group">
 				<input class="form-control" placement="down" [readonly]="true" placeholder="From" [disabled]="isDateDisabled"
 					   name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
 					   id="float-input">
 			</div>
 		</div>
-		<div class="p-col-4">
-			<label for="float-input" class="col-form-label">To</label>
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">To<span class="mandatory">*</span></label>
 			<div class="input-group">
 				<input class="form-control" placement="down" [readonly]="true" placeholder="To" [disabled]="isDateDisabled"
 					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"

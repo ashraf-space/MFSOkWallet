@@ -18,6 +18,7 @@ namespace MFS.SecurityService.Repository
         string GetTransAmtLimit(string createUser);
         object IsProceedToController(List<string> userInfos);
         object GetAppUserListDdl();
+        object GetAppUserListDdlForStingValue(string branchCode);
         object GetAllApplicationUserList(string roleName);
         PasswordPolicy GetPasswordPolicy();
     }
@@ -129,6 +130,25 @@ namespace MFS.SecurityService.Repository
             }
         }
 
+        public object GetAppUserListDdlForStingValue(string branchCode)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"select t.username as ""label"", t.username ""value"" from" + mainDbUser.DbUser + "application_user t where t.branch_code=" + "'" + branchCode + "'";
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public object GetAllApplicationUserList(string roleName)
         {
             try
@@ -139,11 +159,11 @@ namespace MFS.SecurityService.Repository
                     //string query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id";
                     if ((roleName == "Admin") || (roleName == "System Admin") || (roleName == "Super Admin"))
                     {
-                        query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id";
+                        query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id,bb.branchname  from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id inner join " + mainDbUser.DbUser + "bankbranch bb on a.branch_code= bb.branchcode";
                     }
                     else
                     {
-                        query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id where r.Name in ('Branch Teller','Branch KYC Maker','Branch KYC Checker')";
+                        query = @"Select a.name, a.username,r.name as RoleName, a.mobile_no ,a.email_id,a.log_in_status,a.pstatus,a.id,bb.branchname  from" + mainDbUser.DbUser + "application_user a inner join" + mainDbUser.DbUser + "role r on a.role_id=r.id inner join " + mainDbUser.DbUser + "bankbranch bb on a.branch_code= bb.branchcode where r.Name in ('Branch Teller','Branch KYC Maker','Branch KYC Checker')";
                     }
                     var result = connection.Query<dynamic>(query).ToList();
                     this.CloseConnection(connection);

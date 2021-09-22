@@ -15,6 +15,7 @@ export class OnlineRegComponent implements OnInit {
 
     model: any;
     categoryList: any;
+    statusList: any;
     isOkAccExist: any;
     constructor(private mfsUtilityService: MfsUtilityService,
         private messageService: MessageService,
@@ -29,7 +30,13 @@ export class OnlineRegComponent implements OnInit {
     ngOnInit() {
         this.categoryList = [
             { label: 'Customer Self Registration', value: 'O' },
-            { label: 'Agent Registration', value: 'Q' }
+            { label: 'Agent Registration', value: 'Q' },
+            { label: 'Customer Registration E-KYC', value: 'E' },
+            { label: 'Agent Registration E-KYC', value: 'EA' }
+        ];
+        this.statusList = [
+            { label: 'Logical', value: 'L' },
+            { label: 'Physical', value: 'P' }
         ];
     }
 
@@ -50,12 +57,19 @@ export class OnlineRegComponent implements OnInit {
             else {
                 obj.category = null;
             }
+            if (this.model.regStatus) {
+                obj.regStatus = this.model.regStatus;
+            }
+            else {
+                obj.regStatus = null;
+            }
             if (this.model.accNo) {
                 obj.accNo = this.model.accNo;
             }
             else {
                 obj.accNo = null;
             }
+
             return obj;
         }
         else {
@@ -70,6 +84,7 @@ export class OnlineRegComponent implements OnInit {
             this.model.toDate = null;
             this.model.fromDate = null;
             this.model.category = null;
+            this.model.regStatus = null;
         }
         else {
             this.isOkAccExist = false;
@@ -83,13 +98,13 @@ export class OnlineRegComponent implements OnInit {
 
     }
     validate(): any {
-        if ((!this.model.category && !this.model.fromDate && !this.model.toDate) && this.model.accNo) {
+        if ((!this.model.category && !this.model.fromDate && !this.model.toDate && !this.model.regStatus) && this.model.accNo) {
             return true;
         }
-        if (!this.model.category && !this.model.fromDate && !this.model.toDate && !this.model.accNo) {
+        if (!this.model.category && !this.model.fromDate && !this.model.toDate && !this.model.accNo && !this.model.regStatus) {
             return false;
         }
-        if (!this.model.category || !this.model.fromDate || !this.model.toDate) {
+        if (!this.model.category || !this.model.fromDate || !this.model.toDate || !this.model.regStatus) {
             return false;
         }
         else {

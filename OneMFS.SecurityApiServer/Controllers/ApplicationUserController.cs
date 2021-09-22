@@ -133,6 +133,7 @@ namespace OneMFS.SecurityApiServer.Controllers
             {
                 ApplicationUser userDetails = usersService.SingleOrDefault(model.ApplicationUserId, new ApplicationUser());
                 userDetails.UpdatedBy = passwordChangedBy;
+                userDetails.ChangePassDt = DateTime.Now;
                 string validOrInvalid = null;
                 validOrInvalid = validatePassword(userDetails, model);
                 //if (validatePassword(userDetails, model))
@@ -329,7 +330,7 @@ namespace OneMFS.SecurityApiServer.Controllers
                 modelToChange.Pstatus = "N";
                 modelToChange = usersService.Update(modelToChange);
 
-                string messagePrefix = ", Your password for OkWallet Admin Application has been reset and password is " + modelToChange.PlainPassword;
+                string messagePrefix = ", Your password for OkWallet Application User has been reset and password is " + modelToChange.PlainPassword;
 
                 MessageModel messageModel = new MessageModel()
                 {
@@ -340,6 +341,13 @@ namespace OneMFS.SecurityApiServer.Controllers
 
                 MessageService messageService = new MessageService();
                 messageService.SendMessage(messageModel);
+
+                ApplicationUser prevModel = new ApplicationUser();
+                prevModel = modelToChange;
+                prevModel.Pstatus = "L";
+
+                //Insert into audit trial audit and detail                   
+                _auditTrailService.InsertUpdatedModelToAuditTrail(modelToChange, prevModel, model.UpdatedBy, 7, 4, "Application User", modelToChange.Username, "Password Reset Successfully!");
 
                 return modelToChange;
             }
@@ -393,6 +401,20 @@ namespace OneMFS.SecurityApiServer.Controllers
             try
             {
                 return usersService.GetAppUserListDdl();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAppUserListDdlForStingValue")]
+        public object GetAppUserListDdlForStingValue(string branchCode)
+        {
+            try
+            {
+                return usersService.GetAppUserListDdlForStingValue(branchCode);
             }
             catch (Exception ex)
             {

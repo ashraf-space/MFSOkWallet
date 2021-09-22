@@ -7,6 +7,8 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DsrService {
+   
+   
 
 
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
@@ -40,6 +42,18 @@ export class DsrService {
         return this.http.get<any>(this.distribution.environmentApiServer + '/Location/GenerateDistributorCode?territoryCode=' + selectedTerritory)
             .pipe(map(distributorCode => {
                 return distributorCode;
+            }));
+    }
+    saveB2bDsr(regInfoModel: any, isEditMode: boolean, event: any) {
+        return this.http.post<any>(this.distribution.distributionApiServer + '/Dsr/SaveB2bDsr?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+    GetB2bDistributorDataByDistributorCode(DistributorCode: string) {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Dsr/GetB2bDistributorDataByDistributorCode?distributorCode=' + DistributorCode)
+            .pipe(map(regInfoModel => {
+                return regInfoModel;
             }));
     }
 }

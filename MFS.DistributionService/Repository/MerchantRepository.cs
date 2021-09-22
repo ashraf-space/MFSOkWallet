@@ -35,6 +35,7 @@ namespace MFS.DistributionService.Repository
 		object GetMerChantUserByMphone(string mphone);
 		object GetMerchantListForUser();
 		object CheckSnameExist(string orgCode);
+		object GetRetailList(string filterId);
 	}
 	public class MerchantRepository : BaseRepository<Reginfo>, IMerchantRepository
 	{
@@ -332,7 +333,6 @@ namespace MFS.DistributionService.Repository
 				throw;
 			}
 		}
-
 		public object GetMerchantList(string filterId)
 		{
 			try
@@ -346,6 +346,32 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("FILTEROPTION", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_MERCHANT_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+		public object GetRetailList(string filterId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var parameter = new OracleDynamicParameters();
+					parameter.Add("CATTYPE", OracleDbType.Varchar2, ParameterDirection.Input, "CM");
+					parameter.Add("BRCODE", OracleDbType.Varchar2, ParameterDirection.Input, "0000");
+					parameter.Add("REGSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, "L");
+					parameter.Add("FILTEROPTION", OracleDbType.Varchar2, ParameterDirection.Input, filterId);
+					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_RETAIL_BYFILTER", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 					connection.Dispose();
@@ -372,7 +398,7 @@ namespace MFS.DistributionService.Repository
 							 M.STATUS AS ""STATUS"", M.MAX_TRANS_AMT AS ""MAXTRANSAMT"",
 							 M.MIN_TRANS_AMT AS ""MINTRANSAMT"", M.CUSTOMER_SERVICE_CHARGE_PER*100 ""CUSTOMERSERVICECHARGEPER""
 							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '" 
-							 + mPhone + "' AND (T.CATID = 'M' OR T.CatId = 'EMSM' OR t.CatId = 'EMSC')";
+							 + mPhone + "' AND (T.CATID = 'M' OR T.CATID = 'CM' OR T.CatId = 'EMSM' OR t.CatId = 'EMSC' OR T.CatId = 'MMSM' OR t.CatId = 'MMSC')";
 					var result = connection.Query<MerchantConfig>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
@@ -392,7 +418,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.*, r.company_name from " + dbUser + "merchant_user t join " + dbUser + "reginfo r on t.mobile_no = r.mphone";
+					string query = @"select t.*, r.company_name from " + dbUser + "merchant_user t left join " + dbUser + "reginfo r on t.mobile_no = r.mphone";
 					var result = connection.Query<dynamic>(query).ToList();
 					this.CloseConnection(connection);
 					return result;

@@ -10,6 +10,7 @@ namespace MFS.ReportingService.Models
 	{
 		public DateTime? TransDate { get; set; }
 		public string TransNo { get; set; }
+		public string FromCatId { get; set; }
 		public string TransFrom { get; set; }
 		public string TransTo { get; set; }
 		public decimal PayAmount { get; set; }

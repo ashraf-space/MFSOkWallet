@@ -1,0 +1,340 @@
+<p-messages [(value)]="msgs" *ngIf="showDuplicateMsg"></p-messages>
+<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="!isEditMode"></p-steps>
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<fieldset [disabled]="isRegistrationPermitted && isEditMode ? 'disabled' : null">
+	<div class="form-elements">
+		<p-card>
+			<label for="float-input input-lg" style="font-size:large" class="col-form-label">Displayed OK Account: {{regInfoModel.mphone}}</label>
+		</p-card>
+		<!--Primary Information-->
+		<div *ngIf="activeIndex==0">
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Office use only</h6>
+					<div class="p-grid">
+
+						<div class="p-col-6">
+							<label for="float-input input-lg" class=" col-form-label-dd">Category <span class="mandatory">*</span></label>
+							<p-dropdown [options]="mCatList" [(ngModel)]="selectedCategory" placeholder="Please Select"
+										[disabled]="isRegistrationPermitted"
+										(onChange)="generateMerchantCode()" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+										id="float-input"></p-dropdown>
+							<p-message *ngIf="(selectedCategory == '0') && error" severity="error" text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="regInfoModel.mphone" (change)="checkMphoneAlreadyExist()"
+											 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
+								<label for="float-input input-lg" class="col-form-label">AC No<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="regInfoModel._mcode" [readonly]="true" pInputText />
+								<label for="float-input input-lg" class="col-form-label">Merchant Code</label>
+							</span>
+						</div>
+						<div class="p-col-6">
+							<label for="float-input input-lg" class=" col-form-label-dd">Merchant Type</label>
+							<p-dropdown [options]="mTypeList" [(ngModel)]="selectedMtype" placeholder="Please Select"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+										[disabled]="isRegistrationPermitted"
+										id="float-input"></p-dropdown>
+						</div>
+
+
+					</div>					
+				</div>
+			</p-card>
+		</div>
+
+		<!--Personal Information-->
+		<div *ngIf="activeIndex==1">
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Personal details</h6>
+
+					<div class="p-grid">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.companyName" uppercase
+									   pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label-dd">Outlet Name<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.companyName==null || regInfoModel.companyName=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" id="OwnerName" [(ngModel)]="regInfoModel.name" uppercase
+									   pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label-dd">Owner Name<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<div class="form-group row">
+								<label for="Gender" class="col-sm-2 col-form-label">Gender<span class="mandatory">*</span></label>
+								<div class="col-sm-10">
+									<p-selectButton [options]="genderTypes" [(ngModel)]="regInfoModel.gender" [disabled]="isRegistrationPermitted" [style]="{color: 'white'}"></p-selectButton>
+								</div>
+							</div>
+							<p-message *ngIf="(regInfoModel.gender==null || regInfoModel.gender=='') && error" severity="error"
+									   text="Cannot be left blank"></p-message>
+						</div>
+					</div>
+					<div class="p-grid">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.fatherName" appPascalcase [pKeyFilter]="alphabetsWithSpace" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Father's Name <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.fatherName==null || regInfoModel.fatherName=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.motherName" [pKeyFilter]="alphabetsWithSpace" appPascalcase pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Mother's Name <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.motherName==null || regInfoModel.motherName=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.spouseName" [pKeyFilter]="alphabetsWithSpace" appPascalcase pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label"> Spouse Name</label>
+							</span>
+						</div>
+					</div>
+					<div class="p-grid">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label">
+								<input autocomplete="off" class="form-control" placement="down" pInputText id="float-input" (change)="validateDatepicker($event)"
+									   [(ngModel)]="dateOfBirth" ngbDatepicker #d="ngbDatepicker">
+								<label for="float-input input-lg" class="col-form-label">Date Of Birth <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(dateOfBirth.year==null || dateOfBirth.year=='') && error" severity="error"
+									   text="Cannot be left blank"></p-message>
+							<p-message *ngIf="(dateOfBirth.year==null || dateOfBirth.year=='')" severity="error"
+									   text="Please Input Valid Date  [yyyy-mm-dd]"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.photoId" (change)="checkPhotoIdLength()" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">National Id No <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.photoId==null || regInfoModel.photoId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+							<p-message *ngIf="formValidation.photoId" severity="error" text="Invalid NID"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<!--<input autocomplete="off"  type="text" class="form-control" [(ngModel)]="regInfoModel.conMob" pInputText id="float-input">-->
+								<p-inputMask mask="99999999999" [(ngModel)]="regInfoModel.conMob" pKeyFilter="int" [style]="{'width':'100%'}"></p-inputMask>
+								<label for="float-input input-lg" class="col-form-label">Contact No <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.conMob==null || regInfoModel.conMob=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+					</div>
+					
+
+					<div class="p-grid">
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">Division <span class="mandatory">*</span></label>
+							<p-dropdown [options]="divisionList" placeholder="Select Division" [(ngModel)]="selectedDivision"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isRegistrationPermitted"
+										(onChange)="fillDistrictDDLByDivision();"></p-dropdown>
+							<p-message *ngIf="(selectedDivision=='0') && error " severity="error"
+									   text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">District <span class="mandatory">*</span></label>
+							<p-dropdown [options]="districtList" placeholder="Select District" [(ngModel)]="selectedDistrict"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+										[disabled]="isRegistrationPermitted"
+										(onChange)="fillThanaDDLByDistrict();"></p-dropdown>
+							<p-message *ngIf="(selectedDistrict=='0') && error " severity="error"
+									   text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">Thana <span class="mandatory">*</span></label>
+							<p-dropdown [options]="thanaList" placeholder="Select Thana" [(ngModel)]="regInfoModel.locationCode"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+										[disabled]="isRegistrationPermitted"></p-dropdown>
+							<p-message *ngIf="(regInfoModel.locationCode==null || regInfoModel.locationCode=='')
+								   && error " severity="error" text="Cannot be left blank"></p-message>
+
+						</div>
+
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.offAddr"
+										  pInputTextarea uppercase autoResize="autoResize" pInputText id="float-input"></textarea>
+								<label for="float-input input-lg" class="col-form-label">Business Address<span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.offAddr==null || regInfoModel.offAddr=='')
+								   && error " severity="error" text="Cannot be left blank"></p-message>
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.perAddr"
+										  pInputTextarea uppercase autoResize="autoResize" pInputText id="float-input"></textarea>
+								<label for="float-input input-lg" class="col-form-label">Permanent Address <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(regInfoModel.perAddr==null || regInfoModel.perAddr=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+
+						</div>
+
+						<div class="p-col-4">
+							<br />
+							<span class="ui-float-label ">
+								<textarea rows="1" cols="50" [(ngModel)]="regInfoModel.preAddr" pInputTextarea
+										  uppercase autoResize="autoResize" pInputText id="float-input"></textarea>
+								<label for="float-input input-lg" class="col-form-label">Present Address </label>
+							</span>
+						</div>
+
+					</div>
+					<div class="p-grid">
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">Trade Licence No </label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText id="float-input">
+						</div>
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">TIN</label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tinNo" pInputText [pKeyFilter]="positiveNumber" id="float-input">
+						</div>
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">Vat Reg No</label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.vatRegNo" pInputText [pKeyFilter]="positveNumber" id="float-input">
+						</div>
+
+					</div>
+
+				</div>
+			</p-card>
+		</div>
+
+		<!--Bank info-->
+		<div *ngIf="activeIndex==2">
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Own Bank Information</h6>
+
+					<div class="p-grid">
+
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd">Branch Name</label>
+							<p-dropdown [options]="bankBranchList" [(ngModel)]="regInfoModel.branchCode" placeholder="Select Branch"
+										[filter]="true" filterBy="label,value.name" [showClear]="true"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd">Account Name</label>
+							<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.accountName" uppercase pInputText id="float-input">
+						</div>
+
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label-dd">Account No</label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.bankAcNo" [disabled]="disabledEdit" [pKeyFilter]="positveNumber" id="float-input">
+						</div>
+
+					</div>
+				</div>
+			</p-card>
+
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Other Bank Information</h6>
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.eftAccName" uppercase maxlength="50" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Account Name</label>
+							</span>
+						</div>
+
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.eftAccNo" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Account No</label>
+							</span>
+						</div>
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label">Bank Name</label>
+							<p-dropdown [options]="merchantBankBranchList" [(ngModel)]="regInfoModel.eftBankCode" placeholder="Select Bank"
+										[filter]="true" filterBy="label,value.name" (onChange)="getDistrictByBank()" [showClear]="true"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label">District</label>
+							<p-dropdown [options]="bankDistrictList" [(ngModel)]="regInfoModel.eftDistCode" placeholder="Select District"
+										[filter]="true" filterBy="label,value.name" (onChange)="getBankBranchListByBankCodeAndDistCode()"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label-dd">Branch Name </label>
+							<p-dropdown [options]="bankBranchByDistBankCodeList" [(ngModel)]="regInfoModel.eftBranchCode"
+										[filter]="true" filterBy="label,value.name" placeholder="Select Branch"
+										(onChange)="getRoutingNo()"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [readonly]="true" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Routing No</label>
+							</span>
+						</div>
+					</div>
+
+				</div>
+			</p-card>
+
+
+		</div>
+	</div>
+</fieldset>
+<app-generic-stepper-form-action [activeIndex]="activeIndex" [maxIndex]="3" (onStepAhead)="onStepAhead($event)" (onStepBack)="onStepBack()"></app-generic-stepper-form-action>

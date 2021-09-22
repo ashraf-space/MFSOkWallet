@@ -26,6 +26,18 @@ export class ClientCategoryPipe implements PipeTransform {
             case 'E':
                 return 'Enterprise';
                 break;
+            case 'CM':
+                return 'Retail';
+                break;
+            case 'BD':
+                return 'B2B Distributor';
+                break;
+            case 'BA':
+                return 'B2B DSR';
+                break;
+            case 'BR':
+                return 'B2B Retail';
+                break;
             default:
                 return value;
         }

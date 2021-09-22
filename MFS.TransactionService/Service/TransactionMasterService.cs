@@ -11,7 +11,7 @@ namespace MFS.TransactionService.Service
 {
     public interface ITransactionMasterService : IBaseService<GlTransMst>
     {
-        dynamic GetTransactionList(string mphone, DateTime fromDate, DateTime toDate);
+        dynamic GetTransactionList(string mphone, DateTime? fromDate, DateTime? toDate);
         dynamic GetTransactionMasterByTransNo(string transactionNumber);
         dynamic GetBankDepositStatus(DateTime fromDate, DateTime toDate, string balanceType,string roleName);
         object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList);
@@ -27,7 +27,7 @@ namespace MFS.TransactionService.Service
             this.repo = _repo;
         }
 
-        public dynamic GetTransactionList(string mphone, DateTime fromDate, DateTime toDate)
+        public dynamic GetTransactionList(string mphone, DateTime? fromDate, DateTime? toDate)
         {
             return this.repo.GetTransactionList(mphone, fromDate, toDate);
         }

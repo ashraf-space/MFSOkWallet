@@ -108,6 +108,21 @@ import { NidPaymentCollectionComponent } from './components/transaction/nid-paym
 import { BillCollectionCommonComponent } from './components/transaction/bill-collection-common/bill-collection-common.component';
 import { DisbursementUserListComponent } from './components/security/disbursement-user/disbursement-user-list/disbursement-user-list.component';
 import { DisbursementUserAddEditComponent } from './components/security/disbursement-user/disbursement-user-add-edit/disbursement-user-add-edit.component';
+import { ChngStatusComponent } from './components/tools/chng-status/chng-status.component';
+import { CustRetailComponent } from './components/distribution/customer/retail/cust-retail/cust-retail.component';
+import { CustRetailListComponent } from './components/distribution/customer/retail/cust-retail-list/cust-retail-list.component';
+import { StatusListComponent } from './components/tools/status-list/status-list.component';
+import { B2bAddoreditComponent } from './components/distribution/distributor/b2b-addoredit/b2b-addoredit.component';
+import { B2bListComponent } from './components/distribution/distributor/b2b-list/b2b-list.component';
+import { DashboardComponent } from './components/client/dashboard/dashboard.component';
+import { B2bDsrListComponent } from './components/distribution/dsr/b2b-dsr-list/b2b-dsr-list.component';
+import { B2bDsrAddoreditComponent } from './components/distribution/dsr/b2b-dsr-addoredit/b2b-dsr-addoredit.component';
+import { TtalkTopupStockEntryComponent } from './components/transaction/ttalk-topup-stock-entry/ttalk-topup-stock-entry.component';
+import { B2bRetailListComponent } from './components/distribution/distributor/b2b-retail-list/b2b-retail-list.component';
+import { B2bRetailAddoreditComponent } from './components/distribution/distributor/b2b-retail-addoredit/b2b-retail-addoredit.component';
+import { DownloadReceiptComponent } from './components/transaction/download-receipt/download-receipt.component';
+import { CommissionConvertionListComponent } from './components/transaction/commission-convertion/commission-convertion-list/commission-convertion-list.component';
+import { CommissionConvertionAddoreditComponent } from './components/transaction/commission-convertion/commission-convertion-addoredit/commission-convertion-addoredit.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -220,7 +235,27 @@ const appRoutes: Routes = [
     { path: 'transaction/bill-collection-common/:id', component: BillCollectionCommonComponent, canActivate: [AuthGuard] },
     { path: 'disbursement-user/list', component: DisbursementUserListComponent, canActivate: [AuthGuard] },
     { path: 'disbursement-user/add-edit/:id', component: DisbursementUserAddEditComponent, canActivate: [AuthGuard] },
-   
+    { path: 'chck-status', component: ChngStatusComponent, canActivate: [AuthGuard] },
+    { path: 'retail/list', component: CustRetailListComponent, canActivate: [AuthGuard] },
+    { path: 'retail/addoredit/:id', component: CustRetailComponent, canActivate: [AuthGuard] },
+    { path: 'retail/details/:id', component: ClientProfileComponent, canActivate: [AuthGuard] },
+    { path: 'status/list', component: StatusListComponent, canActivate: [AuthGuard] },
+    { path: 'status/details/:id', component: ClientProfileComponent, canActivate: [AuthGuard] },
+    { path: 'b2b/list', component: B2bListComponent, canActivate: [AuthGuard] },
+    { path: 'b2b/addoredit/:id', component: B2bAddoreditComponent, canActivate: [AuthGuard] },
+    { path: 'b2b/details/:id', component: ClientProfileComponent, canActivate: [AuthGuard] },
+    { path: 'client/dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: 'b2bdsr/list', component: B2bDsrListComponent, canActivate: [AuthGuard] },
+    { path: 'b2bdsr/addoredit/:id', component: B2bDsrAddoreditComponent, canActivate: [AuthGuard] },
+    { path: 'b2bdsr/details/:id', component: ClientProfileComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/ttalk-topup-stock-entry', component: TtalkTopupStockEntryComponent, canActivate: [AuthGuard] },
+    { path: 'b2bretail/list', component: B2bRetailListComponent, canActivate: [AuthGuard] },
+    { path: 'b2bretail/addoredit/:id', component: B2bRetailAddoreditComponent, canActivate: [AuthGuard] },
+    { path: 'b2bretail/details/:id', component: ClientProfileComponent, canActivate: [AuthGuard] },
+    { path: 'transaction/download-receipt', component: DownloadReceiptComponent, canActivate: [AuthGuard] },
+    { path: 'commission-convertion/list', component: CommissionConvertionListComponent, canActivate: [AuthGuard] },
+    { path: 'commission-convertion/addoredit/:id', component: CommissionConvertionAddoreditComponent, canActivate: [AuthGuard] },
+
     {
         path: "",
         pathMatch: "full",

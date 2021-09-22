@@ -29,12 +29,15 @@ namespace OneMFS.SecurityApiServer.Controllers
 		private IErrorLogService errorLogService;
 		private JwtModel jwtModel = null;
 		IMerchantUserService merchantUserService;
-		public SecurityController(IMerchantUserService _merchantUserService,IErrorLogService _errorLogService, IApplicationUserService _usersService, JwtModel _jwtModel)
+		private IDisbursementUserService _DisbursementUserService;
+        public SecurityController(IMerchantUserService _merchantUserService,IErrorLogService _errorLogService, IApplicationUserService _usersService, JwtModel _jwtModel,
+            IDisbursementUserService objDisbursementUserService)
 		{
 			usersService = _usersService;
 			jwtModel = _jwtModel;
 			errorLogService = _errorLogService;
 			merchantUserService = _merchantUserService;
+            _DisbursementUserService = objDisbursementUserService;
 		}
 
 		[HttpPost]
@@ -104,7 +107,41 @@ namespace OneMFS.SecurityApiServer.Controllers
 			}
 		}
 
-		[HttpPost]
+        [HttpPost]
+        [Route("DisbursementUserLogIn")]
+        public object DisbursementUserLogIn([FromBody]LoginModel model)
+        {
+            try
+            {
+                AuthDisbursementUser obj = _DisbursementUserService.DisbursementUserLogIn(model);
+                if (obj.IsAuthenticated && obj.User.LogInStatus == "N")
+                {
+                    obj.IsAuthenticated = false;
+                }
+                if (obj.IsAuthenticated && obj.User.Pstatus == "L")
+                {
+                    obj.IsAuthenticated = false;
+                }
+
+                if (obj.IsAuthenticated)
+                {
+                    //obj.BearerToken = CreateJwtTokenForClient(obj);
+                    //return StatusCode(StatusCodes.Status200OK, obj);		
+                    return obj;
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status200OK, obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return StatusCode(StatusCodes.Status401Unauthorized); ;
+            }
+        }
+
+        [HttpPost]
 		[Route("LockAccount")]
 		public object LockAccount([FromBody]ApplicationUser model)
 		{

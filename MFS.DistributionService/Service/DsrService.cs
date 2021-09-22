@@ -16,7 +16,8 @@ namespace MFS.DistributionService.Service
         object GetDistributorDataByDistributorCode(string distributorCode);
         string GeneratePinNo(int fourDigitRandomNo);
         void UpdatePinNo(string mphone, string fourDigitRandomNo);
-    }
+		object GetB2bDistributorDataByDistributorCode(string distributorCode);
+	}
     public class DsrService : BaseService<Reginfo>,IDsrService
     {
         private readonly IDsrRepository _DsrRepository;
@@ -67,5 +68,17 @@ namespace MFS.DistributionService.Service
                 throw;
             }
         }
-    }
+
+		public object GetB2bDistributorDataByDistributorCode(string distributorCode)
+		{
+			try
+			{
+				return _DsrRepository.GetB2bDistributorDataByDistributorCode(distributorCode);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+		}
+	}
 }

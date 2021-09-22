@@ -13,6 +13,7 @@ namespace MFS.ReportingService.Models
 		public string TransFrom { get; set; }
 		public string FromCatId { get; set; }
 		public decimal TotalPayAmount { get; set; }
+		public decimal TotalDescoAmount { get; set; }
 		public decimal VatAmt { get; set; }
 		public decimal SchargeAmt { get; set; }
 		public decimal NetServiceFee { get; set; }
@@ -30,7 +31,10 @@ namespace MFS.ReportingService.Models
 		public decimal Penalty { get; set; }
 		public decimal Sequences { get; set; }
 		public decimal TotalFee { get; set; }
+		public decimal ArrearAmt { get; set; }
 		public string OrderId { get; set; }
 		public decimal Amount { get; set; }
+		public string Token { get; set; }
+		public string Seq { get; set; }
 	}
 }

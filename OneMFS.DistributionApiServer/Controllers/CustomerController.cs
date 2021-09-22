@@ -89,31 +89,100 @@ namespace OneMFS.DistributionApiServer.Controllers
 		{
 			try
 			{
-				using (var httpClient = new HttpClient())
+				if (!String.IsNullOrEmpty(mphone)&& !String.IsNullOrEmpty(bankAcNo))
 				{
-					CbsApiInfo apiInfo = new CbsApiInfo();
-					CbsCustomerInfo cbsCustomerInfo = new CbsCustomerInfo();
-					dynamic apiResponse = null;
-					using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + mphone))
+					var customerInfo = _customerSevice.GetCustomerByMphone(mphone);
+					if(customerInfo == null)
 					{
-						apiResponse = await response.Content.ReadAsStringAsync();
-					    cbsCustomerInfo = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
-
+						using (var httpClient = new HttpClient())
+						{
+							CbsApiInfo apiInfo = new CbsApiInfo();
+							CbsCustomerInfo cbsCustomerInfo = new CbsCustomerInfo();
+							Reginfo reginfo = new Reginfo();
+							dynamic apiResponse = null;
+							bool isMphoneSame=false;
+							using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + bankAcNo))
+							{
+								apiResponse = await response.Content.ReadAsStringAsync();								
+								cbsCustomerInfo = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
+							}
+							
+							if (cbsCustomerInfo != null)
+							{
+								isMphoneSame = _customerSevice.IsMobilePhoneMatch(mphone, cbsCustomerInfo);
+								reginfo = _customerSevice.ConvertCbsPullToregInfo(cbsCustomerInfo);								 
+							}
+							if (cbsCustomerInfo == null)
+							{
+								return Ok(new
+								{
+									Status = HttpStatusCode.NotAcceptable,
+									Model = string.Empty,
+									Erros = "No Cbs Account Found"
+								});
+							}
+							if (reginfo.Mphone.Length != 11)
+							{
+								return Ok(new
+								{
+									Status = HttpStatusCode.NotAcceptable,
+									Model = string.Empty,
+									Erros = "Mobile No Should be 11 digit"
+								});
+							}
+							if (isMphoneSame)
+							{
+								return Ok(new
+								{
+									Status = HttpStatusCode.OK,
+									Model = reginfo,
+									Erros = String.Empty
+								});
+								
+								
+							}
+							else
+							{
+								return Ok(new
+								{
+									Status = HttpStatusCode.NotAcceptable,
+									Model = string.Empty,
+									Erros = "Mobile No Mismatched"
+								});
+							}
+							
+						}
 					}
-					Reginfo reginfo = new Reginfo
+					else
 					{
-						Name = "Ashraf",
-						Mphone = "01682393688",
-						FatherName = "Shahjahan",
-						MotherName = "Shahana Akter",
-						PerAddr = "Shantibagh"
-					};
-					return reginfo;
+						return Ok(new
+						{
+							Status = HttpStatusCode.NotAcceptable,
+							Model = string.Empty,
+							Erros = "Customer is already Exist"
+						});
+					}
+				
 				}
+				else
+				{
+					return Ok(new
+					{
+						Status = HttpStatusCode.NotAcceptable,
+						Model = string.Empty,
+						Erros = "Invalid Input"
+					});
+				}
+				
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+				return Ok(new
+				{
+					Status = HttpStatusCode.ExpectationFailed,
+					Model = string.Empty,
+					Erros = ex.Message.ToString()
+				});
 			}
 		}
 	}

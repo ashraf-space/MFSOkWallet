@@ -19,7 +19,7 @@
     </div>
     <div class="p-col-12">
         <span class="ui-float-label ">
-            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.mphone">
+            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.mphone" pKeyFilter="int" maxlength="13">
             <label for="float-input input-lg"><i class='fa fa-search'></i> Enter Account Number <span class="mandatory">*</span></label>
         </span>
     </div>

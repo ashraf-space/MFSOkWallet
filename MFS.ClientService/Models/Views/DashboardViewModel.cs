@@ -17,5 +17,11 @@ namespace MFS.ClientService.Models.Views
         public object TotalCommunication { get; set; }
         public dynamic TotalAsset { get; internal set; }
         public dynamic PendingClientCount { get; internal set; }
-    }
+
+        public dynamic TotalTransactionNumber { get; set; }
+
+
+        public object ListTransactionTrend { get; set; }
+        public object DynamicClientCount { get; set; }
+    }   
 }

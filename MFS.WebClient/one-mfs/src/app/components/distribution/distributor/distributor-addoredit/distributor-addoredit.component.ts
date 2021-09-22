@@ -8,7 +8,7 @@ import { AuthenticationService } from 'src/app/shared/_services';
 import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 import { KycService } from '../../../../services/distribution/kyc.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-
+import { MerchantService } from '../../../../services/distribution/merchant.service';
 
 @Component({
     selector: 'app-distributor-addoredit',
@@ -52,7 +52,12 @@ export class DistributorAddoreditComponent implements OnInit {
     error: boolean = false;
     showDuplicateMsg: boolean = false;
     checkedAsPresent: boolean = false;
-
+    merchantBankBranchList: any;
+    bankDistrictList: any;
+    bankBranchByDistBankCodeList: any;
+    isSecuredViewPermitted: boolean = false;
+    disabledEdit: boolean = true;
+    positveNumber: RegExp;
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -60,7 +65,8 @@ export class DistributorAddoreditComponent implements OnInit {
         private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService,
         private ngbDatepickerConfig: NgbDatepickerConfig,
-        private kycService: KycService) {
+        private kycService: KycService,
+        private merchantService: MerchantService) {
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -68,7 +74,7 @@ export class DistributorAddoreditComponent implements OnInit {
             this.currentUserModel = x;
         });
         this.formValidation = {};
-
+        this.positveNumber = this.mfsUtilityService.getPositiveWholeNumberRegExp();
     }
 
     ngOnInit() {
@@ -133,7 +139,7 @@ export class DistributorAddoreditComponent implements OnInit {
         this.getRegionListForDDL();
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-
+        this.getMerchantBankBranchList();
         this.getPhotoIDTypeListForDDL();
         this.regInfoModel.nationality = 'Bangladeshi';
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -150,7 +156,7 @@ export class DistributorAddoreditComponent implements OnInit {
             this.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         }
         this.regInfoModel.partOfFirst = 100;
-
+        this.checkForSecureView();
     }
     validateDatepicker(event) {
         if (this.dateOfBirth) {
@@ -188,6 +194,8 @@ export class DistributorAddoreditComponent implements OnInit {
                         this.fillDistrictDDLByDivision();
                         this.selectedDistrict = this.regInfoModel.locationCode.substring(0, 4);
                         this.fillThanaDDLByDistrict();
+                        this.getDistrictByBank();
+                        this.getBankBranchListByBankCodeAndDistCode();
                         this.regDate = this.mfsUtilityService.renderDateObject(data.regDate);
                         if (data.dateOfBirth != null) {
                             this.dateOfBirth = this.mfsUtilityService.renderDateObject(data.dateOfBirth);
@@ -569,5 +577,68 @@ export class DistributorAddoreditComponent implements OnInit {
                     console.log(error);
                 });
     }
+    
+    getMerchantBankBranchList(): any {
+        this.merchantService.getMerchantBankBranchList()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.merchantBankBranchList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getDistrictByBank(): any {
+        this.merchantService.getDistrictByBank(this.regInfoModel.eftBankCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.bankDistrictList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getBankBranchListByBankCodeAndDistCode(): any {
+        this.merchantService.getBankBranchListByBankCodeAndDistCode(this.regInfoModel.eftBankCode, this.regInfoModel.eftDistCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.bankBranchByDistBankCodeList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    checkForSecureView() {
+        if (this.entityId) {
+            this.isSecuredViewPermitted = this.authService.checkIsSecuredViewPermitted(this.route.snapshot.routeConfig.path);
+            if (this.isSecuredViewPermitted) {
+                this.disabledEdit = false;
+            }
+            else {
+                this.disabledEdit = true;
+            }
+        }
+        else {
+            this.disabledEdit = false;
+        }
 
+    }
+    getRoutingNo(): any {
+        this.merchantService.getRoutingNo(this.regInfoModel.eftBankCode, this.regInfoModel.eftDistCode, this.regInfoModel.eftBranchCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.regInfoModel.eftRoutingNo = data.routing_no;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
 }

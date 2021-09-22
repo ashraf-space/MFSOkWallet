@@ -19,7 +19,8 @@ namespace MFS.SecurityService.Repository
         object GetUserListDdl();
         object GetAuditTrails(DateRangeModel date, string user, string action, string menu);
         object GetTrailDtlById(string id);
-    }
+		object GetParentMenuList();
+	}
 
     public class AuditTrailRepository : BaseRepository<AuditTrail>, IAuditTrailRepository
     {
@@ -54,7 +55,26 @@ namespace MFS.SecurityService.Repository
             }
         }
 
-        public object GetTrailDtlById(string id)
+		public object GetParentMenuList()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.name as ""label"", t.name ""value"" from " + dbUser + "feature_category t";
+					var result = connection.Query<CustomDropDownModel>(query).ToList();
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public object GetTrailDtlById(string id)
         {
             try
             {

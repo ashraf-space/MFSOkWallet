@@ -8,13 +8,13 @@
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">User Name<span class="mandatory">*</span></label>
 					<input type="text" class="form-control" [disabled]="isEditMode" (change)="checkMerchantUserAlreadyExist()" [(ngModel)]="merchantUserModel.username"
-						   pInputText id="float-input">
+						   pInputText pKeyFilter="alphanum" id="float-input">
 				</div>
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">OK AC No</label>
 					<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="merchantUserModel.mobileNo" (change)="checkMphoneAlreadyExist()"
 								 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
-					<p-message *ngIf="(merchantUserModel.mobileNo==null || merchantUserModel.mobileNo=='')" severity="error" text="Cannot be left blank"></p-message>
+					<!--<p-message *ngIf="(merchantUserModel.mobileNo==null || merchantUserModel.mobileNo=='')" severity="error" text="Cannot be left blank"></p-message>-->
 
 				</div>
 			</div>
@@ -41,16 +41,23 @@
 
 
 			<div class="p-grid">
-				<div class="p-col-6">
+				<div class="p-col-4">
 					<label for="float-input input-lg" class=" col-form-label-dd">Status</label>
 					<p-dropdown [options]="statusList" [(ngModel)]="merchantUserModel.ustatus" placeholder="Please Select"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 								[disabled]="isRegistrationPermitted"
 								id="float-input"></p-dropdown>
 				</div>
-				<div class="p-col-6">
-					<label for="float-input input-lg" class=" col-form-label-dd">Merchant Type</label>
+				<div class="p-col-4">
+					<label for="float-input input-lg" class=" col-form-label-dd">Merchant Type <span class="mandatory">*</span></label>
 					<p-dropdown [options]="merchantTypeList" [(ngModel)]="merchantUserModel.mtype" placeholder="Please Select"
+								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
+								[disabled]="isRegistrationPermitted"
+								id="float-input"></p-dropdown>
+				</div>
+				<div class="p-col-4">
+					<label for="float-input input-lg" class=" col-form-label-dd">Merchant SubCategory Type</label>
+					<p-dropdown [options]="merchantSubTypeList" [(ngModel)]="merchantUserModel.mtypesub" placeholder="Please Select"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
 								[disabled]="isRegistrationPermitted"
 								id="float-input"></p-dropdown>

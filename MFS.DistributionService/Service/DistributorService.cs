@@ -2,6 +2,7 @@
 using MFS.DistributionService.Models;
 using MFS.DistributionService.Repository;
 using OneMFS.SharedResources;
+using OneMFS.SharedResources.CommonService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace MFS.DistributionService.Service
     {
         object GetDistributorListData();
         object GetDistributorListForDDL();
-        object GetTotalAgentByMobileNo(string ExMobileNo);
+		object GetDistributorListWithDistCodeForDDL();
+		object GetTotalAgentByMobileNo(string ExMobileNo);
         object GetDistributorByMphone(string mPhone);
         object GetDistcodeAndNameByMphone(string mPhone);
         string GeneratePinNo(int fourDigitRandomNo);
@@ -29,7 +31,8 @@ namespace MFS.DistributionService.Service
         bool IsExistsByMpohne(string mphone);
         bool IsExistsByCatidPhotoId(string catId, string photoId);
         object GetRegionDetailsByMobileNo(string mobileNo);
-    }
+		object GetB2bDistributorListWithDistCodeForDDL();
+	}
     public class DistributorService : BaseService<Reginfo>,IDistributorService
     {
         private readonly IDistributorRepository _distributorRepository;
@@ -61,8 +64,55 @@ namespace MFS.DistributionService.Service
         {
             try
             {
-                return _distributorRepository.GetDistributorByMphone(mPhone);
-            }
+				Base64Conversion base64Conversion = new Base64Conversion();
+				Reginfo reginfo = (Reginfo) _distributorRepository.GetDistributorByMphone(mPhone);
+				if (reginfo != null)
+				{
+					if (base64Conversion.IsBase64(reginfo.FatherName))
+					{
+						reginfo.FatherName = base64Conversion.DecodeBase64(reginfo.FatherName);
+					}
+					if (base64Conversion.IsBase64(reginfo.MotherName))
+					{
+						reginfo.MotherName = base64Conversion.DecodeBase64(reginfo.MotherName);
+					}
+					if (base64Conversion.IsBase64(reginfo.SpouseName))
+					{
+						reginfo.SpouseName = base64Conversion.DecodeBase64(reginfo.SpouseName);
+					}
+					if (base64Conversion.IsBase64(reginfo.PreAddr))
+					{
+						reginfo.PreAddr = base64Conversion.DecodeBase64(reginfo.PreAddr);
+					}
+					if (base64Conversion.IsBase64(reginfo.PerAddr))
+					{
+						reginfo.PerAddr = base64Conversion.DecodeBase64(reginfo.PerAddr);
+					}
+					//
+					if (base64Conversion.IsBase64(reginfo._FatherNameBangla))
+					{
+						reginfo._FatherNameBangla = base64Conversion.DecodeBase64(reginfo._FatherNameBangla);
+					}
+					if (base64Conversion.IsBase64(reginfo._MotherNameBangla))
+					{
+						reginfo._MotherNameBangla = base64Conversion.DecodeBase64(reginfo._MotherNameBangla);
+					}
+					if (base64Conversion.IsBase64(reginfo._SpouseNameBangla))
+					{
+						reginfo._SpouseNameBangla = base64Conversion.DecodeBase64(reginfo._SpouseNameBangla);
+					}
+					if (base64Conversion.IsBase64(reginfo._PreAddrBangla))
+					{
+						reginfo._PreAddrBangla = base64Conversion.DecodeBase64(reginfo._PreAddrBangla);
+					}
+					if (base64Conversion.IsBase64(reginfo._PerAddrBangla))
+					{
+						reginfo._PerAddrBangla = base64Conversion.DecodeBase64(reginfo._PerAddrBangla);
+					}
+
+				}
+				return reginfo;
+			}
             catch (Exception)
             {
                 throw;
@@ -215,5 +265,31 @@ namespace MFS.DistributionService.Service
                 throw;
             }
         }
-    }
+
+		public object GetDistributorListWithDistCodeForDDL()
+		{
+			try
+			{
+				return _distributorRepository.GetDistributorListWithDistCodeForDDL();
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+
+		public object GetB2bDistributorListWithDistCodeForDDL()
+		{
+			try
+			{
+				return _distributorRepository.GetB2bDistributorListWithDistCodeForDDL();
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+	}
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using MFS.DistributionService.Models;
+using MFS.DistributionService.Service;
 using MFS.SecurityService.Service;
 using MFS.TransactionService.Models;
 using MFS.TransactionService.Service;
@@ -23,12 +25,14 @@ namespace OneMFS.TransactionApiServer.Controllers
         private readonly ITransactionMasterService transMastService;
         private readonly IErrorLogService errorLogService;
         private readonly IAuditTrailService _auditTrailService;
-        public TransactionMasterController(ITransactionMasterService _transMastService, IErrorLogService objerrorLogService,
+		private readonly IKycService kycService;
+		public TransactionMasterController(IKycService _kycService ,ITransactionMasterService _transMastService, IErrorLogService objerrorLogService,
             IAuditTrailService objAuditTrailService)
         {
             this.transMastService = _transMastService;
             this.errorLogService = objerrorLogService;
             _auditTrailService = objAuditTrailService;
+			this.kycService = _kycService;
         }
 
         [HttpGet]
@@ -37,11 +41,33 @@ namespace OneMFS.TransactionApiServer.Controllers
         {
             try
             {
-                DateRangeModel date = new DateRangeModel();
-                date.FromDate = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
-                date.ToDate = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
+				DateRangeModel date = new DateRangeModel();
+				date.FromDateNullable = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
+				date.ToDateNullable = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
+				if (string.IsNullOrEmpty(mPhone))
+				{
+					return transMastService.GetTransactionList(mPhone, date.FromDateNullable, date.ToDateNullable);
+				}
+				else
+				{
+					CLoseReginfo cLoseReginfo = new CLoseReginfo();
+					cLoseReginfo = kycService.GetCloseInfoByMphone(mPhone);
+					if (cLoseReginfo.MphoneOld != null)
+					{
+						if (date.ToDateNullable > cLoseReginfo.CloseDate)
+						{
+							date.ToDateNullable = cLoseReginfo.CloseDate;
+						}
+						mPhone = cLoseReginfo.MphoneOld;
+					}
+					if (date.FromDateNullable < cLoseReginfo.Regdate)
+					{
+						date.FromDateNullable = cLoseReginfo.Regdate;
+					}
 
-                return transMastService.GetTransactionList(mPhone, date.FromDate, date.ToDate);
+					return transMastService.GetTransactionList(mPhone, date.FromDateNullable, date.ToDateNullable);
+				}
+				
             }
             catch (Exception ex)
             {

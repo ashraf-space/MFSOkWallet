@@ -9,6 +9,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class DistributorService {
+    
+   
 
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
 
@@ -40,7 +42,18 @@ export class DistributorService {
                 return model;
             }))
     }
-
+    SaveB2bRetal(regInfoModel: any, isEditMode: boolean, event: string) {
+        return this.http.post<any>(this.distribution.distributionApiServer + '/Distributor/SaveB2bRetal?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+    saveB2bDistributor(regInfoModel: any, isEditMode: boolean, event: string) {
+        return this.http.post<any>(this.distribution.distributionApiServer + '/Distributor/SaveB2bDistributor?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
     getRegionList() {
         return this.http.get<any>(this.distribution.environmentApiServer + '/Location/GetRegions')
             .pipe(map(regionList => {
@@ -96,7 +109,12 @@ export class DistributorService {
                 return distributorCode;
             }));
     }
-
+    generateB2bDistributorCode(selectedTerritory: string): any {
+        return this.http.get<any>(this.distribution.environmentApiServer + '/Location/GenerateDistributorCode?territoryCode=' + selectedTerritory)
+            .pipe(map(distributorCode => {
+                return distributorCode;
+            }));
+    }
     GetDistributorCodeByPhotoId(pId: string): any {
         return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/GetDistributorCodeByPhotoId?pid=' + pId)
             .pipe(map(distributorCode => {
@@ -173,5 +191,16 @@ export class DistributorService {
                 return data;
             }));
     }
-
+    getDistributorListWithDistCodeForDDL() {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/getDistributorListWithDistCodeForDDL')
+            .pipe(map(distributorList => {
+                return distributorList;
+            }));
+    }
+    getB2bDistributorListWithDistCodeForDDL() {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/GetB2bDistributorListWithDistCodeForDDL')
+            .pipe(map(distributorList => {
+                return distributorList;
+            }));
+    }
 }

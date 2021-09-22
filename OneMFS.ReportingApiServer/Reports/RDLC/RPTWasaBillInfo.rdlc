@@ -202,6 +202,8 @@
                                 <TextRun>
                                   <Value>Mobile No</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -236,6 +238,8 @@
                                 <TextRun>
                                   <Value>Account Number</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -270,6 +274,8 @@
                                 <TextRun>
                                   <Value>Bill No</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -304,6 +310,8 @@
                                 <TextRun>
                                   <Value>From </Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -338,6 +346,8 @@
                                 <TextRun>
                                   <Value>Trans Date</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -372,6 +382,8 @@
                                 <TextRun>
                                   <Value>Vat Amt</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -406,6 +418,8 @@
                                 <TextRun>
                                   <Value>Water Bill</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -440,6 +454,8 @@
                                 <TextRun>
                                   <Value>Sewer Bill</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -474,6 +490,8 @@
                                 <TextRun>
                                   <Value>Fixed Charge</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -508,6 +526,8 @@
                                 <TextRun>
                                   <Value>Scharge Amt</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -542,6 +562,8 @@
                                 <TextRun>
                                   <Value>Total Pay Amount</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -576,6 +598,8 @@
                                 <TextRun>
                                   <Value>Branch Code</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -610,6 +634,8 @@
                                 <TextRun>
                                   <Value>Paid By</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -644,6 +670,8 @@
                                 <TextRun>
                                   <Value>Extra Id</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1682,6 +1710,7 @@
               <TablixMembers>
                 <TablixMember>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
@@ -1695,7 +1724,7 @@
             <Top>0.18971in</Top>
             <Left>0.12375in</Left>
             <Height>0.75in</Height>
-            <Width>11.22917in</Width>
+            <Width>11.22918in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

@@ -18,6 +18,7 @@ namespace MFS.ReportingService.Repository
         IEnumerable<dynamic> GetReportRolesById(int id);
         object DeleteReportRole(int id);
 		List<ApplicationUserReport> GetApplicationUserReports(string branchCode, string userName, string name, string mobileNo, string fromDate, string toDate, string roleName);
+		List<AuditTrailReport> GetAuditTrailReport(string branchCode, string user, string parentMenu, string action, string fromDate, string toDate, string auditId);
 	}
     public class ReportShareRepository : BaseRepository<ReportInfo>, IReportShareRepository
     {
@@ -121,6 +122,26 @@ namespace MFS.ReportingService.Repository
 				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
 				List<ApplicationUserReport> result = SqlMapper.Query<ApplicationUserReport>(connection, dbUser + "RPT_APP_USER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+				this.CloseConnection(connection);
+				return result;
+			}
+		}
+
+		public List<AuditTrailReport> GetAuditTrailReport(string branchCode, string user, string parentMenu, string action, string fromDate, string toDate, string auditId)
+		{
+			using (var connection = this.GetConnection())
+			{
+				var dyParam = new OracleDynamicParameters();
+				dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+				dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+				dyParam.Add("V_AUDIT_ID", OracleDbType.Varchar2, ParameterDirection.Input, auditId == "null" ? null : auditId);
+				dyParam.Add("V_USERNAME", OracleDbType.Varchar2, ParameterDirection.Input, user == "null" ? null : user);
+				dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "null" ? null : branchCode);
+				dyParam.Add("V_ACTION", OracleDbType.Varchar2, ParameterDirection.Input, action == "null" ? null : action);
+				dyParam.Add("V_PARENT_MENU", OracleDbType.Varchar2, ParameterDirection.Input, parentMenu == "null" ? null : parentMenu);
+				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+				List<AuditTrailReport> result = SqlMapper.Query<AuditTrailReport>(connection, dbUser + "RPT_AUDIT_TRAIL", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 				this.CloseConnection(connection);
 				return result;
 			}

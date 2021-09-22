@@ -13,20 +13,20 @@ using System.Web.Http;
 
 namespace OneMFS.ReportingApiServer.Controllers
 {
-    public class HomeController : ApiController
+	public class HomeController : ApiController
 	{
 		private readonly IReportShareService reportShareService;
 		public HomeController(IReportShareService _reportShareService)
 		{
 			this.reportShareService = _reportShareService;
 		}
-		
+
 
 		[HttpPost]
 		[AcceptVerbs("GET", "POST")]
 		[Route("api/Home/ApplicationUserReport")]
 		public byte[] ApplicationUserReport(ReportModel model)
-        {
+		{
 			StringBuilderService builder = new StringBuilderService();
 			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
 			string userName = builder.ExtractText(Convert.ToString(model.ReportOption), "userName", ",");
@@ -60,7 +60,50 @@ namespace OneMFS.ReportingApiServer.Controllers
 				paraList.Add(new ReportParameter("toDate", toDate));
 			}
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
-			paraList.Add(new ReportParameter("branchCode", branchCode));		
+			paraList.Add(new ReportParameter("branchCode", branchCode));
+			return paraList;
+		}
+
+
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Home/AuditTrailReport")]
+		public byte[] AuditTrailReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string branchCode = builder.ExtractText(Convert.ToString(model.ReportOption), "branchCode", ",");
+			string user = builder.ExtractText(Convert.ToString(model.ReportOption), "user", ",");
+			string parentMenu = builder.ExtractText(Convert.ToString(model.ReportOption), "parentMenu", ",");
+			string action = builder.ExtractText(Convert.ToString(model.ReportOption), "action", ",");
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+			string auditId = builder.ExtractText(Convert.ToString(model.ReportOption), "auditId", "}");
+
+			List<AuditTrailReport> auditTrailReports = reportShareService.GetAuditTrailReport(branchCode, user, parentMenu, action, fromDate, toDate, auditId);
+			ReportViewer reportViewer = new ReportViewer();
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTAuditTrail.rdlc");  //Request.RequestUri("");
+			reportViewer.LocalReport.SetParameters(GetAuditTrailReportParameter(branchCode, user, parentMenu, action, fromDate, toDate, auditId));
+			ReportDataSource A = new ReportDataSource("AuditTrail", auditTrailReports);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
+		}
+
+		private IEnumerable<ReportParameter> GetAuditTrailReportParameter(string branchCode, string user, string parentMenu, string action, string fromDate, string toDate, string auditId)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			paraList.Add(new ReportParameter("branchCode", branchCode=="null"?null:branchCode));
 			return paraList;
 		}
 	}

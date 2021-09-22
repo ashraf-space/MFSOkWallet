@@ -172,9 +172,21 @@ namespace OneMFS.EnvironmentApiServer.Controllers
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
+		[HttpGet]
+		[Route("GenerateB2bDistributorCode")]
+		public object GenerateB2bDistributorCode(string territoryCode)
+		{
+			try
+			{
+				return _service.GenerateB2bDistributorCode(territoryCode);
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
 
-
-        [HttpGet]
+		[HttpGet]
         [Route("GetPhotoIDTypeList")]
         public object GetPhotoIDTypeList()
         {

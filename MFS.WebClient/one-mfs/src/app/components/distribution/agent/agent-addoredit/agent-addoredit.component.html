@@ -24,7 +24,7 @@
 							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
 
-						<div class="p-col-3">
+						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
 								<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="regInfoModel.formSerial" pInputText [pKeyFilter]="positveNumber" />
@@ -32,7 +32,7 @@
 							</span>
 						</div>
 
-						<div class="p-col-3">
+						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
 								<input autocomplete="off" class="form-control" placement="down" [readonly]="true"
@@ -43,7 +43,7 @@
 							<p-message *ngIf="(regDate.year==null || regDate.year=='') && error " severity="error"
 									   text="Cannot be left blank"></p-message>
 						</div>
-						<div class="p-col-3">
+						<!--<div class="p-col-3">
 							<br />
 							<span class="ui-float-label ">
 								<input autocomplete="off" type="text" class="form-control form-input" [(ngModel)]="DistributorCode"
@@ -52,21 +52,30 @@
 							</span>
 							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
 									   severity="error" text="Cannot be left blank"></p-message>
+						</div>-->
+						<div class="p-col-5">
+							<label for="float-input input-lg" class=" col-form-label-dd">Distributor Code <span class="mandatory">*</span></label>			
+							<p-dropdown [options]="distributorList" placeholder="Select Distributor" [(ngModel)]="DistributorCode"
+									    [filter]="true" filterBy="label,value.name"
+										(onChange)="GetInfoByDistributor()" [disabled]="isEditMode"
+										[style]="{display: 'grid'}" id="float-input"></p-dropdown>
+							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
 						</div>
 					</div>
 
 					<!--<div class="p-grid">
-					<div class="p-col-4">
-						<br/>
-						<span class="ui-float-label ">
-							<input autocomplete="off"  type="text" class="form-control form-input" [(ngModel)]="DistributorCode"
-								   (change)="GetInfoByDistributor();" pInputText id="float-input"/>
-							<label for="float-input input-lg" class=" col-form-label">Distributor Code <span class="mandatory">*</span></label>
-						</span>
-						<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
-								   severity="error" text="Cannot be left blank"></p-message>
-					</div>
-				</div>-->
+						<div class="p-col-4">
+							<br/>
+							<span class="ui-float-label ">
+								<input autocomplete="off"  type="text" class="form-control form-input" [(ngModel)]="DistributorCode"
+									   (change)="GetInfoByDistributor();" pInputText id="float-input"/>
+								<label for="float-input input-lg" class=" col-form-label">Distributor Code <span class="mandatory">*</span></label>
+							</span>
+							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+					</div>-->
 
 					<div class="p-grid">
 						<div class="p-col-4">
@@ -145,7 +154,7 @@
 								<label for="float-input input-lg" class="col-form-label">Agent Last Name </label>
 							</span>
 							<!--<p-message *ngIf="(regInfoModel.name==null || regInfoModel.name=='') && error" severity="error"
-						text="Cannot be left blank"></p-message>-->
+							text="Cannot be left blank"></p-message>-->
 						</div>
 						<div class="p-col-4">
 							<br />
@@ -315,7 +324,7 @@
 					<div class="p-grid">
 						<div class="p-col-4">
 							<label for="float-input input-lg" class="col-form-label">Trade Licence No <span class="mandatory">*</span></label>
-							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText  id="float-input">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText id="float-input">
 
 							<p-message *ngIf="(regInfoModel.tradeLicenseNo==null || regInfoModel.tradeLicenseNo=='')
 								   && error " severity="error" text="Cannot be left blank"></p-message>

@@ -1,0 +1,29 @@
+.alert {
+    box-shadow: 3px 6px 10px #888888;
+}
+
+i {
+    color: cadetblue;
+    font-size: 200%;
+}
+
+h6 {
+    font-size: 95%;
+    font-weight: bold;
+}
+
+.ui-card-body {
+    padding: 0.7rem !important;
+    max-height: 14.1rem !important;
+    font-size: 90% !important;
+}
+
+.scale-down {
+    transform: scale(0.9,1) !important;
+    zoom: 1;
+}
+
+.loader-center {
+    margin-top: 15%;
+    margin-left: 45%;
+}

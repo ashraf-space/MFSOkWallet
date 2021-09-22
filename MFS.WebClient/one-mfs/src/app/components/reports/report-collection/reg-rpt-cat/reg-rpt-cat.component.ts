@@ -30,8 +30,9 @@ export class RegRptCatComponent implements OnInit {
         this.regSourceList = [
             { label: 'Agent', value: 'A' },
             { label: 'Online', value: 'O' },
-            { label: 'Bulk', value: 'B' },
-            { label: 'EKYC', value: 'E' },
+            { label: 'Bulk', value: 'B' },           
+            { label: 'Customer Registration E-KYC', value: 'E' },
+            { label: 'Agent Registration E-KYC', value: 'EA' },
             { label: 'Bank User', value: 'P' },
             { label: 'Agent Online', value: 'Q' }
         ];

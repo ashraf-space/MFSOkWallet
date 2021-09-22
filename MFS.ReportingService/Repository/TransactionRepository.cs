@@ -35,8 +35,14 @@ namespace MFS.ReportingService.Repository
         List<ItemWiseServices> GetItemWiseServicesList(string telcoType, string fromDate, string toDate);
         object GetRmgDDL();
         List<RmgWiseSalaryDisbursement> GetRmgWiseSalaryDisbursementList(string rmgId, string fromDate, string toDate);
-		List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo);
-	}
+        List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo);
+        List<DisbursementUploadDetails> GetDisbursementUpload(string fileUploadDate, string batchNumber, string reportType, int companyId);
+        List<IndividualDisbursement> GetIndividualDisbursement(string fromDate, string toDate, string reportType, string status, string okWalletNo, int companyId);
+        List<MfsStatement> GetMfsStatement(string year, string month);
+        List<JgBillDailyDetails> GetJgBillDailyDetailsList(string fromDate, string toDate);
+        List<TransactionAnalysis> GetTransactinAnalysisList();
+        List<BackOffTransaction> GetBackOffTransactionList(string fromDate, string toDate);
+    }
     public class TransactionRepository : BaseRepository<AccountStatement>, ITransactionRepository
     {
         MainDbUser mainDbUser = new MainDbUser();
@@ -404,7 +410,7 @@ namespace MFS.ReportingService.Repository
                 using (var connection = this.GetConnection())
                 {
                     var dyParam = new OracleDynamicParameters();
-                    dyParam.Add("tansactionType", OracleDbType.Varchar2, ParameterDirection.Input, tansactionType);
+                    dyParam.Add("tansactionType", OracleDbType.Varchar2, ParameterDirection.Input, tansactionType == "null" ? "" : tansactionType);
                     //dyParam.Add("fromCat", OracleDbType.Varchar2, ParameterDirection.Input, fromCat);
                     //dyParam.Add("toCat", OracleDbType.Varchar2, ParameterDirection.Input, toCat);
                     dyParam.Add("options", OracleDbType.Varchar2, ParameterDirection.Input, option);
@@ -413,6 +419,31 @@ namespace MFS.ReportingService.Repository
                     dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
                     result = SqlMapper.Query<FundTransfer>(connection, mainDbUser.DbUser + "RPT_FundTransfer", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<BackOffTransaction> GetBackOffTransactionList(string fromDate, string toDate)
+        {
+            List<BackOffTransaction> result = new List<BackOffTransaction>();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<BackOffTransaction>(connection, mainDbUser.DbUser + "RPT_BackOffTransaction", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                     this.CloseConnection(connection);
                     return result;
                 }
@@ -653,33 +684,308 @@ namespace MFS.ReportingService.Repository
             }
         }
 
-		public List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo)
-		{
-			List<MasterWallet> result = new List<MasterWallet>();
+        public List<MasterWallet> GetMasterWalletAccountStatementList(string mphone, string fromDate, string toDate, string transNo)
+        {
+            List<MasterWallet> result = new List<MasterWallet>();
 
-			try
-			{
-				using (var connection = this.GetConnection())
-				{
-					var dyParam = new OracleDynamicParameters();
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
 
-					dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, fromDate=="null"?DateTime.Now: Convert.ToDateTime(fromDate));
-					dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, toDate =="null"?DateTime.Now: Convert.ToDateTime(toDate));
-					dyParam.Add("AccountNo", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
-					dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo=="null"?null: transNo);
-					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+                    dyParam.Add("FromDate", OracleDbType.Date, ParameterDirection.Input, fromDate == "null" ? DateTime.Now : Convert.ToDateTime(fromDate));
+                    dyParam.Add("ToDate", OracleDbType.Date, ParameterDirection.Input, toDate == "null" ? DateTime.Now : Convert.ToDateTime(toDate));
+                    dyParam.Add("AccountNo", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+                    dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo == "null" ? null : transNo);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
-					result = SqlMapper.Query<MasterWallet>(connection, mainDbUser.DbUser + "RPT_ACC_STAT_MER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
-					this.CloseConnection(connection);
-				}
+                    result = SqlMapper.Query<MasterWallet>(connection, mainDbUser.DbUser + "RPT_ACC_STAT_MER", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
 
-			}
-			catch (Exception e)
-			{
+            }
+            catch (Exception e)
+            {
 
-				throw;
-			}
-			return result;
-		}
-	}
+                throw;
+            }
+            return result;
+        }
+
+        public List<DisbursementUploadDetails> GetDisbursementUpload(string fileUploadDate, string batchNumber, string reportType, int companyId)
+        {
+            List<DisbursementUploadDetails> result = new List<DisbursementUploadDetails>();
+
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FileUploadDate", OracleDbType.Date, ParameterDirection.Input, fileUploadDate == "null" ? DateTime.Now : Convert.ToDateTime(fileUploadDate));
+                    dyParam.Add("V_BatchNumber", OracleDbType.Varchar2, ParameterDirection.Input, batchNumber);
+                    dyParam.Add("V_ReportType", OracleDbType.Varchar2, ParameterDirection.Input, reportType == "null" ? null : reportType);
+                    dyParam.Add("V_CompanyId", OracleDbType.Int32, ParameterDirection.Input, companyId);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<DisbursementUploadDetails>(connection, mainDbUser.DbUser + "RPT_Disbursement_Upload", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+
+        public List<IndividualDisbursement> GetIndividualDisbursement(string fromDate, string toDate, string reportType, string status, string okWalletNo, int companyId)
+        {
+            List<IndividualDisbursement> result = new List<IndividualDisbursement>();
+
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, fromDate == "null" ? DateTime.Now : Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, toDate == "null" ? DateTime.Now : Convert.ToDateTime(toDate));
+                    dyParam.Add("V_ReportType", OracleDbType.Varchar2, ParameterDirection.Input, reportType == "null" ? null : reportType);
+                    dyParam.Add("V_Status", OracleDbType.Varchar2, ParameterDirection.Input, status == "null" ? null : status);
+                    dyParam.Add("V_OkWalletNo", OracleDbType.Varchar2, ParameterDirection.Input, okWalletNo == "null" ? null : okWalletNo);
+                    dyParam.Add("V_CompanyId", OracleDbType.Int32, ParameterDirection.Input, companyId);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<IndividualDisbursement>(connection, mainDbUser.DbUser + "RPT_IndividualDisbursement", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    //string query = null;
+                    //if (reportType == "Details")
+                    //{
+                    //    if (status == "Success")
+                    //    {
+                    //        query = @"Select VI.TRANS_NO as TransNo,VI.CHK_DATE as TransDate, VI.AC_NO as TransTo, VI.AMOUNT,VI.BATCHNO,'Success' as Status, VI.REMARKS
+                    //                    from " + mainDbUser.DbUser + "tbl_disburse d inner join " + mainDbUser.DbUser + "tbl_disburse_invalid_data vi on d.batchno = vi.batchno where VI.ORGANIZATION_ID = " + companyId + " and VI.AC_NO = '" + okWalletNo + "' and TO_DATE(vi.chk_date, 'DD-MON-YY') between TO_DATE(" + Convert.ToDateTime(fromDate).Date + ", 'DD-MON-YY') and TO_DATE(" + Convert.ToDateTime(toDate).Date + ", 'DD-MON-YY') and vi.C_M_Status = 'V' and d.c_m_status = 'C' and d.status = 'P'";
+                    //    }
+                    //    else if (status == "Declined")
+                    //    {
+                    //        query = @"Select VI.TRANS_NO as TransNo,VI.CHK_DATE as TransDate, VI.AC_NO as TransTo, VI.AMOUNT,VI.BATCHNO,'Declined' as Status, VI.REMARKS
+                    //                    from " + mainDbUser.DbUser + "tbl_disburse d inner join " + mainDbUser.DbUser + "tbl_disburse_invalid_data vi on d.batchno = vi.batchno where VI.ORGANIZATION_ID = " + companyId + " and VI.AC_NO = '" + okWalletNo + "' and TO_DATE(vi.chk_date, 'DD-MON-YY') between TO_DATE(" + Convert.ToDateTime(fromDate) + ", 'DD-MON-YY') and TO_DATE(" + Convert.ToDateTime(toDate) + ", 'DD-MON-YY') and vi.C_M_Status = 'V' and d.c_m_status = 'C' and d.status = 'R'";
+                    //    }
+                    //    else
+                    //    {
+                    //        query = @"Select VI.TRANS_NO as TransNo,VI.CHK_DATE as TransDate, VI.AC_NO as TransTo, VI.AMOUNT,VI.BATCHNO,'Failed' as Status, VI.REMARKS
+                    //                    from " + mainDbUser.DbUser + "tbl_disburse_invalid_data vi where VI.ORGANIZATION_ID = " + companyId + " and VI.AC_NO = '" + okWalletNo + "' and TO_DATE(vi.chk_date, 'DD-MON-YY') between TO_DATE(" + Convert.ToDateTime(fromDate) + ", 'DD-MON-YY')and TO_DATE(" + Convert.ToDateTime(toDate) + ", 'DD-MON-YY') and vi.C_M_Status = 'I'";
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    //    //query = @"Select Company_Id as Value, Company_name as Label from " + mainDbUser.DbUser + "Tbl_Disburse_Company_Info where Sal_acc='70000000020'";
+                    //}
+
+
+
+                    //result = connection.Query<IndividualDisbursement>(query).ToList();
+                    //connection.Close();
+
+                    return result;
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+
+        public List<MfsStatement> GetMfsStatement(string year, string month)
+        {
+            List<MfsStatement> result = new List<MfsStatement>();
+
+            try
+            {
+                var startDate = new DateTime(Convert.ToInt32(year), Convert.ToInt32(month), 1);
+                var endDate = startDate.AddMonths(1).AddDays(-1);
+
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(startDate));
+                    dyParam.Add("V_TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(endDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<MfsStatement>(connection, mainDbUser.DbUser + "RPT_MFSStatement", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+        public List<JgBillDailyDetails> GetJgBillDailyDetailsList(string fromDate, string toDate)
+        {
+            List<JgBillDailyDetails> result = new List<JgBillDailyDetails>();
+
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("V_FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    result = SqlMapper.Query<JgBillDailyDetails>(connection, mainDbUser.DbUser + "RPT_JGBillDailyDetails", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return result;
+        }
+
+        public List<TransactionAnalysis> GetTransactinAnalysisList()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    List<TransactionAnalysis> transactionAnalysesList = new List<TransactionAnalysis>();
+                    //string query = "select ('Up to Dec ' || (EXTRACT(YEAR  FROM  SYSDATE)-1)) as Caption, ROUND(sum(Msg_Amt)/1000000,2) as TransactionAmt from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id='C' OR To_Cat_Id='C' OR (From_Cat_Id in ('A','BD','BR','BA','R','GPAY','GP','PR') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM ONE.MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM'))))  and trans_ref_no is null and EXTRACT(YEAR FROM  Trans_Date) < EXTRACT(YEAR FROM  SYSDATE)";
+
+                    string analysisQry = "Select Transaction_Type as TransactionType,Sub_Type as SubType, Where_Condition as WhereCondition, Serial  from one.analysis_config order by Serial";
+                    transactionAnalysesList = connection.Query<TransactionAnalysis>(analysisQry).ToList();
+                    foreach (var item in transactionAnalysesList)
+                    {
+                        DateTime opDate = DateTime.Now.AddMonths(-3);
+                        string captionName = null;
+                        string query = null;
+                        for (int i = 1; i <= 5; i++)
+                        {
+                            int year = opDate.Year;
+                            int month = opDate.Month;
+                            captionName = opDate.ToString("MMM") + "-" + (year % 100);
+
+                            if (i == 1)
+                            {
+                                item.CaptionOne = captionName;
+                                item.MonthDaysOne = DateTime.DaysInMonth(year, month);
+                                query = "Select  NVL(Sum(Msg_Amt),0)  as VolumeOne, count(*) as CountOne from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " and " + item.WhereCondition;
+                                var result = connection.Query<dynamic>(query).FirstOrDefault();
+                                item.VolumeOne = Convert.ToDouble(result.VOLUMEONE);
+                                item.CountOne = Convert.ToInt32(result.COUNTONE);
+                                opDate = opDate.AddMonths(1);
+                            }
+                            else if (i == 2)
+                            {
+                                item.CaptionTwo = captionName;
+                                item.MonthDaysTwo = DateTime.DaysInMonth(year, month);
+                                query = "Select  NVL(Sum(Msg_Amt),0)  as VolumeTwo, count(*) as CountTwo from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " and " + item.WhereCondition;
+                                var result = connection.Query<dynamic>(query).FirstOrDefault();
+                                item.VolumeTwo = Convert.ToDouble(result.VOLUMETWO);
+                                item.CountTwo = Convert.ToInt32(result.COUNTTWO);
+                                opDate = opDate.AddMonths(1);
+                            }
+                            else if (i == 3)
+                            {
+                                item.CaptionThree = captionName;
+                                item.MonthDaysThree = DateTime.DaysInMonth(year, month);
+                                query = "Select  NVL(Sum(Msg_Amt),0)  as VolumeThree, count(*) as CountThree from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " and " + item.WhereCondition;
+                                var result = connection.Query<dynamic>(query).FirstOrDefault();
+                                item.VolumeThree = Convert.ToDouble(result.VOLUMETHREE);
+                                item.CountThree = Convert.ToInt32(result.COUNTTHREE);
+                                opDate = opDate.AddMonths(1);
+                            }
+                            else if (i == 4)
+                            {
+                                captionName = "1-" + DateTime.Now.Day.ToString() + DateTime.Now.ToString("MMM") + "-" + (year % 100);
+                                item.CaptionFour = captionName;
+                                item.MonthDaysFour = DateTime.Now.Day;
+                                query = " Select  NVL(Sum(Msg_Amt),0)  as VolumeFour, count(*) as CountFour from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and trunc(Trans_Date) between To_Date('" + (new DateTime(year, month, 1)).ToString("dd-MM-yyyy") + "','DD-MM-RRRR') and To_Date('" + DateTime.Now.ToString("dd-MM-yyyy") + "','DD-MM-RRRR') and " + item.WhereCondition;
+                                var result = connection.Query<dynamic>(query).FirstOrDefault();
+                                item.VolumeFour = Convert.ToDouble(result.VOLUMEFOUR);
+                                item.CountFour = Convert.ToInt32(result.COUNTFOUR);
+                            }
+                            else 
+                            {
+                                captionName = DateTime.Now.Day.ToString() + DateTime.Now.ToString("MMM") + "-" + (year % 100);
+                                item.CaptionFive = captionName;
+                                query = "Select  NVL(Sum(Msg_Amt),0)  as VolumeFive, count(*) as CountFive from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and trunc(Trans_Date)= To_Date('" + DateTime.Now.ToString("dd-MM-yyyy") + "','DD-MM-RRRR') and " + item.WhereCondition;
+                                var result = connection.Query<dynamic>(query).FirstOrDefault();
+                                item.VolumeFive = Convert.ToDouble(result.VOLUMEFIVE);
+                                item.CountFive = Convert.ToInt32(result.COUNTFIVE);
+                            }
+
+                        }
+                    }
+
+                    //DateTime opDate = DateTime.Now.AddMonths(-3);                    
+                    //string captionName = null;
+                    //string query = null;
+                    //for (int i = 1; i <= 5; i++)
+                    //{
+                    //    int year = opDate.Year;
+                    //    int month = opDate.Month;
+                    //    captionName = opDate.ToString("MMM") + "-" + (year % 100);
+
+                    //    if (i == 1)
+                    //    {
+                    //        query = "select FROM_CAT_ID || '-' || TO_CAT_ID as SubType, '" + captionName + "' as Caption, sum(Msg_Amt) as VolumeOne,0 as VolumeTwo, 0 as VolumeThree, 0 as VolumeFour, 0 as VolumeFive  from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " GROUP BY FROM_CAT_ID || '-' || TO_CAT_ID";
+                    //        opDate = opDate.AddMonths(1);
+                    //    }
+                    //    if (i == 2)
+                    //    {
+                    //        query = query + " Union all select FROM_CAT_ID || '-' || TO_CAT_ID as SubType, '" + captionName + "' as Caption, 0 as VolumeOne,sum(Msg_Amt) as VolumeTwo, 0 as VolumeThree, 0 as VolumeFour, 0 as VolumeFive from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " GROUP BY FROM_CAT_ID || '-' || TO_CAT_ID" + "";
+                    //        opDate = opDate.AddMonths(1);
+                    //    }
+                    //    if (i == 3)
+                    //    {
+                    //        query = query + " Union all select FROM_CAT_ID || '-' || TO_CAT_ID as SubType, '" + captionName + "' as Caption, 0 as VolumeOne,0 as VolumeTwo,sum(Msg_Amt) as VolumeThree, 0 as VolumeFour, 0 as VolumeFive from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and EXTRACT(MONTH FROM Trans_Date)= " + month + " and EXTRACT(YEAR FROM Trans_Date)= " + year + " GROUP BY FROM_CAT_ID || '-' || TO_CAT_ID" + "";
+                    //        opDate = opDate.AddMonths(1);
+                    //    }
+                    //    if (i == 4)
+                    //    {
+                    //        captionName = "1-" + DateTime.Now.Day.ToString() + DateTime.Now.ToString("MMM") + "-" + (year % 100);
+                    //        query = query + " Union all select FROM_CAT_ID || '-' || TO_CAT_ID as SubType, '" + captionName + "' as Caption, 0 as VolumeOne,0 as VolumeTwo, 0 as VolumeThree,sum(Msg_Amt) as VolumeFour, 0 as VolumeFive from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and Trans_Date between To_Date('" + (new DateTime(year, month, 1)).ToShortDateString() + "','MM-DD-RRRR') and To_Date('" + DateTime.Now.ToShortDateString() + "','MM-DD-RRRR') GROUP BY FROM_CAT_ID || '-' || TO_CAT_ID" + "";
+                    //    }
+                    //    if (i == 5)
+                    //    {
+                    //        captionName = DateTime.Now.Day.ToString() + DateTime.Now.ToString("MMM") + "-" + (year % 100);
+                    //        query = query + " Union all select FROM_CAT_ID || '-' || TO_CAT_ID as SubType, '" + captionName + "' as Caption, 0 as VolumeOne,0 as VolumeTwo, 0 as VolumeThree,0 as VolumeFour, sum(Msg_Amt) as VolumeFive from " + mainDbUser.DbUser + "GL_TRANS_MST WHERE (From_Cat_Id = 'C' OR To_Cat_Id = 'C' OR (From_Cat_Id in ('A', 'BD', 'BR', 'BA', 'R', 'GPAY', 'GP', 'PR','BP') and (TO_CAT_ID IN(SELECT DISTINCT CAT_ID FROM " + mainDbUser.DbUser + "REGINFO WHERE MPHONE IN(SELECT MPHONE FROM " + mainDbUser.DbUser + "MERCHANT_CONFIG)) OR To_Cat_Id in ('BD', 'BR', 'BA', 'ATM')))) and trans_ref_no is null and Trans_Date= To_Date('" + DateTime.Now.ToShortDateString() + "','MM-DD-RRRR') GROUP BY FROM_CAT_ID || '-' || TO_CAT_ID" + "";
+                    //    }
+
+                    //}
+
+                    //transactionAnalysesList = connection.Query<TransactionAnalysis>(query).ToList();
+
+                    this.CloseConnection(connection);
+
+                    return transactionAnalysesList;
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+    }
 }

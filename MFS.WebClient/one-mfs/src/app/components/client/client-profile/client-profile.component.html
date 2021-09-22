@@ -39,7 +39,7 @@
 	<div class="p-grid ">
 		<div class="p-col-9">
 			<p-accordion>
-				<p-accordionTab header="Balance Info" [selected]="false">
+				<p-accordionTab header="Balance Info" [disabled]="!isCustomerCare" [selected]="false">
 					<div class="p-grid ">
 						<div class="p-col-6">
 							<div class="form-group p-grid">
@@ -82,6 +82,10 @@
 								<label class="p-col-3 col-form-label single-line property-name">Fathers Name: </label>
 								<label class="p-col-9  single-line">{{ model.fatherName }}</label>
 							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Fathers Name(BN): </label>
+								<label class="p-col-9  single-line">{{ model._FatherNameBangla }}</label>
+							</div>
 						</div>
 						<div class="p-col-6">
 							<div class="form-group p-grid">
@@ -100,7 +104,10 @@
 								<label class="p-col-3 col-form-label single-line property-name">Mother Name: </label>
 								<label class="p-col-9  single-line">{{ model.motherName }}</label>
 							</div>
-
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Mother Name(BN): </label>
+								<label class="p-col-9  single-line">{{ model._MotherNameBangla }}</label>
+							</div>
 						</div>
 						<div class="p-col-6">
 							<div class="form-group p-grid">
@@ -118,6 +125,10 @@
 								<label class="p-col-9  single-line">{{ model.spouseName }}</label>
 							</div>
 							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Gender: </label>
+								<label class="p-col-9  single-line" [innerHtml]="model.gender | genderCheck"></label>
+							</div>
+							<div class="form-group p-grid">
 								<label class="p-col-3 col-form-label single-line">Present Address: </label>
 								<label class="p-col-9  single-line">{{ model.preAddr }}</label>
 							</div>
@@ -125,8 +136,12 @@
 						</div>
 						<div class="p-col-6">
 							<div class="form-group p-grid">
-								<label class="p-col-3 col-form-label single-line property-name">Gender: </label>
-								<label class="p-col-9  single-line" [innerHtml]="model.gender | genderCheck"></label>
+								<label class="p-col-3 col-form-label single-line property-name">Spouse (BN): </label>
+								<label class="p-col-9  single-line">{{ model._SpouseNameBangla }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Blood: </label>
+								<label class="p-col-9  single-line">{{ model._Blood }}</label>
 							</div>
 							<div class="form-group p-grid">
 								<label class="p-col-3 col-form-label single-line">Permanent Address: </label>
@@ -170,6 +185,14 @@
 					<div class="p-grid">
 						<div class="p-col-6">
 							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Company Name: </label>
+								<label class="p-col-9  single-line">{{ model.companyName }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Distributor Name: </label>
+								<label class="p-col-9  single-line">{{ model.distributorName }}</label>
+							</div>
+							<div class="form-group p-grid">
 								<label class="p-col-3 col-form-label single-line property-name">Occupation: </label>
 								<label class="p-col-9  single-line">{{ model.occupation }}</label>
 							</div>
@@ -177,10 +200,7 @@
 								<label class="p-col-3 col-form-label single-line property-name">Nationality : </label>
 								<label class="p-col-9  single-line">{{ model.nationality }}</label>
 							</div>
-							<div class="form-group p-grid">
-								<label class="p-col-3 col-form-label single-line property-name">Company Name: </label>
-								<label class="p-col-9  single-line">{{ model.companyName }}</label>
-							</div>							
+
 						</div>
 						<div class="p-col-6">
 							<div class="form-group p-grid">
@@ -195,6 +215,13 @@
 							<div class="form-group p-grid">
 								<label class="p-col-3 col-form-label single-line property-name">Business Adress: </label>
 								<label class="p-col-9  single-line">{{ model.offAddr }}</label>
+							</div>
+							<div class="form-group p-grid">
+								<label class="p-col-3 col-form-label single-line property-name">Referral: </label>
+								<label class="p-col-9  single-line">{{ model._Referral }}</label>
+							</div>
+							<div class="form-group p-grid">
+
 							</div>
 						</div>
 
@@ -251,6 +278,10 @@
 									<label class="p-col-8  single-line">{{ model.catId | clientCategory }}</label>
 								</div>
 								<div class="form-group p-grid">
+									<label class="p-col-4 col-form-label single-line property-name">Sub Category: </label>
+									<label class="p-col-8  single-line">{{ model.subCategory}}</label>
+								</div>
+								<div class="form-group p-grid">
 									<label class="p-col-4 col-form-label single-line property-name">Registration Status: </label>
 									<label class="p-col-8  single-line" [innerHtml]=" model.regStatus | statusCheck: 'regStatus'"></label>
 								</div>
@@ -263,12 +294,20 @@
 									<label class="p-col-8  single-line">{{ model.authoDate | date:'dd/MMM/yyyy h:mm a'}}</label>
 								</div>
 								<div class="form-group p-grid">
+									<label class="p-col-4 col-form-label single-line property-name">Close Date </label>
+									<label class="p-col-8  single-line">{{ model._CloseDate | date:'dd/MMM/yyyy h:mm a'}}</label>
+								</div>
+								<div class="form-group p-grid">
 									<label class="p-col-4 col-form-label single-line property-name">Status: </label>
 									<label class="p-col-8  single-line" [innerHtml]=" model.status | statusCheck: 'status'"></label>
 								</div>
 								<div class="form-group p-grid">
 									<label class="p-col-4 col-form-label single-line property-name">Registration Source: </label>
 									<label class="p-col-8  single-line" [innerHtml]=" model.regSource | statusCheck: 'regSource'"></label>
+								</div>
+								<div class="form-group p-grid">
+									<label class="p-col-4 col-form-label single-line property-name">Parent mphone: </label>
+									<label class="p-col-8  single-line">{{ model.pmphone }}</label>
 								</div>
 								<div class="form-group p-grid">
 									<label class="p-col-4 col-form-label single-line property-name">Black Status: </label>

@@ -102,8 +102,10 @@ namespace MFS.EnvironmentService.Repository
 								T.OFF_ADDR     AS OFFADDR,
 								T.PHOTO_ID     AS PHOTOID,
 								T.REG_STATUS   AS REGSTATUS 
-									FROM "+ dbUser +"REGINFO T INNER JOIN "+ dbUser + 
-									"MERCHANT_CONFIG M ON T.MPHONE = M.MPHONE AND (T.CAT_ID = 'M' OR T.CAT_ID = 'EMSM' OR T.CAT_ID = 'EMSC' OR M.CATEGORY = 'E') ORDER BY T.REG_DATE DESC";
+									FROM "+ dbUser +"REGINFO T INNER JOIN "+ dbUser +
+									"MERCHANT_CONFIG M ON T.MPHONE = M.MPHONE AND (T.CAT_ID = 'M' OR T.CAT_ID = 'CM' OR " +
+									"T.CAT_ID ='EMSM' OR T.CAT_ID = 'EMSC' OR T.CAT_ID = 'MMSM' OR T.CAT_ID = 'MMSC' OR M.CATEGORY = 'E' " +
+									"OR M.CATEGORY = 'R') ORDER BY T.REG_DATE DESC";
 
                 var result = connection.Query(query);
 

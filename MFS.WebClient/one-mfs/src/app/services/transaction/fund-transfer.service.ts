@@ -38,6 +38,13 @@ export class FundTransferService {
             }));
     }
 
+    getGlDetailsForTtalk(): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/getGlDetailsForTtalk')
+            .pipe(map(GlList => {
+                return GlList;
+            }));
+    }
+
     getACList(): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetACList')
             .pipe(map(ACList => {
@@ -91,6 +98,13 @@ export class FundTransferService {
             }));
     }
 
+    GetTransDtlForTtalkByPayAmount(ttalkTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransDtlForTtalkByPayAmount', ttalkTopupStockEntryModel)
+            .pipe(map(transactionDetails => {
+                return transactionDetails;
+            }));
+    }
+
     GetTransactionDetailsByTransactionNo(transNo: any): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetTransactionDetailsByTransactionNo?transNo=' + transNo)
             .pipe(map(transactionDetails => {
@@ -135,6 +149,13 @@ export class FundTransferService {
 
     saveBlinkTopupStockEntry(blinkTopupStockEntryModel: any): any {
         return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveBlinkTopupStockEntry', blinkTopupStockEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
+    saveTtalkTopupStockEntry(ttalkTopupStockEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveTtalkTopupStockEntry', ttalkTopupStockEntryModel)
             .pipe(map(model => {
                 return model;
             }))

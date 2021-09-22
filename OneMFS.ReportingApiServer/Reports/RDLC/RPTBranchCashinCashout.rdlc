@@ -79,6 +79,10 @@
           <DataField>Amount</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
+        <Field Name="CheckedBy">
+          <DataField>CheckedBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>MFSDataSet</rd:DataSetName>
@@ -98,22 +102,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.67708in</Width>
+                  <Width>0.53125in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.23958in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.55208in</Width>
+                  <Width>1.18751in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.16667in</Width>
+                  <Width>1.04167in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.46876in</Width>
+                  <Width>1.41668in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.61458in</Width>
+                  <Width>1.29166in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.40624in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -330,6 +337,41 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Checked By</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -347,6 +389,7 @@
                                   <Value>=RowNumber(nothing)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -381,6 +424,7 @@
                                   <Value>=Fields!TransDate.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <Format>dd-MMM-yy</Format>
                                   </Style>
                                 </TextRun>
@@ -416,6 +460,7 @@
                                   <Value>=Fields!TransNo.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -450,6 +495,7 @@
                                   <Value>=Fields!BranchCode.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -484,6 +530,7 @@
                                   <Value>=Fields!Mphone.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -518,6 +565,7 @@
                                   <Value>=Fields!Amount.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <Format>#,0.0000</Format>
                                   </Style>
                                 </TextRun>
@@ -528,6 +576,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Amount</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="CheckedBy">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!CheckedBy.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>CheckedBy</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -721,12 +804,48 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox8">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox8</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -751,9 +870,9 @@
             </TablixRowHierarchy>
             <DataSetName>BranchCashinCashout</DataSetName>
             <Top>0.1875in</Top>
-            <Left>0.31125in</Left>
+            <Left>0.06125in</Left>
             <Height>0.77083in</Height>
-            <Width>7.71875in</Width>
+            <Width>8.11459in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

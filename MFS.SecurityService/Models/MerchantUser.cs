@@ -32,5 +32,6 @@ namespace MFS.SecurityService.Models
 		public string Role_Name { get; set; }
 		public string LogInStatus { get; set; }
 		public string Mtype { get; set; }
+		public string Mtypesub { get; set; }
 	}
 }

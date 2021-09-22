@@ -49,6 +49,13 @@ export class AuthenticationService {
             }));
     }
 
+    getTransactionAnalysis() {
+        return this.http.get(this.setting.reportingApiServer + '/Transaction/TransactionAnalysis')
+            .pipe(map(response => {
+                return response;
+            }));
+    }
+
     logout() {
         // remove user from local storage to log user out
         sessionStorage.removeItem('authUser');
@@ -121,8 +128,8 @@ export class AuthenticationService {
             }));
     }
 
-    GetBillCollectionMenus(): any {
-        return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetBillCollectionMenus')
+    GetBillCollectionMenus(userId: number): any {
+        return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetBillCollectionMenus?userId=' + userId)
             .pipe(map(model => {
                 return model;
             }));

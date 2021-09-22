@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using MFS.ClientService.Models;
 using MFS.CommunicationService.Service;
+using MFS.DistributionService.Models;
+using MFS.DistributionService.Service;
 using MFS.SecurityService.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +22,13 @@ namespace OneMFS.ClientApiServer.Controllers
     {
         public IOutboxService outboxService;
 		private IErrorLogService errorLogService;
+		private readonly IKycService kycService;
 
-		public OutboxController(IErrorLogService _errorLogService, IOutboxService _outboxService)
+		public OutboxController(IErrorLogService _errorLogService, IOutboxService _outboxService, IKycService _kycService)
         {
             outboxService = _outboxService;
 			errorLogService = _errorLogService;
+			kycService = _kycService;
         }
 
         [HttpGet]
@@ -38,10 +42,23 @@ namespace OneMFS.ClientApiServer.Controllers
 				{
 					return new List<string>();
 				}
-				date.FromDate = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
-				date.ToDate = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
-
-				var result = outboxService.GetOutboxList(date.FromDate, date.ToDate, mphone);
+				date.FromDateNullable = string.IsNullOrEmpty(fromDate) == true ? DateTime.Now : DateTime.Parse(fromDate);
+				date.ToDateNullable = string.IsNullOrEmpty(toDate) == true ? DateTime.Now : DateTime.Parse(toDate);
+				CLoseReginfo cLoseReginfo = new CLoseReginfo();
+				cLoseReginfo = kycService.GetCloseInfoByMphone(mphone);
+				if (cLoseReginfo.MphoneOld != null)
+				{
+					if (date.ToDateNullable > cLoseReginfo.CloseDate)
+					{
+						date.ToDateNullable = cLoseReginfo.CloseDate;
+					}
+					mphone = cLoseReginfo.MphoneOld;
+				}
+				if (date.FromDateNullable < cLoseReginfo.Regdate)
+				{
+					date.FromDateNullable = cLoseReginfo.Regdate;
+				}
+				var result = outboxService.GetOutboxList(date.FromDateNullable, date.ToDateNullable, mphone);
 
 				if (forMessageResend == true)
 				{

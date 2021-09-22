@@ -13,7 +13,7 @@ namespace MFS.TransactionService.Repository
 {
     public interface ITransactionMasterRepository : IBaseRepository<GlTransMst>
     {
-        dynamic GetTransactionList(string mphone, DateTime fromDate, DateTime toDate);
+        dynamic GetTransactionList(string mphone, DateTime? fromDate, DateTime? toDate);
         dynamic GetTransactionMasterByTransNo(string transactionNumber);
         dynamic GetBankDepositStatus(DateTime fromDate, DateTime toDate, string balanceType, string roleName);
         object approveOrRejectBankDepositStatus(string roleName, string userName, string evnt, List<TblBdStatus> objTblBdStatusList);
@@ -24,7 +24,7 @@ namespace MFS.TransactionService.Repository
     public class TransactionMasterRepository : BaseRepository<GlTransMst>, ITransactionMasterRepository
     {
         MainDbUser mainDbUser = new MainDbUser();
-        public dynamic GetTransactionList(string mphone, DateTime fromDate, DateTime toDate)
+        public dynamic GetTransactionList(string mphone, DateTime? fromDate, DateTime? toDate)
         {
             try
             {

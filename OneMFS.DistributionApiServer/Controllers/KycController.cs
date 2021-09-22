@@ -323,5 +323,132 @@ namespace OneMFS.DistributionApiServer.Controllers
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 			}
 		}
+		[HttpGet]
+		[Route("GetSubCatNameById")]
+		public object GetSubCatNameById(string mphone)
+		{
+			try
+			{
+				return kycService.GetSubCatNameById(mphone);
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+		[ApiGuardAuth]
+		[HttpPost]
+		[Route("changeStatus")]
+		public object ChangeStatus(string remarks, [FromBody] Reginfo reginfo)
+		{
+			try
+			{
+				if(reginfo.Status != "C")
+				{
+					var messege = kycService.ChangeStatus(remarks, reginfo);
+					if (messege.ToString() == "OK")
+					{
+						return Ok(new
+						{
+							Status = HttpStatusCode.OK,
+							Messege = "Action Perform Successfull",
+							Erros = String.Empty
+						});
+					}
+					else
+					{
+						return Ok(new
+						{
+							Status = HttpStatusCode.BadRequest,
+							Messege = "Action Perform Failed",
+							Erros = String.Empty
+						});
+					}
+					
+				}
+				else
+				{
+					 var messege = (Tuple<string, string>)kycService.ChangeStatus(remarks, reginfo);
+					if(messege.Item1 == "0")
+					{
+						return Ok(new
+						{
+							Status = HttpStatusCode.BadRequest,
+							Messege = messege.Item2,
+							Erros = String.Empty
+						});
+					}
+					else
+					{
+						return Ok(new
+						{
+							Status = HttpStatusCode.OK,
+							Messege = messege.Item2,
+							Erros = String.Empty
+						});
+					}
+					
+				}
+				
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return Ok(new
+				{
+					Status = HttpStatusCode.BadRequest,
+					Messege = "Internal Server Error",
+					Erros = String.Empty
+				});
+			}
+
+		}
+		[ApiGuardAuth]
+		[HttpGet]
+		[Route("GetCloseAccount")]
+		public object GetCloseAccount()
+		{
+			try
+			{
+				return kycService.GetCloseAccount();				 
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
+			}
+
+		}
+		[ApiGuardAuth]
+		[HttpGet]
+		[Route("GetCloseDateByMphone")]
+		public object GetCloseDateByMphone(string mphone)
+		{
+			try
+			{
+				return kycService.GetCloseInfoByMphone(mphone);
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
+			}
+
+		}
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("CheckDeviceValidity")]
+		public bool CheckDeviceValidity(string mphone, string deviceId, string deviceOtp)
+		{
+			try
+			{
+				return kycService.CheckDeviceValidity(mphone,deviceId,deviceOtp);
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
+		}
+		
 	}
 }

@@ -13,5 +13,6 @@ namespace MFS.ReportingService.Models
         public string BranchCode { get; set; }
         public string Mphone { get; set; }
         public double Amount { get; set; }
+        public string CheckedBy { get; set; }
     }
 }

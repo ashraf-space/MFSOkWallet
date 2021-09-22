@@ -17,6 +17,7 @@ export class GenericFormActionComponent implements OnInit {
     @Output() onDelete: EventEmitter<string> = new EventEmitter<string>();
 
     msgs: Message[] = [];
+    @Input() customeMsg: string;
 
     constructor(private confirmationService: ConfirmationService) { }
 
@@ -27,7 +28,7 @@ export class GenericFormActionComponent implements OnInit {
         //this.onSave.emit(event);
 
         this.confirmationService.confirm({
-            message: 'Are you sure that you want to proceed?',
+            message: this.customeMsg ? this.customeMsg : 'Are you sure that you want to proceed?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {

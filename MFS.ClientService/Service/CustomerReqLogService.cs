@@ -13,6 +13,7 @@ namespace MFS.ClientService.Service
         void deleteRequestLog(CustomerRequest model);
 		object GetAllOnProcessRequestByCustomer(string mphone);
 		object GetCustomerRequestHistoryByCat(string status, string mphone);
+		object GetCustomerRequestHistoryByCatAndDate(string status, string mphone, DateTime? regdate, DateTime? closeDate);
 	}
 
     public class CustomerReqLogService : BaseService<CustomerReqLog>, ICustomerReqLogService
@@ -36,6 +37,11 @@ namespace MFS.ClientService.Service
 		public object GetCustomerRequestHistoryByCat(string status, string mphone)
 		{
 			return repo.GetCustomerRequestHistoryByCat(status, mphone);
+		}
+
+		public object GetCustomerRequestHistoryByCatAndDate(string status, string mphone, DateTime? regdate, DateTime? closeDate)
+		{
+			return repo.GetCustomerRequestHistoryByCatAndDate(status, mphone,regdate,closeDate);
 		}
 
 		public void updateRequestLog(CustomerRequest model)

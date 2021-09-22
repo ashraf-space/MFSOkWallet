@@ -40,6 +40,8 @@ export class SearchClientProfileComponent implements OnInit {
                         this.getPhotoIdTypeByCode();
                         this.getBranchNameByCode();
                         this.getBalanceInfoByMphone();
+                        this.getSubCatNameById();
+                        this.getDistributorNameByMphone();
                         this.insertDataToAuditTrail();
                     }
                     else {
@@ -50,6 +52,40 @@ export class SearchClientProfileComponent implements OnInit {
                 error => {
                     console.log(error);
                 });
+    }
+    getSubCatNameById() {
+        this.loading = true;
+        this.kycService.getSubCatNameById(this.searchModel.mphone).pipe(first())
+            .subscribe(
+                data => {
+                    this.loading = false;
+                    if (data) {
+                        this.searchModel.result.subCategory = data;
+                    }
+                },
+                error => {
+                    this.loading = false;
+                    console.log(error);
+                });
+        this.loading = false;
+    }
+    getDistributorNameByMphone() {
+        if (this.searchModel.result.catId === 'A' || this.searchModel.result.catId === 'R') {
+            this.loading = true;
+            this.kycService.getReginfoByMphone(this.searchModel.result.pmphone).pipe(first())
+                .subscribe(
+                    data => {
+                        this.loading = false;
+                        if (data) {
+                            this.searchModel.result.distributorName = data.companyName;
+                        }
+                    },
+                    error => {
+                        this.loading = false;
+                        console.log(error);
+                    });
+            this.loading = false;
+        }     
     }
     getBalanceInfoByMphone() {       
         this.kycService.getBalanceInfoByMphone(this.searchModel.mphone).pipe(first())

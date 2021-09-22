@@ -15,6 +15,7 @@ using MFS.SecurityService.Service;
 using MFS.SecurityService.Models;
 using OneMFS.SecurityApiServer.Filters;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OneMFS.AuditTrailApiServer.Controllers
 {
@@ -53,6 +54,13 @@ namespace OneMFS.AuditTrailApiServer.Controllers
 		public object GetUserListDdl()
 		{
 			return auditTrailService.GetUserListDdl();
+		}
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("getParentMenuList")]
+		public object GetParentMenuList()
+		{
+			return auditTrailService.GetParentMenuList();
 		}
 		[HttpGet]
 		[Route("GetAuditTrail")]

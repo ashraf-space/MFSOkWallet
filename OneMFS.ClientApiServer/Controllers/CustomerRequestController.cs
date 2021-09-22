@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using MFS.ClientService.Models;
 using MFS.ClientService.Service;
+using MFS.DistributionService.Models;
+using MFS.DistributionService.Service;
 using MFS.SecurityService.Models;
 using MFS.SecurityService.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -22,12 +24,14 @@ namespace OneMFS.ClientApiServer.Controllers
 		public ICustomerRequestService customerRequestService;
 		public IAuditTrailService auditTrailService;
 		private IErrorLogService errorLogService;
-		public CustomerRequestController(IErrorLogService _errorLogService, IAuditTrailService _auditTrailService, ICustomerReqLogService _customerReqLogService, ICustomerRequestService _customerRequestService)
+		private readonly IKycService kycService;
+		public CustomerRequestController(IKycService _kycService, IErrorLogService _errorLogService, IAuditTrailService _auditTrailService, ICustomerReqLogService _customerReqLogService, ICustomerRequestService _customerRequestService)
 		{
 			auditTrailService = _auditTrailService;
 			customerReqLogService = _customerReqLogService;
 			customerRequestService = _customerRequestService;
 			errorLogService = _errorLogService;
+			kycService = _kycService;
 		}
 
 		[HttpPost]
@@ -98,7 +102,20 @@ namespace OneMFS.ClientApiServer.Controllers
 			{
 				if(!string.IsNullOrEmpty(status) && !string.IsNullOrEmpty(mphone))
 				{
-					return customerReqLogService.GetCustomerRequestHistoryByCat(status, mphone);
+					CLoseReginfo cLoseReginfo = new CLoseReginfo();
+					cLoseReginfo = kycService.GetCloseInfoByMphone(mphone);
+
+					if (string.IsNullOrEmpty(cLoseReginfo.MphoneOld))
+					{
+						var requestList = customerReqLogService.GetCustomerRequestHistoryByCatAndDate(status, mphone, cLoseReginfo.Regdate, DateTime.Now);
+						return requestList;
+					}
+					else
+					{
+						var requestList = customerReqLogService.GetCustomerRequestHistoryByCatAndDate(status, mphone.Substring(0,11),cLoseReginfo.Regdate,cLoseReginfo.CloseDate);
+						return requestList;
+					}
+					
 				}
 				else
 				{

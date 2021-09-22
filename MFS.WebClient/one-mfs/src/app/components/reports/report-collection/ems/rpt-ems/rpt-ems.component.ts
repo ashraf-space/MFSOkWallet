@@ -5,7 +5,7 @@ import { KycService } from 'src/app/services/distribution/kyc.service';
 import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/shared/_services';
-
+import { BillCollectionCommonService } from '../../../../../services/transaction/bill-collection-common.service';
 @Component({
   selector: 'app-rpt-ems',
   templateUrl: './rpt-ems.component.html',
@@ -19,10 +19,12 @@ export class RptEmsComponent implements OnInit {
     catTypeList: any;
     isDateDisabled: boolean = false;
     currentUserModel: any = {};
+    emsList: any;
     constructor(private mfsUtilityService: MfsUtilityService,
         private kycReportService: KycReportService,
         private authService: AuthenticationService,
-        private ngbDatepickerConfig: NgbDatepickerConfig) {
+        private ngbDatepickerConfig: NgbDatepickerConfig,
+        private billCollectionCommonService: BillCollectionCommonService) {
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
         });
@@ -32,7 +34,12 @@ export class RptEmsComponent implements OnInit {
         this.model = {};
     }
 
-  ngOnInit() {
+    ngOnInit() {
+        this.dateTypeList = [
+            { label: 'EOD Date', value: 'eod' },
+            { label: 'Transaction Date', value: 'trans' }
+        ]
+        this.loadEms();
   }
     getReportParam() {
         if (this.validate()) {
@@ -59,6 +66,7 @@ export class RptEmsComponent implements OnInit {
             else {
                 obj.schoolId = this.model.schoolId
             }
+            obj.dateType = this.model.dateType;
             obj.branchCode = this.currentUserModel.user.branchCode;
             return obj;
         }
@@ -70,12 +78,26 @@ export class RptEmsComponent implements OnInit {
     }
 
     validate(): any {
-        if (!this.model.fromDate || !this.model.toDate) {
+        if (!this.model.fromDate || !this.model.toDate || !this.model.dateType) {
             return false;
         }
         else {
             return true;
         }
+    }
+
+    loadEms() {
+        this.billCollectionCommonService.GetSubMenuDDL(37)
+            .pipe(first())
+            .subscribe(
+                data => {                  
+                    this.emsList = data;
+                    this.emsList.push({ label: 'All', value: 'null' });
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
 
 }

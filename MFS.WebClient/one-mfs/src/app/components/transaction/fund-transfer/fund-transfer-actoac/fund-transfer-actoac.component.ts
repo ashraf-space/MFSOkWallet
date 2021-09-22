@@ -93,11 +93,11 @@ export class FundTransferActoacComponent implements OnInit {
             );
 
         this.cols = [
-            { field: 'acNo', header: 'A/C No', width: '20%' },
-            { field: 'glCode', header: 'GL Code', width: '20%' },
-            { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone() },
-            { field: 'debitAmount', header: 'Debit Amount', width: '15%', filter: this.gridSettingService.getFilterableNone() },
-            { field: 'creditAmount', header: 'Credit Amount', width: '15%', filter: this.gridSettingService.getFilterableNone() }
+            { field: 'acNo', header: 'A/C No', width: '20%', template: 'none'  },
+            { field: 'glCode', header: 'GL Code', width: '20%', template: 'none' },
+            { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone(), template: 'none'  },
+            { field: 'debitAmount', header: 'Debit Amount', width: '15%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() },
+            { field: 'creditAmount', header: 'Credit Amount', width: '15%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() }
         ];
 
     };

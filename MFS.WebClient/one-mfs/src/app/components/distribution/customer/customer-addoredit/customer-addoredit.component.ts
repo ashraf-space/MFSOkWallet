@@ -122,6 +122,7 @@ export class CustomerAddoreditComponent implements OnInit {
         this.reginfo.entityId = this.route.snapshot.paramMap.get('id');
         if (this.reginfo.entityId) {
             this.reginfo.isEditMode = true;
+            this.reginfo.selectedKycType = 'K';
             this.GetCustomerByMphone();
             this.reginfo.isRegPermit = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
             if (this.reginfo.isRegPermit) {
@@ -598,7 +599,10 @@ export class CustomerAddoreditComponent implements OnInit {
                 });
     }
     updateValueFromCbs(event) {
-        this.reginfo.regInfoModel = event;
+        this.reginfo.regInfoModel = event.model;
+        if (event.model.dateOfBirth != null) {
+            this.reginfo.dateOfBirth = this.mfsUtilityService.renderDateObject(event.model.dateOfBirth);
+        }
         this.reginfo.showCbsModal = false;
         this.reginfo.selectedKycType = 'K';
     }

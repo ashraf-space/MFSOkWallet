@@ -14,12 +14,11 @@ namespace MFS.TransactionService.Repository
 {
     public interface IBillCollectionCommonRepository : IBaseRepository<TblCashEntry>
     {
-        //object GetCashEntryListByBranchCode(string branchCode, bool isRegistrationPermitted, double transAmtLimit);
-        //string GetTransactionNo();
-        //TblCashEntry GetDestributorDepositByTransNo(string transNo);
-        //object DataInsertToTransMSTandDTL(TblCashEntry cashEntry);
         object GetFeaturePayDetails(int featureId);
         object GetSubMenuDDL(int featureId);
+        object GetBillPayCategoriesDDL(int userId);
+        object GetDataForCommonGrid(string username, string methodName, int? countLimit, string billNo);
+        object GetTitleSubmenuTitleByMethod(string methodName);
     }
     public class BillCollectionCommonRepository : BaseRepository<TblCashEntry>, IBillCollectionCommonRepository
     {
@@ -71,92 +70,75 @@ namespace MFS.TransactionService.Repository
             }
         }
 
-        //public string GetTransactionNo()
-        //{
-        //    try
-        //    {
-        //        using (var connection = this.GetConnection())
-        //        {
-        //            var parameter = new OracleDynamicParameters();
-        //            parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-        //            var result = SqlMapper.Query<string>(connection, mainDbUser.DbUser + "SP_Get_TransactionNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+        public object GetBillPayCategoriesDDL(int userid)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select f.alias as label,FP.METHODNAME as value from  one.feature f 
+                                    INNER JOIN  one.Permission p on p.feature_id = f.id 
+                                    INNER JOIN  one.feature_category fc on fc.id = f.category_id 
+                                    INNER JOIN ONE.FEATURE_PAY fp on FP.FEATURE_ID = F.ID
+                                    where (f.Category_id in (31, 32, 33, 34))
+                                     and p.role_id = (select role_id from  one.application_user where id = " + userid + ") and p.is_view_permitted = 'y' order by f.category_id , f.order_no";
+                    var result = connection.Query<CustomDropDownModel>(query);
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
 
-        //            connection.Close();
+                throw;
+            }
+        }
 
-        //            return result;
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
-        //public TblCashEntry GetDestributorDepositByTransNo(string transNo)
-        //{
-        //    try
-        //    {
-        //        using (var connection = this.GetConnection())
-        //        {
-        //            var parameter = new OracleDynamicParameters();
-        //            parameter.Add("transNo", OracleDbType.Varchar2, ParameterDirection.Input, transNo);
-        //            parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-        //            var result = SqlMapper.Query<TblCashEntry>(connection, mainDbUser.DbUser+ "SP_Get_DepositByTransNo", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
-        //            connection.Close();
-
-        //            return result;
-        //        }
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-        //public object DataInsertToTransMSTandDTL(TblCashEntry cashEntry)
-        //{
-        //    try
-        //    {
-        //        using (var connection = this.GetConnection())
-        //        {
-        //            var parameter = new OracleDynamicParameters();
-        //            parameter.Add("V_TRANS_NO", OracleDbType.Double, ParameterDirection.InputOutput, Convert.ToDouble(cashEntry.TransNo));
-        //            parameter.Add("V_TO_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, cashEntry.AcNo);
-        //            parameter.Add("V_MSG_AMT", OracleDbType.Double, ParameterDirection.Input, cashEntry.Amount);
-        //            parameter.Add("MSGID", OracleDbType.Varchar2, ParameterDirection.Input, "999999999");
-        //            parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
-        //            parameter.Add("OUTMSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);
-        //            parameter.Add("V_FROM_CATID", OracleDbType.Varchar2, ParameterDirection.Input, "S");
-        //            parameter.Add("V_REF_PHONE", OracleDbType.Varchar2, ParameterDirection.Input, cashEntry.EntryBranchCode);
-        //            parameter.Add("CheckedUser", OracleDbType.Varchar2, ParameterDirection.Input, cashEntry.CheckedUser);
-
-        //            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "SP_INSERT_TBL_CASH_ENTRY", param: parameter, commandType: CommandType.StoredProcedure);
+        public object GetDataForCommonGrid(string username, string methodName, int? countLimit, string billNo)
+        {
+            try
+            {
+                string billNumber = billNo == "null" ? null : billNo;
+                List<BranchPortalReceipt> result = new List<BranchPortalReceipt>();
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_PAID_BY_OR_BC", OracleDbType.Varchar2, ParameterDirection.Input, username);
+                    dyParam.Add("V_METHOD", OracleDbType.Varchar2, ParameterDirection.Input, methodName);
+                    dyParam.Add("V_LIMIT", OracleDbType.Double, ParameterDirection.Input, countLimit);
+                    dyParam.Add("V_RETURN", OracleDbType.RefCursor, ParameterDirection.Output);
+                    dyParam.Add("V_BILLNO", OracleDbType.Varchar2, ParameterDirection.Input, billNumber);
 
 
-        //            connection.Close();
-        //            string flag = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
-        //            string successOrErrorMsg = null;
-        //            if (flag == "0")
-        //            {
-        //                successOrErrorMsg = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
-        //            }
-        //            else
-        //            {
-        //                successOrErrorMsg = flag;
-        //            }
-        //            return successOrErrorMsg;
-        //        }
+                    result = SqlMapper.Query<BranchPortalReceipt>(connection, mainDbUser.DbUser + "PROC_GET_RECENT_BP ", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
+        public object GetTitleSubmenuTitleByMethod(string methodName)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select BillTitle,SubmenuTitle from  " + mainDbUser.DbUser + "FEATURE_PAY where MethodName = '" + methodName + "'";
+                    var result = connection.Query<dynamic>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
 
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                throw;
+            }
+        }
     }
 }

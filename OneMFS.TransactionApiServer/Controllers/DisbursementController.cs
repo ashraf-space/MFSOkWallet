@@ -63,7 +63,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
 
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("getCompanyAndBatchNoList")]
         public object getCompanyAndBatchNoList(string forPosting)
@@ -77,6 +77,38 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getBatchNoDDLByCompanyId")]
+        public object getBatchNoDDLByCompanyId(int companyId, string fileUploadDate)
+        {
+            try
+            {
+                return _disbursementService.getBatchNoDDLByCompanyId(companyId, fileUploadDate);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("getCompanyAndBatchNoListByCmpId")]
+        public object getCompanyAndBatchNoListByCmpId(string forPosting, int companyId)
+        {
+            try
+            {
+                return _disbursementService.getCompanyAndBatchNoListByCmpId(forPosting, companyId);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
 
         [ApiGuardAuth]
         [HttpPost]
@@ -112,6 +144,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         [Route("GetDisburseTypeList")]
         public object GetDisburseTypeList()
@@ -119,6 +152,21 @@ namespace OneMFS.TransactionApiServer.Controllers
             try
             {
                 return _disbursementService.GetDisburseTypeList();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetDisburseTypeListForOnline")]
+        public object GetDisburseTypeListForOnline()
+        {
+            try
+            {
+                return _disbursementService.GetDisburseTypeListForOnline();
             }
             catch (Exception ex)
             {
@@ -388,7 +436,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("getBatchNo")]
         public object getBatchNo(int id, string tp)
@@ -402,9 +450,10 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         [Route("Process")]
-        public object Process(string batchno, string companyName)
+        public string Process(string batchno, string companyName)
         {
             try
             {
@@ -426,15 +475,15 @@ namespace OneMFS.TransactionApiServer.Controllers
                 //{
                 //    catId = "C";
                 //}
-                return _disbursementService.Process(batchno, catId);
+                return _disbursementService.Process(batchno, catId).ToString();
             }
             catch (Exception ex)
             {
-                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
             }
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("checkProcess")]
         public bool checkProcess(string batchno)
@@ -449,7 +498,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                 throw;
             }
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("getValidOrInvalidData")]
         public object getValidOrInvalidData(string processBatchNo, string validOrInvalid, string forPosting)
@@ -475,6 +524,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("SendToPostingLevel")]
         public string SendToPostingLevel(string processBatchNo, double totalSum)
@@ -489,7 +539,7 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("AllSend")]
         public string AllSend(string processBatchNo, string brCode, string checkerId, double totalSum)
@@ -524,14 +574,15 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("BatchDelete")]
-        public object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
+        public string BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
         {
             try
             {
                 string result = null;
-                result = _disbursementService.BatchDelete(processBatchNo, brCode, checkerId, totalSum).ToString();
+                result = _disbursementService.BatchDelete(processBatchNo, brCode, checkerId, totalSum);
 
                 //Insert into audit trial audit and detail
                 string response = null;
@@ -555,9 +606,10 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
             catch (Exception ex)
             {
-                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString()).ToString();
             }
         }
+
 
         [HttpGet]
         [Route("GetAccountDetails")]
@@ -588,6 +640,40 @@ namespace OneMFS.TransactionApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetDisbursementAmountStatusList")]
+        public object GetDisbursementAmountStatusList(int companyId)
+        {
+            try
+            {
+                return _disbursementService.GetDisbursementAmountStatusList(companyId);
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("GetDataForDisbursementDashboard")]
+        public object GetDataForDisbursementDashboard(int companyId)
+        {
+            try
+            {
+                return _disbursementService.GetDataForDisbursementDashboard(companyId);
+            }
+            catch (Exception ex)
+            {
+
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+
 
     }
 

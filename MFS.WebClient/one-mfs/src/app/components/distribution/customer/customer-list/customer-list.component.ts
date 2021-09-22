@@ -18,6 +18,7 @@ export class CustomerListComponent implements OnInit {
     searchOptionType: any;
     regInfoModel: any = {};
     isAllowUser: boolean = true;
+    isBranchUser: boolean = false;
     @ViewChild(GenericGridComponent) child: GenericGridComponent;
     constructor(private customerService: CustomerService,
         private gridSettingService: GridSettingService,
@@ -33,6 +34,7 @@ export class CustomerListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.checkIsBranchUser();
         this.initialiseGridConfig();
         //if (this.currentUserModel.user.branchCode === '0000') {
         //    this.isAllowUser = true;
@@ -55,27 +57,44 @@ export class CustomerListComponent implements OnInit {
         this.gridConfig.autoUpdateDataSource = true;
         this.gridConfig.showUniversalFilter = false;
         this.gridConfig.detailsStateUrl = 'customer/details/';
-         this.gridConfig.hasCustomContent = true;
-        this.gridConfig.columnList = [
-            { field: 'mphone', header: 'Customer AC No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'name', header: 'Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'photoId', header: 'Photo Id No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'mphone', header: 'Details', width: '7%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() },
-            ////{ field: 'mphone', header: 'Action', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'regStatus', disableValue: 'P' }
-            { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'status', disableValue: 'C'}
+        this.gridConfig.hasCustomContent = true;
+        if (this.isBranchUser) {
+            this.gridConfig.columnList = [
+                { field: 'mphone', header: 'Customer AC No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'name', header: 'Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'photoId', header: 'Photo Id No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'status', disableValue: 'C' }
 
-        ];
+            ];
+        }
+        else {
+            this.gridConfig.columnList = [
+                { field: 'mphone', header: 'Customer AC No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'name', header: 'Name', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'photoId', header: 'Photo Id No', width: '10%', filter: this.gridSettingService.getDefaultFilterable() },
+                { field: 'mphone', header: 'Details', width: '7%', isDetailsColumn: true, filter: this.gridSettingService.getFilterableNone() },
+                { field: 'mphone', header: 'Edit', width: '10%', isEditColumn: true, filter: this.gridSettingService.getFilterableNone(), actionDisableParam: 'status', disableValue: 'C' }
+            ];
+        }
+       
     };
-
+    checkIsBranchUser() {
+        if (this.currentUserModel.user.role_Name.trim() === 'Branch KYC Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'Branch KYC Checker'.trim()) {
+            this.isBranchUser = true;
+        }
+        else {
+            this.isBranchUser = false;
+        }
+    }
     onCustomerSearch() {
-        if (this.regInfoModel.mphone && this.regInfoModel.mphone.length==11) {
+        if (this.regInfoModel.mphone && this.regInfoModel.mphone.length == 11) {
             this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetCustomerByMphone?mPhone=' + this.regInfoModel.mphone + '&CatId=C';
             this.child.updateDataSource();
         }
         else {
             this.messageService.add({ severity: 'error', summary: 'Invalid Mobile No', detail: 'Please Input Valid Account', closable: true });
         }
-        
+
     }
 
 }

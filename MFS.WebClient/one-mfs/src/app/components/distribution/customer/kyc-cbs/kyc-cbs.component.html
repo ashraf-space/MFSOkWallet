@@ -1,28 +1,43 @@
+<mfs-loader *ngIf="reginfo.isLoading"></mfs-loader>
 <p-card [style]="{'margin-bottom':'20px'}">
 	<div class="form-group">
 		<h6 class="form-header">Personal details</h6>
 		<br />
 		<div class="p-grid">
-			<div class="p-col-4">				
+			<div class="p-col-4">
 				<span class="ui-float-label ">
-					<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.mphone"  pKeyFilter="int" pInputText id="float-input">
+					<p-inputMask type="text" mask="99999999999" [style]="{'width':'100%'}" [(ngModel)]="reginfo.regInfoModel.mphone"
+								 placeholder="01xxxxxxxxx" id="float-input" pKeyFilter="int"></p-inputMask>
 					<label for="float-input input-lg" class="col-form-label">Ok Account No <span class="mandatory">*</span></label>
 				</span>
-				
-			</div>
-			<div class="p-col-4">			
-				<span class="ui-float-label ">
-					<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.bankAcNo" pKeyFilter="int" pInputText id="float-input">
-					<label for="float-input input-lg" class="col-form-label">Bank Account No</label>
-				</span>				
+
 			</div>
 			<div class="p-col-4">
-				<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"						
+				<span class="ui-float-label ">
+					<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.bankAcNo" pKeyFilter="int" pInputText id="float-input">
+					<label for="float-input input-lg" class="col-form-label">Bank Account No <span class="mandatory">*</span></label>
+				</span>
+			</div>
+			<div class="p-col-2">
+				<button type="button" class="btn btn-blue btn-sm btn-block btn-reverse"
+						[disabled]=" !reginfo.regInfoModel.mphone || !reginfo.regInfoModel.bankAcNo"
 						(click)="getCbsAccInfo()">
 					<i class="fas fa-search"></i> Search
 				</button>
 			</div>
-	
+			<div class="p-col-2">
+				<button type="button" class="btn btn-blue btn-sm btn-block btn-orange"					
+						(click)="refresh()">
+					<i class="fa-refresh"></i> Refresh
+				</button>
+			</div>
+
+		</div>
+
+		<div class="p-grid">
+			<div class="p-col-12">
+				<p-messages [(value)]="msgs"></p-messages>
+			</div>		
 		</div>
 	</div>
 </p-card>

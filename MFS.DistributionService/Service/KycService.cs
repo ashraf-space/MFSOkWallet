@@ -38,6 +38,11 @@ namespace MFS.DistributionService.Service
 		void StatusChangeBasedOnDemand(string mphone, string demand, string updateBy, string remarks = null);
 		object GetCustomerByMphone(string mphone, string catId);
 		void OnReleaseBindDevice(string mphone, string updateBy);
+		object GetSubCatNameById(string mphone);
+		object ChangeStatus(string remarks, Reginfo reginfo);
+		CLoseReginfo GetCloseInfoByMphone(string mphone);
+		object GetCloseAccount();
+		bool CheckDeviceValidity(string mphone, string deviceId, string deviceOtp);
 	}
 	public class KycService : BaseService<Reginfo>, IKycService
 	{
@@ -381,6 +386,109 @@ namespace MFS.DistributionService.Service
 			auditTrail.InputFeildAndValue = diffList;
 			auditTrail.Response = "Release Performed Successfully";
 			auditTrailService.InsertIntoAuditTrail(auditTrail);
+		}
+
+		public object GetSubCatNameById(string mphone)
+		{
+			return _repository.GetSubCatNameById(mphone);
+		}
+
+		public object ChangeStatus(string remarks, Reginfo reginfo)
+		{
+			try
+			{
+				if(reginfo.Status == "C")
+				{
+					Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
+					var closeInfo = (Tuple<string, string>)_repository.CloseAccount(reginfo.Mphone, reginfo.UpdateBy, remarks);
+					if(closeInfo.Item1 == "1")
+					{
+						var currentReginfo = (Reginfo)_repository.GetCloseRegInfoByMphone(reginfo.Mphone);
+						AuditTrailForStatusChange(prevRegInfo, currentReginfo, remarks);
+						return closeInfo;
+					}
+					else
+					{
+						return closeInfo;
+					}
+					
+				}
+				else
+				{
+					string demand = null;
+					if (reginfo.Status == "I")
+					{
+						demand = "INWBLK";
+					}
+					else if (reginfo.Status == "A")
+					{
+						demand = "ACC_ACTIVE";
+					}
+					else
+					{
+						demand = "OUTWBLK";
+					}
+					Reginfo prevRegInfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
+					_repository.StatusChangeBasedOnDemand(reginfo.Mphone, demand, reginfo.UpdateBy, remarks);
+					var currentReginfo = (Reginfo)_repository.GetRegInfoByMphone(reginfo.Mphone);
+					AuditTrailForStatusChange(prevRegInfo, currentReginfo, remarks);
+					return HttpStatusCode.OK;
+				}
+				
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		private void AuditTrailForStatusChange(Reginfo prevRegInfo, Reginfo currentReginfo, string remarks)
+		{
+			currentReginfo.Remarks = remarks;
+			AuditTrail auditTrail = new AuditTrail();
+			auditTrail.Who = currentReginfo.UpdateBy;
+			auditTrail.WhatActionId = 4;
+			auditTrail.WhichParentMenuId = 8;
+			auditTrail.WhichMenu = "Change Status";
+			auditTrail.WhichId = currentReginfo.Mphone;
+			var diffList = auditTrailService.GetAuditTrialFeildByDifferenceBetweenObject(currentReginfo, prevRegInfo);
+			auditTrail.InputFeildAndValue = diffList;
+			if (currentReginfo.Status == "I")
+			{
+				auditTrail.Response = "Inward BLock Performed Successfully";
+			}
+			else if(currentReginfo.Status == "C")
+			{
+				auditTrail.Response = "Close Performed Successfully";
+			}
+			else
+			{
+				auditTrail.Response = "Outward Block Performed Successfully";
+			}			
+			auditTrailService.InsertIntoAuditTrail(auditTrail);
+		}
+
+		public CLoseReginfo GetCloseInfoByMphone(string mphone)
+		{
+			return _repository.GetCloseInfoByMphone(mphone);
+		}
+
+		public object GetCloseAccount()
+		{
+			return _repository.GetCloseAccount();
+		}
+
+		public bool CheckDeviceValidity(string mphone, string deviceId, string deviceOtp)
+		{
+			DeviceInformation deviceInformation = _repository.GetDeviceInformationByMphone(mphone);
+			if(string.Equals(deviceInformation.DeviceId,deviceId)&& string.Equals(deviceInformation.DeviceOtp, deviceOtp))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 }

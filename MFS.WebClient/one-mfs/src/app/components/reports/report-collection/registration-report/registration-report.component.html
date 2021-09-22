@@ -1,24 +1,31 @@
 <div class="form-group">
 	<div class="p-grid">
-		<div class="p-col-4">
+		<div class="p-col-6">
 			<label for="float-input" class="col-form-label">Based On From<span class="mandatory">*</span></label>
-			<p-dropdown [options]="basedOnList" placeholder="Select Source" [(ngModel)]="model.basedOn"
+			<p-dropdown [options]="basedOnList" placeholder="Select Source" [(ngModel)]="model.basedOn" [showClear]="true"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
 		</div>
-		<div class="p-col-4">
-			<label for="float-input" class="col-form-label">Account Category<span class="mandatory">*</span></label>
-			<p-dropdown [options]="accountCategoryList" placeholder="Select Category" [(ngModel)]="model.accCategory"
-						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
-
-		</div>
-		<div class="p-col-4">
+		<div class="p-col-6">
 			<label for="float-input" class="col-form-label">Registration Status<span class="mandatory">*</span></label>
-			<p-dropdown [options]="regStatusList" placeholder="Select Status" [(ngModel)]="model.regStatus"
+			<p-dropdown [options]="regStatusList" placeholder="Select Status" [(ngModel)]="model.regStatus" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>	
+	</div>
+	<div class="p-grid">
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">Account Category<span class="mandatory">*</span></label>
+			<p-dropdown [options]="accountCategoryList" placeholder="Select Category" [(ngModel)]="model.accCategory" [showClear]="true"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
 		</div>
-		
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">Account Sub Category<span class="mandatory">*</span></label>
+			<p-dropdown [options]="subAccList" placeholder="Select Category" [(ngModel)]="model.accCategorySub" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
 	</div>
 	<div class="p-grid">
 		<div class="p-col-4">

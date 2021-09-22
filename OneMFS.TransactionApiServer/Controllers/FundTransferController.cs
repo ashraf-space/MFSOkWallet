@@ -97,6 +97,21 @@ namespace OneMFS.TransactionApiServer.Controllers
         }
 
         [HttpGet]
+        [Route("getGlDetailsForTtalk")]
+        public object getGlDetailsForTtalk()
+        {
+            try
+            {
+                return _fundTransferService.getGlDetailsForTtalk();
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
+        [HttpGet]
         [Route("GetACList")]
         public object GetACList()
         {
@@ -589,6 +604,116 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         }
 
+        [HttpPost]
+        [Route("GetTransDtlForTtalkByPayAmount")]
+        public object GetTransDtlForTtalkByPayAmount([FromBody]RobiTopupStockEntry ttalkTopupStockEntryModel)
+        {
+            try
+            {
+                List<VMTransactionDetails> VMTransactionDetaillist = new List<VMTransactionDetails>();
+                if (ttalkTopupStockEntryModel.TransactionAmt == 0)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        objVMTransactionDetails.ACNo = "";
+                        objVMTransactionDetails.GLCode = "";
+                        objVMTransactionDetails.GLName = "";
+                        objVMTransactionDetails.DebitAmount = 0;
+                        objVMTransactionDetails.CreditAmount = 0;
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        //String result = null;
+                        double blBalance = 0;
+                        blBalance = ttalkTopupStockEntryModel.TransactionAmt / ttalkTopupStockEntryModel.DiscountRatio;
+
+                        double rowThreeFour = 0, rowFiveSix = 0;
+                        //rowFiveSix = (blBalance * 0.0244498777506112) * .1;
+                        //rowThreeFour = (blBalance * 0.0244498777506112) - rowFiveSix;
+                        rowFiveSix = (blBalance * 0.025) * .1;//since 2.5%
+                        rowThreeFour = (blBalance * 0.025) - rowFiveSix;
+
+                        VMTransactionDetails objVMTransactionDetails = new VMTransactionDetails();
+                        if (i == 0)
+                        {
+                            objVMTransactionDetails.GLCode = ttalkTopupStockEntryModel.GlCode;
+                            objVMTransactionDetails.GLName = ttalkTopupStockEntryModel.GlName;
+                            objVMTransactionDetails.DebitAmount = ttalkTopupStockEntryModel.TransactionAmt;
+                            objVMTransactionDetails.CreditAmount = 0;
+
+                        }
+                        else if (i == 1)
+                        {
+                            objVMTransactionDetails.GLCode = "1020404";
+                            objVMTransactionDetails.GLName = "TELETALK AIRTIME RECEIVABLE";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = ttalkTopupStockEntryModel.TransactionAmt;
+                        }
+                        else if (i == 2)
+                        {
+                            objVMTransactionDetails.GLCode = "1010304";
+                            objVMTransactionDetails.GLName = "TELETALK  AIRTIME STOCK";
+                            objVMTransactionDetails.DebitAmount = rowThreeFour;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else if (i == 3)
+                        {
+                            objVMTransactionDetails.GLCode = "2030504";
+                            objVMTransactionDetails.GLName = "PREPAID INCOME FROM TELETALK";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowThreeFour;
+                        }
+                        else if (i == 4)
+                        {
+                            objVMTransactionDetails.GLCode = "1020501";
+                            objVMTransactionDetails.GLName = "ADVANCE TAX ON AIRTIME COMMISSION";
+                            objVMTransactionDetails.DebitAmount = rowFiveSix;
+                            objVMTransactionDetails.CreditAmount = 0;
+                        }
+                        else
+                        {
+                            objVMTransactionDetails.GLCode = "2030504";
+                            objVMTransactionDetails.GLName = "PREPAID INCOME FROM TELETALK";
+                            objVMTransactionDetails.DebitAmount = 0;
+                            objVMTransactionDetails.CreditAmount = rowFiveSix;
+                        }
+                        VMTransactionDetaillist.Add(objVMTransactionDetails);
+                    }
+                }
+                double totalDebitAmt = 0;
+                double totalCreditAmt = 0;
+                foreach (var item in VMTransactionDetaillist)
+                {
+                    totalDebitAmt += item.DebitAmount;
+                    totalCreditAmt += item.CreditAmount;
+                }
+
+                VMTransactionDetails obj = new VMTransactionDetails();
+                obj.GLCode = "";
+                obj.GLName = "Total :";
+                obj.DebitAmount = totalDebitAmt;
+                obj.CreditAmount = totalCreditAmt;
+                string totalAmt = totalDebitAmt.ToString("N2");
+
+                NumericWordConversion numericWordConversion = new NumericWordConversion();
+                obj.InWords = numericWordConversion.InWords(Convert.ToDecimal(totalAmt));
+
+                VMTransactionDetaillist.Add(obj);
+
+                return VMTransactionDetaillist;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+        }
+
         [HttpGet]
         [Route("GetTransactionDetailsByTransactionNo")]
         public object GetTransactionDetailsByTransactionNo(string transNo)
@@ -809,6 +934,41 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("saveCommiConvert")]
+        public object saveCommiConvert([FromBody]BranchCashIn branchCashIn)
+        {
+            try
+            {
+                //FundTransfer objFundTransfer = new FundTransfer();
+                branchCashIn.TransNo = _distributorDepositService.GetTransactionNo();
+                //string successOrErrorMsg = _fundTransferService.saveBranchCashIn(branchCashIn).ToString();
+                string successOrErrorMsg = null;
+
+                string response = null;
+                if (successOrErrorMsg == "1")
+                {
+                    response = "Save Successfully!";
+                }
+                else
+                {
+                    response = successOrErrorMsg;
+                }
+
+                //Insert into audit trial audit and detail                      
+                _auditTrailService.InsertModelToAuditTrail(branchCashIn, branchCashIn.CheckedUser, 9, 3, "Commission Convertion", branchCashIn.Mphone, response);
+
+
+                return successOrErrorMsg;
+
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
         private string GetGLName(string from)
         {
             int pFrom = 0, pTo = 0;
@@ -959,7 +1119,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                 }
                 else
                 {
-                    response = "Not rejected";
+                    //response = "Not rejected";
+                    response = successOrErrorMsg;
                 }
                 _auditTrailService.InsertModelToAuditTrail(tblPortalCashout, tblPortalCashout.CheckBy, 9, 3, "Brach Cash Out (Withdrawal)", tblPortalCashout.Mphone, response);
                 return successOrErrorMsg;
@@ -1078,6 +1239,40 @@ namespace OneMFS.TransactionApiServer.Controllers
                 }
 
                 _auditTrailService.InsertModelToAuditTrail(robiTopupStockEntryModel, robiTopupStockEntryModel.EntryUser, 9, 3, "Banglalink Topup Stock Entry", whichId, response);
+                return successOrErrorMsg;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+
+
+        }
+
+        [ApiGuardAuth]
+        [HttpPost]
+        [Route("saveTtalkTopupStockEntry")]
+        public object saveTtalkTopupStockEntry([FromBody]RobiTopupStockEntry ttalkTopupStockEntryModel)
+        {
+            try
+            {
+                string successOrErrorMsg = _fundTransferService.saveTtalkTopupStockEntry(ttalkTopupStockEntryModel).ToString();
+
+                //Insert into audit trial audit and detail
+                string response = null;
+                string whichId = null;
+                if (successOrErrorMsg == "Failed")
+                {
+                    response = "Failed";
+                    whichId = ttalkTopupStockEntryModel.GlName;
+                }
+                else
+                {
+                    response = "Added Successfully";
+                    whichId = successOrErrorMsg;
+                }
+
+                _auditTrailService.InsertModelToAuditTrail(ttalkTopupStockEntryModel, ttalkTopupStockEntryModel.EntryUser, 9, 3, "Teletalk Topup Stock Entry", whichId, response);
                 return successOrErrorMsg;
             }
             catch (Exception ex)

@@ -16,6 +16,7 @@ export class AgentInformationComponent implements OnInit {
     optionList: any;
     isDateDisabled: boolean = false;
     accountCategoryList: any;
+    subAccList: any;
     constructor(private mfsUtilityService: MfsUtilityService,
         private kycReportService: KycReportService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
@@ -31,6 +32,7 @@ export class AgentInformationComponent implements OnInit {
             { label: 'Period', value: 'P' }
         ];
         this.getAccountCategoryDDL();
+        this.getSubAccountCategoryDDL();
     }
     getAccountCategoryDDL(): any {
         this.kycReportService.getAccountCategoryList()
@@ -44,13 +46,27 @@ export class AgentInformationComponent implements OnInit {
                 }
             );
     }
+    getSubAccountCategoryDDL(): any {
+        this.kycReportService.getSubAccountCategoryDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.subAccList = data;
+                    this.subAccList.push({ label: 'All', value: 'All' });
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
     getReportParam() {
         if (this.validate()) {
             var obj: any = {};
             if (this.model.fromDate && this.model.toDate) {
                 obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
                 obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
-            }
+            }            
+            obj.subAccCategory = this.model.accCategorySub;
             obj.options = this.model.options;
             obj.accCategory = this.model.accCategory;
             return obj;
@@ -58,8 +74,7 @@ export class AgentInformationComponent implements OnInit {
         else {
             var obj: any = {};
             obj.isNotValidated = true;
-        }
-        return this.model;
+        }      
     }
     onOptionChange() {
         if (this.model.options === 'CL') {

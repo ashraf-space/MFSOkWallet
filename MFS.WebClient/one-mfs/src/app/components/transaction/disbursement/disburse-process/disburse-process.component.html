@@ -5,7 +5,7 @@
             <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"> Disbursement Process</i> </h6>
             <p-fieldset legend="Batch No Generator and Upload">
                 <div class="p-grid">
-                    <div class="p-col-6">
+                    <div class="p-col-4">
                         <div style="text-align:center">
                             <label>Company Name and Id</label>
                         </div>
@@ -20,10 +20,15 @@
                             <label style="text-align:center">Current Batch No</label>
                         </div>
                     </div>
+                    <div class="p-col-2">
+                        <div style="text-align:center">
+                            <label style="text-align:center">Account No</label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="p-grid">
-                    <div class="p-col-6">
+                    <div class="p-col-4">
                         <div>
                             <p-dropdown [options]="disburseCompanyList" [(ngModel)]="tblDisburseModel.OrganizationId" placeholder="Select Company" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="clearDisburseTypeAndBatchNo();"></p-dropdown>
                             <p-message *ngIf="(tblDisburseModel.OrganizationId==null || tblDisburseModel.OrganizationId=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -39,6 +44,11 @@
                         <div>
                             <input type="text" class="form-control" [(ngModel)]="tblDisburseModel.Batchno" [disabled]="true">
                             <p-message *ngIf="(tblDisburseModel.Batchno==null || tblDisburseModel.Batchno=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
+                    <div class="p-col-2">
+                        <div>
+                            <input type="text" class="form-control" [(ngModel)]="accountNo" [disabled]="true">
                         </div>
                     </div>
                 </div>

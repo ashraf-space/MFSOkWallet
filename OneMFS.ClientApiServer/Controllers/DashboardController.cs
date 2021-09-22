@@ -55,11 +55,11 @@ namespace OneMFS.ClientApiServer.Controllers
 
         [HttpGet]
         [Route("GetBillCollectionMenus")]
-        public object GetBillCollectionMenus()
+        public object GetBillCollectionMenus(int userId)
         {
             try
             {
-                return dashboardService.GetBillCollectionMenus();
+                return dashboardService.GetBillCollectionMenus(userId);
             }
             catch (Exception ex)
             {

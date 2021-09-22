@@ -1,14 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Observable, interval, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '../../shared/_models';
 import { UserService, AuthenticationService } from '../../shared/_services';
 
+
 @Component({ templateUrl: 'home.component.html', styleUrls: ['home.component.css'] })
 
 
 export class HomeComponent implements OnInit, OnDestroy {
+    @ViewChild('mfsPdfViewer') pdfViewer;
+    @ViewChild('form') childForm;
+    pdf: any;
+    reportObject: any;
+
     currentUser: User;
     currentUserModel: any = {};
     currentUserSubscription: Subscription;
@@ -16,6 +22,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     pieData: any;
     barData: any;
     barData2: any;
+    barTransData: any;
+    barAgentData: any;
+    barCustomerData: any;
+    barDistributorData: any;
+    barOnlineMerchantData: any;
+    barOfflineMerchantData: any;
 
     dashboardModel: any;
     isLoading: boolean;
@@ -27,12 +39,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     tuitionFeeCollectionMenus: any;
     creditCardBillCollectionMenus: any;
     OtherBillFeeCollectionMenus: any;
+    cashInOutMenus: any;
+    interval: any;
+    
 
     constructor(
         private authenticationService: AuthenticationService,
         private userService: UserService,
         private route: ActivatedRoute,
         private router: Router
+
     ) {
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
             this.currentUser = user;
@@ -41,64 +57,152 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.clientCountList = [];
             this.clientCountList.push({ name: 'CLIENT', icon: 'far fa-hand-point-right' });
         });
+
+        this.pdf = {};
+        this.reportObject = {};
+        //this.model = {};
+        this.reportObject.fileType = 'PDF';
+        //this.fileOptionList = reportUtilityService.getFileExtensionList();
     }
 
     ngOnInit() {
 
+        this.refreshData();
+        this.interval = setInterval(() => {
+            this.refreshData();
+        }, 300000);
+       
+
+    }
+
+    refreshData() {
         this.userPStatus = this.currentUserModel.user.pstatus;
         this.isBranchTeller = this.currentUserModel.user.role_Name == 'Branch Teller' ? true : false;
 
+        //this.getDataForDashboard();
+        //this.pieData = {
+        //    labels: ['Agent', 'Customer', 'Distributor', 'DSR', 'Merchant'],
+        //    datasets: [
+        //        {
+        //            data: [],
+        //            backgroundColor: [
+        //                "#FF6384",
+        //                "#36A2EB",
+        //                "#FFCE56",
+        //                "#01447a",
+        //                "#940a0a"
+        //            ],
+        //            hoverBackgroundColor: [
+        //                "#FF6384",
+        //                "#36A2EB",
+        //                "#FFCE56",
+        //                "#01447a",
+        //                "#940a0a"
+        //            ]
+        //        }]
+        //};
+
+        //this.barData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'Transactions (lakh)',
+        //            backgroundColor: '#42A5F5',
+        //            borderColor: '#1E88E5',
+        //            data: []
+        //        }
+        //    ]
+        //};
+
+        //this.barData2 = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'Transactions (lakh)',
+        //            backgroundColor: '#42A5F5',
+        //            borderColor: '#78A0CA',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+
+        //this.barTransData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'Transaction Trend(Volume in BDT in Million)',
+        //            backgroundColor: '#42A5F5',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+
+        //this.barAgentData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'OK Wallet Agent',
+        //            backgroundColor: '#42A5F5',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+        //this.barCustomerData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'OK Wallet Customer',
+        //            backgroundColor: '#42A5F5',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+        //this.barDistributorData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'OK Wallet Distributor',
+        //            backgroundColor: '#78A0CA',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+        //this.barOnlineMerchantData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'OK Wallet Merchant(Online)',
+        //            backgroundColor: '#78A0CA',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
+        //this.barOfflineMerchantData = {
+        //    labels: [],
+        //    datasets: [
+        //        {
+        //            label: 'OK Wallet Merchant(Offline)',
+        //            backgroundColor: '#78A0CA',
+        //            borderColor: '#1E88E5',
+        //            data: [],
+        //            fill: false
+        //        }
+        //    ]
+        //};
 
 
-        this.getDataForDashboard();
-        this.pieData = {
-            labels: ['Agent', 'Customer', 'Distributor', 'DSR', 'Merchant'],
-            datasets: [
-                {
-                    data: [],
-                    backgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#01447a",
-                        "#940a0a"
-                    ],
-                    hoverBackgroundColor: [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                        "#01447a",
-                        "#940a0a"
-                    ]
-                }]
-        };
-
-        this.barData = {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Transactions (lakh)',
-                    backgroundColor: '#42A5F5',
-                    borderColor: '#1E88E5',
-                    data: []
-                }
-            ]
-        };
-
-        this.barData2 = {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Transactions (lakh)',
-                    backgroundColor: '#42A5F5',
-                    borderColor: '#78A0CA',
-                    data: [],
-                    fill: false
-                }
-            ]
-        };
-
-        this.authenticationService.GetBillCollectionMenus()
+        this.authenticationService.GetBillCollectionMenus(this.currentUserModel.user.id)
             .pipe(first())
             .subscribe(
                 data => {
@@ -107,6 +211,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                         this.tuitionFeeCollectionMenus = data.filter(x => x.CATEGORYID == 32);
                         this.creditCardBillCollectionMenus = data.filter(x => x.CATEGORYID == 33);
                         this.OtherBillFeeCollectionMenus = data.filter(x => x.CATEGORYID == 34);
+                        this.cashInOutMenus = data.filter(x => x.CATEGORYID == 81);
                     }
 
 
@@ -114,14 +219,18 @@ export class HomeComponent implements OnInit, OnDestroy {
                 error => {
                     console.log(error);
                 }
-            );
-
+            );      
 
     }
+
+
 
     ngOnDestroy() {
         this.currentUserSubscription.unsubscribe();
     }
+    
+
+   
 
     insertIntoClientCountList(e) {
         var obj: any = {};
@@ -188,6 +297,37 @@ export class HomeComponent implements OnInit, OnDestroy {
                                 this.dashboardModel.totalTransaction = this.dashboardModel.totalTransaction + obj.TRANSACTION;
                             }
                         });
+                        
+                        this.dashboardModel.listTransactionTrend.forEach(obj => {
+                            this.barTransData.labels.push(obj.CAPTION.trim());
+                            this.barTransData.datasets[0].data.push(obj.TRANSACTIONAMT);
+                        });
+
+                        this.dashboardModel.dynamicClientCount.forEach(obj => {
+                            this.barAgentData.labels.push(obj.CAPTION.trim());
+                            this.barAgentData.datasets[0].data.push(obj.AGENT);
+
+                            this.barCustomerData.labels.push(obj.CAPTION.trim());
+                            this.barCustomerData.datasets[0].data.push(obj.CUSTOMER);
+
+                            this.barDistributorData.labels.push(obj.CAPTION.trim());
+                            this.barDistributorData.datasets[0].data.push(obj.DISTRIBUTOR);
+
+                            this.barOnlineMerchantData.labels.push(obj.CAPTION.trim());
+                            this.barOnlineMerchantData.datasets[0].data.push(obj.MERCHANTONLINE);
+
+                            this.barOfflineMerchantData.labels.push(obj.CAPTION.trim());
+                            this.barOfflineMerchantData.datasets[0].data.push(obj.MERCHANTOFFLINE);
+
+                        });
+                        //this.dashboardModel.dynamicClientCount.forEach(obj => {
+                        //    this.barCustomerData.labels.push(obj.CAPTION.trim());
+                        //    this.barCustomerData.datasets[0].data.push(obj.AGENT);
+                        //});
+                        //this.dashboardModel.dynamicClientCount.forEach(obj => {
+                        //    this.barDistributorData.labels.push(obj.CAPTION.trim());
+                        //    this.barDistributorData.datasets[0].data.push(obj.DISTRIBUTOR);
+                        //});
 
                         Object.keys(this.dashboardModel.totalClientCount).forEach(e => {
                             if (e != 'CLIENTTHISYEAR' && e != 'CLIENTTHISMONTH')
@@ -224,5 +364,29 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     goToBillCollectionMenu(url) {
         this.router.navigate(['/' + url]);
+    }
+
+    transactionAnalysis() {
+        this.isLoading = true;
+        this.authenticationService.getTransactionAnalysis().pipe(first())
+            .subscribe(
+                data => {
+                    if (data) {
+                        this.pdf.source = data;
+                        //this.pdf.ext = this.reportObject.fileType;
+                        this.pdf.ext = "PDF";
+                        //this.pdf.fileName = this.model.ReportName;
+                        this.pdf.fileName = "Transaction Analysis";
+                        this.isLoading = false;
+                        this.pdfViewer.refreshReport();
+                    }
+                    else {
+                        this.isLoading = false;
+                    }
+                    
+                },
+                error => {
+                    console.log(error);
+                });
     }
 }

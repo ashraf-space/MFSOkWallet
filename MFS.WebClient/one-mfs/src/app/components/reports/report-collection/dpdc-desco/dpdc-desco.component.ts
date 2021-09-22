@@ -7,13 +7,13 @@ import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/shared/_services';
 
 @Component({
-  selector: 'app-dpdc-desco',
-  templateUrl: './dpdc-desco.component.html',
-  styleUrls: ['./dpdc-desco.component.css']
+    selector: 'app-dpdc-desco',
+    templateUrl: './dpdc-desco.component.html',
+    styleUrls: ['./dpdc-desco.component.css']
 })
 export class DpdcDescoComponent implements OnInit {
 
-   model: any;
+    model: any;
     dateTypeList: any;
     utilityList: any;
     gatewayList: any;
@@ -39,28 +39,35 @@ export class DpdcDescoComponent implements OnInit {
             { label: 'DPDC Postpaid', value: 'dpdc' },
             { label: 'DPDC Prepaid', value: 'dpdck' },
             { label: 'DESCO', value: 'desco' },
-            { label: 'WASA', value: 'wasa' },
-            { label: 'JALALABAD GAS', value: 'jgtd' }
+            { label: 'WASA Dhaka', value: 'wasa' },
+            { label: 'JALALABAD GAS', value: 'jgtd' },
+            { label: 'West Zone Power (Prepaid)', value: 'wzpdcl' },
+            { label: 'Desco Prepaid', value: 'descop' },
+            { label: 'BGDCL', value: 'bgdcl' },
+            { label: 'WASA Khulna', value: 'kwasa' },
+            { label: 'West Zone Power (Postpaid)', value: 'wzpdclpo' }
         ];
         this.gatewayList = [
             { label: 'USSD', value: 'U' },
             { label: 'APP', value: 'A' },
-            { label: 'ALL', value: 'All' },
-            { label: 'None', value: 'All' }  
+            { label: 'Branch', value: 'All' },
+            { label: 'ALL', value: 'All' }
+
         ];
         this.catTypeList = [
             { label: 'Agent', value: 'A' },
             { label: 'Customer', value: 'C' },
-            { label: 'ALL', value: 'All' },
-            { label: 'None', value: 'All' }  
+            { label: 'Branch Teller', value: 'All' },
+            { label: 'ALL', value: 'All' }
+
         ];
         this.dateTypeList = [
             { label: 'EOD Date', value: 'eod' },
             { label: 'Transaction Date', value: 'trans' }
         ]
     }
-   
-   
+
+
 
     getReportParam() {
         if (this.validate()) {
@@ -70,8 +77,8 @@ export class DpdcDescoComponent implements OnInit {
                 obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
             }
             obj.utility = this.model.utility;
-            obj.gateway = this.model.gateway;
-            obj.catType = this.model.catType;
+            obj.gateway = 'All';
+            obj.catType = 'All';
             obj.dateType = this.model.dateType;
             obj.branchCode = this.currentUserModel.user.branchCode;
             return obj;
@@ -80,11 +87,11 @@ export class DpdcDescoComponent implements OnInit {
             var obj: any = {};
             obj.isNotValidated = true;
             return obj;
-        }     
+        }
     }
 
     validate(): any {
-        if (!this.model.utility || !this.model.gateway || !this.model.catType || !this.model.dateType ||
+        if (!this.model.utility  || !this.model.dateType ||
             !this.model.fromDate || !this.model.toDate) {
             return false;
         }

@@ -18,5 +18,7 @@ namespace MFS.ReportingService.Models
         public string BalanceType { get; set; }
         public double AvailableBalance { get; set; }
 		public string BillNo { get; set; }
+		public string Name { get; set; }
+		public string Email { get; set; }
 	}
 }

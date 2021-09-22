@@ -47,7 +47,7 @@
 							<br />
 							<span class="ui-float-label ">
 								<input autocomplete="off" type="text" class="form-control" (change)="checkSnameExist()" [disabled]="isEditMode" [(ngModel)]="regInfoModel._OrgCode" pKeyFilter="int" pInputText id="float-input">
-								<label for="float-input input-lg" class="col-form-label">Organization Code <span class="mandatory">*(EMS)</span></label>
+								<label for="float-input input-lg" class="col-form-label">Organization Code <span class="mandatory">*(EMS Or MMS)</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel._OrgCode==null || regInfoModel._OrgCode=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>

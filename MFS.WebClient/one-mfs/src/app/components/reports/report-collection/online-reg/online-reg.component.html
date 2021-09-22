@@ -1,9 +1,15 @@
 <div class="form-group">
 	<div class="p-grid">
-		<div class="p-col-12">
+		<div class="p-col-6">
 			<label for="float-input input-lg" class="col-form-label">Account No</label>
 			<input autocomplete="off" type="text" class="form-control form-input" (change)="disabledDatepicker()"
 				   [(ngModel)]="model.accNo" pInputText />
+		</div>
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">Registration Status <span class="mandatory">*</span></label>
+			<p-dropdown [options]="statusList" placeholder="Select Category" [disabled]="isOkAccExist" [(ngModel)]="model.regStatus"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
 		</div>
 		<div class="p-col-4">
 			<label for="float-input" class="col-form-label">Registration Source<span class="mandatory">*</span></label>

@@ -1,0 +1,59 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+	<div class="p-grid">
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">Branch Code</label>
+			<p-dropdown [options]="branchList" placeholder="Select Source" [(ngModel)]="model.branchCode" [showClear]="true"
+						(onChange)="getUserByBranchCode()"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">User</label>
+			<p-dropdown [options]="userList" placeholder="Select Status" [(ngModel)]="model.user" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+	</div>
+	<div class="p-grid">
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Parent Menu</label>
+			<p-dropdown [options]="parentMenuList" placeholder="Select Category" [(ngModel)]="model.parentMenu" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Action</label>
+			<p-dropdown [options]="actionList" placeholder="Select Category" [(ngModel)]="model.action" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-4">
+			<label for="float-input input-lg" class="col-form-label">Audit Id</label>
+			<div class="input-group">
+				<input type="text" class="form-control form-input" [(ngModel)]="model.auditId" pInputText />
+			</div>
+
+		</div>
+	</div>
+	<div class="p-grid">
+				
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">From <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From"
+					   name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-6">
+			<label for="float-input" class="col-form-label">To <span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To" 
+					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+					   (click)="h.toggle()" id="float-input">
+			</div>
+		</div>
+
+	</div>
+</div>

@@ -8,7 +8,7 @@
             </span>
         </div>
         <div class="p-col-3">
-            <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()" [disabled]=" !searchModel.mphone || (searchModel.mphone.length != 11)"><i class="fas fa-search"></i> Search </button>
+            <button type="button" class="btn btn-blue btn-sm btn-reverse btn-block" (click)="onSearch()" [disabled]=" !searchModel.mphone"><i class="fas fa-search"></i> Search </button>
         </div>
         <div class="p-col-12" *ngIf="searchModel.result">
             <hr />

@@ -8,6 +8,8 @@ import { MfsSettingService } from '../../services/mfs-setting.service';
     providedIn: 'root'
 })
 export class AuditTrailService {
+   
+  
     
     constructor(private http: HttpClient, private setting: MfsSettingService) {
 
@@ -34,7 +36,8 @@ export class AuditTrailService {
     getWhichParentMenuId(ParentMenu: string) {
         var whichParentMenuId;
         switch (ParentMenu) {
-            case 'Dashboard':
+            //case 'Dashboard':
+            case 'Home':
                 whichParentMenuId = 1;
                 break;
             case 'Customer Care':
@@ -76,8 +79,11 @@ export class AuditTrailService {
             case 'Other Bill/Fee Collection':
                 whichParentMenuId = 14;
                 break;
-            default:
+            case 'Dashboard':
                 whichParentMenuId = 15;
+                break;
+            default:
+                whichParentMenuId = 16;
         }
         return whichParentMenuId;
     }
@@ -95,5 +101,10 @@ export class AuditTrailService {
                 return model;
             }));
     }
-
+    getParentMenuList() {
+        return this.http.get<any>(this.setting.securityApiServer + '/AuditTrail/getParentMenuList')
+            .pipe(map(model => {
+                return model;
+            }));
+    }
 }

@@ -122,9 +122,9 @@
                 </Paragraphs>
                 <rd:DefaultName>Textbox3</rd:DefaultName>
                 <Top>0.16667in</Top>
-                <Left>0.61959in</Left>
+                <Left>0.15084in</Left>
                 <Height>0.25in</Height>
-                <Width>6.80272in</Width>
+                <Width>7.67772in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -139,14 +139,15 @@
                 <Source>Database</Source>
                 <Value>=First(Fields!QrString.Value, "QrCode")</Value>
                 <MIMEType>image/jpeg</MIMEType>
-                <Top>0.69792in</Top>
-                <Left>2.80917in</Left>
-                <Height>1.13542in</Height>
-                <Width>2.36522in</Width>
+                <Sizing>Fit</Sizing>
+                <Top>0.73959in</Top>
+                <Left>2.44919in</Left>
+                <Height>2.5in</Height>
+                <Width>3in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
-                    <Style>None</Style>
+                    <Style>Solid</Style>
                   </Border>
                 </Style>
               </Image>
@@ -157,7 +158,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Scan QR Code to Pay</Value>
+                        <Value>Scan QR Code to Send Money</Value>
                         <Style>
                           <FontSize>16pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -170,10 +171,10 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox5</rd:DefaultName>
-                <Top>2.47917in</Top>
-                <Left>2.80917in</Left>
+                <Top>3.47917in</Top>
+                <Left>0.15084in</Left>
                 <Height>0.25in</Height>
-                <Width>2.36522in</Width>
+                <Width>7.67772in</Width>
                 <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
@@ -192,7 +193,7 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Merchant Account Number</Value>
+                        <Value>Account Number</Value>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
@@ -205,10 +206,10 @@
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox6</rd:DefaultName>
-                <Top>3.55208in</Top>
-                <Left>2.80917in</Left>
+                <Top>4.17708in</Top>
+                <Left>0.15084in</Left>
                 <Height>0.25in</Height>
-                <Width>2.36522in</Width>
+                <Width>7.67772in</Width>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
@@ -259,37 +260,37 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>0.61174in</Width>
+                      <Width>0.65719in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.62216in</Width>
+                      <Width>0.66761in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.73738in</Width>
+                      <Width>0.78283in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.60133in</Width>
+                      <Width>0.64678in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.62216in</Width>
+                      <Width>0.66761in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.61174in</Width>
+                      <Width>0.65719in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.53883in</Width>
+                      <Width>0.58428in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.71591in</Width>
+                      <Width>0.76136in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.70549in</Width>
+                      <Width>0.75094in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.63258in</Width>
+                      <Width>0.67803in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.77841in</Width>
+                      <Width>0.82386in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -718,10 +719,10 @@
                     </TablixMember>
                   </TablixMembers>
                 </TablixRowHierarchy>
-                <Top>3.97917in</Top>
-                <Left>0.39458in</Left>
+                <Top>4.47917in</Top>
+                <Left>0.15084in</Left>
                 <Height>0.25in</Height>
-                <Width>7.17773in</Width>
+                <Width>7.67772in</Width>
                 <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
@@ -757,9 +758,9 @@
               <Value>oklogo</Value>
               <Sizing>FitProportional</Sizing>
               <Top>0.10292in</Top>
-              <Left>2.84313in</Left>
-              <Height>0.84847in</Height>
-              <Width>2.38416in</Width>
+              <Left>2.69919in</Left>
+              <Height>0.87624in</Height>
+              <Width>3in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>

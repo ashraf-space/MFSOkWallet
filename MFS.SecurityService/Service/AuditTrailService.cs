@@ -22,6 +22,7 @@ namespace MFS.SecurityService.Service
 		object GetAuditTrails(DateRangeModel date, string user, string action, string menu);
 		object GetTrailDtlById(string id);
 		IEnumerable<AuditTrialFeild> GetAuditTrialFeildByDifferenceBetweenObjectForUpdateKyc(object currentModel, object prevModel);
+		object GetParentMenuList();
 	}
 
 	public class AuditTrailService : BaseService<AuditTrail>, IAuditTrailService
@@ -236,6 +237,11 @@ namespace MFS.SecurityService.Service
 			{
 				return null;
 			}
+		}
+
+		public object GetParentMenuList()
+		{
+			return auditTrailRepository.GetParentMenuList();
 		}
 	}
 }

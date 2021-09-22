@@ -31,6 +31,7 @@ namespace MFS.TransactionService.Repository
         object CheckCbsValidClass(string @class);
 		void ChekCbsAccuntByAccNo(MtCbsinfo mtcbsinfo);
 		object GetMappedAccountByAccNo(string accNo);
+		bool IsRegInfoExist(string mblAcc);
 	}
     public class ToolsRepository : BaseRepository<MtCbsinfo>, IToolsRepository
     {
@@ -87,7 +88,7 @@ namespace MFS.TransactionService.Repository
             {
 
 				MappingApiInfo mappingApiInfo = new MappingApiInfo();
-				string URL = mappingApiInfo.LiveApiInfo + accNo.ToString(); //For Live 
+				string URL = mappingApiInfo.UatApiInfo + accNo.ToString(); //For Live 
 				
 				object dataObjects = null;
                 HttpClient client = new HttpClient();
@@ -285,7 +286,7 @@ namespace MFS.TransactionService.Repository
 
                 using (var _connection = this.GetConnection())
                 {
-                    string query = "SELECT COUNT(*) FROM "+ mainDbUser.DbUser + "MT_CBSINFO T WHERE T.ACCNO = '" + accno + "'";
+                    string query = "SELECT COUNT(*) FROM "+ mainDbUser.DbUser + "MT_CBSINFO T WHERE T.ACCNO = '" + accno + "' AND T.STATUS <> 'C'";
                     var result = _connection.QueryFirstOrDefault<int>(query);
 
                     this.CloseConnection(_connection);
@@ -420,6 +421,34 @@ namespace MFS.TransactionService.Repository
 
 			}
 			catch (Exception e)
+			{
+				throw;
+			}
+		}
+
+		public bool IsRegInfoExist(string mblAcc)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"Select mphone from " + mainDbUser.DbUser + "Reginfo where mphone = " + "'" + mblAcc + "'" + "";
+
+					string result = connection.Query<string>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					if (!string.IsNullOrEmpty(result))
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+
+			}
+			catch (Exception ex)
 			{
 				throw;
 			}

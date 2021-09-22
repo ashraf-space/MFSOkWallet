@@ -2,18 +2,18 @@
 <div class="form-group">
     <div class="p-grid">
         <div class="p-col-6">
-            <label for="float-input" class="col-form-label">Transaction Type <span class="mandatory">*</span></label>
+            <label for="float-input" class="col-form-label">Transaction Type </label>
             <p-dropdown [options]="tansactionTypeDDL" placeholder="Select Tansaction Type" [(ngModel)]="model.tansactionType"
-                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                        [showClear]="true" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.tansactionType==null || model.tansactionType=='') && error " severity="error" text="Cannot be left blank"></p-message>
-        </div>
+        </div>      
 
         <div class="p-col-6">
             <label for="float-input" class="col-form-label">Option <span class="mandatory">*</span></label>
             <p-dropdown [options]="optionDDL" placeholder="Select Option" [(ngModel)]="model.option" (onChange)="showDateRangeDiv();"
-                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+                        [showClear]="true" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
             <p-message *ngIf="(model.option==null || model.option=='') && error " severity="error" text="Cannot be left blank"></p-message>
-        </div>       
+        </div>
 
     </div>
     <div *ngIf="isDateRangeShow">

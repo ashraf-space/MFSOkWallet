@@ -19,6 +19,7 @@ namespace MFS.TransactionService.Repository
         object getGlDetailsForRobi();
         object getGlDetailsForAirtel();
         object getGlDetailsForBlink();
+        object getGlDetailsForTtalk();
         object GetAmountByGL(string sysCode);
         object GetACList();
         object GetAmountByAC(string mPhone);
@@ -30,6 +31,7 @@ namespace MFS.TransactionService.Repository
         object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
         object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
         object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntry);
+        object saveTtalkTopupStockEntry(RobiTopupStockEntry ttalkTopupStockEntry);
         object getAmountByTransNo(string transNo, string mobile);
         object GetGLBalanceByGLSysCoaCode(string sysCoaCode);
         string GetCoaCodeBySysCoaCode(string fromSysCoaCode);
@@ -113,6 +115,24 @@ namespace MFS.TransactionService.Repository
                 using (var connection = this.GetConnection())
                 {
                     var result = connection.QueryFirstOrDefault<dynamic>("Select g.Coa_code as GLCODE,g.sys_coa_code as SysCoaCode,g.coa_desc GLName,round((Select SUM(DR_AMT) - SUM(CR_AMT) from" + mainDbUser.DbUser + "GL_Trans_DTL where SYS_COA_CODE = g.sys_coa_code), 2) as Amount from " + mainDbUser.DbUser + "GL_COA g where g.coa_code ='1010303'");
+                    connection.Close();
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public object getGlDetailsForTtalk()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var result = connection.QueryFirstOrDefault<dynamic>("Select g.Coa_code as GLCODE,g.sys_coa_code as SysCoaCode,g.coa_desc GLName,NVL(round((Select SUM(DR_AMT) - SUM(CR_AMT) from" + mainDbUser.DbUser + "GL_Trans_DTL where SYS_COA_CODE = g.sys_coa_code), 2),0) as Amount from " + mainDbUser.DbUser + "GL_COA g where g.coa_code ='1010304'");
                     connection.Close();
                     return result;
                 }
@@ -584,6 +604,77 @@ namespace MFS.TransactionService.Repository
                             parameter.oracleParameters[1].Value = "A40000000137";
                             parameter.oracleParameters[2].Value = "L40000000200";
                             parameter.oracleParameters[3].Value = robiTopupStockEntry.RowFiveSix;
+                            parameter.oracleParameters[8].Value = transactionNo;
+                            parameter.oracleParameters[9].Value = 5;
+
+                            SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
+                        }
+
+
+                    }
+
+                    connection.Close();
+                    string flag = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+
+                    if (flag == "0")
+                    {
+                        successOrErrorMsg = "Failed";
+                    }
+                    else
+                    {
+                        //successOrErrorMsg = "1";
+                        successOrErrorMsg = transactionNo;
+                    }
+                    return successOrErrorMsg;
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+        }
+
+        public object saveTtalkTopupStockEntry(RobiTopupStockEntry ttalkTopupStockEntry)
+        {
+            string successOrErrorMsg = null;
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    // string newID = "";
+                    var parameter = new OracleDynamicParameters();
+                    parameter.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, "A2G");
+                    parameter.Add("V_DR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "01513907020");
+                    parameter.Add("V_CR_AC_GL", OracleDbType.Varchar2, ParameterDirection.Input, "A40000000218");
+                    parameter.Add("V_AMT", OracleDbType.Double, ParameterDirection.Input, ttalkTopupStockEntry.TransactionAmt);
+                    parameter.Add("V_HOTKEY", OracleDbType.Varchar2, ParameterDirection.Input, ttalkTopupStockEntry.Hotkey);
+                    parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
+                    parameter.Add("V_ENTRY_USER", OracleDbType.Varchar2, ParameterDirection.Input, ttalkTopupStockEntry.EntryUser);
+                    parameter.Add("V_PARTICULAR", OracleDbType.Varchar2, ParameterDirection.Input);
+
+                    SqlMapper.Query<string>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    //string newID = parameter.<string>("V_FLAG");
+                    string transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+
+                    if (transactionNo != null)
+                    {
+                        //parameter.oracleParameters[1].Value = robiTopupStockEntry.FromSysCoaCode;
+                        parameter.oracleParameters[1].Value = "01513907020";
+                        parameter.oracleParameters[2].Value = "L40000000220";
+                        parameter.oracleParameters[3].Value = ttalkTopupStockEntry.RowThreeFour;
+                        parameter.Add("P_TRANS_NO", OracleDbType.Varchar2, ParameterDirection.Input, transactionNo);
+                        parameter.Add("V_TRANS_SL_NO", OracleDbType.Int32, ParameterDirection.Input, 3);
+
+                        SqlMapper.Query<dynamic>(connection, mainDbUser.DbUser + "PROC_BASIC_TRANSACTION_V2", param: parameter, commandType: CommandType.StoredProcedure);
+                        transactionNo = parameter.oracleParameters[5].Value != null ? parameter.oracleParameters[5].Value.ToString() : null;
+                        if (transactionNo != null)
+                        {
+                            parameter.oracleParameters[0].Value = "G2G";
+                            parameter.oracleParameters[1].Value = "A40000000137";
+                            parameter.oracleParameters[2].Value = "L40000000220";
+                            parameter.oracleParameters[3].Value = ttalkTopupStockEntry.RowFiveSix;
                             parameter.oracleParameters[8].Value = transactionNo;
                             parameter.oracleParameters[9].Value = 5;
 

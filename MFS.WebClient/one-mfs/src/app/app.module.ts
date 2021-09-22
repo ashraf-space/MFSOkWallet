@@ -217,7 +217,33 @@ import { NescoBillRptComponent } from './components/reports/report-collection/bi
 import { ComBillColComponent } from './components/reports/report-collection/bill-collection/com-bill-col/com-bill-col.component';
 import { DisbursementUserListComponent } from './components/security/disbursement-user/disbursement-user-list/disbursement-user-list.component';
 import { DisbursementUserAddEditComponent } from './components/security/disbursement-user/disbursement-user-add-edit/disbursement-user-add-edit.component';
-
+import { CashbackDtlComponent } from './components/reports/report-collection/cashback/cashback-dtl/cashback-dtl.component';
+import { ChngStatusComponent } from './components/tools/chng-status/chng-status.component';
+import { SourseWiseRegistrationComponent } from './components/reports/report-collection/sourse-wise-registration/sourse-wise-registration.component';
+import { BranchWiseCountComponent } from './components/reports/report-collection/branch-wise-count/branch-wise-count.component';
+import { MfsStatementComponent } from './components/reports/report-collection/mfs-statement/mfs-statement.component';
+import { CustRetailComponent } from './components/distribution/customer/retail/cust-retail/cust-retail.component';
+import { CustRetailListComponent } from './components/distribution/customer/retail/cust-retail-list/cust-retail-list.component';
+import { JgbillDailyDetailsComponent } from './components/reports/report-collection/jgbill-daily-details/jgbill-daily-details.component';
+import { CreditCommonComponent } from './components/reports/report-collection/credit/credit-common/credit-common.component';
+import { StatusListComponent } from './components/tools/status-list/status-list.component';
+import { RptMmsComponent } from './components/reports/report-collection/mms/rpt-mms/rpt-mms.component';
+import { CommissionRptComponent } from './components/reports/report-collection/commission-rpt/commission-rpt.component';
+import { RptAuditComponent } from './components/reports/report-collection/audit/rpt-audit/rpt-audit.component';
+import { B2bAddoreditComponent } from './components/distribution/distributor/b2b-addoredit/b2b-addoredit.component';
+import { B2bListComponent } from './components/distribution/distributor/b2b-list/b2b-list.component';
+import { DashboardComponent } from './components/client/dashboard/dashboard.component';
+import { B2bDsrListComponent } from './components/distribution/dsr/b2b-dsr-list/b2b-dsr-list.component';
+import { B2bDsrAddoreditComponent } from './components/distribution/dsr/b2b-dsr-addoredit/b2b-dsr-addoredit.component';
+import { TtalkTopupStockEntryComponent } from './components/transaction/ttalk-topup-stock-entry/ttalk-topup-stock-entry.component';
+import { BankConnectRptComponent } from './components/reports/report-collection/bank-connect-rpt/bank-connect-rpt.component';
+import { B2bRetailListComponent } from './components/distribution/distributor/b2b-retail-list/b2b-retail-list.component';
+import { B2bRetailAddoreditComponent } from './components/distribution/distributor/b2b-retail-addoredit/b2b-retail-addoredit.component';
+import { BackoffTransactionComponent } from './components/reports/report-collection/transaction-type/backoff-transaction/backoff-transaction.component';
+import { DownloadReceiptComponent } from './components/transaction/download-receipt/download-receipt.component';
+import { CommissionConvertionListComponent } from './components/transaction/commission-convertion/commission-convertion-list/commission-convertion-list.component';
+import { CommissionConvertionAddoreditComponent } from './components/transaction/commission-convertion/commission-convertion-addoredit/commission-convertion-addoredit.component';
+import { CommissionConvertComponent } from './components/transaction/commission-convert/commission-convert.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -431,7 +457,34 @@ import { DisbursementUserAddEditComponent } from './components/security/disburse
         NescoBillRptComponent,
         ComBillColComponent,
         DisbursementUserListComponent,
-        DisbursementUserAddEditComponent
+        DisbursementUserAddEditComponent,
+        CashbackDtlComponent,
+        ChngStatusComponent,
+        SourseWiseRegistrationComponent,
+        BranchWiseCountComponent,
+        MfsStatementComponent,
+        CustRetailComponent,
+        CustRetailListComponent,
+        JgbillDailyDetailsComponent,
+        CreditCommonComponent,
+        StatusListComponent,
+        RptMmsComponent,
+        CommissionRptComponent,
+        RptAuditComponent,
+        B2bAddoreditComponent,
+        B2bListComponent,
+        DashboardComponent,
+        B2bDsrListComponent,
+        B2bDsrAddoreditComponent,
+        TtalkTopupStockEntryComponent,
+        BankConnectRptComponent,
+        B2bRetailListComponent,
+        B2bRetailAddoreditComponent,
+        BackoffTransactionComponent,
+        DownloadReceiptComponent,
+        CommissionConvertionListComponent,
+        CommissionConvertionAddoreditComponent,
+        CommissionConvertComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

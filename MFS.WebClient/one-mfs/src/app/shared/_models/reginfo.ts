@@ -47,4 +47,5 @@ export class Reginfo {
     isReject: boolean;
     selectedKycType: any;
     showCbsModal: any;
+    isFirstIndexShow: boolean = false;
 }

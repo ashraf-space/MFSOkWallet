@@ -48,6 +48,7 @@ export class DsrAddoreditComponent implements OnInit {
     formValidation: any;
     isLoading: boolean = false;
     checkedAsPresent: boolean = false;
+    distributorList: any;
     constructor(private distributorService: DistributorService,
         private dsrService: DsrService,
         private router: Router,
@@ -127,7 +128,7 @@ export class DsrAddoreditComponent implements OnInit {
         this.getRegionListForDDL();
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-
+        this.getDistributorForDDL();
         this.getPhotoIDTypeListForDDL();
 
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -204,7 +205,18 @@ export class DsrAddoreditComponent implements OnInit {
                     console.log(error);
                 });
     }
-
+    getDistributorForDDL() {
+        this.distributorService.getDistributorListWithDistCodeForDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.distributorList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
     GetDistributorCodeByPhotoId(value: string) {
         this.distributorService.GetDistributorCodeByPhotoId(value)
             .pipe(first())

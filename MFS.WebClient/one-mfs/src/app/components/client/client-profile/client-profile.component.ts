@@ -46,6 +46,8 @@ export class ClientProfileComponent implements OnInit {
     isHidefromCustomerCare: boolean = false;
     showPinResetModal: boolean = false;
     isKycExecutive: boolean = false;
+    isBranchUser: boolean = false;
+    isCustomerCareUser: boolean = false;
     constructor(private outboxService: OutboxService, private gridSettingService: GridSettingService, private authService: AuthenticationService
         , private mfsSettingService: MfsSettingService, private mfsUtilityService: MfsUtilityService, private distributorService: DistributorService
         , private agentService: AgentService, private router: Router, private route: ActivatedRoute, private messageService: MessageService,
@@ -75,6 +77,8 @@ export class ClientProfileComponent implements OnInit {
             }
             this.isDetailMode = true;           
             this.checkIsKycSales();
+            //this.checkIsBranchUser();
+            this.checkIsCustomerCareUser();
             this.getProfileDetails(this.entityId);
         }
         else {
@@ -100,6 +104,8 @@ export class ClientProfileComponent implements OnInit {
             this.dormantStatus = this.model.status == 'D' ? 'Release' : 'Make';
             this.blackListed = this.model.blackList == 'Y' ? 'No' : 'Yes';
             this.checkIsKycSales();
+            //this.checkIsBranchUser();
+            this.checkIsCustomerCareUser();
         }
     }
 
@@ -111,6 +117,22 @@ export class ClientProfileComponent implements OnInit {
         }
         else {
             this.isKycExecutive = false;
+        }
+    }
+    checkIsBranchUser() {
+        if (this.currentUserModel.user.role_Name.trim() === 'Branch KYC Maker'.trim() || this.currentUserModel.user.role_Name.trim() === 'Branch KYC Checker'.trim()) {
+            this.isBranchUser = true;
+        }
+        else {
+            this.isBranchUser = false;
+        }
+    }
+    checkIsCustomerCareUser() {     
+        if (this.currentUserModel.user.role_Name.trim() === 'Customer Care Executive'.trim()) {
+            this.isCustomerCare = true;
+        }
+        else {
+            this.isCustomerCare = false;
         }
     }
     blackListClient() {
@@ -150,6 +172,8 @@ export class ClientProfileComponent implements OnInit {
                         this.getPhotoIdTypeByCode();
                         this.getBranchNameByCode();
                         this.getBalanceInfoByMphone(entity);
+                        this.getSubCatNameById();
+                        this.getDistributorNameByMphone();
                         this.isLoading = false;
                         this.dormantStatus = data.status == 'D' ? 'Revoke' : 'Invoke';
                         this.closeStatus = data.status == 'C' ? 'Open' : 'Close';
@@ -174,6 +198,40 @@ export class ClientProfileComponent implements OnInit {
                         this.model.lienM = data.lienM;
                         this.model.balanceC = data.balanceC;
                         this.model.lienC = data.lienC;
+                    }
+                },
+                error => {
+                    this.isLoading = false;
+                    console.log(error);
+                });
+        this.isLoading = false;
+    }
+    getDistributorNameByMphone() {
+        if (this.model.catId === 'A' || this.model.catId === 'R') {
+            this.isLoading = true;
+            this.kycService.getReginfoByMphone(this.model.pmphone).pipe(first())
+                .subscribe(
+                    data => {
+                        this.isLoading = false;
+                        if (data) {
+                            this.model.distributorName = data.companyName;
+                        }
+                    },
+                    error => {
+                        this.isLoading = false;
+                        console.log(error);
+                    });
+            this.isLoading = false;
+        }
+    }
+    getSubCatNameById() {
+        this.isLoading = true;
+        this.kycService.getSubCatNameById(this.model.mphone).pipe(first())
+            .subscribe(
+                data => {
+                    this.isLoading = false;
+                    if (data) {
+                        this.model.subCategory = data;
                     }
                 },
                 error => {

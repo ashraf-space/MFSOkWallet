@@ -34,6 +34,12 @@ namespace MFS.DistributionService.Repository
 		object GetUserBranchCodeByUserId(string v);
 		object GetCustomerByMphone(string mphone, string catId);
 		void OnReleaseBindDevice(string mphone, string updateBy);
+		object GetSubCatNameById(string mphone);
+		CLoseReginfo GetCloseInfoByMphone(string mphone);
+		object GetCloseAccount();
+		object CloseAccount(string mphone, string updateBy, string remarks);
+		DeviceInformation GetDeviceInformationByMphone(string mphone);
+		Reginfo GetCloseRegInfoByMphone(string mphone);
 	}
 	public class KycRepository : BaseRepository<Reginfo>, IKycRepository
 	{
@@ -497,6 +503,148 @@ namespace MFS.DistributionService.Repository
 			catch (Exception ex)
 			{
 				throw;
+			}
+		}
+
+		public object GetSubCatNameById(string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select p.name from one.reginfo t
+										inner join one.product_setup_sub p
+										on p.acc_type_code_sub = t.acc_type_code_sub
+										where t.mphone = '"+mphone+"'";
+
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					var Heading = ((IDictionary<string, object>)result).Keys.ToArray();
+					var details = ((IDictionary<string, object>)result);
+					var values = details[Heading[0]];
+					return values;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public CLoseReginfo GetCloseInfoByMphone(string mphone)
+		{
+			CLoseReginfo cLoseReginfo = new CLoseReginfo();
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.reg_date as ""Regdate"", t.mphone_old as ""MphoneOld"", t.close_date as ""CloseDate"" from one.reginfo t where t.mphone = '"+mphone+"'";
+					cLoseReginfo = connection.QueryFirstOrDefault<CLoseReginfo>(query);
+					connection.Close();
+					return cLoseReginfo;
+				}
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+
+		public object GetCloseAccount()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.mphone,t.name,t.photo_id from one.reginfo t where t.status = 'C'";
+					var result = connection.Query<dynamic>(query).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+		}
+
+		public object CloseAccount(string mphone, string updateBy, string remarks)
+		{
+			try
+			{
+				if (mphone != null)
+				{
+					using (var connection = this.GetConnection())
+					{
+						var parameter = new OracleDynamicParameters();
+						parameter.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+						parameter.Add("V_REMARKS", OracleDbType.Varchar2, ParameterDirection.Input, remarks);
+						parameter.Add("V_UPDATE_BY", OracleDbType.Varchar2, ParameterDirection.Input, updateBy);
+						parameter.Add("V_FLAG", OracleDbType.Double, ParameterDirection.Output);
+						parameter.Add("V_MSG", OracleDbType.Varchar2, ParameterDirection.Output, null, 32767);			
+						var result = SqlMapper.Query(connection, dbUser + "PROC_ACC_CLOSE", param: parameter, commandType: CommandType.StoredProcedure);
+						string flag = parameter.oracleParameters[3].Value != null ? parameter.oracleParameters[3].Value.ToString() : null;
+						string successOrErrorMsg = parameter.oracleParameters[4].Value != null ? parameter.oracleParameters[4].Value.ToString() : null;
+						this.CloseConnection(connection);
+						return  Tuple.Create(flag, successOrErrorMsg); ;
+					}
+
+				}
+				else
+				{
+					return "Please Input Valid Account";
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
+		}
+
+		public DeviceInformation GetDeviceInformationByMphone(string mphone)
+		{
+			DeviceInformation deviceInformation = new DeviceInformation();
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.device_otp as ""DeviceOtp"", t.device_id as ""DeviceId"" from one.reginfo t where t.mphone = '" + mphone + "'";
+					deviceInformation = connection.QueryFirstOrDefault<DeviceInformation>(query);
+					connection.Close();
+					return deviceInformation;
+				}
+			}
+			catch (Exception ex)
+			{
+
+				throw;
+			}
+		}
+
+		public Reginfo GetCloseRegInfoByMphone(string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @" select * from one.RegInfoView t where  t.mphone like '%"+mphone+"%' and t.status = 'C' order by rowid desc";
+
+					var result = connection.Query<Reginfo>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
 			}
 		}
 	}

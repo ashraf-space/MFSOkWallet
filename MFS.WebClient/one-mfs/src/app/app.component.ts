@@ -17,15 +17,15 @@ import { Subject } from 'rxjs';
     selector: 'app', animations: [
         trigger(
             'menu-annimation', [
-                transition(':enter', [
-                    style({ transform: 'translateX(-120%)', opacity: 0.5 }),
-                    animate('400ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
-                ]),
-                transition(':leave', [
-                    style({ transform: 'translateX(0)', opacity: 1 }),
-                    animate('100ms ease-out', style({ transform: 'translateX(-60%)', opacity: 0.6 }))
-                ])
-            ]
+            transition(':enter', [
+                style({ transform: 'translateX(-120%)', opacity: 0.5 }),
+                animate('400ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
+            ]),
+            transition(':leave', [
+                style({ transform: 'translateX(0)', opacity: 1 }),
+                animate('100ms ease-out', style({ transform: 'translateX(-60%)', opacity: 0.6 }))
+            ])
+        ]
         )
     ],
     templateUrl: 'app.component.html',
@@ -65,6 +65,7 @@ export class AppComponent implements OnInit {
     currentMenu: any;
     validationMsg: any;
     passwordChangedBy: string;
+    showingMsg: string;
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
@@ -80,6 +81,39 @@ export class AppComponent implements OnInit {
             this.currentUser = x;
             this.generateLeftMenu();
             if (this.currentUser && this.currentUser.user.pstatus == 'N') {
+                this.showingMsg = 'Please Change Password for First Time Logging in';
+                this.firstTimeChange = true;
+                this.promptChangePassword();
+            }
+            var nowDate = new Date();
+            var changePassDt = new Date();
+            if (this.currentUser) {
+                if (this.currentUser.user.changePassDt) {
+                     changePassDt = new Date(this.currentUser.user.changePassDt.toString()) ;
+                }
+            }
+           
+            //var changePassDt = this.currentUser ?  new Date(this.currentUser.user.changePassDt.toString()) : new Date();
+
+            var nDays = (Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate()) -
+                Date.UTC(changePassDt.getFullYear(), changePassDt.getMonth(), changePassDt.getDate())) / 86400000;
+
+            if (this.currentUser && nDays > 90) {
+                this.leftMenuItems = [
+                    {
+                        //label: ' Dashboard',
+                        label: ' Home',
+                        icon: 'pi pi-home',
+                        routerLink: ['/'],
+                        command: (event) => {
+                            this.display = false;
+                            //this.insertIntoAuditTrail(event);
+                        }
+                    }
+                ];
+                this.currentUser.featureList = [];
+                this.showingMsg = 'Please Change Password for 90 days expiration';
+                this.currentUser.user.pstatus = 'N';
                 this.firstTimeChange = true;
                 this.promptChangePassword();
             }
@@ -135,7 +169,7 @@ export class AppComponent implements OnInit {
         this.userIdle.resetTimer();
     }
     reloadPage() {
-        if (this.currentMenu) {           
+        if (this.currentMenu) {
             this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(it => {
                 return it.FEATURENAME.trim() === this.currentMenu;
             }).CATEGORYNAME;
@@ -160,7 +194,8 @@ export class AppComponent implements OnInit {
     generateLeftMenu(): any {
         this.leftMenuItems = [
             {
-                label: ' Dashboard',
+                //label: ' Dashboard',
+                label: ' Home',
                 icon: 'pi pi-home',
                 routerLink: ['/'],
                 command: (event) => {
@@ -179,7 +214,7 @@ export class AppComponent implements OnInit {
                     this.menuObj = {
                         label: ' ' + obj.FEATURENAME, icon: obj.FEATUREICON, featureId: obj.FEATUREID, routerLink: [obj.FEATURELINK],
                         command: (event) => {
-                            this.display = false;                           
+                            this.display = false;
                             this.insertIntoAuditTrail(event);
                             this.setCurrentMenu(event);
                         }
@@ -206,14 +241,14 @@ export class AppComponent implements OnInit {
         }
     }
     setCurrentMenu(event) {
-        this.currentMenu = event.item.label.trim();   
+        this.currentMenu = event.item.label.trim();
     }
     insertIntoAuditTrail(event) {
 
         this.auditTrailModel.Who = this.currentUser.user.username;
         this.auditTrailModel.WhatAction = 'VISIT';
         this.auditTrailModel.WhatActionId = this.auditTrailService.getWhatActionId('VISIT')
-        this.auditTrailModel.WhichMenu = event.item.label.trim();      
+        this.auditTrailModel.WhichMenu = event.item.label.trim();
         this.auditTrailModel.WhichParentMenu = this.currentUser.featureList.find(it => {
             return it.FEATURENAME.trim() === this.auditTrailModel.WhichMenu;
         }).CATEGORYNAME;
@@ -268,7 +303,7 @@ export class AppComponent implements OnInit {
                         this.messageService.add({ severity: 'success', summary: 'Success', detail: this.currentUser.user.name + ' password changed Successfully' });
                         this.promptChangePasswordModal = false;
                         this.logout();
-                        
+
                     }
                     else {
                         this.invalidCredentials = true;

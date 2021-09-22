@@ -19,6 +19,7 @@ namespace MFS.EnvironmentService.Service
         object GetChildDataByParent(string code);
         object GetBankBranchListForDDL();
         object GenerateDistributorCode(string territoryCode);
+		object GenerateB2bDistributorCode(string territoryCode);
 		string GetAreaCode(string code);
 		object SaveArea(Location aLocation);
 		object SaveArea(Location aLocation, string newAreaCode);
@@ -178,7 +179,10 @@ namespace MFS.EnvironmentService.Service
         {
             return _repository.GenerateDistributorCode(territoryCode);
         }
-
+		public object GenerateB2bDistributorCode(string territoryCode)
+		{
+			return _repository.GenerateB2bDistributorCode(territoryCode);
+		}
 		public object GetTerritoryCode(string code)
 		{
 			return _repository.GetTerritoryCode(code);

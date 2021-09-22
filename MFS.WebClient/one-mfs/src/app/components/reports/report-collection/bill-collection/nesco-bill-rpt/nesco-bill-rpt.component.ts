@@ -43,7 +43,8 @@ export class NescoBillRptComponent implements OnInit {
             { label: 'Daily Details Report', value: 'DDR' },
             { label: 'Daily S&D Wise Summary Report', value: 'DSS' },
             { label: 'Monthly S&D Wise Summary Report', value: 'MSS' },
-            { label: 'Mothly Date-wise Summary (MDS)', value: 'MDS' }
+            { label: 'Mothly Date-wise Summary (MDS)', value: 'MDS' },
+            { label: 'Nesco Prepaid', value: 'NESPRD' }
         ];
         
   }
@@ -98,7 +99,18 @@ export class NescoBillRptComponent implements OnInit {
                 else {
                     return true;
                 }
-            }           
+            }
+            else if (this.model.reportType === 'NESPRD') {
+                var gapDay = 0;
+                gapDay = +this.reportUtilityService.diffBetweenDate(this.mfsUtilityService.renderDate(this.model.fromDate, true), this.mfsUtilityService.renderDate(this.model.toDate, true));
+                if (gapDay > 31) {
+                    this.messageService.add({ severity: 'warn', summary: 'Long Date Interval', sticky: true, detail: 'Please Dont select the range more than One Month' });
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
         }
     }
 

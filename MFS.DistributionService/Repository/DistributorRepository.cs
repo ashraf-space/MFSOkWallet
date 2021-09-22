@@ -32,7 +32,9 @@ namespace MFS.DistributionService.Repository
         bool IsExistsByMpohne(string mphone);
         bool IsExistsByCatidPhotoId(string catId, string photoId);
         object GetRegionDetailsByMobileNo(string mobileNo);
-    }
+		object GetDistributorListWithDistCodeForDDL();
+		object GetB2bDistributorListWithDistCodeForDDL();
+	}
     public class DistributorRepository : BaseRepository<Reginfo>, IDistributorRepository
     {
         private readonly string dbUser;
@@ -459,5 +461,44 @@ namespace MFS.DistributionService.Repository
             }
         }
 
-    }
+		public object GetDistributorListWithDistCodeForDDL()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'D' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+					var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public object GetB2bDistributorListWithDistCodeForDDL()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'BD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+					var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+	}
 }

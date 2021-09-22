@@ -18,6 +18,7 @@ namespace MFS.ReportingService.Models
 		public byte[] ClientPhoto { get; set; }
 		public byte[] NidFront { get; set; }
 		public byte[] NidBack { get; set; }
+		public byte[] NomineePhoto { get; set; }
 		public string NomineeName { get; set; }
 		public string Address { get; set; }
 		public string ThanaName { get; set; }

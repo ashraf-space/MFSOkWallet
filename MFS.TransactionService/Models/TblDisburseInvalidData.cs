@@ -29,5 +29,7 @@ namespace MFS.TransactionService.Models
         //not mapped
         public double TotalSum { get; set; }
         public string DisburseType { get; set; }
+
+        public string  Name { get; set; }
     }
 }

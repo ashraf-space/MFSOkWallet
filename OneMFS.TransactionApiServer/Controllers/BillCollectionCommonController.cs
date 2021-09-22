@@ -91,6 +91,20 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetBillPayCategoriesDDL")]
+        public object GetBillPayCategoriesDDL(int userId)
+        {
+            try
+            {
+                return _BillCollectionCommonService.GetBillPayCategoriesDDL(userId);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
         [HttpPost]
         [Route("CheckBillInfo")]
         public async Task<object> CheckBillInfo([FromBody]BillCollectionCommon objBillCollectionCommon)
@@ -99,14 +113,14 @@ namespace OneMFS.TransactionApiServer.Controllers
             {
                 using (var httpClient = new HttpClient())
                 {
-                    string[] param = new string[3];
-                    //ss[0]= "112233445566";
-                    //ss[0] = "200600405623";
+                    //string[] param = new string[5];
+                    string[] param = new string[6];
                     param[0] = objBillCollectionCommon.BillId;
                     param[1] = objBillCollectionCommon.SubMenuId;
                     param[2] = objBillCollectionCommon.Month;
-                    //param[3] = objBillCollectionCommon.CardHolderName;
-                    //param[4] = objBillCollectionCommon.MethodName;
+
+                    param[4] = objBillCollectionCommon.Amount.ToString();
+                    param[5] = objBillCollectionCommon.CardHolderName;
                     //param[5] = objBillCollectionCommon.OnlineCall;
 
                     List<BillApiCalling> billApiCallingList = new List<BillApiCalling>();
@@ -294,7 +308,74 @@ namespace OneMFS.TransactionApiServer.Controllers
             }
         }
 
-        
+
+        [HttpGet]
+        [Route("GetDataForCommonGrid")]
+        public object GetDataForCommonGrid(string username,string MethodName, int? countLimit, string billNo)
+        {
+            try
+            {
+                return _BillCollectionCommonService.GetDataForCommonGrid(username,  MethodName, countLimit, billNo);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpPost]
+        [Route("GenerateReceipt")]
+        public async Task<object> GenerateReceipt([FromBody]BranchPortalReceipt objBranchPortalReceipt)
+        {
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    string[] param = new string[2];
+                    param[0] = objBranchPortalReceipt.Ref_Phone;
+                    param[1] = objBranchPortalReceipt.Trans_No;                
+
+                    string json = JsonConvert.SerializeObject(objBranchPortalReceipt);
+                    string base64Encoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
+
+                    HttpContent httpContent = new StringContent(base64Encoded, Encoding.UTF8);
+                    //HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(telemetry), Encoding.UTF8);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+
+                    ReceiptApiInfo apiInfo = new ReceiptApiInfo();
+                    dynamic apiResponse = null;
+                    BillCollectionCheckResponse result = new BillCollectionCheckResponse();
+                    using (var response = await httpClient.PostAsync(apiInfo.Ip + apiInfo.ApiUrl, httpContent))
+                    {
+                        apiResponse = await response.Content.ReadAsStringAsync();
+                        byte[] data = Convert.FromBase64String(apiResponse);
+                        string decodedString = Encoding.UTF8.GetString(data);
+                        result = JsonConvert.DeserializeObject<BillCollectionCheckResponse>(decodedString);
+
+                    }
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("GetTitleSubmenuTitleByMethod")]
+        public object GetTitleSubmenuTitleByMethod(string methodName)
+        {
+            try
+            {
+                return _BillCollectionCommonService.GetTitleSubmenuTitleByMethod(methodName);
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
 
     }
 }

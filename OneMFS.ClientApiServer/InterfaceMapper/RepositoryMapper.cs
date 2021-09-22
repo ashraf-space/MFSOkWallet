@@ -1,6 +1,7 @@
 ﻿
 
 using MFS.ClientService.Repository;
+using MFS.DistributionService.Repository;
 using MFS.SecurityService.Repository;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,7 @@ namespace OneMFS.DistributionApiServer.InterfaceMapper
             services.AddTransient<IDashboardRepository, DashboardRepository>();
 			services.AddTransient<IAuditTrailRepository, AuditTrailRepository>();
 			services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
+			services.AddTransient<IKycRepository, KycRepository>();
 		}
     }
 }

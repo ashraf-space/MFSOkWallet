@@ -19,17 +19,22 @@ namespace MFS.TransactionService.Service
         object AproveRefundDisburseAmount(string TransNo,string PhoneNo,string branchCode, TblDisburseCompanyInfo objTblDisburseCompanyInfo);
         object GetCompnayNameById(int companyId);
         object GetDisburseTypeList();
+        object GetDisburseTypeListForOnline();
         object getBatchNo(int id, string tp);
-        object Process(string batchno,string catId);
+        string Process(string batchno,string catId);
         object getCompanyAndBatchNoList(string forPosting);
+        object getBatchNoDDLByCompanyId(int companyId, string fileUploadDate);
+        object getCompanyAndBatchNoListByCmpId(string forPosting, int companyId);
         bool checkProcess(string batchno);
         List<TblDisburseInvalidData> getValidOrInvalidData(string processBatchNo, string validOrInvalid,string forPosting);
         string SendToPostingLevel(string processBatchNo,double totalSum);
         string AllSend(string processBatchNo,string brCode,string checkerId,double totalSum);
-        object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
+        string BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum);
         object GetAccountDetails(string accountNo);
         string GetTargetCatIdByCompany(string onlyCompanyName);
         TblDisburseCompanyInfo GetCompanyInfoByCompanyId(int companyId);
+        object GetDisbursementAmountStatusList(int companyId);
+        object GetDataForDisbursementDashboard(int companyId);
     }
     public class DisbursementService : BaseService<TblDisburseCompanyInfo>, IDisbursementService
     {
@@ -71,6 +76,20 @@ namespace MFS.TransactionService.Service
                 throw;
             }
         }
+
+        public object GetDisburseTypeListForOnline()
+        {
+            try
+            {
+                return _DisbursementRepository.GetDisburseTypeListForOnline();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public object getDisburseNameCodeList()
         {
             try
@@ -135,7 +154,7 @@ namespace MFS.TransactionService.Service
                 throw;
             }
         }
-        public object Process(string batchno, string catId)
+        public string Process(string batchno, string catId)
         {
             try
             {
@@ -153,6 +172,24 @@ namespace MFS.TransactionService.Service
             try
             {
                 return _DisbursementRepository.getCompanyAndBatchNoList(forPosting);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public object getBatchNoDDLByCompanyId(int companyId, string fileUploadDate)
+        {
+            return _DisbursementRepository.getBatchNoDDLByCompanyId(companyId, fileUploadDate);
+        }
+
+        public object getCompanyAndBatchNoListByCmpId(string forPosting, int companyId)
+        {
+            try
+            {
+                return _DisbursementRepository.getCompanyAndBatchNoListByCmpId(forPosting, companyId);
             }
             catch (Exception ex)
             {
@@ -213,7 +250,7 @@ namespace MFS.TransactionService.Service
             }
         }
 
-        public object BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
+        public string BatchDelete(string processBatchNo, string brCode, string checkerId, double totalSum)
         {
             try
             {
@@ -262,6 +299,16 @@ namespace MFS.TransactionService.Service
 
                 throw;
             }
+        }
+
+        public object GetDisbursementAmountStatusList(int companyId)
+        {
+            return _DisbursementRepository.GetDisbursementAmountStatusList(companyId);
+        }
+
+        public object GetDataForDisbursementDashboard(int companyId)
+        {
+            return _DisbursementRepository.GetDataForDisbursementDashboard(companyId);
         }
     }
 }

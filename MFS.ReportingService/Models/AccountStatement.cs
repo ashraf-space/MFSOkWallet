@@ -11,6 +11,9 @@ namespace MFS.ReportingService.Models
         public string CustomerName { get; set; }
         public DateTime? TransDate { get; set; }
         public string Description { get; set; }
+
+        public string Particular { get; set; }
+
         public string TransNo { get; set; }
         public string Gateway { get; set; }
         public string TransFrom { get; set; }
@@ -25,6 +28,8 @@ namespace MFS.ReportingService.Models
 
         public string FromCategory { get; set; }
         public string ToCategory { get; set; }
+
+
 
 
     }

@@ -9,5 +9,7 @@ namespace OneMFS.SharedResources.Utility
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
-    }
+		public DateTime? FromDateNullable { get; set; }
+		public DateTime? ToDateNullable { get; set; }
+	}
 }

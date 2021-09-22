@@ -325,7 +325,9 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -407,13 +409,47 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\RDLC\QrCodeSlip.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccStatMst.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTAuditTrail.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTEkpayConnectivity.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTWzpdclPo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTKwasa.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBgdcl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMerDonationTrans.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTOtherBankConnectivity.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBankConnectivitySum.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCommssion.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCashBackSum.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCashBackDtl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBankConnectivity.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTFosterPaymentInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCreditCardInfoOblOnl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCreditOblOnline.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDescoPostBillInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTGpGta.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTGpGtd.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTGpGts.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMmsInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTJgBillDailyDetails.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTTransactionAnalysis.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTNescoPrepaid.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBranchWiseCount.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMfsStatement.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTSourceWiseRegistration.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTIndividualDisbursementSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTIndividualDisbursementDetails.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDisbursementUploadSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMrpBill.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDescoP.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTWzpdcl.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTLbDpsInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTLbcBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTNidBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDpdckBillInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\MerchantSlip.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDisbursementUploadDetails.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl_Excel.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPT_Lb_Dps_Dtl.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTDist_CustReg.rdlc" />

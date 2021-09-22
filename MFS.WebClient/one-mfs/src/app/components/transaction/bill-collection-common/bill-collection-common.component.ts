@@ -4,7 +4,10 @@ import { AuthenticationService } from 'src/app/shared/_services';
 import { ActivatedRoute, Router, NavigationEnd, NavigationStart, Event } from '@angular/router';
 import { BillCollectionCommonService } from 'src/app/services/transaction/bill-collection-common.service';
 import { first } from 'rxjs/operators';
-
+import { GridSettingService } from 'src/app/services/grid-setting.service';
+import { ReceiptapiService } from 'src/app/shared/_services';
+import { Injectable } from '@angular/core';
+@Injectable()
 
 @Component({
     selector: 'app-bill-collection-common',
@@ -12,10 +15,13 @@ import { first } from 'rxjs/operators';
     styleUrls: ['./bill-collection-common.component.css']
 })
 export class BillCollectionCommonComponent implements OnInit {
+    gridConfig: any;
     featureId: number = 0;
     currentUserModel: any = {};
+    obj: any = {};
     billCollectionCommonModel: any = {};
     featurePayModel: any = {};
+    branchPortalReceipt: any = {};
     error: boolean = false;
     msgs: any[];
     isActionDisabled: boolean = true;
@@ -46,15 +52,32 @@ export class BillCollectionCommonComponent implements OnInit {
     glue: any;
     isConfirmDisabled: boolean = false;
     isBgColorYellow: boolean = true;
+    isShowMMSGrid: boolean = false;
+    exGridConfig: any;
+    FeeCollectionModel: any = {};
+    selectedFeeCollectionModel: any = {};
+
+    sum: number = 0;
+    ids: string = '';
+    checkedBill2: string = '';
+    isShowEnterAmount: boolean = true;
+
+    receiptUrl: any;
 
 
     constructor(private messageService: MessageService, private billCollectionCommonService: BillCollectionCommonService
         , private authService: AuthenticationService
-        , private route: ActivatedRoute, private router: Router) {
+        , private route: ActivatedRoute, private router: Router, private gridSettingService: GridSettingService
+        , private receiptapiService: ReceiptapiService) {
 
+        this.exGridConfig = {};
+        this.gridConfig = {};
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
         });
+
+
+        this.receiptUrl = receiptapiService.receiptUrl;
 
 
         //this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -99,7 +122,8 @@ export class BillCollectionCommonComponent implements OnInit {
 
         this.featureId = +this.route.snapshot.paramMap.get('id');
 
-
+        this.loadExInitialiseGrid();
+        //this.loadCommonInitialiseGrid();
 
         this.billCollectionCommonModel = {};
         this.billCollectionCommonService.GetFeaturePayDetails(this.featureId)
@@ -111,6 +135,22 @@ export class BillCollectionCommonComponent implements OnInit {
                     this.billCollectionCommonModel.Title = data.TITLE;
                     this.billCollectionCommonModel.MethodName = data.METHODNAME;
                     this.billCollectionCommonModel.OnlineCall = data.ONLINECALL;
+
+
+                    this.loadCommonInitialiseGrid();
+                    //for load grid by paidby,methodName
+                    this.billCollectionCommonService.GetDataForCommonGrid(this.currentUserModel.user.username, this.billCollectionCommonModel.MethodName, '')
+                        .pipe(first())
+                        .subscribe(
+                            data2 => {
+                                this.gridConfig.dataSource = data2;
+                            },
+                            error => {
+                                console.log(error);
+                            }
+                        );
+
+
 
                     if (this.featurePayModel.MONTHTITLE != null) {
                         this.isShowMonth = true;
@@ -141,7 +181,13 @@ export class BillCollectionCommonComponent implements OnInit {
                         this.isCheckDisabled = false;
                         this.isActionDisabled = true;
                         this.isNextDisabled = true;
-                        this.isAmountDisabled = true;
+                        if (data.CALLWITHAMT == "N") {
+                            this.isAmountDisabled = true;
+                        }
+                        else {
+                            this.isAmountDisabled = false;
+                        }
+
                     }
                     else {
                         this.isCheckDisabled = true;
@@ -155,8 +201,74 @@ export class BillCollectionCommonComponent implements OnInit {
                     console.log(error);
                 }
             );
+
     }
 
+    loadExInitialiseGrid(): any {
+        this.exGridConfig.dataSource = [];
+
+        this.exGridConfig.autoUpdateDataSource = true;
+        this.exGridConfig.autoIndexing = true;
+        this.exGridConfig.isBatchSwitchBoxEdit = true;
+
+        //this.exGridConfig.gridName = "From Agent";
+        //this.exGridConfig.gridIconClass = 'fas fa-thumbtack';
+
+        //this.exGridConfig.hasEditState = true;
+        this.exGridConfig.showUniversalFilter = false;
+
+
+        this.exGridConfig.columnList = [
+            //{ field: 'id', header: 'ID', width: '30%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'paymenT_HEAD', header: 'Payment head', width: '30%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'fee', header: 'Fee', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'latE_FEE', header: 'Late fee', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'total', header: 'Total', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'makeStatus', header: 'Action', width: '10%', isSwitchBoxColumn: true, filter: this.gridSettingService.getFilterableNoneAndToggleSelectAll() }
+        ];
+    }
+
+    loadCommonInitialiseGrid(): any {
+        this.gridConfig.dataSource = [];
+
+        this.gridConfig.autoUpdateDataSource = true;
+        this.gridConfig.autoIndexing = true;
+        this.gridConfig.isBatchSwitchBoxEdit = true;
+
+        //this.exGridConfig.gridName = "From Agent";
+        //this.exGridConfig.gridIconClass = 'fas fa-thumbtack';
+
+        //this.exGridConfig.hasEditState = true;
+        this.gridConfig.showUniversalFilter = false;
+
+        if (this.featurePayModel.SUBMENUTITLE) {
+            this.gridConfig.columnList = [
+                { field: 'trans_No', header: 'Trans No', width: '10%' },
+                { field: 'trans_Date', header: 'Trans Date', width: '15%' },
+                { field: 'msg_Amt', header: 'Amount', width: '10%' },
+                { field: 'billno', header: this.featurePayModel.BILLTITLE, width: '15%' },
+                { field: 'ref_Phone', header: 'Beneficiary Mobile Number', width: '20%' },
+                { field: 'subname', header: this.featurePayModel.SUBMENUTITLE, width: '17%' },
+                { field: 'Id', header: 'Generate Receipt', width: '13%', isCustomAction: true, customActionIcon: 'fas fa-file-download' }
+            ];
+        }
+        else {
+            this.gridConfig.columnList = [
+                { field: 'trans_No', header: 'Trans No', width: '15%' },
+                { field: 'trans_Date', header: 'Trans Date', width: '15%' },
+                { field: 'msg_Amt', header: 'Amount', width: '10%' },
+                { field: 'billno', header: this.featurePayModel.BILLTITLE, width: '15%' },
+                { field: 'ref_Phone', header: 'Beneficiary Mobile Number', width: '25%' },
+                //{ field: 'subname', header: 'Sub Name', width: '15%' },
+                { field: 'Id', header: 'Generate Receipt', width: '20%', isCustomAction: true, customActionIcon: 'fas fa-file-download' }
+            ];
+        }
+
+
+
+
+
+    }
 
     LoadMonthYearList(): any {
         this.billCollectionCommonService.GetMonthYearList()
@@ -185,7 +297,7 @@ export class BillCollectionCommonComponent implements OnInit {
     }
 
     onCheck(): any {
-        this.error = false;  
+        this.error = false;
         this.isBgColorYellow = true;
 
         if (!this.billCollectionCommonModel.billId || this.billCollectionCommonModel.billId == '' || this.billCollectionCommonModel.billId == '0') {
@@ -199,7 +311,7 @@ export class BillCollectionCommonComponent implements OnInit {
             this.error = true;
         }
 
-        if (this.billCollectionCommonModel.beneficiaryNumber.substring(0,2) != '01') {
+        if (this.billCollectionCommonModel.beneficiaryNumber.substring(0, 2) != '01') {
             this.isShowMessage = true;
             this.isBgColorYellow = false;
             this.message = "Beneficiary number must start with 01";
@@ -229,6 +341,14 @@ export class BillCollectionCommonComponent implements OnInit {
                 this.error = true;
             }
         }
+        if (!this.isAmountDisabled) {
+            if (!this.billCollectionCommonModel.amount || this.billCollectionCommonModel.amount == '' || this.billCollectionCommonModel.amount == '0') {
+                this.msgs = [];
+                this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                this.error = true;
+            }
+        }
+
         if (!this.error) {
             this.isLoading = true;
 
@@ -256,17 +376,20 @@ export class BillCollectionCommonComponent implements OnInit {
                             this.isNextDisabled = false;
                             this.billCollectionCommonModel.amount = data.amount;
 
-                            if (this.featurePayModel.MOREBILLTITLE != null) {
+                            if (this.featurePayModel.MOREBILLTITLE != null && this.featurePayModel.CALLWITHMORE != 'Y') {
                                 if (!this.billCollectionCommonModel.cardHolderName || this.billCollectionCommonModel.cardHolderName == '' || this.billCollectionCommonModel.cardHolderName == '0') {
                                     this.billCollectionCommonModel.bill2 = data.bill2;
                                 }
                                 else {
+
                                     this.billCollectionCommonModel.bill2 = data.bill2 + this.billCollectionCommonModel.cardHolderName;
                                 }
                             }
                             else {
                                 this.billCollectionCommonModel.bill2 = data.bill2;
                             }
+
+                            this.checkedBill2 = this.billCollectionCommonModel.bill2;
 
 
 
@@ -277,6 +400,18 @@ export class BillCollectionCommonComponent implements OnInit {
                             else {
                                 this.isAmountDisabled = true;
                             }
+
+                            if (data.fees != null) {
+                                this.isAmountDisabled = true;
+                                this.isShowMMSGrid = true;
+                                this.isShowEnterAmount = false;
+                                this.exGridConfig.dataSource = data.fees;
+                                this.FeeCollectionModel = data.fees;
+                            } else {
+                                this.isShowMMSGrid = false;
+                                this.isShowEnterAmount = true;
+                            }
+
                         }
                         else {
                             this.isActionDisabled = true;
@@ -300,6 +435,26 @@ export class BillCollectionCommonComponent implements OnInit {
     }
 
     onNext(): any {
+        if (this.FeeCollectionModel.length > 0) {
+            this.selectedFeeCollectionModel = this.FeeCollectionModel.filter(it => {
+                return it.makeStatus == true;
+            });
+            if (this.selectedFeeCollectionModel.length > 0) {
+                this.sum = 0;
+                this.ids = "";
+                this.billCollectionCommonModel.bill2 = this.checkedBill2;
+                for (var i = 0; i < this.selectedFeeCollectionModel.length; i++) {
+                    this.sum = this.sum + (+this.selectedFeeCollectionModel[i].total);
+                    this.ids = this.ids + (this.ids != "" ? "#" : "") + this.selectedFeeCollectionModel[i].id;
+                }
+                this.billCollectionCommonModel.amount = this.sum;
+                this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.ids;
+
+            }
+        }
+
+
+
         if (!this.billCollectionCommonModel.amount || this.billCollectionCommonModel.amount == '' || this.billCollectionCommonModel.amount == '0') {
             this.isShowMessage = true;
             this.isBgColorYellow = false;
@@ -344,16 +499,24 @@ export class BillCollectionCommonComponent implements OnInit {
         this.userName = this.currentUserModel.user.username;
 
         if (this.glue) {
-            if (this.featurePayModel.MOREBILLTITLE != null) {
+            if (this.featurePayModel.MOREBILLTITLE != null || this.ids != '') {
                 this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.glue + this.branchCode + this.glue + this.userName + this.glue;
             }
             else {
                 this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.branchCode + this.glue + this.userName + this.glue;
             }
 
+            ///for MMS Payment 
+            //if (this.ids != null) {
+            //    this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.glue + this.branchCode + this.glue + this.userName + this.glue;
+            //}
+            //else {
+            //    this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.branchCode + this.glue + this.userName + this.glue;
+            //}
+
         }
         else {
-            if (this.featurePayModel.MOREBILLTITLE != null) {
+            if (this.featurePayModel.MOREBILLTITLE != null || this.ids != '') {
                 this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + ',' + this.branchCode + ',' + this.userName + ',';
             }
             else {
@@ -363,8 +526,23 @@ export class BillCollectionCommonComponent implements OnInit {
                 else {
                     this.billCollectionCommonModel.bill2 = this.branchCode + ',' + this.userName + ',';
                 }
-                
+
             }
+
+
+            ///for MMS Payment 
+            //if (this.ids != null) {
+            //    this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + ',' + this.branchCode + ',' + this.userName + ',';
+            //}
+            //else {
+            //    if (this.billCollectionCommonModel.bill2) {
+            //        this.billCollectionCommonModel.bill2 = this.billCollectionCommonModel.bill2 + this.branchCode + ',' + this.userName + ',';
+            //    }
+            //    else {
+            //        this.billCollectionCommonModel.bill2 = this.branchCode + ',' + this.userName + ',';
+            //    }
+
+            //}
 
         }
 
@@ -392,6 +570,29 @@ export class BillCollectionCommonComponent implements OnInit {
 
     refresh() {
         this.ngOnInit();
+    }
+
+    onGenerate(event) {
+
+        //window.open(this.receiptUrl + event.ref_Phone + "&Trans_ID=" + event.trans_No, "_blank");
+
+        this.obj.mphone = event.ref_Phone;
+        this.obj.Trans_ID = event.trans_No;
+
+        const mapForm = document.createElement('form');
+        mapForm.target = '_blank';
+        mapForm.method = 'POST'; // or "post" if appropriate
+        mapForm.action = this.receiptUrl;
+        Object.keys(this.obj).forEach((param) => {
+            const mapInput = document.createElement('input');
+            mapInput.type = 'hidden';
+            mapInput.name = param;
+            mapInput.setAttribute('value', this.obj[param]);
+            mapForm.appendChild(mapInput);
+        });
+        document.body.appendChild(mapForm);
+        mapForm.submit();
+
     }
 
 

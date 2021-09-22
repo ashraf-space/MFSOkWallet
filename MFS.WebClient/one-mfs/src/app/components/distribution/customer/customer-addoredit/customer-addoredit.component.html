@@ -1,4 +1,4 @@
-<p-messages [(value)]="msgs" *ngIf="showDuplicateMsg"></p-messages>
+<p-messages [(value)]="msgs" *ngIf="reginfo.showDuplicateMsg"></p-messages>
 <p-steps [model]="reginfo.items" [(activeIndex)]="reginfo.activeIndex" [readonly]="!reginfo.isEditMode"></p-steps>
 <mfs-loader *ngIf="reginfo.isLoading"></mfs-loader>
 <fieldset [disabled]="reginfo.isRegPermit ? 'disabled' : null">
@@ -12,7 +12,7 @@
 					<div class="p-col-4">
 					</div>
 					<div class="p-col-4">
-						<p-selectButton [options]="reginfo.kycTypes" [(ngModel)]="reginfo.selectedKycType" [disabled]="reginfo.isRegPermit" (onChange)="switchInputMethod()" [style]="{color: 'white'}"></p-selectButton>
+						<p-selectButton [options]="reginfo.kycTypes" [(ngModel)]="reginfo.selectedKycType" [disabled]="reginfo.isEditMode" (onChange)="switchInputMethod()" [style]="{color: 'white'}"></p-selectButton>
 					</div>
 				</div>
 			</div>
@@ -90,11 +90,11 @@
 						<div class="p-col-2">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.lastName" appPascalcase [pKeyFilter]="reginfo.alphabetsWithSpace" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.lastName" appPascalcase [pKeyFilter]="blockSpecial" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Customer Last Name </label>
 							</span>
 							<!--<p-message *ngIf="(reginfo.regInfoModel.name==null || reginfo.regInfoModel.name=='') && reginfo.error" severity="error"
-								   text="Cannot be left blank"></p-message>-->
+		text="Cannot be left blank"></p-message>-->
 						</div>
 						<div class="p-col-3">
 							<br />
@@ -122,7 +122,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.fatherName" appPascalcase [pKeyFilter]="reginfo.alphabetsWithSpace" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.fatherName" appPascalcase [pKeyFilter]="blockSpecial" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Father's Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(reginfo.regInfoModel.fatherName==null || reginfo.regInfoModel.fatherName=='') && reginfo.error "
@@ -131,7 +131,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.motherName" [pKeyFilter]="reginfo.alphabetsWithSpace" appPascalcase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.motherName" [pKeyFilter]="blockSpecial" appPascalcase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Mother's Name <span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(reginfo.regInfoModel.motherName==null || reginfo.regInfoModel.motherName=='') && reginfo.error "
@@ -140,17 +140,24 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.spouseName" [pKeyFilter]="reginfo.alphabetsWithSpace" appPascalcase pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.spouseName" [pKeyFilter]="blockSpecial" appPascalcase pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label"> Spouse Name</label>
 							</span>
 						</div>
+						<div class="p-col-4">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel._FatherNameBangla" [readonly]="true" placeholder="Father Name Bangla" id="float-input">
+						</div>
+						<div class="p-col-4">
+
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel._MotherNameBangla" [readonly]="true" placeholder="Mother Name Bangla" id="float-input">
+						</div>
+						<div class="p-col-4">
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel._SpouseNameBangla" [readonly]="true" placeholder="Spouse Name Bangla" id="float-input">
+						</div>
 						<div class="p-col-3">
-							<br />
-							<span class="ui-float-label ">
-								<p-dropdown [options]="reginfo.religeonList" [(ngModel)]="reginfo.regInfoModel.religion" [disabled]="reginfo.isRegPermit"
-											[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
-								<label for="float-input input-lg" class="col-form-label"> Religion</label>
-							</span>
+							<label for="float-input input-lg" class="col-form-label-dd"> Religion</label>
+							<p-dropdown [options]="reginfo.religeonList" placeholder="Select Religion" [(ngModel)]="reginfo.regInfoModel.religion" [disabled]="reginfo.isRegPermit"
+										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 						</div>
 						<div class="p-col-3">
 							<br />
@@ -250,7 +257,21 @@
 							</span>
 						</div>
 
-
+						<div class="p-col-4">						
+								<label for="float-input input-lg" class="col-form-label">Permanent Address Bangla</label>
+								<textarea rows="2" cols="50" id="float-input" [(ngModel)]="reginfo.regInfoModel._PerAddrBangla"
+										  [readonly]="true" placeholder="Permanent Address Bangla" autoResize="autoResize"></textarea>						
+						</div>
+					
+						<div class="p-col-4">
+							<label for="float-input input-lg" class="col-form-label">Present Address Bangla</label>
+							<textarea rows="2" cols="50" id="float-input" [(ngModel)]="reginfo.regInfoModel._PreAddrBangla"
+									  [readonly]="true" placeholder="Present Address Bangla" autoResize="autoResize"></textarea>
+						</div>
+						<div class="p-col-4">
+							<!--<label for="float-input input-lg" class="col-form-label">Blood Group</label>
+							<input autocomplete="off" type="text" class="form-control" [(ngModel)]="reginfo.regInfoModel.blood" appPascalcase [pKeyFilter]="blockSpecial" pInputText id="float-input">-->
+						</div>
 
 						<div class="p-col-3">
 							<label for="float-input input-lg" class="col-form-label-dd">Permanent Division <span class="mandatory">*</span></label>
@@ -326,14 +347,11 @@
 							</span>
 						</div>
 						<div class="p-col-6">
-							<br />
-							<span class="ui-float-label ">
-								<p-dropdown [options]="reginfo.relationList" [(ngModel)]="reginfo.regInfoModel.relationFirstNominee"
-											[disabled]="reginfo.isRegPermit" [filter]="true" filterBy="label,value.name"
-											[style]="{display: 'grid'}"></p-dropdown>
-								<label for="Relation" class="col-form-label ">Relation</label>
-							</span>
-
+							<label for="Relation" class="col-form-label-dd">Relation</label>
+							<p-dropdown [options]="reginfo.relationList" [(ngModel)]="reginfo.regInfoModel.relationFirstNominee"
+										[disabled]="reginfo.isRegPermit" [filter]="true" filterBy="label,value.name"
+										placeholder="Select Relation"
+										[style]="{display: 'grid'}"></p-dropdown>
 						</div>
 
 					</div>
@@ -451,7 +469,7 @@
 </fieldset>
 <app-generic-stepper-form-action [activeIndex]="reginfo.activeIndex" [maxIndex]="4" [isRejectAllowed]="reginfo.isReject" (onSaveAction)="SaveCustomer($event)" (onStepAhead)="onStepAhead($event)" (onStepBack)="onStepBack()" [disableAction]="!reginfo.isNidVerified"></app-generic-stepper-form-action>
 
-<app-generic-modal [initiateModal]="showRejectModal" [header]="'Reject Remarks'" (onDestroy)="showRejectModal=false" (onConfirm)="onRejectCustomer('reject')" [disableConfirm]="reginfo.regInfoModel.remarks=='' || disableButton" *ngIf="showRejectModal">
+<app-generic-modal [initiateModal]="reginfo.showRejectModal" [header]="'Reject Remarks'" (onDestroy)="reginfo.showRejectModal=false" (onConfirm)="onRejectCustomer('reject')" [disableConfirm]="reginfo.regInfoModel.remarks=='' || reginfo.disableButton" *ngIf="reginfo.showRejectModal">
 	<div style="margin-bottom:2rem">
 		<div class="p-grid">
 			<div class="p-col-3">

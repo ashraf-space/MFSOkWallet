@@ -16,18 +16,27 @@ namespace MFS.ReportingService.Repository
     public interface IKycRepository : IBaseRepository<RegistrationReport>
     {
         object GetAccountCategory();
-        List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory);
+        List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory, string accCategorySub);
         List<RegistrationSummary> GetRegistrationReportSummary(string fromDate, string toDate, string options);
-        List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory);
+        List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory, string accCategorySub);
         List<KycBalance> GetKycBalance(string regStatus, string fromDate, string toDate, string accNo, string options, string accCategory);
         object GetClientInfoByMphone(string mphone);
 		object GetMerchantKycInfoByMphone(string mPhone);
 		object GetChainMerchantMphoneByCode(string chainMerchantCode);
-		List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo);
+		List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus);
 		List<RegInfoReport> GetRegReportByCategory(string fromDate, string toDate, string regSource, string status, string accCategory, string regStatus);
 		object GetCurrentBalance(string mphone);
 		object GetComissionBalance(string mphone);
 		string GetCompanyNameByMphone(string mphone);
+		List<CashBackReport> CashBackDetails(string mphone, string fromDate, string toDate, string cbType);
+		object GetCashbackCategory();
+		string GetCashBackName(string cbType);
+		List<CashBackReport> CashBackSummaryReport(string mphone, string fromDate, string toDate, string cbType);
+        List<SourceWiseRegistration> SourceWiseRegistration(string fromDate, string toDate, string regStatus, string status, string regSource, string branchCode);
+        List<BranchWiseCount> BranchWiseCount(string branchCode, string userId, string option, string fromDate, string toDate);
+		object GetSubAccountCategory();
+		List<CommissionReport> CommissionReport(string mphone, string fromDate, string toDate);
+		List<MerchantTransaction> GetTransactionById(string transNo, string refNo, string mphone);
 	}
     public class KycRepository : BaseRepository<RegistrationReport>, IKycRepository
     {
@@ -50,7 +59,7 @@ namespace MFS.ReportingService.Repository
 
         }
 
-        public List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory)
+        public List<AgentInformation> GetAgentInfo(string fromDate, string toDate, string options, string accCategory, string accCategorySub)
         {
             using (var connection = this.GetConnection())
             {
@@ -60,7 +69,8 @@ namespace MFS.ReportingService.Repository
                 dyParam.Add("TODATE", OracleDbType.Varchar2, ParameterDirection.Input, toDate);
                 dyParam.Add("OPTIONS", OracleDbType.Varchar2, ParameterDirection.Input, options);
                 dyParam.Add("ACCCATEGORY", OracleDbType.Varchar2, ParameterDirection.Input, accCategory);
-                dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+				dyParam.Add("V_ACC_SUB_CAT", OracleDbType.Varchar2, ParameterDirection.Input, accCategorySub == "All" ? null : accCategorySub);
+				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
                 List<AgentInformation> result = SqlMapper.Query<AgentInformation>(connection, dbUser + "RPT_AGENT_INFORMATION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                 this.CloseConnection(connection);
@@ -94,19 +104,20 @@ namespace MFS.ReportingService.Repository
 			}
 		}
 
-		public List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory)
+		public List<RegistrationReport> GetRegistrationReports(string regStatus, string fromDate, string toDate, string basedOn, string options, string accCategory, string accCategorySub)
         {
             using (var connection = this.GetConnection())
             {
                 var dyParam = new OracleDynamicParameters();
 
                 dyParam.Add("REGSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, regStatus);
-                dyParam.Add("FROMDATE", OracleDbType.Varchar2, ParameterDirection.Input, fromDate);
-                dyParam.Add("TODATE", OracleDbType.Varchar2, ParameterDirection.Input, toDate);
+                dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
                 dyParam.Add("BASEDON", OracleDbType.Varchar2, ParameterDirection.Input, basedOn);
                 dyParam.Add("OPTIONS", OracleDbType.Varchar2, ParameterDirection.Input, options);
                 dyParam.Add("ACCCATEGORY", OracleDbType.Varchar2, ParameterDirection.Input, accCategory);
-                dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+				dyParam.Add("ACCCATEGORYSUB", OracleDbType.Varchar2, ParameterDirection.Input, accCategorySub =="All"?null: accCategorySub);
+				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
                 List<RegistrationReport> result = SqlMapper.Query<RegistrationReport>(connection, dbUser + "RPT_REGISTRATIONDETAILS", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
                 this.CloseConnection(connection);
@@ -197,7 +208,7 @@ namespace MFS.ReportingService.Repository
 			}
 		}
 
-		public List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo)
+		public List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus)
 		{
 			try
 			{
@@ -207,7 +218,8 @@ namespace MFS.ReportingService.Repository
 
 					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input,fromDate=="null"?DateTime.Now: Convert.ToDateTime(fromDate));
 					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input,toDate== "null" ? DateTime.Now:Convert.ToDateTime(toDate));
-					dyParam.Add("CATEGORY", OracleDbType.Varchar2, ParameterDirection.Input, category=="null"?null:category);
+					dyParam.Add("V_CATEGORY", OracleDbType.Varchar2, ParameterDirection.Input, category=="null"?null:category);
+					dyParam.Add("V_REGSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, regStatus == "null" ? null : regStatus);
 					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, accNo=="null"?null:accNo);
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
@@ -317,6 +329,218 @@ namespace MFS.ReportingService.Repository
 					return values.ToString();
 				}
 
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<CashBackReport> CashBackDetails(string mphone, string fromDate, string toDate, string cbType)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_CB_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, cbType == "A" ? null : cbType);					
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<CashBackReport> result = SqlMapper.Query<CashBackReport>(connection, dbUser + "RPT_CASHBACK", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public object GetCashbackCategory()
+		{
+			using (var connection = this.GetConnection())
+			{
+				string query = @"SELECT t.init_type as label, t.from_cat_id as value FROM ONE.TRANS_TYPE t WHERE FROM_CAT_ID LIKE 'CB%'";
+
+				var result = connection.Query<CustomDropDownModel>(query).ToList() ;
+
+				this.CloseConnection(connection);
+
+				CustomDropDownModel customDropDownModel = new CustomDropDownModel
+				{
+					label = "All",
+					value = "A"
+				};
+				result.Add(customDropDownModel);
+				return result;
+			}
+
+		}
+
+		public string GetCashBackName(string cbType)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"SELECT T.INIT_TYPE FROM ONE.TRANS_TYPE T WHERE FROM_CAT_ID = '"+cbType+"'";
+
+					var result = connection.Query<dynamic>(query).FirstOrDefault();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					var Heading = ((IDictionary<string, object>)result).Keys.ToArray();
+					var details = ((IDictionary<string, object>)result);
+					var values = details[Heading[0]];
+					return values.ToString();
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<CashBackReport> CashBackSummaryReport(string mphone, string fromDate, string toDate, string cbType)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_CB_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, cbType == "A" ? null : cbType);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<CashBackReport> result = SqlMapper.Query<CashBackReport>(connection, dbUser + "RPT_CASHBACK_SUM", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+        public List<SourceWiseRegistration> SourceWiseRegistration(string fromDate, string toDate, string regStatus, string status, string regSource, string branchCode)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+
+                    dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_REGSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, regStatus);
+                    dyParam.Add("V_STATUS", OracleDbType.Varchar2, ParameterDirection.Input, status);
+                    dyParam.Add("V_REGSOURCE", OracleDbType.Varchar2, ParameterDirection.Input, regSource);
+                    dyParam.Add("V_BRANCHCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    List<SourceWiseRegistration> result = SqlMapper.Query<SourceWiseRegistration>(connection, dbUser + "RPT_SourceWiseRegistration", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<BranchWiseCount> BranchWiseCount(string branchCode, string userId, string option, string fromDate, string toDate)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_BRANCHCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode);
+                    dyParam.Add("V_USERID", OracleDbType.Varchar2, ParameterDirection.Input, userId);
+                    dyParam.Add("V_OPTION", OracleDbType.Varchar2, ParameterDirection.Input, option);
+                    dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    List<BranchWiseCount> result = SqlMapper.Query<BranchWiseCount>(connection, dbUser + "RPT_BranchWiseCount", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+		public object GetSubAccountCategory()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select t.acc_type_code_sub as ""value"", t.name ""label"" from ONE.PRODUCT_SETUP_SUB t";
+
+					var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch(Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<CommissionReport> CommissionReport(string mphone, string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();					
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<CommissionReport> result = SqlMapper.Query<CommissionReport>(connection, dbUser + "RPT_COMMISSION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<MerchantTransaction> GetTransactionById(string transNo, string refNo, string mphone)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+					dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo == "undefined" ? null : transNo);
+					dyParam.Add("V_REFNO", OracleDbType.Varchar2, ParameterDirection.Input, refNo == "undefined" ? null : refNo);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<MerchantTransaction> result = SqlMapper.Query<MerchantTransaction>(connection, dbUser + "GET_MER_TRANBYID", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
 			}
 			catch (Exception ex)
 			{

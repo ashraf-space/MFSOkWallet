@@ -122,6 +122,15 @@ namespace MFS.DistributionService.Models
 		public string SelectedCycleWeekDay { get; set; }
 		public string BlackList { get; set; }
 		public string _OrgCode { get; set; }
+		public string _CloseDate { get; set; }
+		public string _MphoneOld { get; set; }
 		public IEnumerable<dynamic> _SelectedCycleWeekDay { get; set; }
+		public string _FatherNameBangla { get; set; }
+		public string _MotherNameBangla { get; set; }
+		public string _SpouseNameBangla { get; set; }
+		public string _PerAddrBangla { get; set; }
+		public string _PreAddrBangla { get; set; }
+		public string _Blood { get; set; } 
+		public string _Referral { get; set; }
 	}
 }

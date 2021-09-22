@@ -189,16 +189,16 @@
                   <Width>0.73157in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.75116in</Width>
+                  <Width>1.33449in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88782in</Width>
+                  <Width>0.71074in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88782in</Width>
+                  <Width>0.64824in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.77324in</Width>
+                  <Width>0.60657in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1152,7 +1152,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!PreAddr.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>kalpurush</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1357,7 +1359,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Category:</Value>
+                      <Value>Category: </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontWeight>Bold</FontWeight>
@@ -1397,6 +1399,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                         <Format>d MMMM, yyyy</Format>
                       </Style>
                     </TextRun>
@@ -1427,6 +1430,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                         <Format>d MMMM, yyyy</Format>
                       </Style>
                     </TextRun>
@@ -1438,14 +1442,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>P</Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value>rint Date</Value>
+                      <Value>Print Date</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1464,6 +1461,7 @@
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                         <Format>d MMMM, yyyy</Format>
                       </Style>
                     </TextRun>
