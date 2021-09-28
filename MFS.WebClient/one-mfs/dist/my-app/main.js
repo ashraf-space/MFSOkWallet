@@ -31538,14 +31538,32 @@ var ChngStatusComponent = /** @class */ (function () {
             _this.currentUserModel = x;
         });
         this.model = {};
+        this.roleList = ['Admin', 'System Admin', 'Super Admin'];
     }
     ChngStatusComponent.prototype.ngOnInit = function () {
-        this.statusList = [
-            { label: 'Close', value: 'C' },
-            { label: 'Inward Block', value: 'I' },
-            { label: 'Outward Block', value: 'O' },
-            { label: 'Active', value: 'A' }
-        ];
+        if (this.checkisAdmin(this.currentUserModel.user.role_Name.trim())) {
+            this.statusList = [
+                { label: 'Close', value: 'C' },
+                { label: 'Inward Block', value: 'I' },
+                { label: 'Outward Block', value: 'O' },
+                { label: 'Active', value: 'A' }
+            ];
+        }
+        else {
+            this.statusList = [
+                { label: 'Inward Block', value: 'I' },
+                { label: 'Outward Block', value: 'O' },
+                { label: 'Active', value: 'A' }
+            ];
+        }
+    };
+    ChngStatusComponent.prototype.checkisAdmin = function (name) {
+        if (this.roleList.find(function (e) { return e == name; })) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     ChngStatusComponent.prototype.onSearch = function () {
         var _this = this;
@@ -44335,7 +44353,7 @@ var FundTransferService = /** @class */ (function () {
 /*!***********************************************!*\
   !*** ./src/app/services/transaction/index.ts ***!
   \***********************************************/
-/*! exports provided: DistributorDepositService, FundTransferService, TransactionDetailService, TransactionMasterService, ChartOfAccountsService, BranchCashInService, disbursementService, ProcessService, BillCollectionCommonService */
+/*! exports provided: disbursementService, BillCollectionCommonService, DistributorDepositService, FundTransferService, TransactionDetailService, TransactionMasterService, ChartOfAccountsService, BranchCashInService, ProcessService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

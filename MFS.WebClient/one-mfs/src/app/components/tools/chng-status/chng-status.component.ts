@@ -20,6 +20,7 @@ export class ChngStatusComponent implements OnInit {
     statusList: any;
     selectStatus: any;
     dataModel: any = {};
+    roleList: any;
     constructor(private distributorService: DistributorService,
         private messageService: MessageService, private authService: AuthenticationService,
         private kycService: KycService, private auditTrailService: AuditTrailService) {
@@ -27,17 +28,36 @@ export class ChngStatusComponent implements OnInit {
             this.currentUserModel = x;
         });
         this.model = {};
+        this.roleList = ['Admin', 'System Admin', 'Super Admin'];
     }
 
 
     ngOnInit() {
-        this.statusList = [
-            { label: 'Close', value: 'C' },
-            { label: 'Inward Block', value: 'I' },
-            { label: 'Outward Block', value: 'O' },
-            { label: 'Active', value: 'A' }
-        ];
+        if (this.checkisAdmin(this.currentUserModel.user.role_Name.trim())) {
+            this.statusList = [
+                { label: 'Close', value: 'C' },
+                { label: 'Inward Block', value: 'I' },
+                { label: 'Outward Block', value: 'O' },
+                { label: 'Active', value: 'A' }
+            ];
+        }
+        else {
+            this.statusList = [               
+                { label: 'Inward Block', value: 'I' },
+                { label: 'Outward Block', value: 'O' },
+                { label: 'Active', value: 'A' }
+            ];
+        }
+        
   }
+    checkisAdmin(name: any) {
+        if (this.roleList.find(e => e == name)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     onSearch() {
         this.loading = true;
         this.distributorService.GetDistributorByMphone(this.model.mphone).pipe(first())

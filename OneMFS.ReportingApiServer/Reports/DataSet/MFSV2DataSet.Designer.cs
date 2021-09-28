@@ -560,6 +560,16 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             private global::System.Data.DataColumn columnNomineePhoto;
             
+            private global::System.Data.DataColumn columnAgentNo;
+            
+            private global::System.Data.DataColumn columnDistributorNo;
+            
+            private global::System.Data.DataColumn columnPhotoIdNo;
+            
+            private global::System.Data.DataColumn columnAccStatus;
+            
+            private global::System.Data.DataColumn columnRegStatus;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public OnlineRegistrationDataTable() {
@@ -739,6 +749,46 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AgentNoColumn {
+                get {
+                    return this.columnAgentNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DistributorNoColumn {
+                get {
+                    return this.columnDistributorNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PhotoIdNoColumn {
+                get {
+                    return this.columnPhotoIdNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AccStatusColumn {
+                get {
+                    return this.columnAccStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RegStatusColumn {
+                get {
+                    return this.columnRegStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -792,7 +842,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         string DivisionName, 
                         string PostalCode, 
                         string ReferralNo, 
-                        byte[] NomineePhoto) {
+                        byte[] NomineePhoto, 
+                        string AgentNo, 
+                        string DistributorNo, 
+                        string PhotoIdNo, 
+                        string AccStatus, 
+                        string RegStatus) {
                 OnlineRegistrationRow rowOnlineRegistrationRow = ((OnlineRegistrationRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         RegDate,
@@ -812,7 +867,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                         DivisionName,
                         PostalCode,
                         ReferralNo,
-                        NomineePhoto};
+                        NomineePhoto,
+                        AgentNo,
+                        DistributorNo,
+                        PhotoIdNo,
+                        AccStatus,
+                        RegStatus};
                 rowOnlineRegistrationRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowOnlineRegistrationRow);
                 return rowOnlineRegistrationRow;
@@ -853,6 +913,11 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 this.columnPostalCode = base.Columns["PostalCode"];
                 this.columnReferralNo = base.Columns["ReferralNo"];
                 this.columnNomineePhoto = base.Columns["NomineePhoto"];
+                this.columnAgentNo = base.Columns["AgentNo"];
+                this.columnDistributorNo = base.Columns["DistributorNo"];
+                this.columnPhotoIdNo = base.Columns["PhotoIdNo"];
+                this.columnAccStatus = base.Columns["AccStatus"];
+                this.columnRegStatus = base.Columns["RegStatus"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -894,6 +959,16 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 base.Columns.Add(this.columnReferralNo);
                 this.columnNomineePhoto = new global::System.Data.DataColumn("NomineePhoto", typeof(byte[]), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNomineePhoto);
+                this.columnAgentNo = new global::System.Data.DataColumn("AgentNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAgentNo);
+                this.columnDistributorNo = new global::System.Data.DataColumn("DistributorNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistributorNo);
+                this.columnPhotoIdNo = new global::System.Data.DataColumn("PhotoIdNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPhotoIdNo);
+                this.columnAccStatus = new global::System.Data.DataColumn("AccStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccStatus);
+                this.columnRegStatus = new global::System.Data.DataColumn("RegStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRegStatus);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4078,6 +4153,86 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AgentNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOnlineRegistration.AgentNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AgentNo\' in table \'OnlineRegistration\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOnlineRegistration.AgentNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DistributorNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOnlineRegistration.DistributorNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistributorNo\' in table \'OnlineRegistration\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOnlineRegistration.DistributorNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PhotoIdNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableOnlineRegistration.PhotoIdNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PhotoIdNo\' in table \'OnlineRegistration\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOnlineRegistration.PhotoIdNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AccStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableOnlineRegistration.AccStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccStatus\' in table \'OnlineRegistration\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOnlineRegistration.AccStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string RegStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableOnlineRegistration.RegStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RegStatus\' in table \'OnlineRegistration\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOnlineRegistration.RegStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public bool IsRegDateNull() {
                 return this.IsNull(this.tableOnlineRegistration.RegDateColumn);
             }
@@ -4290,6 +4445,66 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public void SetNomineePhotoNull() {
                 this[this.tableOnlineRegistration.NomineePhotoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAgentNoNull() {
+                return this.IsNull(this.tableOnlineRegistration.AgentNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAgentNoNull() {
+                this[this.tableOnlineRegistration.AgentNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDistributorNoNull() {
+                return this.IsNull(this.tableOnlineRegistration.DistributorNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDistributorNoNull() {
+                this[this.tableOnlineRegistration.DistributorNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPhotoIdNoNull() {
+                return this.IsNull(this.tableOnlineRegistration.PhotoIdNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPhotoIdNoNull() {
+                this[this.tableOnlineRegistration.PhotoIdNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAccStatusNull() {
+                return this.IsNull(this.tableOnlineRegistration.AccStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAccStatusNull() {
+                this[this.tableOnlineRegistration.AccStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRegStatusNull() {
+                return this.IsNull(this.tableOnlineRegistration.RegStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRegStatusNull() {
+                this[this.tableOnlineRegistration.RegStatusColumn] = global::System.Convert.DBNull;
             }
         }
         

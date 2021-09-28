@@ -26,5 +26,10 @@ namespace MFS.ReportingService.Models
 		public string DivisionName { get; set; }
 		public string PostalCode { get; set; }
 		public string ReferralNo { get; set; }
+		public string AgentNo { get; set; }
+		public string PhotoIdNo { get; set; }
+		public string DistributorNo { get; set; }
+		public string AccStatus { get; set; }
+		public string RegStatus { get; set; }
 	}
 }
