@@ -31,6 +31,9 @@ export class ApplicationUserAddEditComponent implements OnInit {
     hasEditPermission: boolean = false;
     optionList: any;
     isExistingUsername: boolean = false;
+    isExistingEmailId: boolean = false;
+    isExistingMobileNo: boolean = false;
+    isExistingEmployeeId: boolean = false;
     blockSpace: RegExp = /[^\s]/; 
     logInStatusList: any;
     passwordChangedBy: string;
@@ -106,8 +109,12 @@ export class ApplicationUserAddEditComponent implements OnInit {
 
     onUserSave() {
         if (!this.applicationUserModel.username || this.applicationUserModel.username == '' || 
-            !this.applicationUserModel.mobileNo || this.applicationUserModel.mobileNo == '' || !this.applicationUserModel.name || this.applicationUserModel.name == '' ||
-            !this.applicationUserModel.branchCode || this.applicationUserModel.branchCode == '' || !this.applicationUserModel.roleId || this.applicationUserModel.roleId == '' || this.isExistingUsername) {
+            !this.applicationUserModel.mobileNo || this.applicationUserModel.mobileNo == '' ||
+            !this.applicationUserModel.name || this.applicationUserModel.name == '' ||
+            !this.applicationUserModel.branchCode || this.applicationUserModel.branchCode == '' ||
+            !this.applicationUserModel.roleId || this.applicationUserModel.roleId == '' ||
+            //this.isExistingUsername || this.isExistingEmailId || this.isExistingMobileNo || this.isExistingEmployeeId) {
+            this.isExistingUsername ||  this.isExistingMobileNo ) {
             this.error = true;
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
@@ -226,6 +233,63 @@ export class ApplicationUserAddEditComponent implements OnInit {
                     },
                     error => {
                         
+                    });
+        }
+    }
+
+    checkExistingEmailId() {
+        if (this.applicationUserModel.emailId != null || this.applicationUserModel.emailId != '') {
+            this.applicationUserService.checkExistingEmailId(this.applicationUserModel.emailId).pipe(first())
+                .subscribe(
+                    data => {
+                        if (data == 'data exist') {
+                            this.messageService.add({ severity: 'error', summary: 'Warning', detail: ' Duplicate Email Id' });
+                            this.isExistingEmailId = true;
+                        }
+                        else {
+                            this.isExistingEmailId = false;
+                        }
+                    },
+                    error => {
+
+                    });
+        }
+    }
+
+    checkExistingMobileNo() {
+        if (this.applicationUserModel.mobileNo != null || this.applicationUserModel.mobileNo != '') {
+            this.applicationUserService.checkExistingMobileNo(this.applicationUserModel.mobileNo).pipe(first())
+                .subscribe(
+                    data => {
+                        if (data == 'data exist') {
+                            this.messageService.add({ severity: 'error', summary: 'Warning', detail: ' Duplicate Mobile Number' });
+                            this.isExistingMobileNo = true;
+                        }
+                        else {
+                            this.isExistingMobileNo = false;
+                        }
+                    },
+                    error => {
+
+                    });
+        }
+    }
+
+    checkExistingEmployeeId() {
+        if (this.applicationUserModel.employeeId != null || this.applicationUserModel.employeeId != '') {
+            this.applicationUserService.checkExistingEmployeeId(this.applicationUserModel.employeeId).pipe(first())
+                .subscribe(
+                    data => {
+                        if (data == 'data exist') {
+                            this.messageService.add({ severity: 'error', summary: 'Warning', detail: ' Duplicate Employee Id' });
+                            this.isExistingEmployeeId = true;
+                        }
+                        else {
+                            this.isExistingEmployeeId = false;
+                        }
+                    },
+                    error => {
+
                     });
         }
     }

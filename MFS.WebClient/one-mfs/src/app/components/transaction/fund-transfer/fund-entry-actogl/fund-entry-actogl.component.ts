@@ -240,7 +240,8 @@ export class FundEntryActoglComponent implements OnInit {
     saveFundTransferEntry(event): any {
         if (!this.fundTransferModel.transFrom || this.fundTransferModel.transFrom == '' ||
             !this.fundTransferModel.toSysCoaCode || this.fundTransferModel.toSysCoaCode == '' ||
-            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '' || this.fundTransferModel.payAmt == '0') {
+            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '' || this.fundTransferModel.payAmt == '0' ||
+            !this.fundTransferModel.remarks || this.fundTransferModel.remarks == '0' || this.fundTransferModel.remarks == '') {
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
             this.error = true;

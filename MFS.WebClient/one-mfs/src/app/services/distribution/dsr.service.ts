@@ -50,8 +50,8 @@ export class DsrService {
                 return model;
             }))
     }
-    GetB2bDistributorDataByDistributorCode(DistributorCode: string) {
-        return this.http.get<any>(this.distribution.distributionApiServer + '/Dsr/GetB2bDistributorDataByDistributorCode?distributorCode=' + DistributorCode)
+    GetB2bDistributorDataByDistributorCode(DistributorCode: string, catId: string) {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Dsr/GetB2bDistributorDataByDistributorCode?distributorCode=' + DistributorCode + '&catId=' + catId)
             .pipe(map(regInfoModel => {
                 return regInfoModel;
             }));

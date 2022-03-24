@@ -32,7 +32,7 @@
     </p-card>
 
     <p-card [style]="{'margin-bottom':'5px'}">
-        <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)">
+        <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)" (customActionTwo)="onThermalReceipt($event)">
         </generic-grid>
     </p-card>
 </div>

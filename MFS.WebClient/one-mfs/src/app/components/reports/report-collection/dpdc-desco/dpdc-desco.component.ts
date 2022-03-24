@@ -5,6 +5,7 @@ import { KycService } from 'src/app/services/distribution/kyc.service';
 import { KycReportService } from 'src/app/services/report/kyc-report.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/shared/_services';
+import { DistributorService } from 'src/app/services/distribution';
 
 @Component({
     selector: 'app-dpdc-desco',
@@ -20,9 +21,11 @@ export class DpdcDescoComponent implements OnInit {
     catTypeList: any;
     isDateDisabled: boolean = false;
     currentUserModel: any = {};
+    branchCode: any;
+    bankBranchList: any;
     constructor(private mfsUtilityService: MfsUtilityService,
         private authService: AuthenticationService,
-        private kycReportService: KycReportService,
+        private distributionService: DistributorService,
         private ngbDatepickerConfig: NgbDatepickerConfig) {
         this.authService.currentUser.subscribe(x => {
             this.currentUserModel = x;
@@ -35,6 +38,8 @@ export class DpdcDescoComponent implements OnInit {
 
 
     ngOnInit() {
+        this.branchCode = this.currentUserModel.user.branchCode;
+        this.getBankBranchListForDDL();
         this.utilityList = [
             { label: 'DPDC Postpaid', value: 'dpdc' },
             { label: 'DPDC Prepaid', value: 'dpdck' },
@@ -45,12 +50,14 @@ export class DpdcDescoComponent implements OnInit {
             { label: 'Desco Prepaid', value: 'descop' },
             { label: 'BGDCL', value: 'bgdcl' },
             { label: 'WASA Khulna', value: 'kwasa' },
-            { label: 'West Zone Power (Postpaid)', value: 'wzpdclpo' }
+            { label: 'West Zone Power (Postpaid)', value: 'wzpdclpo' },
+            { label: 'Paschimanchal Gas', value: 'pgcl' },
+            { label: 'Land Tax', value: 'landtax' }
         ];
         this.gatewayList = [
             { label: 'USSD', value: 'U' },
             { label: 'APP', value: 'A' },
-            { label: 'Branch', value: 'All' },
+            //{ label: 'Branch', value: 'All' },
             { label: 'ALL', value: 'All' }
 
         ];
@@ -68,7 +75,18 @@ export class DpdcDescoComponent implements OnInit {
     }
 
 
-
+    getBankBranchListForDDL(): any {
+        this.distributionService.getBankBranchListForDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.bankBranchList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
     getReportParam() {
         if (this.validate()) {
             var obj: any = {};
@@ -77,10 +95,22 @@ export class DpdcDescoComponent implements OnInit {
                 obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
             }
             obj.utility = this.model.utility;
-            obj.gateway = 'All';
+
             obj.catType = 'All';
             obj.dateType = this.model.dateType;
-            obj.branchCode = this.currentUserModel.user.branchCode;
+            if (this.model.gateway) {
+                obj.gateway = this.model.gateway;
+            }
+            else {
+                obj.gateway = 'All';
+            }
+            if (this.model.branchCode) {
+                obj.branchCode = this.model.branchCode;
+            }
+            else {
+                obj.branchCode = this.currentUserModel.user.branchCode;
+            }
+
             return obj;
         }
         else {
@@ -91,7 +121,7 @@ export class DpdcDescoComponent implements OnInit {
     }
 
     validate(): any {
-        if (!this.model.utility  || !this.model.dateType ||
+        if (!this.model.utility || !this.model.dateType ||
             !this.model.fromDate || !this.model.toDate) {
             return false;
         }

@@ -22,6 +22,7 @@ export class GenericGridComponent implements OnInit {
     itemsToEdit: any = [];
 
     @Output() customAction: EventEmitter<any> = new EventEmitter<any>();
+    @Output() customActionTwo: EventEmitter<any> = new EventEmitter<any>();
     @Output() batchUpdateCallback: EventEmitter<any> = new EventEmitter<any>();
     
     constructor(private router: Router, private gridSettingService: GridSettingService, private mfsUtilityService: MfsUtilityService, private messageService: MessageService) {        
@@ -174,6 +175,10 @@ export class GenericGridComponent implements OnInit {
 
     onCustomAction(row) {
         this.customAction.emit(row);
+    }
+
+    onCustomActionTwo(row) {
+        this.customActionTwo.emit(row);
     }
 
     toggleAll(column, event) {

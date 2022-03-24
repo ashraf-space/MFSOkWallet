@@ -409,11 +409,33 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\RDLC\BanglaQrCodeSlip.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\QrCodeSlip_V2.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\QrCodeSlip.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccStatMst.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAccountStatementClient.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTAdmissionFeePayment.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTAuditTrail.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTB2BCollectionDtl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTB2BCollectionSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBackOffTransaction.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTBtclTelephoneBill.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTCampaignSummary.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTDormantAgent.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTRlic.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTEmerchantSettlementInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTFailedDisVoucher.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTIvac.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTMerchantBankInfo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTEkpayConnectivity.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTChannelBankInfo.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTLandTax.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTPgcl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTKycCom.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTRefCampaignDetails.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTSsl.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTSuccDisbursementVoucher.rdlc" />
+    <EmbeddedResource Include="Reports\RDLC\RPTSuccDisVoucher.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTWzpdclPo.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTKwasa.rdlc" />
     <EmbeddedResource Include="Reports\RDLC\RPTBgdcl.rdlc" />

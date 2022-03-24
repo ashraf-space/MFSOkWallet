@@ -15,6 +15,7 @@ namespace MFS.DistributionService.Repository
 	{
 		object GetCustomerGridList();
 		object GetCustomerByMphone(string mPhone);
+		bool IsPhotoIdExist(string catId, string photoId, int code);
 	}
 	public class CustomerRepository:BaseRepository<Reginfo>,ICustomerRepository
 	{
@@ -66,6 +67,34 @@ namespace MFS.DistributionService.Repository
 				throw;
 			}
 
+		}
+
+		public bool IsPhotoIdExist(string catId, string photoId, int code)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoId + "' and t.cat_id = '" + catId + "' and t.status <> 'C'";
+
+					var result = connection.Query<int>(query).FirstOrDefault();
+					this.CloseConnection(connection);
+					connection.Dispose();
+					if (Convert.ToUInt32(result) == 0)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+			}
+			catch (Exception ex)
+			{
+				throw;
+			}
 		}
 	}
 }

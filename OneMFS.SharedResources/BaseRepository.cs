@@ -407,6 +407,10 @@ namespace OneMFS.SharedResources
 			{
 				return false;
 			}
+			else if (columnName.ToUpper().Trim() == "PPMPHONE".Trim())
+			{
+				return false;
+			}
 			else if (columnName.ToUpper().Trim() == "ENTRYDATE".Trim())
 			{
 				return false;

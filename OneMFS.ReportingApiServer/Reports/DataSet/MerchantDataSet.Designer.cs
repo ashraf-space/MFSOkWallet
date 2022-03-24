@@ -30,6 +30,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         
         private OutletDailyTransactionDataTable tableOutletDailyTransaction;
         
+        private EmerchantSettlementInfoDataTable tableEmerchantSettlementInfo;
+        
+        private MerchantBankDataTable tableMerchantBank;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -66,6 +70,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 }
                 if ((ds.Tables["OutletDailyTransaction"] != null)) {
                     base.Tables.Add(new OutletDailyTransactionDataTable(ds.Tables["OutletDailyTransaction"]));
+                }
+                if ((ds.Tables["EmerchantSettlementInfo"] != null)) {
+                    base.Tables.Add(new EmerchantSettlementInfoDataTable(ds.Tables["EmerchantSettlementInfo"]));
+                }
+                if ((ds.Tables["MerchantBank"] != null)) {
+                    base.Tables.Add(new MerchantBankDataTable(ds.Tables["MerchantBank"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -112,6 +122,26 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         public OutletDailyTransactionDataTable OutletDailyTransaction {
             get {
                 return this.tableOutletDailyTransaction;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public EmerchantSettlementInfoDataTable EmerchantSettlementInfo {
+            get {
+                return this.tableEmerchantSettlementInfo;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public MerchantBankDataTable MerchantBank {
+            get {
+                return this.tableMerchantBank;
             }
         }
         
@@ -191,6 +221,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                 if ((ds.Tables["OutletDailyTransaction"] != null)) {
                     base.Tables.Add(new OutletDailyTransactionDataTable(ds.Tables["OutletDailyTransaction"]));
                 }
+                if ((ds.Tables["EmerchantSettlementInfo"] != null)) {
+                    base.Tables.Add(new EmerchantSettlementInfoDataTable(ds.Tables["EmerchantSettlementInfo"]));
+                }
+                if ((ds.Tables["MerchantBank"] != null)) {
+                    base.Tables.Add(new MerchantBankDataTable(ds.Tables["MerchantBank"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -242,6 +278,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
                     this.tableOutletDailyTransaction.InitVars();
                 }
             }
+            this.tableEmerchantSettlementInfo = ((EmerchantSettlementInfoDataTable)(base.Tables["EmerchantSettlementInfo"]));
+            if ((initTable == true)) {
+                if ((this.tableEmerchantSettlementInfo != null)) {
+                    this.tableEmerchantSettlementInfo.InitVars();
+                }
+            }
+            this.tableMerchantBank = ((MerchantBankDataTable)(base.Tables["MerchantBank"]));
+            if ((initTable == true)) {
+                if ((this.tableMerchantBank != null)) {
+                    this.tableMerchantBank.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -258,6 +306,10 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             base.Tables.Add(this.tableOutletSummaryTransaction);
             this.tableOutletDailyTransaction = new OutletDailyTransactionDataTable();
             base.Tables.Add(this.tableOutletDailyTransaction);
+            this.tableEmerchantSettlementInfo = new EmerchantSettlementInfoDataTable();
+            base.Tables.Add(this.tableEmerchantSettlementInfo);
+            this.tableMerchantBank = new MerchantBankDataTable();
+            base.Tables.Add(this.tableMerchantBank);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -275,6 +327,18 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializeOutletDailyTransaction() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeEmerchantSettlementInfo() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializeMerchantBank() {
             return false;
         }
         
@@ -341,6 +405,12 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void OutletDailyTransactionRowChangeEventHandler(object sender, OutletDailyTransactionRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void EmerchantSettlementInfoRowChangeEventHandler(object sender, EmerchantSettlementInfoRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void MerchantBankRowChangeEventHandler(object sender, MerchantBankRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -1364,6 +1434,1372 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class EmerchantSettlementInfoDataTable : global::System.Data.TypedTableBase<EmerchantSettlementInfoRow> {
+            
+            private global::System.Data.DataColumn columnMerchantAccNo;
+            
+            private global::System.Data.DataColumn columnMerchantCat;
+            
+            private global::System.Data.DataColumn columnOwnerName;
+            
+            private global::System.Data.DataColumn columnCompanyOutletName;
+            
+            private global::System.Data.DataColumn columnBalanceMain;
+            
+            private global::System.Data.DataColumn columnBalanceCommission;
+            
+            private global::System.Data.DataColumn columnSettlementFeePer;
+            
+            private global::System.Data.DataColumn columnSettlementCycle;
+            
+            private global::System.Data.DataColumn columnMerchantType;
+            
+            private global::System.Data.DataColumn columnOblBranchName;
+            
+            private global::System.Data.DataColumn columnOblBankAccName;
+            
+            private global::System.Data.DataColumn columnOblBankAccNo;
+            
+            private global::System.Data.DataColumn columnOthersBankName;
+            
+            private global::System.Data.DataColumn columnOthersBankBranchName;
+            
+            private global::System.Data.DataColumn columnOthersBankRoutingNo;
+            
+            private global::System.Data.DataColumn columnOthersBankAccName;
+            
+            private global::System.Data.DataColumn columnOthersBankAccNo;
+            
+            private global::System.Data.DataColumn columnMinTransAmt;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoDataTable() {
+                this.TableName = "EmerchantSettlementInfo";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal EmerchantSettlementInfoDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected EmerchantSettlementInfoDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantAccNoColumn {
+                get {
+                    return this.columnMerchantAccNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantCatColumn {
+                get {
+                    return this.columnMerchantCat;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OwnerNameColumn {
+                get {
+                    return this.columnOwnerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CompanyOutletNameColumn {
+                get {
+                    return this.columnCompanyOutletName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BalanceMainColumn {
+                get {
+                    return this.columnBalanceMain;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BalanceCommissionColumn {
+                get {
+                    return this.columnBalanceCommission;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SettlementFeePerColumn {
+                get {
+                    return this.columnSettlementFeePer;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SettlementCycleColumn {
+                get {
+                    return this.columnSettlementCycle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantTypeColumn {
+                get {
+                    return this.columnMerchantType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblBranchNameColumn {
+                get {
+                    return this.columnOblBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblBankAccNameColumn {
+                get {
+                    return this.columnOblBankAccName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblBankAccNoColumn {
+                get {
+                    return this.columnOblBankAccNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OthersBankNameColumn {
+                get {
+                    return this.columnOthersBankName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OthersBankBranchNameColumn {
+                get {
+                    return this.columnOthersBankBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OthersBankRoutingNoColumn {
+                get {
+                    return this.columnOthersBankRoutingNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OthersBankAccNameColumn {
+                get {
+                    return this.columnOthersBankAccName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OthersBankAccNoColumn {
+                get {
+                    return this.columnOthersBankAccNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MinTransAmtColumn {
+                get {
+                    return this.columnMinTransAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoRow this[int index] {
+                get {
+                    return ((EmerchantSettlementInfoRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event EmerchantSettlementInfoRowChangeEventHandler EmerchantSettlementInfoRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event EmerchantSettlementInfoRowChangeEventHandler EmerchantSettlementInfoRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event EmerchantSettlementInfoRowChangeEventHandler EmerchantSettlementInfoRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event EmerchantSettlementInfoRowChangeEventHandler EmerchantSettlementInfoRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddEmerchantSettlementInfoRow(EmerchantSettlementInfoRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoRow AddEmerchantSettlementInfoRow(
+                        string MerchantAccNo, 
+                        string MerchantCat, 
+                        string OwnerName, 
+                        string CompanyOutletName, 
+                        double BalanceMain, 
+                        double BalanceCommission, 
+                        double SettlementFeePer, 
+                        string SettlementCycle, 
+                        string MerchantType, 
+                        string OblBranchName, 
+                        string OblBankAccName, 
+                        string OblBankAccNo, 
+                        string OthersBankName, 
+                        string OthersBankBranchName, 
+                        string OthersBankRoutingNo, 
+                        string OthersBankAccName, 
+                        string OthersBankAccNo, 
+                        double MinTransAmt) {
+                EmerchantSettlementInfoRow rowEmerchantSettlementInfoRow = ((EmerchantSettlementInfoRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        MerchantAccNo,
+                        MerchantCat,
+                        OwnerName,
+                        CompanyOutletName,
+                        BalanceMain,
+                        BalanceCommission,
+                        SettlementFeePer,
+                        SettlementCycle,
+                        MerchantType,
+                        OblBranchName,
+                        OblBankAccName,
+                        OblBankAccNo,
+                        OthersBankName,
+                        OthersBankBranchName,
+                        OthersBankRoutingNo,
+                        OthersBankAccName,
+                        OthersBankAccNo,
+                        MinTransAmt};
+                rowEmerchantSettlementInfoRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowEmerchantSettlementInfoRow);
+                return rowEmerchantSettlementInfoRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                EmerchantSettlementInfoDataTable cln = ((EmerchantSettlementInfoDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new EmerchantSettlementInfoDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnMerchantAccNo = base.Columns["MerchantAccNo"];
+                this.columnMerchantCat = base.Columns["MerchantCat"];
+                this.columnOwnerName = base.Columns["OwnerName"];
+                this.columnCompanyOutletName = base.Columns["CompanyOutletName"];
+                this.columnBalanceMain = base.Columns["BalanceMain"];
+                this.columnBalanceCommission = base.Columns["BalanceCommission"];
+                this.columnSettlementFeePer = base.Columns["SettlementFeePer"];
+                this.columnSettlementCycle = base.Columns["SettlementCycle"];
+                this.columnMerchantType = base.Columns["MerchantType"];
+                this.columnOblBranchName = base.Columns["OblBranchName"];
+                this.columnOblBankAccName = base.Columns["OblBankAccName"];
+                this.columnOblBankAccNo = base.Columns["OblBankAccNo"];
+                this.columnOthersBankName = base.Columns["OthersBankName"];
+                this.columnOthersBankBranchName = base.Columns["OthersBankBranchName"];
+                this.columnOthersBankRoutingNo = base.Columns["OthersBankRoutingNo"];
+                this.columnOthersBankAccName = base.Columns["OthersBankAccName"];
+                this.columnOthersBankAccNo = base.Columns["OthersBankAccNo"];
+                this.columnMinTransAmt = base.Columns["MinTransAmt"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnMerchantAccNo = new global::System.Data.DataColumn("MerchantAccNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantAccNo);
+                this.columnMerchantCat = new global::System.Data.DataColumn("MerchantCat", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantCat);
+                this.columnOwnerName = new global::System.Data.DataColumn("OwnerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOwnerName);
+                this.columnCompanyOutletName = new global::System.Data.DataColumn("CompanyOutletName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCompanyOutletName);
+                this.columnBalanceMain = new global::System.Data.DataColumn("BalanceMain", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBalanceMain);
+                this.columnBalanceCommission = new global::System.Data.DataColumn("BalanceCommission", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBalanceCommission);
+                this.columnSettlementFeePer = new global::System.Data.DataColumn("SettlementFeePer", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSettlementFeePer);
+                this.columnSettlementCycle = new global::System.Data.DataColumn("SettlementCycle", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSettlementCycle);
+                this.columnMerchantType = new global::System.Data.DataColumn("MerchantType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantType);
+                this.columnOblBranchName = new global::System.Data.DataColumn("OblBranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblBranchName);
+                this.columnOblBankAccName = new global::System.Data.DataColumn("OblBankAccName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblBankAccName);
+                this.columnOblBankAccNo = new global::System.Data.DataColumn("OblBankAccNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblBankAccNo);
+                this.columnOthersBankName = new global::System.Data.DataColumn("OthersBankName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOthersBankName);
+                this.columnOthersBankBranchName = new global::System.Data.DataColumn("OthersBankBranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOthersBankBranchName);
+                this.columnOthersBankRoutingNo = new global::System.Data.DataColumn("OthersBankRoutingNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOthersBankRoutingNo);
+                this.columnOthersBankAccName = new global::System.Data.DataColumn("OthersBankAccName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOthersBankAccName);
+                this.columnOthersBankAccNo = new global::System.Data.DataColumn("OthersBankAccNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOthersBankAccNo);
+                this.columnMinTransAmt = new global::System.Data.DataColumn("MinTransAmt", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMinTransAmt);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoRow NewEmerchantSettlementInfoRow() {
+                return ((EmerchantSettlementInfoRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new EmerchantSettlementInfoRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(EmerchantSettlementInfoRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.EmerchantSettlementInfoRowChanged != null)) {
+                    this.EmerchantSettlementInfoRowChanged(this, new EmerchantSettlementInfoRowChangeEvent(((EmerchantSettlementInfoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.EmerchantSettlementInfoRowChanging != null)) {
+                    this.EmerchantSettlementInfoRowChanging(this, new EmerchantSettlementInfoRowChangeEvent(((EmerchantSettlementInfoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.EmerchantSettlementInfoRowDeleted != null)) {
+                    this.EmerchantSettlementInfoRowDeleted(this, new EmerchantSettlementInfoRowChangeEvent(((EmerchantSettlementInfoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.EmerchantSettlementInfoRowDeleting != null)) {
+                    this.EmerchantSettlementInfoRowDeleting(this, new EmerchantSettlementInfoRowChangeEvent(((EmerchantSettlementInfoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveEmerchantSettlementInfoRow(EmerchantSettlementInfoRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                MerchantDataSet ds = new MerchantDataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "EmerchantSettlementInfoDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class MerchantBankDataTable : global::System.Data.TypedTableBase<MerchantBankRow> {
+            
+            private global::System.Data.DataColumn columnAccountNo;
+            
+            private global::System.Data.DataColumn columnMerchantCode;
+            
+            private global::System.Data.DataColumn columnMerchantCategory;
+            
+            private global::System.Data.DataColumn columnOwnerName;
+            
+            private global::System.Data.DataColumn columnCompanyName;
+            
+            private global::System.Data.DataColumn columnRegStatus;
+            
+            private global::System.Data.DataColumn columnAccountStatus;
+            
+            private global::System.Data.DataColumn columnPhotoIdType;
+            
+            private global::System.Data.DataColumn columnPhotoId;
+            
+            private global::System.Data.DataColumn columnEmployeeId;
+            
+            private global::System.Data.DataColumn columnOpeningDate;
+            
+            private global::System.Data.DataColumn columnLogicalDate;
+            
+            private global::System.Data.DataColumn columnPermanentAddress;
+            
+            private global::System.Data.DataColumn columnOfficeAddress;
+            
+            private global::System.Data.DataColumn columnPresentAdress;
+            
+            private global::System.Data.DataColumn columnDivisionName;
+            
+            private global::System.Data.DataColumn columnDistrictName;
+            
+            private global::System.Data.DataColumn columnThanaName;
+            
+            private global::System.Data.DataColumn columnMainBalance;
+            
+            private global::System.Data.DataColumn columnLienMainBalance;
+            
+            private global::System.Data.DataColumn columnLienComBalance;
+            
+            private global::System.Data.DataColumn columnMinTransAmt;
+            
+            private global::System.Data.DataColumn columnMaxTransAmt;
+            
+            private global::System.Data.DataColumn columnSettlementFeePercentage;
+            
+            private global::System.Data.DataColumn columnSmsNotification;
+            
+            private global::System.Data.DataColumn columnActiveStatus;
+            
+            private global::System.Data.DataColumn columnSettlementCycle;
+            
+            private global::System.Data.DataColumn columnAreaType;
+            
+            private global::System.Data.DataColumn columnOblBranchCode;
+            
+            private global::System.Data.DataColumn columnMerchantType;
+            
+            private global::System.Data.DataColumn columnOblBranchName;
+            
+            private global::System.Data.DataColumn columnOblAccountName;
+            
+            private global::System.Data.DataColumn columnBankAccountNo;
+            
+            private global::System.Data.DataColumn columnOtherBankName;
+            
+            private global::System.Data.DataColumn columnOtherBranchName;
+            
+            private global::System.Data.DataColumn columnOtherDistName;
+            
+            private global::System.Data.DataColumn columnRoutingNo;
+            
+            private global::System.Data.DataColumn columnOtherAccountName;
+            
+            private global::System.Data.DataColumn columnOtherAccountNo;
+            
+            private global::System.Data.DataColumn columnOtherBankCode;
+            
+            private global::System.Data.DataColumn columnOtherDistCode;
+            
+            private global::System.Data.DataColumn columnOtherBranchCode;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankDataTable() {
+                this.TableName = "MerchantBank";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal MerchantBankDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected MerchantBankDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AccountNoColumn {
+                get {
+                    return this.columnAccountNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantCodeColumn {
+                get {
+                    return this.columnMerchantCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantCategoryColumn {
+                get {
+                    return this.columnMerchantCategory;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OwnerNameColumn {
+                get {
+                    return this.columnOwnerName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CompanyNameColumn {
+                get {
+                    return this.columnCompanyName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RegStatusColumn {
+                get {
+                    return this.columnRegStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AccountStatusColumn {
+                get {
+                    return this.columnAccountStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PhotoIdTypeColumn {
+                get {
+                    return this.columnPhotoIdType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PhotoIdColumn {
+                get {
+                    return this.columnPhotoId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn EmployeeIdColumn {
+                get {
+                    return this.columnEmployeeId;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OpeningDateColumn {
+                get {
+                    return this.columnOpeningDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LogicalDateColumn {
+                get {
+                    return this.columnLogicalDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PermanentAddressColumn {
+                get {
+                    return this.columnPermanentAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OfficeAddressColumn {
+                get {
+                    return this.columnOfficeAddress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn PresentAdressColumn {
+                get {
+                    return this.columnPresentAdress;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DivisionNameColumn {
+                get {
+                    return this.columnDivisionName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DistrictNameColumn {
+                get {
+                    return this.columnDistrictName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ThanaNameColumn {
+                get {
+                    return this.columnThanaName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MainBalanceColumn {
+                get {
+                    return this.columnMainBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LienMainBalanceColumn {
+                get {
+                    return this.columnLienMainBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn LienComBalanceColumn {
+                get {
+                    return this.columnLienComBalance;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MinTransAmtColumn {
+                get {
+                    return this.columnMinTransAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MaxTransAmtColumn {
+                get {
+                    return this.columnMaxTransAmt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SettlementFeePercentageColumn {
+                get {
+                    return this.columnSettlementFeePercentage;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SmsNotificationColumn {
+                get {
+                    return this.columnSmsNotification;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn ActiveStatusColumn {
+                get {
+                    return this.columnActiveStatus;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SettlementCycleColumn {
+                get {
+                    return this.columnSettlementCycle;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn AreaTypeColumn {
+                get {
+                    return this.columnAreaType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblBranchCodeColumn {
+                get {
+                    return this.columnOblBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn MerchantTypeColumn {
+                get {
+                    return this.columnMerchantType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblBranchNameColumn {
+                get {
+                    return this.columnOblBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OblAccountNameColumn {
+                get {
+                    return this.columnOblAccountName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BankAccountNoColumn {
+                get {
+                    return this.columnBankAccountNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherBankNameColumn {
+                get {
+                    return this.columnOtherBankName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherBranchNameColumn {
+                get {
+                    return this.columnOtherBranchName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherDistNameColumn {
+                get {
+                    return this.columnOtherDistName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn RoutingNoColumn {
+                get {
+                    return this.columnRoutingNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherAccountNameColumn {
+                get {
+                    return this.columnOtherAccountName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherAccountNoColumn {
+                get {
+                    return this.columnOtherAccountNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherBankCodeColumn {
+                get {
+                    return this.columnOtherBankCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherDistCodeColumn {
+                get {
+                    return this.columnOtherDistCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn OtherBranchCodeColumn {
+                get {
+                    return this.columnOtherBranchCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankRow this[int index] {
+                get {
+                    return ((MerchantBankRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event MerchantBankRowChangeEventHandler MerchantBankRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event MerchantBankRowChangeEventHandler MerchantBankRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event MerchantBankRowChangeEventHandler MerchantBankRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event MerchantBankRowChangeEventHandler MerchantBankRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AddMerchantBankRow(MerchantBankRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankRow AddMerchantBankRow(
+                        string AccountNo, 
+                        string MerchantCode, 
+                        string MerchantCategory, 
+                        string OwnerName, 
+                        string CompanyName, 
+                        string RegStatus, 
+                        string AccountStatus, 
+                        string PhotoIdType, 
+                        string PhotoId, 
+                        string EmployeeId, 
+                        string OpeningDate, 
+                        string LogicalDate, 
+                        string PermanentAddress, 
+                        string OfficeAddress, 
+                        string PresentAdress, 
+                        string DivisionName, 
+                        string DistrictName, 
+                        string ThanaName, 
+                        string MainBalance, 
+                        decimal LienMainBalance, 
+                        decimal LienComBalance, 
+                        decimal MinTransAmt, 
+                        decimal MaxTransAmt, 
+                        string SettlementFeePercentage, 
+                        string SmsNotification, 
+                        string ActiveStatus, 
+                        string SettlementCycle, 
+                        string AreaType, 
+                        string OblBranchCode, 
+                        string MerchantType, 
+                        string OblBranchName, 
+                        string OblAccountName, 
+                        string BankAccountNo, 
+                        string OtherBankName, 
+                        string OtherBranchName, 
+                        string OtherDistName, 
+                        string RoutingNo, 
+                        string OtherAccountName, 
+                        string OtherAccountNo, 
+                        string OtherBankCode, 
+                        string OtherDistCode, 
+                        string OtherBranchCode) {
+                MerchantBankRow rowMerchantBankRow = ((MerchantBankRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        AccountNo,
+                        MerchantCode,
+                        MerchantCategory,
+                        OwnerName,
+                        CompanyName,
+                        RegStatus,
+                        AccountStatus,
+                        PhotoIdType,
+                        PhotoId,
+                        EmployeeId,
+                        OpeningDate,
+                        LogicalDate,
+                        PermanentAddress,
+                        OfficeAddress,
+                        PresentAdress,
+                        DivisionName,
+                        DistrictName,
+                        ThanaName,
+                        MainBalance,
+                        LienMainBalance,
+                        LienComBalance,
+                        MinTransAmt,
+                        MaxTransAmt,
+                        SettlementFeePercentage,
+                        SmsNotification,
+                        ActiveStatus,
+                        SettlementCycle,
+                        AreaType,
+                        OblBranchCode,
+                        MerchantType,
+                        OblBranchName,
+                        OblAccountName,
+                        BankAccountNo,
+                        OtherBankName,
+                        OtherBranchName,
+                        OtherDistName,
+                        RoutingNo,
+                        OtherAccountName,
+                        OtherAccountNo,
+                        OtherBankCode,
+                        OtherDistCode,
+                        OtherBranchCode};
+                rowMerchantBankRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowMerchantBankRow);
+                return rowMerchantBankRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                MerchantBankDataTable cln = ((MerchantBankDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new MerchantBankDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnAccountNo = base.Columns["AccountNo"];
+                this.columnMerchantCode = base.Columns["MerchantCode"];
+                this.columnMerchantCategory = base.Columns["MerchantCategory"];
+                this.columnOwnerName = base.Columns["OwnerName"];
+                this.columnCompanyName = base.Columns["CompanyName"];
+                this.columnRegStatus = base.Columns["RegStatus"];
+                this.columnAccountStatus = base.Columns["AccountStatus"];
+                this.columnPhotoIdType = base.Columns["PhotoIdType"];
+                this.columnPhotoId = base.Columns["PhotoId"];
+                this.columnEmployeeId = base.Columns["EmployeeId"];
+                this.columnOpeningDate = base.Columns["OpeningDate"];
+                this.columnLogicalDate = base.Columns["LogicalDate"];
+                this.columnPermanentAddress = base.Columns["PermanentAddress"];
+                this.columnOfficeAddress = base.Columns["OfficeAddress"];
+                this.columnPresentAdress = base.Columns["PresentAdress"];
+                this.columnDivisionName = base.Columns["DivisionName"];
+                this.columnDistrictName = base.Columns["DistrictName"];
+                this.columnThanaName = base.Columns["ThanaName"];
+                this.columnMainBalance = base.Columns["MainBalance"];
+                this.columnLienMainBalance = base.Columns["LienMainBalance"];
+                this.columnLienComBalance = base.Columns["LienComBalance"];
+                this.columnMinTransAmt = base.Columns["MinTransAmt"];
+                this.columnMaxTransAmt = base.Columns["MaxTransAmt"];
+                this.columnSettlementFeePercentage = base.Columns["SettlementFeePercentage"];
+                this.columnSmsNotification = base.Columns["SmsNotification"];
+                this.columnActiveStatus = base.Columns["ActiveStatus"];
+                this.columnSettlementCycle = base.Columns["SettlementCycle"];
+                this.columnAreaType = base.Columns["AreaType"];
+                this.columnOblBranchCode = base.Columns["OblBranchCode"];
+                this.columnMerchantType = base.Columns["MerchantType"];
+                this.columnOblBranchName = base.Columns["OblBranchName"];
+                this.columnOblAccountName = base.Columns["OblAccountName"];
+                this.columnBankAccountNo = base.Columns["BankAccountNo"];
+                this.columnOtherBankName = base.Columns["OtherBankName"];
+                this.columnOtherBranchName = base.Columns["OtherBranchName"];
+                this.columnOtherDistName = base.Columns["OtherDistName"];
+                this.columnRoutingNo = base.Columns["RoutingNo"];
+                this.columnOtherAccountName = base.Columns["OtherAccountName"];
+                this.columnOtherAccountNo = base.Columns["OtherAccountNo"];
+                this.columnOtherBankCode = base.Columns["OtherBankCode"];
+                this.columnOtherDistCode = base.Columns["OtherDistCode"];
+                this.columnOtherBranchCode = base.Columns["OtherBranchCode"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnAccountNo = new global::System.Data.DataColumn("AccountNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountNo);
+                this.columnMerchantCode = new global::System.Data.DataColumn("MerchantCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantCode);
+                this.columnMerchantCategory = new global::System.Data.DataColumn("MerchantCategory", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantCategory);
+                this.columnOwnerName = new global::System.Data.DataColumn("OwnerName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOwnerName);
+                this.columnCompanyName = new global::System.Data.DataColumn("CompanyName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCompanyName);
+                this.columnRegStatus = new global::System.Data.DataColumn("RegStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRegStatus);
+                this.columnAccountStatus = new global::System.Data.DataColumn("AccountStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountStatus);
+                this.columnPhotoIdType = new global::System.Data.DataColumn("PhotoIdType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPhotoIdType);
+                this.columnPhotoId = new global::System.Data.DataColumn("PhotoId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPhotoId);
+                this.columnEmployeeId = new global::System.Data.DataColumn("EmployeeId", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEmployeeId);
+                this.columnOpeningDate = new global::System.Data.DataColumn("OpeningDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOpeningDate);
+                this.columnLogicalDate = new global::System.Data.DataColumn("LogicalDate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLogicalDate);
+                this.columnPermanentAddress = new global::System.Data.DataColumn("PermanentAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPermanentAddress);
+                this.columnOfficeAddress = new global::System.Data.DataColumn("OfficeAddress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOfficeAddress);
+                this.columnPresentAdress = new global::System.Data.DataColumn("PresentAdress", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPresentAdress);
+                this.columnDivisionName = new global::System.Data.DataColumn("DivisionName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDivisionName);
+                this.columnDistrictName = new global::System.Data.DataColumn("DistrictName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDistrictName);
+                this.columnThanaName = new global::System.Data.DataColumn("ThanaName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnThanaName);
+                this.columnMainBalance = new global::System.Data.DataColumn("MainBalance", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMainBalance);
+                this.columnLienMainBalance = new global::System.Data.DataColumn("LienMainBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLienMainBalance);
+                this.columnLienComBalance = new global::System.Data.DataColumn("LienComBalance", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLienComBalance);
+                this.columnMinTransAmt = new global::System.Data.DataColumn("MinTransAmt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMinTransAmt);
+                this.columnMaxTransAmt = new global::System.Data.DataColumn("MaxTransAmt", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMaxTransAmt);
+                this.columnSettlementFeePercentage = new global::System.Data.DataColumn("SettlementFeePercentage", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSettlementFeePercentage);
+                this.columnSmsNotification = new global::System.Data.DataColumn("SmsNotification", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSmsNotification);
+                this.columnActiveStatus = new global::System.Data.DataColumn("ActiveStatus", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnActiveStatus);
+                this.columnSettlementCycle = new global::System.Data.DataColumn("SettlementCycle", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSettlementCycle);
+                this.columnAreaType = new global::System.Data.DataColumn("AreaType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAreaType);
+                this.columnOblBranchCode = new global::System.Data.DataColumn("OblBranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblBranchCode);
+                this.columnMerchantType = new global::System.Data.DataColumn("MerchantType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantType);
+                this.columnOblBranchName = new global::System.Data.DataColumn("OblBranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblBranchName);
+                this.columnOblAccountName = new global::System.Data.DataColumn("OblAccountName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOblAccountName);
+                this.columnBankAccountNo = new global::System.Data.DataColumn("BankAccountNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBankAccountNo);
+                this.columnOtherBankName = new global::System.Data.DataColumn("OtherBankName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherBankName);
+                this.columnOtherBranchName = new global::System.Data.DataColumn("OtherBranchName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherBranchName);
+                this.columnOtherDistName = new global::System.Data.DataColumn("OtherDistName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherDistName);
+                this.columnRoutingNo = new global::System.Data.DataColumn("RoutingNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRoutingNo);
+                this.columnOtherAccountName = new global::System.Data.DataColumn("OtherAccountName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherAccountName);
+                this.columnOtherAccountNo = new global::System.Data.DataColumn("OtherAccountNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherAccountNo);
+                this.columnOtherBankCode = new global::System.Data.DataColumn("OtherBankCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherBankCode);
+                this.columnOtherDistCode = new global::System.Data.DataColumn("OtherDistCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherDistCode);
+                this.columnOtherBranchCode = new global::System.Data.DataColumn("OtherBranchCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOtherBranchCode);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankRow NewMerchantBankRow() {
+                return ((MerchantBankRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new MerchantBankRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(MerchantBankRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.MerchantBankRowChanged != null)) {
+                    this.MerchantBankRowChanged(this, new MerchantBankRowChangeEvent(((MerchantBankRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.MerchantBankRowChanging != null)) {
+                    this.MerchantBankRowChanging(this, new MerchantBankRowChangeEvent(((MerchantBankRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.MerchantBankRowDeleted != null)) {
+                    this.MerchantBankRowDeleted(this, new MerchantBankRowChangeEvent(((MerchantBankRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.MerchantBankRowDeleting != null)) {
+                    this.MerchantBankRowDeleting(this, new MerchantBankRowChangeEvent(((MerchantBankRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemoveMerchantBankRow(MerchantBankRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                MerchantDataSet ds = new MerchantDataSet();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "MerchantBankDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class OutletDetailsTransactionRow : global::System.Data.DataRow {
@@ -2058,6 +3494,1731 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class EmerchantSettlementInfoRow : global::System.Data.DataRow {
+            
+            private EmerchantSettlementInfoDataTable tableEmerchantSettlementInfo;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal EmerchantSettlementInfoRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableEmerchantSettlementInfo = ((EmerchantSettlementInfoDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantAccNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.MerchantAccNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantAccNo\' in table \'EmerchantSettlementInfo\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.MerchantAccNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantCat {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.MerchantCatColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantCat\' in table \'EmerchantSettlementInfo\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.MerchantCatColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OwnerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OwnerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OwnerName\' in table \'EmerchantSettlementInfo\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OwnerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CompanyOutletName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.CompanyOutletNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CompanyOutletName\' in table \'EmerchantSettlementInfo\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.CompanyOutletNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double BalanceMain {
+                get {
+                    try {
+                        return ((double)(this[this.tableEmerchantSettlementInfo.BalanceMainColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BalanceMain\' in table \'EmerchantSettlementInfo\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.BalanceMainColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double BalanceCommission {
+                get {
+                    try {
+                        return ((double)(this[this.tableEmerchantSettlementInfo.BalanceCommissionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BalanceCommission\' in table \'EmerchantSettlementInfo\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.BalanceCommissionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double SettlementFeePer {
+                get {
+                    try {
+                        return ((double)(this[this.tableEmerchantSettlementInfo.SettlementFeePerColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SettlementFeePer\' in table \'EmerchantSettlementInfo\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.SettlementFeePerColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string SettlementCycle {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.SettlementCycleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SettlementCycle\' in table \'EmerchantSettlementInfo\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.SettlementCycleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantType {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.MerchantTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantType\' in table \'EmerchantSettlementInfo\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.MerchantTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblBranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OblBranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblBranchName\' in table \'EmerchantSettlementInfo\' is DBNull" +
+                                ".", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OblBranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblBankAccName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OblBankAccNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblBankAccName\' in table \'EmerchantSettlementInfo\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OblBankAccNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblBankAccNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OblBankAccNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblBankAccNo\' in table \'EmerchantSettlementInfo\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OblBankAccNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OthersBankName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OthersBankNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OthersBankName\' in table \'EmerchantSettlementInfo\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OthersBankNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OthersBankBranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OthersBankBranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OthersBankBranchName\' in table \'EmerchantSettlementInfo\' is" +
+                                " DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OthersBankBranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OthersBankRoutingNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OthersBankRoutingNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OthersBankRoutingNo\' in table \'EmerchantSettlementInfo\' is " +
+                                "DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OthersBankRoutingNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OthersBankAccName {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OthersBankAccNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OthersBankAccName\' in table \'EmerchantSettlementInfo\' is DB" +
+                                "Null.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OthersBankAccNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OthersBankAccNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableEmerchantSettlementInfo.OthersBankAccNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OthersBankAccNo\' in table \'EmerchantSettlementInfo\' is DBNu" +
+                                "ll.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.OthersBankAccNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public double MinTransAmt {
+                get {
+                    try {
+                        return ((double)(this[this.tableEmerchantSettlementInfo.MinTransAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MinTransAmt\' in table \'EmerchantSettlementInfo\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableEmerchantSettlementInfo.MinTransAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantAccNoNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.MerchantAccNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantAccNoNull() {
+                this[this.tableEmerchantSettlementInfo.MerchantAccNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantCatNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.MerchantCatColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantCatNull() {
+                this[this.tableEmerchantSettlementInfo.MerchantCatColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOwnerNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OwnerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOwnerNameNull() {
+                this[this.tableEmerchantSettlementInfo.OwnerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCompanyOutletNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.CompanyOutletNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCompanyOutletNameNull() {
+                this[this.tableEmerchantSettlementInfo.CompanyOutletNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBalanceMainNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.BalanceMainColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBalanceMainNull() {
+                this[this.tableEmerchantSettlementInfo.BalanceMainColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBalanceCommissionNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.BalanceCommissionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBalanceCommissionNull() {
+                this[this.tableEmerchantSettlementInfo.BalanceCommissionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSettlementFeePerNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.SettlementFeePerColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSettlementFeePerNull() {
+                this[this.tableEmerchantSettlementInfo.SettlementFeePerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSettlementCycleNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.SettlementCycleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSettlementCycleNull() {
+                this[this.tableEmerchantSettlementInfo.SettlementCycleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantTypeNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.MerchantTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantTypeNull() {
+                this[this.tableEmerchantSettlementInfo.MerchantTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblBranchNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OblBranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblBranchNameNull() {
+                this[this.tableEmerchantSettlementInfo.OblBranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblBankAccNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OblBankAccNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblBankAccNameNull() {
+                this[this.tableEmerchantSettlementInfo.OblBankAccNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblBankAccNoNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OblBankAccNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblBankAccNoNull() {
+                this[this.tableEmerchantSettlementInfo.OblBankAccNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOthersBankNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OthersBankNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOthersBankNameNull() {
+                this[this.tableEmerchantSettlementInfo.OthersBankNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOthersBankBranchNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OthersBankBranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOthersBankBranchNameNull() {
+                this[this.tableEmerchantSettlementInfo.OthersBankBranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOthersBankRoutingNoNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OthersBankRoutingNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOthersBankRoutingNoNull() {
+                this[this.tableEmerchantSettlementInfo.OthersBankRoutingNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOthersBankAccNameNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OthersBankAccNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOthersBankAccNameNull() {
+                this[this.tableEmerchantSettlementInfo.OthersBankAccNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOthersBankAccNoNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.OthersBankAccNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOthersBankAccNoNull() {
+                this[this.tableEmerchantSettlementInfo.OthersBankAccNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMinTransAmtNull() {
+                return this.IsNull(this.tableEmerchantSettlementInfo.MinTransAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMinTransAmtNull() {
+                this[this.tableEmerchantSettlementInfo.MinTransAmtColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class MerchantBankRow : global::System.Data.DataRow {
+            
+            private MerchantBankDataTable tableMerchantBank;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal MerchantBankRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableMerchantBank = ((MerchantBankDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AccountNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.AccountNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountNo\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.AccountNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.MerchantCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantCode\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MerchantCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantCategory {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.MerchantCategoryColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantCategory\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MerchantCategoryColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OwnerName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OwnerNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OwnerName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OwnerNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CompanyName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.CompanyNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CompanyName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.CompanyNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string RegStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.RegStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RegStatus\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.RegStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AccountStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.AccountStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountStatus\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.AccountStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PhotoIdType {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.PhotoIdTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PhotoIdType\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.PhotoIdTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PhotoId {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.PhotoIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PhotoId\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.PhotoIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string EmployeeId {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.EmployeeIdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EmployeeId\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.EmployeeIdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OpeningDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OpeningDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OpeningDate\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OpeningDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string LogicalDate {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.LogicalDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LogicalDate\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.LogicalDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PermanentAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.PermanentAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PermanentAddress\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.PermanentAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OfficeAddress {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OfficeAddressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OfficeAddress\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OfficeAddressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string PresentAdress {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.PresentAdressColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PresentAdress\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.PresentAdressColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DivisionName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.DivisionNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DivisionName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.DivisionNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DistrictName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.DistrictNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DistrictName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.DistrictNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ThanaName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.ThanaNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ThanaName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.ThanaNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MainBalance {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.MainBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MainBalance\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MainBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal LienMainBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMerchantBank.LienMainBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LienMainBalance\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.LienMainBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal LienComBalance {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMerchantBank.LienComBalanceColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LienComBalance\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.LienComBalanceColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal MinTransAmt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMerchantBank.MinTransAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MinTransAmt\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MinTransAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal MaxTransAmt {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableMerchantBank.MaxTransAmtColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MaxTransAmt\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MaxTransAmtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string SettlementFeePercentage {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.SettlementFeePercentageColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SettlementFeePercentage\' in table \'MerchantBank\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.SettlementFeePercentageColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string SmsNotification {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.SmsNotificationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SmsNotification\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.SmsNotificationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string ActiveStatus {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.ActiveStatusColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ActiveStatus\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.ActiveStatusColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string SettlementCycle {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.SettlementCycleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SettlementCycle\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.SettlementCycleColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string AreaType {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.AreaTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AreaType\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.AreaTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblBranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OblBranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblBranchCode\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OblBranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string MerchantType {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.MerchantTypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantType\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.MerchantTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblBranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OblBranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblBranchName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OblBranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OblAccountName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OblAccountNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OblAccountName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OblAccountNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BankAccountNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.BankAccountNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'BankAccountNo\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.BankAccountNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherBankName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherBankNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherBankName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherBankNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherBranchName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherBranchNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherBranchName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherBranchNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherDistName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherDistNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherDistName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherDistNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string RoutingNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.RoutingNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RoutingNo\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.RoutingNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherAccountName {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherAccountNameColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherAccountName\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherAccountNameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherAccountNo {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherAccountNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherAccountNo\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherAccountNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherBankCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherBankCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherBankCode\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherBankCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherDistCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherDistCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherDistCode\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherDistCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string OtherBranchCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableMerchantBank.OtherBranchCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'OtherBranchCode\' in table \'MerchantBank\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableMerchantBank.OtherBranchCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAccountNoNull() {
+                return this.IsNull(this.tableMerchantBank.AccountNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAccountNoNull() {
+                this[this.tableMerchantBank.AccountNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantCodeNull() {
+                return this.IsNull(this.tableMerchantBank.MerchantCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantCodeNull() {
+                this[this.tableMerchantBank.MerchantCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantCategoryNull() {
+                return this.IsNull(this.tableMerchantBank.MerchantCategoryColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantCategoryNull() {
+                this[this.tableMerchantBank.MerchantCategoryColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOwnerNameNull() {
+                return this.IsNull(this.tableMerchantBank.OwnerNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOwnerNameNull() {
+                this[this.tableMerchantBank.OwnerNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCompanyNameNull() {
+                return this.IsNull(this.tableMerchantBank.CompanyNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCompanyNameNull() {
+                this[this.tableMerchantBank.CompanyNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRegStatusNull() {
+                return this.IsNull(this.tableMerchantBank.RegStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRegStatusNull() {
+                this[this.tableMerchantBank.RegStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAccountStatusNull() {
+                return this.IsNull(this.tableMerchantBank.AccountStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAccountStatusNull() {
+                this[this.tableMerchantBank.AccountStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPhotoIdTypeNull() {
+                return this.IsNull(this.tableMerchantBank.PhotoIdTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPhotoIdTypeNull() {
+                this[this.tableMerchantBank.PhotoIdTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPhotoIdNull() {
+                return this.IsNull(this.tableMerchantBank.PhotoIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPhotoIdNull() {
+                this[this.tableMerchantBank.PhotoIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsEmployeeIdNull() {
+                return this.IsNull(this.tableMerchantBank.EmployeeIdColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetEmployeeIdNull() {
+                this[this.tableMerchantBank.EmployeeIdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOpeningDateNull() {
+                return this.IsNull(this.tableMerchantBank.OpeningDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOpeningDateNull() {
+                this[this.tableMerchantBank.OpeningDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLogicalDateNull() {
+                return this.IsNull(this.tableMerchantBank.LogicalDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLogicalDateNull() {
+                this[this.tableMerchantBank.LogicalDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPermanentAddressNull() {
+                return this.IsNull(this.tableMerchantBank.PermanentAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPermanentAddressNull() {
+                this[this.tableMerchantBank.PermanentAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOfficeAddressNull() {
+                return this.IsNull(this.tableMerchantBank.OfficeAddressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOfficeAddressNull() {
+                this[this.tableMerchantBank.OfficeAddressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPresentAdressNull() {
+                return this.IsNull(this.tableMerchantBank.PresentAdressColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPresentAdressNull() {
+                this[this.tableMerchantBank.PresentAdressColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDivisionNameNull() {
+                return this.IsNull(this.tableMerchantBank.DivisionNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDivisionNameNull() {
+                this[this.tableMerchantBank.DivisionNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDistrictNameNull() {
+                return this.IsNull(this.tableMerchantBank.DistrictNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDistrictNameNull() {
+                this[this.tableMerchantBank.DistrictNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsThanaNameNull() {
+                return this.IsNull(this.tableMerchantBank.ThanaNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetThanaNameNull() {
+                this[this.tableMerchantBank.ThanaNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMainBalanceNull() {
+                return this.IsNull(this.tableMerchantBank.MainBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMainBalanceNull() {
+                this[this.tableMerchantBank.MainBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLienMainBalanceNull() {
+                return this.IsNull(this.tableMerchantBank.LienMainBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLienMainBalanceNull() {
+                this[this.tableMerchantBank.LienMainBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsLienComBalanceNull() {
+                return this.IsNull(this.tableMerchantBank.LienComBalanceColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetLienComBalanceNull() {
+                this[this.tableMerchantBank.LienComBalanceColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMinTransAmtNull() {
+                return this.IsNull(this.tableMerchantBank.MinTransAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMinTransAmtNull() {
+                this[this.tableMerchantBank.MinTransAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMaxTransAmtNull() {
+                return this.IsNull(this.tableMerchantBank.MaxTransAmtColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMaxTransAmtNull() {
+                this[this.tableMerchantBank.MaxTransAmtColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSettlementFeePercentageNull() {
+                return this.IsNull(this.tableMerchantBank.SettlementFeePercentageColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSettlementFeePercentageNull() {
+                this[this.tableMerchantBank.SettlementFeePercentageColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSmsNotificationNull() {
+                return this.IsNull(this.tableMerchantBank.SmsNotificationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSmsNotificationNull() {
+                this[this.tableMerchantBank.SmsNotificationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsActiveStatusNull() {
+                return this.IsNull(this.tableMerchantBank.ActiveStatusColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetActiveStatusNull() {
+                this[this.tableMerchantBank.ActiveStatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSettlementCycleNull() {
+                return this.IsNull(this.tableMerchantBank.SettlementCycleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSettlementCycleNull() {
+                this[this.tableMerchantBank.SettlementCycleColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsAreaTypeNull() {
+                return this.IsNull(this.tableMerchantBank.AreaTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetAreaTypeNull() {
+                this[this.tableMerchantBank.AreaTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblBranchCodeNull() {
+                return this.IsNull(this.tableMerchantBank.OblBranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblBranchCodeNull() {
+                this[this.tableMerchantBank.OblBranchCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsMerchantTypeNull() {
+                return this.IsNull(this.tableMerchantBank.MerchantTypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetMerchantTypeNull() {
+                this[this.tableMerchantBank.MerchantTypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblBranchNameNull() {
+                return this.IsNull(this.tableMerchantBank.OblBranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblBranchNameNull() {
+                this[this.tableMerchantBank.OblBranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOblAccountNameNull() {
+                return this.IsNull(this.tableMerchantBank.OblAccountNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOblAccountNameNull() {
+                this[this.tableMerchantBank.OblAccountNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBankAccountNoNull() {
+                return this.IsNull(this.tableMerchantBank.BankAccountNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBankAccountNoNull() {
+                this[this.tableMerchantBank.BankAccountNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherBankNameNull() {
+                return this.IsNull(this.tableMerchantBank.OtherBankNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherBankNameNull() {
+                this[this.tableMerchantBank.OtherBankNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherBranchNameNull() {
+                return this.IsNull(this.tableMerchantBank.OtherBranchNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherBranchNameNull() {
+                this[this.tableMerchantBank.OtherBranchNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherDistNameNull() {
+                return this.IsNull(this.tableMerchantBank.OtherDistNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherDistNameNull() {
+                this[this.tableMerchantBank.OtherDistNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsRoutingNoNull() {
+                return this.IsNull(this.tableMerchantBank.RoutingNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetRoutingNoNull() {
+                this[this.tableMerchantBank.RoutingNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherAccountNameNull() {
+                return this.IsNull(this.tableMerchantBank.OtherAccountNameColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherAccountNameNull() {
+                this[this.tableMerchantBank.OtherAccountNameColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherAccountNoNull() {
+                return this.IsNull(this.tableMerchantBank.OtherAccountNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherAccountNoNull() {
+                this[this.tableMerchantBank.OtherAccountNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherBankCodeNull() {
+                return this.IsNull(this.tableMerchantBank.OtherBankCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherBankCodeNull() {
+                this[this.tableMerchantBank.OtherBankCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherDistCodeNull() {
+                return this.IsNull(this.tableMerchantBank.OtherDistCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherDistCodeNull() {
+                this[this.tableMerchantBank.OtherDistCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsOtherBranchCodeNull() {
+                return this.IsNull(this.tableMerchantBank.OtherBranchCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetOtherBranchCodeNull() {
+                this[this.tableMerchantBank.OtherBranchCodeColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -2145,6 +5306,74 @@ namespace OneMFS.ReportingApiServer.Reports.DataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public OutletDailyTransactionRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class EmerchantSettlementInfoRowChangeEvent : global::System.EventArgs {
+            
+            private EmerchantSettlementInfoRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoRowChangeEvent(EmerchantSettlementInfoRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public EmerchantSettlementInfoRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class MerchantBankRowChangeEvent : global::System.EventArgs {
+            
+            private MerchantBankRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankRowChangeEvent(MerchantBankRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public MerchantBankRow Row {
                 get {
                     return this.eventRow;
                 }

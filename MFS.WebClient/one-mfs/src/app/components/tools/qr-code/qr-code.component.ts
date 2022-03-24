@@ -17,6 +17,7 @@ export class QrCodeComponent implements OnInit {
     utilityList: any;
     gatewayList: any;
     catTypeList: any;
+    qrTypeList: any;
     isDateDisabled: boolean = false;
     currentUserModel: any = {};
     constructor(private mfsUtilityService: MfsUtilityService,
@@ -32,8 +33,11 @@ export class QrCodeComponent implements OnInit {
         this.catTypeList = [
             { label: 'Agent', value: 'A' },
             { label: 'Customer', value: 'C' },
-            { label: 'ALL', value: 'All' },
-            { label: 'None', value: 'All' }
+            { label: 'Merchant', value: 'M' }           
+        ];
+        this.qrTypeList = [
+            { label: 'Ok Qr (Previous)', value: 'okqr' },
+            { label: 'Bangla Qr', value: 'bnqr' }          
         ];
     }
     getReportParam() {
@@ -46,14 +50,19 @@ export class QrCodeComponent implements OnInit {
             else {
                 obj.mphone = this.model.mphone
             }   
-
+            if (!this.model.qrType) {
+                obj.qrType = null;
+            }
+            else {
+                obj.qrType = this.model.qrType
+            }   
             if (!this.model.catId) {
                 obj.catId = null;
             }
             else {
                 obj.catId = this.model.catId
             }
-                    
+               
             return obj;
         }
         else {
@@ -64,7 +73,7 @@ export class QrCodeComponent implements OnInit {
     }
 
     validate(): any {
-        if (!this.model.catId || !this.model.mphone) {
+        if (!this.model.catId || !this.model.mphone || !this.model.qrType) {
             return false;
         }
         else {

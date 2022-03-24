@@ -58,12 +58,13 @@ export class TransactionMasterComponent implements OnInit {
 
         this.gridConfig.columnList = [
             { field: 'transDate', header: 'Date', width: '9%', filter: this.gridSettingService.getDefaultDateFilterable(), template: this.gridSettingService.getDateTemplateForRowData() },            
-            { field: 'transFrom', header: 'From', width: '9%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'transTo', header: 'To', width: '9%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'transFrom', header: 'From', width: '8%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'transTo', header: 'To', width: '8%', filter: this.gridSettingService.getDefaultFilterable() },
             { field: 'payAmt', header: 'Amount ( SC + Amt )', width: '9%', filter: this.gridSettingService.getDefaultNumberFilterable(0,100000), template: this.gridSettingService.getMoneyTemplateForRowData() },
             { field: 'schargeAmt', header: 'Service Charge', width: '8%', filter: this.gridSettingService.getDefaultFilterable(), template: this.gridSettingService.getMoneyTemplateForRowData()},
-            { field: 'particular', header: 'Event', width: '20%', filter: this.gridSettingService.getDefaultFilterable() },
-            { field: 'billno', header: 'Biller Id', width: '12%', filter: this.gridSettingService.getDefaultFilterable() }
+            { field: 'particular', header: 'Event', width: '15%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'billno', header: 'Biller Id', width: '12%', filter: this.gridSettingService.getDefaultFilterable() },
+            { field: 'gateway', header: 'Gateway', width: '7%', filter: this.gridSettingService.getDefaultFilterable() }
         ];
 
         if (this.mPhone) {

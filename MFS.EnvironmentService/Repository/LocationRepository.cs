@@ -274,10 +274,10 @@ namespace MFS.EnvironmentService.Repository
 			using (var connection = this.GetConnection())
 			{
 				var parameter = new OracleDynamicParameters();
-				parameter.Add("DigitNo", OracleDbType.Int32, ParameterDirection.Input, territoryCode.Length);
-				parameter.Add("TerritoryCode", OracleDbType.Varchar2, ParameterDirection.Input, territoryCode);
-				parameter.Add("DistributorCode_CURSOR", OracleDbType.RefCursor, ParameterDirection.Output);
-				var result = SqlMapper.Query<dynamic>(connection, dbUser + "PR_GENERATE_B2B_DIST_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
+				parameter.Add("V_CATID", OracleDbType.Varchar2, ParameterDirection.Input, "");
+				parameter.Add("V_TCODE", OracleDbType.Varchar2, ParameterDirection.Input, territoryCode);
+				parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+				var result = SqlMapper.Query<string>(connection, dbUser + "PR_GENERATE_B2B_DIST_CODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 				return result;
 			}
 		}

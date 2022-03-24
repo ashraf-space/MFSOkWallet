@@ -57,7 +57,7 @@ namespace MFS.TransactionService.Repository
             {
                 using (var connection = this.GetConnection())
                 {
-                    string query = @"Select name as label,subMenuId as value from " + mainDbUser.DbUser + "feature_pay_submenu where FEATURE_ID= " + featureId + " order by serial,name";
+                    string query = @"Select name as label,subMenuId as value from " + mainDbUser.DbUser + "feature_pay_submenu where Status='A' and FEATURE_ID= " + featureId + " order by serial,name";
                     var result = connection.Query<CustomDropDownModel>(query);
                     this.CloseConnection(connection);
                     return result;

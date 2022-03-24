@@ -25,6 +25,7 @@ export class CommissionEntryComponent implements OnInit {
     SelectedCommissionEntryModel: any = {};
     sysCoaCode: any;
     toCatId: any;
+    fromCatId: any;
     entryBrCode: any;
     entryOrApproval: string = null;
 
@@ -111,7 +112,7 @@ export class CommissionEntryComponent implements OnInit {
         if (this.sysCoaCode != null && this.sysCoaCode != '0' && this.sysCoaCode.length > 0) {
             this.isLoading = true;
             this.entryOrApproval = 'ForEntry';
-            this.fundTransferService.GetCommssionMobileList(this.sysCoaCode,this.entryOrApproval)
+            this.fundTransferService.GetCommssionMobileList(this.sysCoaCode,'',this.entryOrApproval)
                 .pipe(first())
                 .subscribe(
                     data => {
@@ -163,12 +164,24 @@ export class CommissionEntryComponent implements OnInit {
             return it.makeStatus == true;
         });
 
-        this.toCatId = this.sysCoaCode == 'L40000000087' ? 'D' : 'A';
+        //this.toCatId = this.sysCoaCode == 'L40000000087' ? 'D' : 'A';
+        if (this.sysCoaCode == 'L40000000087') {
+            this.toCatId = 'D';
+            this.fromCatId = 'S1'
+        }
+        else if (this.sysCoaCode == 'L40000000046') {
+            this.toCatId = 'A';
+            this.fromCatId = 'S1'
+        }
+        else {
+            this.toCatId = 'D';
+            this.fromCatId = 'S2'
+        }
 
 
         if (this.SelectedCommissionEntryModel.length > 0) {
             this.isLoading = true;
-            this.fundTransferService.SaveCommissionEntry(this.toCatId, this.entryBy, this.entryBrCode, this.SelectedCommissionEntryModel).pipe(first())
+            this.fundTransferService.SaveCommissionEntry(this.toCatId, this.fromCatId, this.entryBy, this.entryBrCode, this.SelectedCommissionEntryModel).pipe(first())
                 .subscribe(
                     data => {
                         this.isLoading = false;

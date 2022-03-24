@@ -144,7 +144,8 @@ namespace MFS.DistributionService.Service
 					{
 						regInfo.RegSource = "P";
 						regInfo.AcTypeCode = 1;
-						regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						regInfo.RegDate = System.DateTime.Now;
 						regInfo.EntryDate = System.DateTime.Now;
 						var currentMcode = _MerchantRepository.GenerateMerchantCode(regInfo._MCategory);
 						var Heading = ((IDictionary<string, object>)currentMcode).Keys.ToArray();
@@ -182,6 +183,26 @@ namespace MFS.DistributionService.Service
 							merchantConfig.Category = "S";
 							regInfo.CatId = regInfo._MCategory;
 						}
+						else if (regInfo._MCategory == "ABM")
+						{
+							if (string.IsNullOrEmpty(regInfo.Pmphone))
+							{
+								return HttpStatusCode.BadRequest; ;
+							}
+							merchantConfig.Sname = null;
+							merchantConfig.Ci = null;
+							merchantConfig.PreFuncProcName = null;
+							merchantConfig.Di = null;
+							merchantConfig.SchargeFormula = null;
+							merchantConfig.PostFuncProcName = null;
+							merchantConfig.Category = "B";
+							regInfo.CatId = regInfo._MCategory;
+							if (regInfo.SchargePer > 0)
+							{
+								double? serviceCharge = regInfo.SchargePer;
+								regInfo.SchargePer = serviceCharge / 100;
+							}
+						}
 						else
 						{
 							merchantConfig.Sname = null;
@@ -201,7 +222,6 @@ namespace MFS.DistributionService.Service
 							_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Merchant Config", merchantConfig.Mphone, "Save successfully");
 							_MerchantRepository.Add(regInfo);
 							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
-
 						}
 						catch (Exception ex)
 						{
@@ -278,10 +298,14 @@ namespace MFS.DistributionService.Service
 		{
 			var reginfo = (Reginfo)_kycService.GetRegInfoByMphone(mPhone);
 			var merchantConfig = (MerchantConfig)_merchantConfigService.GetMerchantConfigDetails(mPhone);
+			if (reginfo.SchargePer != 0)
+			{
+				reginfo.SchargePer = reginfo.SchargePer * 100;
+			}
 			if (reginfo.SelectedCycleWeekDay != null)
 			{
 				reginfo._SelectedCycleWeekDay = reginfo.SelectedCycleWeekDay.Split(',').ToList();
-			}			
+			}
 			if (!string.IsNullOrEmpty(merchantConfig.Sname) && merchantConfig.Sname.Contains('.'))
 			{
 
@@ -290,7 +314,7 @@ namespace MFS.DistributionService.Service
 			if (merchantConfig != null && reginfo != null)
 			{
 				reginfo._Mcode = merchantConfig.Mcode;
-				if (merchantConfig.Category == "S")
+				if (merchantConfig.Category == "S" || merchantConfig.Category == "B")
 				{
 					reginfo._MCategory = reginfo.CatId;
 				}
@@ -298,7 +322,7 @@ namespace MFS.DistributionService.Service
 				{
 					reginfo._MCategory = merchantConfig.Category;
 				}
-								
+
 			}
 			return reginfo;
 		}
@@ -325,6 +349,7 @@ namespace MFS.DistributionService.Service
 					{
 						reginfo._Mcode = merchantConfig.Mcode;
 						reginfo._MCategory = merchantConfig.Category;
+						reginfo.SchargePer = 0;
 					}
 					//var countChild = _MerchantRepository.GetChildCountByMcode(merchantConfig.Mcode.Substring(0, 12));
 					//int code = Convert.ToInt32(countChild) + 1;
@@ -352,16 +377,47 @@ namespace MFS.DistributionService.Service
 		{
 			try
 			{
+				if (string.IsNullOrEmpty(regInfo.Pmphone))
+				{
+					return HttpStatusCode.BadRequest;
+				}
 
 				if (isEditMode != true)
-				{					
-					regInfo.CatId = "M";
+				{
+					Reginfo parentReginfo = (Reginfo)_kycService.GetRegInfoByMphone(regInfo.Pmphone);
+					if (parentReginfo.CatId == "ABM")
+					{
+						regInfo.CatId = "ABMC";						
+						regInfo.Ppmphone = parentReginfo.Pmphone;
+						if (string.IsNullOrEmpty(regInfo.Ppmphone))
+						{
+							return HttpStatusCode.BadRequest;
+						}
+					}
+					else
+					{
+						regInfo.CatId = "M";
+					}
 					regInfo.Mphone = regInfo._ChildMphone;
 					regInfo.AcTypeCode = 1;
-					regInfo.EntryDate = System.DateTime.Now;					
+					regInfo.RegSource = "P";
+					regInfo.PinStatus = "N";
+					regInfo.EntryDate = System.DateTime.Now;
+					regInfo.RegStatus = "L";
+					regInfo.SchargePer = null;
+					regInfo.AuthoBy = null;
+					regInfo.AuthoDate = null;
 					MerchantConfig merchantConfig = new MerchantConfig();
 					merchantConfig.Mcode = regInfo._OutletCode;
-					merchantConfig.Category = "M";
+					if (parentReginfo.CatId == "ABM")
+					{
+						merchantConfig.Category = "B";
+					}
+					else
+					{
+						merchantConfig.Category = "M";
+					}
+
 					merchantConfig.Mphone = regInfo.Mphone;
 					try
 					{
@@ -371,7 +427,6 @@ namespace MFS.DistributionService.Service
 							_kycService.InsertModelToAuditTrail(merchantConfig, regInfo.EntryBy, 5, 3, "Child Merchant", merchantConfig.Mphone, "Child Merchant Added");
 							_MerchantRepository.Add(regInfo);
 							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 5, 3, "Merchant", regInfo.Mphone, "Merchant added");
-
 						}
 						else
 						{
@@ -425,7 +480,7 @@ namespace MFS.DistributionService.Service
 			{
 
 				throw ex;
-			}			
+			}
 		}
 
 		public object GetChildMerChantByMphone(string mPhone)
@@ -434,13 +489,14 @@ namespace MFS.DistributionService.Service
 			{
 				var reginfo = (Reginfo)_kycService.GetRegInfoByMphone(mPhone);
 				var merchantConfig = (MerchantConfig)_merchantConfigService.GetMerchantConfigDetails(mPhone);
-				var parentMphone = _merchantConfigService.GetParentInfoByChildMcode(merchantConfig.Mcode.Substring(0, 12));
+				//var parentMphone = _merchantConfigService.GetParentInfoByChildMcode(merchantConfig.Mcode.Substring(0, 12));
+
 				if (merchantConfig != null && reginfo != null)
 				{
 					reginfo._Mcode = merchantConfig.Mcode;
 					reginfo._MCategory = merchantConfig.Category;
-					reginfo.Pmphone = parentMphone.ToString();
-					reginfo._ChildMphone = reginfo.Mphone;
+					//reginfo.Pmphone = parentMphone.ToString();
+					reginfo._ChildMphone = reginfo.Mphone;			
 				}
 				return reginfo;
 			}
@@ -529,7 +585,7 @@ namespace MFS.DistributionService.Service
 					{
 						regInfo._Mcode = mcode.ToString();
 					}
-					
+
 					MerchantConfig merchantConfig = new MerchantConfig();
 					if (regInfo._MCategory == "R")
 					{
@@ -546,7 +602,7 @@ namespace MFS.DistributionService.Service
 					{
 						return HttpStatusCode.BadRequest;
 					}
-					
+
 					merchantConfig.Mcode = regInfo._Mcode;
 					merchantConfig.Mphone = regInfo.Mphone;
 					try
@@ -569,7 +625,7 @@ namespace MFS.DistributionService.Service
 				else
 				{
 					if (evnt == "edit")
-					{						
+					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_MerchantRepository.UpdateRegInfo(regInfo);

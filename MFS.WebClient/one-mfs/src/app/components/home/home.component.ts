@@ -368,7 +368,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     transactionAnalysis() {
         this.isLoading = true;
-        this.authenticationService.getTransactionAnalysis().pipe(first())
+        this.authenticationService.getTransactionAnalysis(this.dashboardModel.totalClientCount).pipe(first())
             .subscribe(
                 data => {
                     if (data) {

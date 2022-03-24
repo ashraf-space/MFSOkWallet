@@ -9,39 +9,125 @@
     <div *ngIf="!loading">
         <p class="login-box-msg ">Sign in to start your Session</p>
         <div>
-			<div class="p-grid">
-				<div class="p-col-12" *ngIf="invalidCredentials">
-					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
-						<span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Username or Password</span>
-					</div>
-				</div>
-				<div class="p-col-12" *ngIf="lockDownState">
-					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
-						<span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been temporarily Locked</span>
-					</div>
-				</div>
-				<div class="p-col-12" *ngIf="forceLocklockDownState">
-					<div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
-						<span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been Forced Log-Out</span>
-					</div>
-				</div>
-				<div class="p-col-12">
-					<span class="ui-float-label">
-						<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="loginModel.UserName" [disabled]="fixedUserName || lockDownState">
-						<label for="float-input">User Name</label>
-					</span>
-				</div>
-				<div class="p-col-12">
-					<span class="ui-float-label">
-						<input id="pwd" type="password" class="form-control" pInputText [(ngModel)]="loginModel.Password" [disabled]="lockDownState" (keyup)="onFinishEvent($event)">
-						<label for="float-input">Password</label>
-					</span>
-				</div>
-				<div class="p-col-12">
-					<button type="button" class="btn btn-blue btn-reverse btn-block" (click)="onSignIn()" [disabled]="lockDownState">Sign In</button>
-				</div>
-			</div>                    
+            <div class="p-grid">
+                <div class="p-col-12" *ngIf="invalidCredentials">
+                    <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                        <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Invalid Username or Password</span>
+                    </div>
+                </div>
+                <div class="p-col-12" *ngIf="lockDownState">
+                    <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                        <span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been temporarily Locked</span>
+                    </div>
+                </div>
+                <div class="p-col-12" *ngIf="forceLocklockDownState">
+                    <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                        <span style="text-align:center;font-size:85%" class="login-box-msg">Warning: Dear {{loginModel.fullName}}, Please Contact with System Administrator. Your account has been Forced Log-Out</span>
+                    </div>
+                </div>
+                <div class="p-col-12">
+                    <span class="ui-float-label">
+                        <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="loginModel.UserName" [disabled]="fixedUserName || lockDownState">
+                        <label for="float-input">User Name</label>
+                    </span>
+                </div>
+                <div class="p-col-12">
+                    <span class="ui-float-label">
+                        <input id="pwd" type="password" class="form-control" pInputText [(ngModel)]="loginModel.Password" [disabled]="lockDownState" (keyup)="onFinishEvent($event)">
+                        <label for="float-input">Password</label>
+                    </span>
+                </div>
+                <div class="p-col-12">
+                    <button type="button" class="btn btn-blue btn-reverse btn-block" (click)="onSignIn()" [disabled]="lockDownState">Sign In</button>
+                </div>
+                <div class="p-col-12" style="text-align:center">
+                    <!--<label for="float-input" (click)="ForgotPassword()">Forgot Password?</label>-->
+                    <button type="button" class="btn btn-white" (click)="ForgotPassword()">Forgot Password?</button>
+                </div>
+            </div>                    
         </div>        
     </div>
 </div>
 
+<!--<app-generic-modal style="width:600px" [initiateModal]="promptForgotPasswordModal" [header]="'Please provide the following information for password reset'" (onConfirm)="confirmForgotPassResent()" (onDestroy)="promptForgotPasswordModal=false" [disableConfirm]="forgotPassResetModel.userName==null || forgotPassResetModel.employeeId==null || forgotPassResetModel.mobileNo==null || forgotPassResetModel.officialEmail==null">-->
+    <app-generic-modal style="width:600px" [initiateModal]="promptForgotPasswordModal" [header]="'Please provide the following information for password reset'" (onConfirm)="confirmResetPassword()" (onDestroy)="promptForgotPasswordModal=false" [disableConfirm]="!verificationMatched" >
+        <div class="form-group">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">User Name <span class="mandatory">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-input" [(ngModel)]="forgotPassResetModel.userName" 
+                           [disabled]="isDisableUserName" (change)="EnableDisableFields('userName')" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Employee Id <span class="mandatory">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-input" [(ngModel)]="forgotPassResetModel.employeeId" 
+                           [disabled]="isDisableEmployeeId" pKeyFilter="int" (change)="EnableDisableFields('employeeId')" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Mobile No <span class="mandatory">*</span></label>
+                <div class="col-sm-10">
+                    <!--<p-inputMask mask="99999999999" [(ngModel)]="forgotPassResetModel.mobileNo" pKeyFilter="int" [style]="{'width':'100%'}" (change)="EnableSendVeriCode"></p-inputMask>-->
+                    <input type="text" class="form-control form-input" [(ngModel)]="forgotPassResetModel.mobileNo" 
+                           [disabled]="isDisableMobileNo" pKeyFilter="int" maxlength="11" 
+                           (change)="EnableDisableFields('mobileNo')" />
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Official Email <span class="mandatory">*</span></label>
+                <div class="col-sm-6">
+                    <!--<input type="text" class="form-control form-input" [(ngModel)]="forgotPassResetModel.officialEmail" (change)="EnableSendVeriCode()" placeholder="xyz@onebank.com.bd"/>-->
+                    <input type="text" autocomplete="off" class="form-control" pattern="[a-z0-9._%+-]+@onebank.com.bd$"
+                           id="email" name="email" [(ngModel)]="forgotPassResetModel.officialEmail" #emailref="ngModel"
+                           placeholder="xyz@onebank.com.bd" (input)="EnableSendVeriCode()" [disabled]="isDisableEmail">
+                    <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">
+                        <div [hidden]="!emailref.errors?.pattern">
+                            Invalid pattern
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" (click)="sendVeriCodeToEmail()" [disabled]="isDisableSendVC">Send Verification Code</button>
+                </div>
+            </div>
+            <br />
+            <div class="row" *ngIf="emailSendMsg!=null">
+                <div class="col-sm-12">
+                    <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                        <span style="text-align:center;font-size:90%;" class="login-box-msg">{{emailSendMsg}}</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row" *ngIf="veriCodeAsMd5Password!=null">
+                <label class="col-sm-2 col-form-label third-line">Verification Code <span class="mandatory">*</span></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control form-input" [(ngModel)]="forgotPassResetModel.verificationCode" (input)="checkVerificationCode();" />
+                </div>
+            </div>
+            <br />
+            <div class="row" *ngIf="forgotPassResetModel.verificationCode!=null">
+                <div class="col-sm-12">
+                    <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                        <span style="text-align:center;font-size:90%;" class="login-box-msg">{{matchedMsg}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <div class="row" *ngIf="showConfirmMsg!=null">
+                <div class="col-sm-12">
+                    <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                        <span style="text-align:center;font-size:90%;" class="login-box-msg">{{showConfirmMsg}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </app-generic-modal>

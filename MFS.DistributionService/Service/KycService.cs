@@ -43,6 +43,9 @@ namespace MFS.DistributionService.Service
 		CLoseReginfo GetCloseInfoByMphone(string mphone);
 		object GetCloseAccount();
 		bool CheckDeviceValidity(string mphone, string deviceId, string deviceOtp);
+		object CheckIsDistCodeExistForB2b(string distCode);
+		Reginfo NullifyReginfoForKycUpdate(Reginfo regInfo);
+		object CheckNidValidWithIdType(string photoid, string type, int? idType);
 	}
 	public class KycService : BaseService<Reginfo>, IKycService
 	{
@@ -489,6 +492,26 @@ namespace MFS.DistributionService.Service
 			{
 				return false;
 			}
+		}
+
+		public object CheckIsDistCodeExistForB2b(string distCode)
+		{
+			return _repository.CheckIsDistCodeExistForB2b(distCode);
+		}
+
+		public Reginfo NullifyReginfoForKycUpdate(Reginfo regInfo)
+		{
+			regInfo.RegStatus = null;
+			regInfo.AuthoDate = null;
+			regInfo.AuthoBy = null;
+			regInfo.EntryBy = null;
+			regInfo.EntryDate = null;
+			return regInfo;
+		}
+
+		public object CheckNidValidWithIdType(string photoid, string type, int? idType)
+		{
+			return _repository.CheckNidValidWithIdType(photoid, type,idType);
 		}
 	}
 }

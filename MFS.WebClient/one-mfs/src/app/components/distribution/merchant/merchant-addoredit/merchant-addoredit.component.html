@@ -71,7 +71,21 @@
 
 					</div>
 					<div class="p-grid">
-						<div class="p-col-6">
+						<div class="p-col-4" *ngIf="selectedCategory === 'ABM'">
+							<label for="float-input input-lg" class=" col-form-label-dd">B2B Master Distributor<span class="mandatory">*</span></label>
+							<p-dropdown [options]="distributorList" placeholder="Select Distributor" [(ngModel)]="parentNo"
+										[filter]="true" filterBy="label,value.name" [disabled]="isEditMode"
+										(onChange)="getB2bMasterDistributorData()"
+										[style]="{display: 'grid'}" id="float-input"></p-dropdown>
+							<p-message *ngIf="(DistributorCode==null || DistributorCode=='') && error "
+									   severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4" *ngIf="selectedCategory === 'ABM'">
+							<label for="float-input input-lg" class="col-form-label-dd">B2B Merchant Service Charge %<span class="mandatory">*</span></label>
+							<input autocomplete="off" type="text" class="form-control"  [disabled]="isEditMode" [(ngModel)]="regInfoModel.schargePer" pKeyFilter="int" pInputText id="float-input">
+							<p-message *ngIf="(regInfoModel.schargePer==null || regInfoModel.schargePer=='') && error " severity="error" text="Cannot be left blank"></p-message>
+						</div>
+						<div class="p-col-4">
 							<label for="float-input input-lg" class=" col-form-label-dd">Cycle<span class="mandatory">*</span></label>
 							<p-dropdown [options]="cycleList" [(ngModel)]="selectedCycle" placeholder="Please Select"
 										[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"
@@ -80,7 +94,7 @@
 							<p-message *ngIf="(selectedCycle == '0') && error" severity="error" text="Cannot be left blank"></p-message>
 						</div>
 
-						<div class="p-col-6" *ngIf="showWeeklyDate">
+						<div class="p-col-4" *ngIf="showWeeklyDate">
 							<label for="float-input input-lg" class=" col-form-label-dd">Settelement</label>
 							<p-multiSelect [options]="dateList" [(ngModel)]="selectedCycleWeekDay" [style]="{display: 'grid'}" (onChange)="onDateListChange($event)"></p-multiSelect>
 						</div>
@@ -255,7 +269,7 @@
 						<div class="p-col-4">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText  id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.tradeLicenseNo" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Trade Licence No </label>
 							</span>
 						</div>
@@ -335,7 +349,7 @@
 							<label for="float-input input-lg" class="col-form-label">District</label>
 							<p-dropdown [options]="bankDistrictList" [(ngModel)]="regInfoModel.eftDistCode" placeholder="Select District"
 										[filter]="true" filterBy="label,value.name" (onChange)="getBankBranchListByBankCodeAndDistCode()"
-										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+										[style]="{display: 'grid'}"  [showClear]="true" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
 						</div>
 					</div>
 
@@ -344,14 +358,14 @@
 							<label for="float-input input-lg" class="col-form-label-dd">Branch Name </label>
 							<p-dropdown [options]="bankBranchByDistBankCodeList" [(ngModel)]="regInfoModel.eftBranchCode"
 										[filter]="true" filterBy="label,value.name" placeholder="Select Branch"
-										(onChange)="getRoutingNo()"
+										(onChange)="getRoutingNo()"  [showClear]="true"
 										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
 						</div>
 
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [readonly]="true" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [disabled]="isRegistrationPermitted || disabledEdit" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Routing No</label>
 							</span>
 						</div>

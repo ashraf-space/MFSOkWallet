@@ -48,4 +48,6 @@ export class Reginfo {
     selectedKycType: any;
     showCbsModal: any;
     isFirstIndexShow: boolean = false;
+    isNidDisabled: boolean = false;
+    isauthorize: boolean = false;
 }

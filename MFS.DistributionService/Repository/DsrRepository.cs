@@ -19,7 +19,7 @@ namespace MFS.DistributionService.Repository
         object GetDistributorDataByDistributorCode(string distributorCode);
         string GeneratePinNo(int fourDigitRandomNo);
         void UpdatePinNo(string mphone, string fourDigitRandomNo);
-		object GetB2bDistributorDataByDistributorCode(string distributorCode);
+		object GetB2bDistributorDataByDistributorCode(string distributorCode, string catId);
 	}
     public class DsrRepository : BaseRepository<Reginfo>, IDsrRepository
     {
@@ -120,14 +120,15 @@ namespace MFS.DistributionService.Repository
            
         }
 
-		public object GetB2bDistributorDataByDistributorCode(string distributorCode)
+		public object GetB2bDistributorDataByDistributorCode(string distributorCode, string catId)
 		{
 			try
 			{
 				using (var connection = this.GetConnection())
 				{
 					var parameter = new OracleDynamicParameters();
-					parameter.Add("DISCODE", OracleDbType.Varchar2, ParameterDirection.Input, distributorCode);
+					parameter.Add("V_DISTCODE", OracleDbType.Varchar2, ParameterDirection.Input, distributorCode);
+					parameter.Add("V_CAT_ID", OracleDbType.Varchar2, ParameterDirection.Input, catId);
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_GET_B2BDISTDATA_BYCODE", param: parameter, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);

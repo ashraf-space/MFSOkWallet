@@ -8,7 +8,7 @@ namespace MFS.TransactionService.Models
 {
     public class BillApiInfo
     {
-        //public string Ip { get; set; } = "http://10.20.32.118/";
+        //public string Ip { get; set; } = "http://10.20.34.35/";
 
         //for live
         public string Ip { get; set; } = "http://10.156.4.16/";

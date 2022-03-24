@@ -37,6 +37,10 @@ namespace MFS.ReportingService.Service
 		List<KwasaBillPayment> GetKwasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
 		List<WzpdclBillPayment> GetWzpdclPoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
 		List<Ekpay> GetEkpaysConnectivitiesReport(string fromDate, string toDate, string dateType);
+		List<PgclBillReport> GetPgclBillreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
+		List<LandTaxBill> GetLandTaxreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
+		List<Ivac> GetSslReport(string fromDate, string toDate, string reportType);
+		List<Rlic> GetrlicsReport(string fromDate, string toDate);
 	}
 	public class BillCollectionService : IBillCollectionService
 	{
@@ -112,6 +116,22 @@ namespace MFS.ReportingService.Service
 			return billCollectionRepository.GetGpTransSummaryReport(fromDate, toDate, selectedReportType, selectedDateType);
 		}
 
+		public List<Ivac> GetSslReport(string fromDate, string toDate, string reportType)
+		{
+			List<Ivac> ivacsResult = new List<Ivac>();
+			List<Ivac> ivacs =  billCollectionRepository.GetSslReport(fromDate, toDate, reportType);
+			foreach(var item in ivacs)
+			{
+				if(item.TransType == "Reversal")
+				{
+					item.TransactionAmt *= -1;
+					item.BankCom *= -1;
+				}
+				ivacsResult.Add(item);
+			}
+			return ivacsResult;
+		}
+
 		public List<JalalabadGasBillPayment> GetJgtdReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
 		{
 			return billCollectionRepository.GetJgtdReport(utility, fromDate, toDate, gateway, dateType, catType,branchCode);
@@ -120,6 +140,11 @@ namespace MFS.ReportingService.Service
 		public List<KwasaBillPayment> GetKwasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
 		{
 			return billCollectionRepository.GetKwasaReport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+		}
+
+		public List<LandTaxBill> GetLandTaxreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
+		{
+			return billCollectionRepository.GetLandTaxreport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
 		}
 
 		public List<LankaBanglaCredit> GetLbcReports(string transNo, string fromDate, string toDate, string branchCode)
@@ -175,6 +200,11 @@ namespace MFS.ReportingService.Service
 			}
 		}
 
+		public List<PgclBillReport> GetPgclBillreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
+		{
+			return billCollectionRepository.GetPgclBillreport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+		}
+
 		public List<WasaBillPayment> GetWasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
 		{
 			return billCollectionRepository.GetWasaReport(utility, fromDate, toDate, gateway, dateType, catType,branchCode);
@@ -209,6 +239,11 @@ namespace MFS.ReportingService.Service
 		public List<NescoPrepaid> NescoPrepaidReport(string fromDate, string toDate, string transNo, string branchCode)
 		{
 			return billCollectionRepository.NescoPrepaidReport(transNo, fromDate, toDate, branchCode);
+		}
+
+		public List<Rlic> GetrlicsReport(string fromDate, string toDate)
+		{
+			return billCollectionRepository.GetrlicsReport(fromDate, toDate);
 		}
 	}
 }

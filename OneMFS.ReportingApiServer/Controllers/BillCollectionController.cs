@@ -178,11 +178,125 @@ namespace OneMFS.ReportingApiServer.Controllers
 				MFSFileManager fileManager = new MFSFileManager();
 				return reportUtility.GenerateReport(reportViewer, model.FileType);
 			}
+			else if (utility == "pgcl")
+			{
+				List<PgclBillReport> pgclBillReports = billCollectionService.GetPgclBillreport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTPgcl.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetPgclParameter(utility, fromDate, toDate, gateway, dateType, catType));
+				ReportDataSource A = new ReportDataSource("PgclBill", pgclBillReports);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			else if (utility == "landtax")
+			{
+				List<LandTaxBill> landTaxBills = billCollectionService.GetLandTaxreport(utility, fromDate, toDate, gateway, dateType, catType, branchCode);
+
+				ReportViewer reportViewer = new ReportViewer();
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTLandTax.rdlc");  //Request.RequestUri("");
+				reportViewer.LocalReport.SetParameters(GetLandTaxParameter(utility, fromDate, toDate, gateway, dateType, catType));
+				ReportDataSource A = new ReportDataSource("EkpayBack", landTaxBills);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
 			else
 			{
 				return null;
 			}
 
+		}
+
+		private IEnumerable<ReportParameter> GetLandTaxParameter(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (dateType == "eod")
+			{
+				paraList.Add(new ReportParameter("dateType", "EOD Date"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("dateType", "Transaction Date"));
+			}
+			if (catType == "A")
+			{
+				paraList.Add(new ReportParameter("catType", "Agent"));
+			}
+			else if (catType == "C")
+			{
+				paraList.Add(new ReportParameter("catType", "Customer"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("catType", "All"));
+			}
+			if (utility == "landtax")
+			{
+				paraList.Add(new ReportParameter("utility", "LDTAX"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("utility", "All"));
+			}
+
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
+		}
+
+		private IEnumerable<ReportParameter> GetPgclParameter(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (dateType == "eod")
+			{
+				paraList.Add(new ReportParameter("dateType", "EOD Date"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("dateType", "Transaction Date"));
+			}
+			if (catType == "A")
+			{
+				paraList.Add(new ReportParameter("catType", "Agent"));
+			}
+			else if (catType == "C")
+			{
+				paraList.Add(new ReportParameter("catType", "Customer"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("catType", "All"));
+			}
+			if (utility == "pgcl")
+			{
+				paraList.Add(new ReportParameter("utility", "PGCL"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("utility", "All"));
+			}
+
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
 		}
 
 		private IEnumerable<ReportParameter> GetWzpdclPoParameter(string utility, string fromDate, string toDate, string gateway, string dateType, string catType)
@@ -1184,6 +1298,16 @@ namespace OneMFS.ReportingApiServer.Controllers
 				fromCatId = "C";
 				toCatId = "MTB";
 			}
+			if (particular == "BWB1TOCW")
+			{
+				fromCatId = "BBL";
+				toCatId = "C";
+			}
+			if (particular == "CATOPTOBBBL")
+			{
+				fromCatId = "C";
+				toCatId = "BBL";
+			}
 			ReportViewer reportViewer = new ReportViewer();
 			bankConnectivities = billCollectionService.GetbankConnectivitiesReport(fromDate, toDate, fromCatId, toCatId, dateType);
 			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOtherBankConnectivity.rdlc");  //Request.RequestUri("");
@@ -1241,6 +1365,93 @@ namespace OneMFS.ReportingApiServer.Controllers
 			{
 				paraList.Add(new ReportParameter("dateType", "Transaction Date"));
 			}			
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
+		}
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/BillCollection/GetSslReport")]
+		public byte[] GetSslReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromCatId = string.Empty;
+			string toCatId = string.Empty;
+			List<Ivac> ivacs = new List<Ivac>();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+			string reportType = builder.ExtractText(Convert.ToString(model.ReportOption), "reportType", "}");
+
+
+			ReportViewer reportViewer = new ReportViewer();
+			ivacs = billCollectionService.GetSslReport(fromDate, toDate, reportType);
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTSsl.rdlc");  //Request.RequestUri("");
+
+			reportViewer.LocalReport.SetParameters(GetIvacReportParameter(fromDate, toDate, reportType));
+			ReportDataSource A = new ReportDataSource("Ivac", ivacs);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
+		}
+
+		private IEnumerable<ReportParameter> GetIvacReportParameter(string fromDate, string toDate, string reportType)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			if (reportType == "IVAC")
+			{
+				paraList.Add(new ReportParameter("reportType", "Indian Visa Fee Collection Report"));
+			}
+			else
+			{
+				paraList.Add(new ReportParameter("reportType", "SSL Commerce Transaction Report"));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			return paraList;
+		}
+		[HttpPost]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/BillCollection/GetRlicReport")]
+		public byte[] GetRlicReport(ReportModel model)
+		{
+			StringBuilderService builder = new StringBuilderService();
+			string fromCatId = string.Empty;
+			string toCatId = string.Empty;
+			List<Rlic> rlics = new List<Rlic>();
+			string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+			string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+			ReportViewer reportViewer = new ReportViewer();
+			rlics = billCollectionService.GetrlicsReport(fromDate, toDate);
+			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTRlic.rdlc");  //Request.RequestUri("");
+
+			reportViewer.LocalReport.SetParameters(GetRlicReportParameter(fromDate, toDate));
+			ReportDataSource A = new ReportDataSource("Rlic", rlics);
+			reportViewer.LocalReport.DataSources.Add(A);
+			ReportUtility reportUtility = new ReportUtility();
+			MFSFileManager fileManager = new MFSFileManager();
+			return reportUtility.GenerateReport(reportViewer, model.FileType);
+		}
+
+		private IEnumerable<ReportParameter> GetRlicReportParameter(string fromDate, string toDate)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			
 			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
 			return paraList;
 		}

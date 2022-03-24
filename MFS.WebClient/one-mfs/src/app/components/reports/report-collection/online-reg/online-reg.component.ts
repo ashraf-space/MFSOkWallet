@@ -14,6 +14,7 @@ import { MessageService, MenuItem } from 'primeng/api';
 export class OnlineRegComponent implements OnInit {
 
     model: any;
+    hourList: any;
     categoryList: any;
     statusList: any;
     isOkAccExist: any;
@@ -24,7 +25,7 @@ export class OnlineRegComponent implements OnInit {
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
-        this.model = {};
+        this.model = {};        
     }
 
     ngOnInit() {
@@ -38,6 +39,7 @@ export class OnlineRegComponent implements OnInit {
             { label: 'Logical', value: 'L' },
             { label: 'Physical', value: 'P' }
         ];
+        this.hourList = this.mfsUtilityService.getHourList();
     }
 
     getReportParam() {
@@ -62,6 +64,18 @@ export class OnlineRegComponent implements OnInit {
             }
             else {
                 obj.regStatus = null;
+            }
+            if (this.model.fromHour) {
+                obj.fromHour = this.model.fromHour;
+            }
+            else {
+                obj.fromHour = null;
+            }
+            if (this.model.toHour) {
+                obj.toHour = this.model.toHour;
+            }
+            else {
+                obj.toHour = null;
             }
             if (this.model.accNo) {
                 obj.accNo = this.model.accNo;
@@ -104,7 +118,8 @@ export class OnlineRegComponent implements OnInit {
         if (!this.model.category && !this.model.fromDate && !this.model.toDate && !this.model.accNo && !this.model.regStatus) {
             return false;
         }
-        if (!this.model.category || !this.model.fromDate || !this.model.toDate || !this.model.regStatus) {
+        if (!this.model.category || !this.model.fromDate || !this.model.toDate
+            || !this.model.regStatus || !this.model.fromHour || !this.model.toHour) {
             return false;
         }
         else {
@@ -117,5 +132,4 @@ export class OnlineRegComponent implements OnInit {
             return true;
         }
     }
-
 }

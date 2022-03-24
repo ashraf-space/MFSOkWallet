@@ -25,6 +25,13 @@ export class BranchCashInService {
             }));
     }
 
+    getDetailsByMphoneForCommiConvert(mphone: string): any {
+        return this.http.get<any>(this.transactionService.distributionApiServer + '/Distributor/getRegInfoDetailsByMphoneForCommiConvert?mphone=' + mphone)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
     getReginfoCashoutByMphone(mphone: string): any {
         return this.http.get<any>(this.transactionService.distributionApiServer + '/Distributor/getReginfoCashoutByMphone?mphone=' + mphone)
             .pipe(map(model => {
@@ -48,6 +55,13 @@ export class BranchCashInService {
 
     CheckData(transNo: any, mphone: any, amount: any): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/CheckData?transNo=' + transNo + '&mphone=' + mphone + '&amount' + amount)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+    saveCommiConvert(commiConvertModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/saveCommiConvert', commiConvertModel)
             .pipe(map(model => {
                 return model;
             }));

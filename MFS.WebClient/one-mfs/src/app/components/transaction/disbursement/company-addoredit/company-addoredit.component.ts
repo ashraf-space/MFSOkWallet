@@ -139,7 +139,8 @@ export class CompanyAddoreditComponent implements OnInit {
             && (!this.tblDisburseCompanyInfoModel.catAcc || this.tblDisburseCompanyInfoModel.catAcc.trim().length === 0)
             && (!this.tblDisburseCompanyInfoModel.incAcc || this.tblDisburseCompanyInfoModel.incAcc.trim().length === 0)
             && (!this.tblDisburseCompanyInfoModel.eftAcc || this.tblDisburseCompanyInfoModel.eftAcc.trim().length === 0)
-            && (!this.tblDisburseCompanyInfoModel.rwdAcc || this.tblDisburseCompanyInfoModel.rwdAcc.trim().length === 0)) {
+            && (!this.tblDisburseCompanyInfoModel.rwdAcc || this.tblDisburseCompanyInfoModel.rwdAcc.trim().length === 0)
+            && (!this.tblDisburseCompanyInfoModel.trhAcc || this.tblDisburseCompanyInfoModel.trhAcc.trim().length === 0)) {
             this.isActionDisabled = true;
             this.isShow = true;
         }
@@ -164,6 +165,7 @@ export class CompanyAddoreditComponent implements OnInit {
                             this.tblDisburseCompanyInfoModel.incAcc = null;
                             this.tblDisburseCompanyInfoModel.eftAcc = null;
                             this.tblDisburseCompanyInfoModel.rwdAcc = null;
+                            this.tblDisburseCompanyInfoModel.trhAcc = null;
                         }
                         else {
                             this.isActionDisabled = false;

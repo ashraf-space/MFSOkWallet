@@ -178,7 +178,7 @@ export class DisburseProcessComponent implements OnInit {
                 //this.message = result.toString();
                 //this.loadAllUser();
                 if (result.toString() == 'Excel file has been successfully uploaded')
-                    this.messageService.add({ severity: 'success', summary: 'uploaded successfully', detail: 'Excel file has been successfully uploaded' });
+                    this.messageService.add({ severity: 'success', summary: 'Uploaded successfully', detail: 'Excel file has been successfully uploaded' });
                 else
                     this.messageService.add({ severity: 'warn', summary: 'Failed', detail: result.toString() });
 

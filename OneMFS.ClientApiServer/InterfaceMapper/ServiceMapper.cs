@@ -18,6 +18,7 @@ namespace OneMFS.DistributionApiServer.InterfaceMapper
 			services.AddTransient<IAuditTrailService, AuditTrailService>();
 			services.AddTransient<IErrorLogService, ErrorLogService>();
 			services.AddTransient<IKycService, KycService>();
+            services.AddTransient<IEmailService, EmailService>();
 		}
     }
 }

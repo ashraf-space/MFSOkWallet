@@ -128,7 +128,7 @@ export class B2bDsrAddoreditComponent implements OnInit {
         this.getRegionListForDDL();
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-        this.getDistributorForDDL();
+        this.getB2bDistributorForDDL();
         this.getPhotoIDTypeListForDDL();
 
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -207,6 +207,18 @@ export class B2bDsrAddoreditComponent implements OnInit {
     }
     getDistributorForDDL() {
         this.distributorService.getB2bDistributorListWithDistCodeForDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.distributorList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getB2bDistributorForDDL() {
+        this.distributorService.GetB2bDistributorForB2bDsrListWithDistCodeForDDL()
             .pipe(first())
             .subscribe(
                 data => {
@@ -545,12 +557,12 @@ export class B2bDsrAddoreditComponent implements OnInit {
             );
     }
     getB2bDistributorDataByDistributorCode() {
-        this.dsrService.GetB2bDistributorDataByDistributorCode(this.DistributorCode)
+        this.dsrService.GetB2bDistributorDataByDistributorCode(this.DistributorCode, 'ABR')
             .pipe(first())
             .subscribe(
                 data => {
                     if (data) {
-                        if (data.catId === 'BD') {
+                        if (data.catId === 'ABD') {
                             this.selectedRegion = data.distCode.substring(0, 2);
                             this.fillAreaDDL();
                             this.selectedArea = data.distCode.substring(0, 4);
@@ -563,6 +575,7 @@ export class B2bDsrAddoreditComponent implements OnInit {
                             this.regInfoModel.photoIdTypeCode = data.photoIdTypeCode;
                             this.regInfoModel.photoId = data.photoId;
                             this.regInfoModel.pmphone = data.mphone;
+                            this.regInfoModel.ppmphone = data.pmphone;
                         }
                         else {
                             this.DistributorCode = '';

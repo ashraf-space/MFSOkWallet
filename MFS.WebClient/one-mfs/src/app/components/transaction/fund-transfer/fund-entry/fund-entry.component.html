@@ -60,7 +60,7 @@
             <div class="p-grid">
                 <div class="p-col-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Transfer Amount <span class="mandatory">*</span></label>
+                        <label class="col-sm-3 col-form-label">Transfer Amount <span class="mandatory">*</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" maxlength="12" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pInputText pKeyFilter="money" (focus)="fundTransferModel.payAmt=''" (change)="GetTransactionDetailsByPayAmount();">
                             <p-message *ngIf="(fundTransferModel.payAmt==null || fundTransferModel.payAmt=='0'|| fundTransferModel.payAmt == '') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -68,7 +68,13 @@
                     </div>
                 </div>
                 <div class="p-col-6">
-
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" style="text-align:right">Remarks <span class="mandatory">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" maxlength="200" [(ngModel)]="fundTransferModel.remarks" />
+                            <p-message *ngIf="(fundTransferModel.remarks==null || fundTransferModel.remarks=='0' || fundTransferModel.remarks=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
                 </div>
 
 

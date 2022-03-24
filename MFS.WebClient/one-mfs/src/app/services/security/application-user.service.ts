@@ -5,11 +5,11 @@ import { map } from 'rxjs/operators';
 import { MfsSettingService } from '../mfs-setting.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class ApplicationUserService {
-   
-    
+
+
     constructor(private http: HttpClient, private setting: MfsSettingService) {
 
     }
@@ -49,6 +49,13 @@ export class ApplicationUserService {
             }));
     }
 
+    changeEmail(changeEmailIdModel: any, passwordChangedBy: string): any {
+        return this.http.post<any>(this.setting.securityApiServer + '/ApplicationUser/ChangeEmail?passwordChangedBy=' + passwordChangedBy, changeEmailIdModel)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
     resetPassword(model: any): any {
         return this.http.post<any>(this.setting.securityApiServer + '/ApplicationUser/ResetPassword', model)
             .pipe(map(model => {
@@ -69,6 +76,26 @@ export class ApplicationUserService {
                 return model;
             }));
     }
+    checkExistingEmailId(emailId: any): any {
+        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/CheckExistingEmailId?emailId=' + emailId)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+    checkExistingMobileNo(mobileNo: any): any {
+        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/CheckExistingMobileNo?mobileNo=' + mobileNo)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
+    checkExistingEmployeeId(employeeId: any): any {
+        return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/CheckExistingEmployeeId?employeeId=' + employeeId)
+            .pipe(map(model => {
+                return model;
+            }));
+    }
+
     getAppUserListDdl() {
         return this.http.get<any>(this.setting.securityApiServer + '/ApplicationUser/getAppUserListDdl')
             .pipe(map(model => {
@@ -82,5 +109,5 @@ export class ApplicationUserService {
                 return model;
             }));
     }
-    
+
 }

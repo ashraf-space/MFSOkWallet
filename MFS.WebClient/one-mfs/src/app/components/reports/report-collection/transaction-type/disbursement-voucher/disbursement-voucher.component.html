@@ -1,0 +1,42 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">Options <span class="mandatory">*</span></label>
+            <p-dropdown [options]="optionDDL" placeholder="Select Option" [(ngModel)]="model.optionId"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+            <p-message *ngIf="(model.optionId==null || model.optionId=='' || model.optionId!='0') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">Disburse Type <span class="mandatory">*</span></label>
+            <p-dropdown [options]="disburseTypeDDL" placeholder="Select Disburse Type" [(ngModel)]="model.disTypeId"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+            <p-message *ngIf="(model.disTypeId==null || model.disTypeId=='' || model.disTypeId!='0') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+
+    </div>
+    <div class="p-grid">
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">From<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="From"
+                       name="dp" [(ngModel)]="model.fromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+                       id="float-input">
+            </div>
+        </div>
+        <div class="p-col-6">
+            <label for="float-input" class="col-form-label">To<span class="mandatory">*</span></label>
+            <div class="input-group">
+                <input class="form-control" placement="down" [readonly]="true" placeholder="To"
+                       name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
+                       (click)="h.toggle()" id="float-input">
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>

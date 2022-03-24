@@ -63,6 +63,7 @@ export class BillCollectionCommonComponent implements OnInit {
     isShowEnterAmount: boolean = true;
 
     receiptUrl: any;
+    thermalReceiptUrl: any;
 
 
     constructor(private messageService: MessageService, private billCollectionCommonService: BillCollectionCommonService
@@ -78,6 +79,7 @@ export class BillCollectionCommonComponent implements OnInit {
 
 
         this.receiptUrl = receiptapiService.receiptUrl;
+        this.thermalReceiptUrl = receiptapiService.thermalReceiptUrl;
 
 
         //this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -249,7 +251,8 @@ export class BillCollectionCommonComponent implements OnInit {
                 { field: 'billno', header: this.featurePayModel.BILLTITLE, width: '15%' },
                 { field: 'ref_Phone', header: 'Beneficiary Mobile Number', width: '20%' },
                 { field: 'subname', header: this.featurePayModel.SUBMENUTITLE, width: '17%' },
-                { field: 'Id', header: 'Generate Receipt', width: '13%', isCustomAction: true, customActionIcon: 'fas fa-file-download' }
+                { field: 'Id', header: 'General Receipt', width: '13%', isCustomAction: true, customActionIcon: 'fas fa-file-download' },
+                { field: 'Id', header: 'Thermal Receipt', width: '13%', isCustomActionTwo: true, customActionIcon: 'fas fa-file-download' }
             ];
         }
         else {
@@ -260,7 +263,8 @@ export class BillCollectionCommonComponent implements OnInit {
                 { field: 'billno', header: this.featurePayModel.BILLTITLE, width: '15%' },
                 { field: 'ref_Phone', header: 'Beneficiary Mobile Number', width: '25%' },
                 //{ field: 'subname', header: 'Sub Name', width: '15%' },
-                { field: 'Id', header: 'Generate Receipt', width: '20%', isCustomAction: true, customActionIcon: 'fas fa-file-download' }
+                { field: 'Id', header: 'General Receipt', width: '20%', isCustomAction: true, customActionIcon: 'fas fa-file-download' },
+                { field: 'Id', header: 'Thermal Receipt', width: '20%', isCustomActionTwo: true, customActionIcon: 'fas fa-file-download' }
             ];
         }
 
@@ -583,6 +587,29 @@ export class BillCollectionCommonComponent implements OnInit {
         mapForm.target = '_blank';
         mapForm.method = 'POST'; // or "post" if appropriate
         mapForm.action = this.receiptUrl;
+        Object.keys(this.obj).forEach((param) => {
+            const mapInput = document.createElement('input');
+            mapInput.type = 'hidden';
+            mapInput.name = param;
+            mapInput.setAttribute('value', this.obj[param]);
+            mapForm.appendChild(mapInput);
+        });
+        document.body.appendChild(mapForm);
+        mapForm.submit();
+
+    }
+
+    onThermalReceipt(event) {
+
+        //window.open(this.receiptUrl + event.ref_Phone + "&Trans_ID=" + event.trans_No, "_blank");
+
+        this.obj.mphone = event.ref_Phone;
+        this.obj.Trans_ID = event.trans_No;
+
+        const mapForm = document.createElement('form');
+        mapForm.target = '_blank';
+        mapForm.method = 'POST'; // or "post" if appropriate
+        mapForm.action = this.thermalReceiptUrl;
         Object.keys(this.obj).forEach((param) => {
             const mapInput = document.createElement('input');
             mapInput.type = 'hidden';

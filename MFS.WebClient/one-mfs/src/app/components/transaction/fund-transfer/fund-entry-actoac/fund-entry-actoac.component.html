@@ -24,16 +24,9 @@
                 <div class="p-grid">
                     <div class="p-col-1">
                         <label class="col-form-label" style="text-align:center">From A/C <span class="mandatory">*</span></label>
-                    </div>
-                    <!--<div class="p-col-5">
-                        <p-dropdown [options]="acList" [(ngModel)]="fundTransferModel.transFrom" placeholder="Select A/C" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="fillAmountByMphone(fundTransferModel.transFrom,'From');"></p-dropdown>
-                        <p-message *ngIf="(fundTransferModel.transFrom==null || fundTransferModel.transFrom=='') && error " severity="error" text="Cannot be left blank"></p-message>
-                    </div>-->
+                    </div>                  
                     <div class="p-col-2">
                         <p-inputMask mask="99999999999" [(ngModel)]="fundTransferModel.transFrom" pKeyFilter="int" [style]="{'width':'100%'}" (change)="fillAmountByMphone(fundTransferModel.transFrom,'From');"></p-inputMask>
-                        <!--<p-inputMask  [(ngModel)]="fundTransferModel.transFrom"  [style]="{'width':'100%'}" (change)="fillAmountByMphone(fundTransferModel.transFrom,'From');"></p-inputMask>-->
-                        <!--<input type="text" class="form-control" [(ngModel)]="fundTransferModel.transFrom" pInputText pKeyFilter="num" (change)="fillAmountByMphone(fundTransferModel.transFrom,'From');">-->
-                        
                         <p-message *ngIf="(fundTransferModel.transFrom==null || fundTransferModel.transFrom=='') && error " severity="error" text="Cannot be left blank"></p-message>
                     </div>
                     <div class="p-col-3">
@@ -51,12 +44,6 @@
                     <div class="p-col-1">
                         <label class="col-form-label" style="text-align:center">To A/C <span class="mandatory">*</span></label>
                     </div>
-                    <!--<div class="p-col-5">
-                        <div>
-                            <p-dropdown [options]="acList" [(ngModel)]="fundTransferModel.transTo" placeholder="Select A/C" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="fillAmountByMphone(fundTransferModel.transTo,'To');"></p-dropdown>
-                            <p-message *ngIf="(fundTransferModel.transTo==null || fundTransferModel.transTo=='0') && error " severity="error" text="Cannot be left blank"></p-message>
-                        </div>
-                    </div>-->
                     <div class="p-col-2">
                         <p-inputMask mask="99999999999" [(ngModel)]="fundTransferModel.transTo" pKeyFilter="int" [style]="{'width':'100%'}" (change)="fillAmountByMphone(fundTransferModel.transTo,'To');"></p-inputMask>
                         <p-message *ngIf="(fundTransferModel.transTo==null || fundTransferModel.transTo=='0') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -82,7 +69,7 @@
             <div class="p-grid">
                 <div class="p-col-6">
                     <div class="form-group row">
-                        <label class="col-sm-4 col-form-label">Transfer Amount<span class="mandatory"> *</span></label>
+                        <label class="col-sm-3 col-form-label">Transfer Amount<span class="mandatory"> *</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control form-input" maxlength="12" [(ngModel)]="fundTransferModel.payAmt" id="PayAmt" pInputText pKeyFilter="money" (focus)="fundTransferModel.payAmt=''"  (change)="GetTransactionDetailsByPayAmount();">
                             <p-message *ngIf="(fundTransferModel.payAmt==null || fundTransferModel.payAmt==''|| fundTransferModel.payAmt=='0') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -90,7 +77,13 @@
                     </div>
                 </div>
                 <div class="p-col-6">
-
+                    <div class="form-group row">
+                        <label class="col-sm-4 col-form-label" style="text-align:right">Remarks <span class="mandatory">*</span></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" maxlength="200" [(ngModel)]="fundTransferModel.remarks" />
+                            <p-message *ngIf="(fundTransferModel.remarks==null || fundTransferModel.remarks=='0' || fundTransferModel.remarks=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                        </div>
+                    </div>
                 </div>
             </div>
 

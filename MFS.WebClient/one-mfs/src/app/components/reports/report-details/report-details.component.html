@@ -143,9 +143,45 @@
 								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/BankConnectivityReport'">
 									<app-bank-connect-rpt #form></app-bank-connect-rpt>
 								</div>
-                                <div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BackOffTransfer'">
-                                    <app-backoff-transaction #form></app-backoff-transaction>
-                                </div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BackOffTransfer'">
+									<app-backoff-transaction #form></app-backoff-transaction>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/EmerchantSettlementInfo'">
+									<app-backoff-transaction #form></app-backoff-transaction>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/ChannelBankInfo'">
+									<app-channel-bank-info #form></app-channel-bank-info>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/DormantAgent'">
+									<app-dormant-agent #form></app-dormant-agent>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/MerchantBankInfo'">
+									<app-merchant-bank #form></app-merchant-bank>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/ReferralCampaign'">
+									<app-referral-campaign #form></app-referral-campaign>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/BtclTelephoneBill'">
+									<app-btcl-telephone-bill #form></app-btcl-telephone-bill>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Kyc/KycCommission'">
+									<app-dist-wise-commission #form></app-dist-wise-commission>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/AdmissionFeePayment'">
+									<app-admission-fee-payment #form></app-admission-fee-payment>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/DisbursementVoucher'">
+									<app-disbursement-voucher #form></app-disbursement-voucher>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/B2BCollection'">
+									<app-b2b-collection #form></app-b2b-collection>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/Transaction/UtilityBillCollection'">
+									<app-utility-bill-collection #form></app-utility-bill-collection>
+								</div>
+								<div *ngSwitchCase="'../OneMFS.ReportingApiServer/api/BillCollection/GetRlicReport'">
+									<app-rlic-rpt #form></app-rlic-rpt>
+								</div>
 							</div>
                         </div>
                     </div>

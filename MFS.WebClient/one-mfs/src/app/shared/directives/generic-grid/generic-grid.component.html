@@ -63,46 +63,46 @@
         <tr [pSelectableRow]="rowData">
             <td *ngFor="let col of columns" class="ui-resizable-column">
                 <div *ngIf="col.template">
-					<div [ngSwitch]="col.template.name">
-						<p *ngSwitchCase="'date'">
-							{{rowData[col.field] | date:'d/M/yy, h:mm a'}}
-						</p>
-						<p *ngSwitchCase="'money'">
-							<span [innerHtml]="rowData[col.field] | number | bdtCurrency"></span>
-						</p>
-						<p *ngSwitchCase="'account-types'" style="text-align:center">
-							<span [innerHtml]="rowData[col.field] | statusCheck:'accTypes'"></span>
-						</p>
-						<p *ngSwitchCase="'yes-no'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | yesNo"></span>
-						</p>
-						<p *ngSwitchCase="'status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'status'"></span>
-						</p>
-						<p *ngSwitchCase="'fin-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'financialStatus'"></span>
-						</p>
-						<p *ngSwitchCase="'outbox-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'outboxStatus'"></span>
-						</p>
-						<p *ngSwitchCase="'open-close-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'requestStatusCheck'"></span>
-						</p>
-						<p *ngSwitchCase="'check-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'checkStatus'"></span>
-						</p>
-						<p *ngSwitchCase="'pin-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'pinStatus'"></span>
-						</p>
-						<p *ngSwitchCase="'report-type'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | reportType "></span>
-						</p>
-						<p *ngSwitchCase="'map-status'" style="text-align:center">
-							<span [innerHtml]=" rowData[col.field]  | statusCheck: 'mapStatus'"></span>
-						</p>
-					</div>
+                    <div [ngSwitch]="col.template.name">
+                        <p *ngSwitchCase="'date'">
+                            {{rowData[col.field] | date:'d/M/yy, h:mm a'}}
+                        </p>
+                        <p *ngSwitchCase="'money'">
+                            <span [innerHtml]="rowData[col.field] | number | bdtCurrency"></span>
+                        </p>
+                        <p *ngSwitchCase="'account-types'" style="text-align:center">
+                            <span [innerHtml]="rowData[col.field] | statusCheck:'accTypes'"></span>
+                        </p>
+                        <p *ngSwitchCase="'yes-no'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | yesNo"></span>
+                        </p>
+                        <p *ngSwitchCase="'status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'status'"></span>
+                        </p>
+                        <p *ngSwitchCase="'fin-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'financialStatus'"></span>
+                        </p>
+                        <p *ngSwitchCase="'outbox-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'outboxStatus'"></span>
+                        </p>
+                        <p *ngSwitchCase="'open-close-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'requestStatusCheck'"></span>
+                        </p>
+                        <p *ngSwitchCase="'check-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'checkStatus'"></span>
+                        </p>
+                        <p *ngSwitchCase="'pin-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'pinStatus'"></span>
+                        </p>
+                        <p *ngSwitchCase="'report-type'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | reportType "></span>
+                        </p>
+                        <p *ngSwitchCase="'map-status'" style="text-align:center">
+                            <span [innerHtml]=" rowData[col.field]  | statusCheck: 'mapStatus'"></span>
+                        </p>
+                    </div>
                 </div>
-                <div *ngIf="!col.template && !col.isEditColumn && !col.isDetailsColumn && !col.isSwitchBoxColumn && !col.isCustomAction && !col.isSelectButtonColumn"><p>{{rowData[col.field]}}</p></div>
+                <div *ngIf="!col.template && !col.isEditColumn && !col.isDetailsColumn && !col.isSwitchBoxColumn && !col.isCustomAction && !col.isSelectButtonColumn && !col.isCustomActionTwo"><p>{{rowData[col.field]}}</p></div>
                 <div *ngIf="col.isEditColumn && col.actionDisableParam && !col.isReciprocal" style="text-align:center"><app-authorize-button [forcedDisable]="rowData[col.actionDisableParam]==col.disableValue" [type]="'edit'" (onButtonClick)="onEdit(rowData[col.field])"></app-authorize-button></div>
                 <div *ngIf="col.isEditColumn && col.actionDisableParam && col.isReciprocal" style="text-align:center"><app-authorize-button [forcedDisable]="rowData[col.actionDisableParam]!=col.disableValue" [type]="'edit'" (onButtonClick)="onEdit(rowData[col.field])"></app-authorize-button></div>
                 <div *ngIf="col.isEditColumn && !col.actionDisableParam" style="text-align:center"><app-authorize-button [type]="'edit'" (onButtonClick)="onEdit(rowData[col.field])"></app-authorize-button></div>
@@ -110,6 +110,7 @@
                 <div *ngIf="col.isCustomAction" style="text-align:center"><button class="btn btn-outline-info btn-sm" (click)="onCustomAction(rowData)"><i class="{{col.customActionIcon}}"></i></button></div>
                 <div *ngIf="col.isSwitchBoxColumn" style="text-align:center"><p-inputSwitch (onChange)="handleChange(rowData,col,$event)" [(ngModel)]="rowData[col.field]"></p-inputSwitch></div>
                 <div *ngIf="col.isSelectButtonColumn" style="text-align:center"><p-selectButton [options]="col.optionList" (onChange)="handleChange(rowData,col,$event)"></p-selectButton></div>
+                <div *ngIf="col.isCustomActionTwo" style="text-align:center"><button class="btn btn-outline-info btn-sm" (click)="onCustomActionTwo(rowData)"><i class="{{col.customActionIcon}}"></i></button></div>
             </td>
         </tr>
     </ng-template>

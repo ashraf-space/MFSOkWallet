@@ -1,16 +1,22 @@
 <div class="form-group">
 	<div class="p-grid">
-		<div class="p-col-6">
-			<label for="float-input" class="col-form-label">Registration Status</label>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">QR Type<span class="mandatory">*</span></label>
+			<p-dropdown [options]="qrTypeList" placeholder="Select Category" [showClear]="true" [(ngModel)]="model.qrType"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+		</div>
+		<div class="p-col-4">
+			<label for="float-input" class="col-form-label">Category Type<span class="mandatory">*</span></label>
 			<p-dropdown [options]="catTypeList" placeholder="Select Category" [showClear]="true" [(ngModel)]="model.catId"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 		</div>
-		<div class="p-col-6">
-			<label for="float-input input-lg" class="col-form-label">Ok Account No</label>
+		<div class="p-col-4">
+			<label for="float-input input-lg" class="col-form-label">Ok Account No<span class="mandatory">*</span></label>
 			<div class="input-group">
 				<input type="text" class="form-control form-input" [(ngModel)]="model.mphone" pInputText pKeyFilter="int" />
 			</div>
 
 		</div>
-	</div>	
+	</div>
+	
 </div>

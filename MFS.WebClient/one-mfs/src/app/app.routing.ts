@@ -123,6 +123,9 @@ import { B2bRetailAddoreditComponent } from './components/distribution/distribut
 import { DownloadReceiptComponent } from './components/transaction/download-receipt/download-receipt.component';
 import { CommissionConvertionListComponent } from './components/transaction/commission-convertion/commission-convertion-list/commission-convertion-list.component';
 import { CommissionConvertionAddoreditComponent } from './components/transaction/commission-convertion/commission-convertion-addoredit/commission-convertion-addoredit.component';
+import { UtilityDashComponent } from './components/client/utility-dash/utility-dash/utility-dash.component';
+import { B2bDistAddoreditComponent } from './components/distribution/distributor/b2b-dist/b2b-dist.component';
+import { B2bDistListComponent } from './components/distribution/distributor/b2b-dist-list/b2b-dist-list.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -255,6 +258,9 @@ const appRoutes: Routes = [
     { path: 'transaction/download-receipt', component: DownloadReceiptComponent, canActivate: [AuthGuard] },
     { path: 'commission-convertion/list', component: CommissionConvertionListComponent, canActivate: [AuthGuard] },
     { path: 'commission-convertion/addoredit/:id', component: CommissionConvertionAddoreditComponent, canActivate: [AuthGuard] },
+    { path: 'utility-dash', component: UtilityDashComponent, canActivate: [AuthGuard] },
+    { path: 'b2bdist/list', component: B2bDistListComponent, canActivate: [AuthGuard] },
+    { path: 'b2bdist/addoredit/:id', component: B2bDistAddoreditComponent, canActivate: [AuthGuard] },
 
     {
         path: "",

@@ -41,5 +41,12 @@ namespace MFS.ReportingService.Models
 		public string BranchCode { get; set; }
 		public string PaidBy { get; set; }
 		public string ExtraId { get; set; }
+		public string ReverseTransNo { get; set; }
+		public double Principle { get; set; }
+		public string PrincipleCbsId { get; set; }
+		public string PrincipleNarration { get; set; }
+		public double Vat { get; set; }
+		public string VatCbsId { get; set; }
+		public string VatNarration { get; set; }
 	}
 }

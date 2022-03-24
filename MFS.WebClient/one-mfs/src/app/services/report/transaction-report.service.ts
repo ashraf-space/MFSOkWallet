@@ -52,5 +52,12 @@ export class TransactionReportService {
             }));
     }
 
+    getCampaignTypeDDL() {
+        return this.http.get<any>(this.settings.reportingApiServer + '/Transaction/GetCampaignTypeDDL')
+            .pipe(map(data => {
+                return data;
+            }));
+    }
+
    
 }

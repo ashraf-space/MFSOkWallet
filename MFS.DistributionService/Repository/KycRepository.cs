@@ -40,6 +40,8 @@ namespace MFS.DistributionService.Repository
 		object CloseAccount(string mphone, string updateBy, string remarks);
 		DeviceInformation GetDeviceInformationByMphone(string mphone);
 		Reginfo GetCloseRegInfoByMphone(string mphone);
+		object CheckIsDistCodeExistForB2b(string distCode);
+		object CheckNidValidWithIdType(string photoid, string type, int? idType);
 	}
 	public class KycRepository : BaseRepository<Reginfo>, IKycRepository
 	{
@@ -205,18 +207,26 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid + "' and t.cat_id = '" + type + "' and t.status <> 'C'";
+					string query = string.Empty;
+					if (type == "C")
+					{
+						query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid.Trim() + "' and t.status <> 'C'";
+					}
+					else
+					{
+						query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid.Trim() + "' and t.cat_id = '" + type + "' and t.status <> 'C'";
+					}
 
 					var result = connection.Query<int>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					connection.Dispose();
-					if (Convert.ToUInt32(result) > 0)
+					if (Convert.ToUInt32(result) == 0)
 					{
-						return false;
+						return true;
 					}
 					else
 					{
-						return true;
+						return false;
 					}
 				}
 
@@ -641,6 +651,64 @@ namespace MFS.DistributionService.Repository
 					connection.Dispose();
 					return result;
 				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public object CheckIsDistCodeExistForB2b(string distCode)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = "select count(*) from " + dbUser + "reginfo t where t.dist_code = '" + distCode + "'";
+					var regdate = connection.QueryFirstOrDefault<int>(query);
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return regdate;
+				}
+
+			}
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
+		}
+
+		public object CheckNidValidWithIdType(string photoid, string type, int? idType)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = string.Empty;
+					//int idTypeCode = Convert.ToInt32(idType);
+					if (type == "C")
+					{
+						query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid.Trim() + "' and  t.photo_id_type_code = '"+ idType + "'  and t.status <> 'C'";
+					}
+					else
+					{
+						query = @"select count(*) as ""total"" from " + dbUser + "reginfo t where t.photo_id = '" + photoid.Trim() + "' and t.cat_id = '" + type + "' and t.status <> 'C'";
+					}
+
+					var result = connection.Query<int>(query).FirstOrDefault();
+					this.CloseConnection(connection);
+					connection.Dispose();
+					if (Convert.ToUInt32(result) == 0)
+					{
+						return true;
+					}
+					else
+					{
+						return false;
+					}
+				}
+
 			}
 			catch (Exception ex)
 			{

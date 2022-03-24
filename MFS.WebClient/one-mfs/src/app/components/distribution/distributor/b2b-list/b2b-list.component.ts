@@ -31,12 +31,12 @@ export class B2bListComponent implements OnInit {
     initialiseGridConfig(): any {
         this.gridConfig.dataSource = [];
         this.gridConfig.customFilterOptionPath = this.mfsSettingService.distributionApiServer + '/Kyc/GetFilteringListForDdl';
-        this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetRegInfoListByCatIdBranchCode?BranchCode=' + this.currentUserModel.user.branchCode + '&CatId=BD' + '&filterId=';
+        this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetRegInfoListByCatIdBranchCode?BranchCode=' + this.currentUserModel.user.branchCode + '&CatId=AMBD' + '&filterId=';
         //this.gridConfig.dataSourcePath = this.mfsSettingService.distributionApiServer + '/Kyc/GetRegInfoListByCatIdBranchCode?BranchCode=' + this.currentUserModel.user.branchCode+'&CatId=D';
         this.gridConfig.autoUpdateDataSource = true; // --- FOR AUTO BINDING THE DATA AFTER DATA RETRIVAL FROM THE API SERVER
         this.gridConfig.autoIndexing = true;
 
-        this.gridConfig.gridName = "B2B Distributor list";
+        this.gridConfig.gridName = "B2B Master Distributor list";
         this.gridConfig.gridIconClass = 'fas fa-list';
         this.gridConfig.createStateUrl = '/b2b/addoredit/';
         this.gridConfig.hasEditState = true;

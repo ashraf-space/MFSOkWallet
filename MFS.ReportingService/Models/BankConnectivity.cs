@@ -9,7 +9,8 @@ namespace MFS.ReportingService.Models
 	public class BankConnectivity
 	{
 		public string TRANS_NO { get; set; }
-		public DateTime? TRANS_DATE { get; set; }
+        public string TransRefNo { get; set; }
+        public DateTime? TRANS_DATE { get; set; }
 		public double OBLREVENUE { get; set; }
 		public double TOTAL { get; set; }
 		public string PARTICULAR { get; set; }

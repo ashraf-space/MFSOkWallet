@@ -584,6 +584,7 @@ export class DistributorAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.merchantBankBranchList = data;
+                    this.merchantBankBranchList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);
@@ -596,6 +597,7 @@ export class DistributorAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.bankDistrictList = data;
+                    this.bankDistrictList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);
@@ -608,6 +610,7 @@ export class DistributorAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.bankBranchByDistBankCodeList = data;
+                    this.bankBranchByDistBankCodeList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);

@@ -26,14 +26,18 @@ namespace MFS.DistributionService.Repository
         CompanyAndHolderName GetCompanyAndHolderName(string acNo);
         object GetDistributorAcList();
         object getRegInfoDetailsByMphone(string mphone);
+        object getRegInfoDetailsByMphoneForCommiConvert(string mphone);
         object getReginfoCashoutByMphone(string mphone);
         object GetDistCodeByPmhone(string pmphhone);
         object ExecuteReplace(DistributorReplace distributorReplace);
         bool IsExistsByMpohne(string mphone);
         bool IsExistsByCatidPhotoId(string catId, string photoId);
         object GetRegionDetailsByMobileNo(string mobileNo);
-		object GetDistributorListWithDistCodeForDDL();
-		object GetB2bDistributorListWithDistCodeForDDL();
+        object GetDistributorListWithDistCodeForDDL();
+        object GetB2bDistributorListWithDistCodeForDDL();
+		object GetMasterDistributorDropdownList();
+		object GetB2bDistributorForB2bDsrListWithDistCodeForDDL();
+		object GetB2bMasterDistributorListForDDL();
 	}
     public class DistributorRepository : BaseRepository<Reginfo>, IDistributorRepository
     {
@@ -302,6 +306,25 @@ namespace MFS.DistributionService.Repository
             }
         }
 
+        public object getRegInfoDetailsByMphoneForCommiConvert(string mphone)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"Select " + dbUser + "FUNC_GET_BALANCE(MPHONE ,'C') as CommiBalance, Name, CASE Cat_ID  WHEN 'D' THEN  'Distributor'  WHEN 'R' THEN  'DSR'   WHEN 'A' THEN 'Agent'  WHEN 'M' THEN  'Merchant'  WHEN 'C' THEN  'Customer'  END as Category,  CASE Status  WHEN 'A' THEN  'Active'  else   'InActive'  END as Status,  CASE reg_status   WHEN 'L' THEN 'Logical'  WHEN 'P' THEN 'Physical' END as RegStatus from " + dbUser + "Reginfo where mphone = '" + mphone + "'";
+                    var result = connection.Query<dynamic>(query).FirstOrDefault();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public object getReginfoCashoutByMphone(string mphone)
         {
             try
@@ -461,13 +484,71 @@ namespace MFS.DistributionService.Repository
             }
         }
 
-		public object GetDistributorListWithDistCodeForDDL()
+        public object GetDistributorListWithDistCodeForDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id in ('D', 'ABD') and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public object GetB2bDistributorListWithDistCodeForDDL()
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'AMBD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+                    var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+                    this.CloseConnection(connection);
+                    connection.Dispose();
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+		public object GetB2bDistributorForB2bDsrListWithDistCodeForDDL()
 		{
 			try
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'D' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'ABD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+					var result = connection.Query<CustomDropDownModel>(query).ToList();
+
+					this.CloseConnection(connection);
+					connection.Dispose();
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public object GetMasterDistributorDropdownList()
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'AMBD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
 					var result = connection.Query<CustomDropDownModel>(query).ToList();
 
 					this.CloseConnection(connection);
@@ -481,13 +562,13 @@ namespace MFS.DistributionService.Repository
 			}
 		}
 
-		public object GetB2bDistributorListWithDistCodeForDDL()
+		public object GetB2bMasterDistributorListForDDL()
 		{
 			try
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.dist_code value from one.reginfo t where t.cat_id = 'BD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
+					string query = @"select concat(concat(nvl(t.company_name, t.name),' -- '),t.mphone) as label, t.mphone value from one.reginfo t where t.cat_id = 'AMBD' and t.reg_status = 'P' and t.status = 'A' and t.dist_code is not null";
 					var result = connection.Query<CustomDropDownModel>(query).ToList();
 
 					this.CloseConnection(connection);

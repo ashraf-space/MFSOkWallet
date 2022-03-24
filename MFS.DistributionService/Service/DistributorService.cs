@@ -11,61 +11,65 @@ using System.Threading.Tasks;
 
 namespace MFS.DistributionService.Service
 {
-    public interface IDistributorService : IBaseService<Reginfo>
-    {
-        object GetDistributorListData();
-        object GetDistributorListForDDL();
+	public interface IDistributorService : IBaseService<Reginfo>
+	{
+		object GetDistributorListData();
+		object GetDistributorListForDDL();
 		object GetDistributorListWithDistCodeForDDL();
 		object GetTotalAgentByMobileNo(string ExMobileNo);
-        object GetDistributorByMphone(string mPhone);
-        object GetDistcodeAndNameByMphone(string mPhone);
-        string GeneratePinNo(int fourDigitRandomNo);
-	    object GetDistributorCodeByPhotoId(string pid);
-        object GetRegInfoListByCatIdBranchCode(string branchCode, string catId, string status);
-        CompanyAndHolderName GetCompanyAndHolderName(string acNo);
-        object GetDistributorAcList();
-        object getRegInfoDetailsByMphone(string mphone);
-        object getReginfoCashoutByMphone(string mphone);
+		object GetDistributorByMphone(string mPhone);
+		object GetDistcodeAndNameByMphone(string mPhone);
+		string GeneratePinNo(int fourDigitRandomNo);
+		object GetDistributorCodeByPhotoId(string pid);
+		object GetRegInfoListByCatIdBranchCode(string branchCode, string catId, string status);
+		CompanyAndHolderName GetCompanyAndHolderName(string acNo);
+		object GetDistributorAcList();
+		object getRegInfoDetailsByMphone(string mphone);
+		object getRegInfoDetailsByMphoneForCommiConvert(string mphone);
+		object getReginfoCashoutByMphone(string mphone);
 		object GetDistCodeByPmhone(string pmphhone);
-        object ExecuteReplace(DistributorReplace distributorReplace);
-        bool IsExistsByMpohne(string mphone);
-        bool IsExistsByCatidPhotoId(string catId, string photoId);
-        object GetRegionDetailsByMobileNo(string mobileNo);
+		object ExecuteReplace(DistributorReplace distributorReplace);
+		bool IsExistsByMpohne(string mphone);
+		bool IsExistsByCatidPhotoId(string catId, string photoId);
+		object GetRegionDetailsByMobileNo(string mobileNo);
 		object GetB2bDistributorListWithDistCodeForDDL();
+		object GetMasterDistributorDropdownList();
+		object GetB2bDistributorForB2bDsrListWithDistCodeForDDL();
+		object GetB2bMasterDistributorListForDDL();
 	}
-    public class DistributorService : BaseService<Reginfo>,IDistributorService
-    {
-        private readonly IDistributorRepository _distributorRepository;
-        public DistributorService(IDistributorRepository distributorRepository)
-        {
-            this._distributorRepository = distributorRepository;
-        }
+	public class DistributorService : BaseService<Reginfo>, IDistributorService
+	{
+		private readonly IDistributorRepository _distributorRepository;
+		public DistributorService(IDistributorRepository distributorRepository)
+		{
+			this._distributorRepository = distributorRepository;
+		}
 
-        public object GetDistributorListData()
-        {
-            return _distributorRepository.GetDistributorListData();
-        }
+		public object GetDistributorListData()
+		{
+			return _distributorRepository.GetDistributorListData();
+		}
 
-        public object GetDistributorListForDDL()
-        {
-            return _distributorRepository.GetDistributorListForDDL();
-        }
-        public object GetTotalAgentByMobileNo(string ExMobileNo)
-        {
-            return _distributorRepository.GetTotalAgentByMobileNo(ExMobileNo);
-        }
+		public object GetDistributorListForDDL()
+		{
+			return _distributorRepository.GetDistributorListForDDL();
+		}
+		public object GetTotalAgentByMobileNo(string ExMobileNo)
+		{
+			return _distributorRepository.GetTotalAgentByMobileNo(ExMobileNo);
+		}
 
-        public object GetRegInfoListByCatIdBranchCode(string branchCode, string catId, string status)
-        {
-            return _distributorRepository.GetRegInfoListByCatIdBranchCode(branchCode, catId, status);
-        }
+		public object GetRegInfoListByCatIdBranchCode(string branchCode, string catId, string status)
+		{
+			return _distributorRepository.GetRegInfoListByCatIdBranchCode(branchCode, catId, status);
+		}
 
-        public object GetDistributorByMphone(string mPhone)
-        {
-            try
-            {
+		public object GetDistributorByMphone(string mPhone)
+		{
+			try
+			{
 				Base64Conversion base64Conversion = new Base64Conversion();
-				Reginfo reginfo = (Reginfo) _distributorRepository.GetDistributorByMphone(mPhone);
+				Reginfo reginfo = (Reginfo)_distributorRepository.GetDistributorByMphone(mPhone);
 				if (reginfo != null)
 				{
 					if (base64Conversion.IsBase64(reginfo.FatherName))
@@ -109,162 +113,180 @@ namespace MFS.DistributionService.Service
 					{
 						reginfo._PerAddrBangla = base64Conversion.DecodeBase64(reginfo._PerAddrBangla);
 					}
+					if (reginfo.CatId == "AMBD" && reginfo.SchargePer > 0)
+					{
+						double? serviceCharge = reginfo.SchargePer;
+						reginfo.SchargePer = serviceCharge * 100;
+					}
 
 				}
 				return reginfo;
 			}
-            catch (Exception)
-            {
-                throw;
-            }
-            
-        }
-        public object GetDistcodeAndNameByMphone(string mPhone)
-        {
-            try
-            {
-                return _distributorRepository.GetDistcodeAndNameByMphone(mPhone);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+			catch (Exception)
+			{
+				throw;
+			}
 
-        }
+		}
+		public object GetDistcodeAndNameByMphone(string mPhone)
+		{
+			try
+			{
+				return _distributorRepository.GetDistcodeAndNameByMphone(mPhone);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 
-        public CompanyAndHolderName GetCompanyAndHolderName(string acNo)
-        {
-            try
-            {
-                return _distributorRepository.GetCompanyAndHolderName( acNo);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+		}
 
-        }
+		public CompanyAndHolderName GetCompanyAndHolderName(string acNo)
+		{
+			try
+			{
+				return _distributorRepository.GetCompanyAndHolderName(acNo);
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 
-        public string GeneratePinNo(int fourDigitRandomNo)
-        {
-            try
-            {
-                return _distributorRepository.GeneratePinNo(fourDigitRandomNo);
-            }
-            catch (Exception)
-            {
+		}
 
-                throw;
-            }
-        }
+		public string GeneratePinNo(int fourDigitRandomNo)
+		{
+			try
+			{
+				return _distributorRepository.GeneratePinNo(fourDigitRandomNo);
+			}
+			catch (Exception)
+			{
 
-	    public object GetDistributorCodeByPhotoId(string pid)
-	    {
-		    try
-		    {
-			    return _distributorRepository.GetDistributorCodeByPhotoId(pid);
+				throw;
+			}
+		}
 
-		    }
-		    catch (Exception e)
-		    {
-			    Console.WriteLine(e);
-			    throw;
-		    }
-	    }
-        public object GetDistributorAcList()
-        {
-            try
-            {
-                return _distributorRepository.GetDistributorAcList();
-            }
-            catch (Exception)
-            {
+		public object GetDistributorCodeByPhotoId(string pid)
+		{
+			try
+			{
+				return _distributorRepository.GetDistributorCodeByPhotoId(pid);
 
-                throw;
-            }
-        }
-        public object getRegInfoDetailsByMphone(string mphone)
-        {
-            try
-            {
-                return _distributorRepository.getRegInfoDetailsByMphone(mphone);
-            }
-            catch (Exception)
-            {
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+		}
+		public object GetDistributorAcList()
+		{
+			try
+			{
+				return _distributorRepository.GetDistributorAcList();
+			}
+			catch (Exception)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
+		public object getRegInfoDetailsByMphone(string mphone)
+		{
+			try
+			{
+				return _distributorRepository.getRegInfoDetailsByMphone(mphone);
+			}
+			catch (Exception)
+			{
 
-        public object getReginfoCashoutByMphone(string mphone)
-        {
-            try
-            {
-                return _distributorRepository.getReginfoCashoutByMphone(mphone);
-            }
-            catch (Exception)
-            {
+				throw;
+			}
+		}
 
-                throw;
-            }
-        }
+		public object getRegInfoDetailsByMphoneForCommiConvert(string mphone)
+		{
+			try
+			{
+				return _distributorRepository.getRegInfoDetailsByMphoneForCommiConvert(mphone);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public object getReginfoCashoutByMphone(string mphone)
+		{
+			try
+			{
+				return _distributorRepository.getReginfoCashoutByMphone(mphone);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
 
 		public object GetDistCodeByPmhone(string pmphhone)
 		{
 			return _distributorRepository.GetDistCodeByPmhone(pmphhone);
 		}
 
-        public object  ExecuteReplace(DistributorReplace distributorReplace)
-        {
-            try
-            {
-                return _distributorRepository.ExecuteReplace(distributorReplace);
-            }
-            catch (Exception)
-            {
+		public object ExecuteReplace(DistributorReplace distributorReplace)
+		{
+			try
+			{
+				return _distributorRepository.ExecuteReplace(distributorReplace);
+			}
+			catch (Exception)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
 
-        public bool IsExistsByMpohne(string mphone)
-        {
-            try
-            {
-                return _distributorRepository.IsExistsByMpohne(mphone);
-            }
-            catch (Exception ex)
-            {
+		public bool IsExistsByMpohne(string mphone)
+		{
+			try
+			{
+				return _distributorRepository.IsExistsByMpohne(mphone);
+			}
+			catch (Exception ex)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
 
-        public bool IsExistsByCatidPhotoId(string catId, string photoId)
-        {
-            try
-            {
-                return _distributorRepository.IsExistsByCatidPhotoId( catId,  photoId);
-            }
-            catch (Exception ex)
-            {
+		public bool IsExistsByCatidPhotoId(string catId, string photoId)
+		{
+			try
+			{
+				return _distributorRepository.IsExistsByCatidPhotoId(catId, photoId);
+			}
+			catch (Exception ex)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
 
-        public object GetRegionDetailsByMobileNo(string mobileNo)
-        {
-            try
-            {
-                return _distributorRepository.GetRegionDetailsByMobileNo(mobileNo);
-            }
-            catch (Exception ex)
-            {
+		public object GetRegionDetailsByMobileNo(string mobileNo)
+		{
+			try
+			{
+				return _distributorRepository.GetRegionDetailsByMobileNo(mobileNo);
+			}
+			catch (Exception ex)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
 
 		public object GetDistributorListWithDistCodeForDDL()
 		{
@@ -290,6 +312,21 @@ namespace MFS.DistributionService.Service
 
 				throw;
 			}
+		}
+
+		public object GetMasterDistributorDropdownList()
+		{
+			return _distributorRepository.GetMasterDistributorDropdownList();
+		}
+
+		public object GetB2bDistributorForB2bDsrListWithDistCodeForDDL()
+		{
+			return _distributorRepository.GetB2bDistributorForB2bDsrListWithDistCodeForDDL();
+		}
+
+		public object GetB2bMasterDistributorListForDDL()
+		{
+			return _distributorRepository.GetB2bMasterDistributorListForDDL();
 		}
 	}
 }

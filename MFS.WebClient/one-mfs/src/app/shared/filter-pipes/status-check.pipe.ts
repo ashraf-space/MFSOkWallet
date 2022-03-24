@@ -110,6 +110,9 @@ export class StatusCheckPipe implements PipeTransform {
                     case 'P':
                         return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:green;color:white;padding:0.5em'> Approved </span>");
                         break;
+                    case 'R':
+                        return this._sanitizer.bypassSecurityTrustHtml("<span style='background-color:red;color:white;padding:0.5em'> Rejected </span>");
+                        break;
                     default:
                 }
             case 'outboxStatus':

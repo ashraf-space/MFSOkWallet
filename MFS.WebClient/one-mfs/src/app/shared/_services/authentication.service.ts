@@ -9,6 +9,7 @@ import { MfsSettingService } from '../../services/mfs-setting.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
+   
     private currentUserSubject: BehaviorSubject<any>;
     public currentUser: Observable<any>;
 
@@ -49,8 +50,8 @@ export class AuthenticationService {
             }));
     }
 
-    getTransactionAnalysis() {
-        return this.http.get(this.setting.reportingApiServer + '/Transaction/TransactionAnalysis')
+    getTransactionAnalysis(totalClientCount) {
+        return this.http.post(this.setting.reportingApiServer + '/Transaction/TransactionAnalysis', totalClientCount)
             .pipe(map(response => {
                 return response;
             }));
@@ -132,6 +133,12 @@ export class AuthenticationService {
         return this.http.get<any>(this.setting.clientApiServer + '/Dashboard/GetBillCollectionMenus?userId=' + userId)
             .pipe(map(model => {
                 return model;
+            }));
+    }
+    GetDataForUtilityDashboard() {
+        return this.http.get(this.setting.clientApiServer + '/Dashboard/GetDataForUtilityDashboard')
+            .pipe(map(response => {
+                return response;
             }));
     }
 }

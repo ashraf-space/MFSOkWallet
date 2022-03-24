@@ -17,10 +17,17 @@
             </div>
         </div>
     </div>
-    <div class="p-col-12">
-        <span class="ui-float-label ">
-            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.mphone" pKeyFilter="int" maxlength="13">
+    <div class="p-col-6">
+        <!--<span class="ui-float-label ">-->
             <label for="float-input input-lg"><i class='fa fa-search'></i> Enter Account Number <span class="mandatory">*</span></label>
-        </span>
+            <input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.mphone" pKeyFilter="int" maxlength="13">
+
+        <!--</span>-->
+    </div>
+    <div class="p-col-6">
+        <label for="float-input" class="col-form-label">Balance Type<span class="mandatory">*</span></label>
+        <p-dropdown [options]="balanceTypeList" placeholder="Select Type" [(ngModel)]="model.balanceType"
+                    [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+        <p-message *ngIf="(model.balanceType==null || model.balanceType=='') && error " severity="error" text="Cannot be left blank"></p-message>
     </div>
 </div>

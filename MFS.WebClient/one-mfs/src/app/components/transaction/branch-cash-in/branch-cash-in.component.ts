@@ -51,6 +51,7 @@ export class BranchCashInComponent implements OnInit {
             this.error = true;
         }
         else {
+            this.isActionDisabled = true;
             this.isLoading = true;
             this.branchCashInService.saveBranchCashIn(this.branchCashInModel, this.isEditMode).pipe(first())
                 .subscribe(

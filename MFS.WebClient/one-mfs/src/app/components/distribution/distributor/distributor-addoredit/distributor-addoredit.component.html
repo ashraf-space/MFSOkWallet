@@ -429,7 +429,7 @@
 							<label for="float-input input-lg" class="col-form-label">District</label>
 							<p-dropdown [options]="bankDistrictList" [(ngModel)]="regInfoModel.eftDistCode" placeholder="Select District"
 										[filter]="true" filterBy="label,value.name" (onChange)="getBankBranchListByBankCodeAndDistCode()"
-										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+										[style]="{display: 'grid'}"  [showClear]="true" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
 						</div>
 					</div>
 
@@ -438,14 +438,14 @@
 							<label for="float-input input-lg" class="col-form-label-dd">Branch Name </label>
 							<p-dropdown [options]="bankBranchByDistBankCodeList" [(ngModel)]="regInfoModel.eftBranchCode"
 										[filter]="true" filterBy="label,value.name" placeholder="Select Branch"
-										(onChange)="getRoutingNo()"
+										(onChange)="getRoutingNo()"  [showClear]="true"
 										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
 						</div>
 
 						<div class="p-col-6">
 							<br />
 							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [readonly]="true" pInputText id="float-input">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [disabled]="isRegistrationPermitted || disabledEdit" pInputText id="float-input">
 								<label for="float-input input-lg" class="col-form-label">Routing No</label>
 							</span>
 						</div>

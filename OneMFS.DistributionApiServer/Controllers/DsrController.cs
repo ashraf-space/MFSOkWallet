@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MFS.CommunicationService.Service;
 using MFS.DistributionService.Models;
 using MFS.DistributionService.Service;
+using MFS.EnvironmentService.Service;
 using MFS.SecurityService.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +25,13 @@ namespace OneMFS.DistributionApiServer.Controllers
 		private readonly IDsrService _DsrService;
 		private readonly IKycService _kycService;
 		private IErrorLogService errorLogService;
-		public DsrController(IErrorLogService _errorLogService, IDsrService DsrService, IKycService kycService)
+		private readonly ILocationService _locationService;
+		public DsrController(ILocationService locationService ,IErrorLogService _errorLogService, IDsrService DsrService, IKycService kycService)
 		{
 			this._DsrService = DsrService;
 			this._kycService = kycService;
 			this.errorLogService = _errorLogService;
+			this._locationService = locationService;
 		}
 
 		[HttpGet]
@@ -72,7 +75,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.RegDate = System.DateTime.Now;
 					regInfo.EntryDate = System.DateTime.Now;
 					//int fourDigitRandomNo = new Random().Next(1000, 9999);                  
 					try
@@ -156,11 +160,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 		}
 		[HttpGet]
 		[Route("GetB2bDistributorDataByDistributorCode")]
-		public object GetB2bDistributorDataByDistributorCode(string distributorCode)
+		public object GetB2bDistributorDataByDistributorCode(string distributorCode, string catId)
 		{
 			try
 			{
-				return _DsrService.GetB2bDistributorDataByDistributorCode(distributorCode);
+				return _DsrService.GetB2bDistributorDataByDistributorCode(distributorCode,catId);
 			}
 			catch (Exception ex)
 			{
@@ -176,22 +180,38 @@ namespace OneMFS.DistributionApiServer.Controllers
 			{			
 				if (isEditMode != true)
 				{
-					regInfo.CatId = "BA";
-					regInfo.AcTypeCode = 1;
-					regInfo.PinStatus = "N";
-					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
-					regInfo.EntryDate = System.DateTime.Now;					                
-					try
+					if (!string.IsNullOrEmpty(regInfo.DistCode) && !string.IsNullOrEmpty(regInfo.Pmphone) && !string.IsNullOrEmpty(regInfo.Ppmphone) && !string.IsNullOrEmpty(regInfo.EntryBy))
 					{
-						_DsrService.Add(regInfo);
-						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "DSR", regInfo.Mphone, "Save successfully");
+						regInfo.CatId = "ABR";
+						regInfo.AcTypeCode = 1;
+						regInfo.PinStatus = "N";
+						regInfo.RegSource = "P";
+						regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						regInfo.EntryDate = System.DateTime.Now;
+						//regInfo.Ppmphone 
+						string distCode = regInfo.DistCode.Substring(0, 14);
+						var isDistCodeExist = _kycService.CheckIsDistCodeExist(regInfo.DistCode);
+						if (Convert.ToInt32(isDistCodeExist) == 1)
+						{
+							var newDistCode = _locationService.GenerateB2bDistributorCode(distCode);
+							regInfo.DistCode = newDistCode.ToString();
+						}
+						try
+						{
+							_DsrService.Add(regInfo);
+							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "DSR", regInfo.Mphone, "Save successfully");
+							return HttpStatusCode.OK;
+
+						}
+						catch (Exception)
+						{
+							return HttpStatusCode.BadRequest;
+						}
 					}
-					catch (Exception)
+					else
 					{
 						return HttpStatusCode.BadRequest;
-					}				
-					return HttpStatusCode.OK;
+					}
 
 				}
 				else

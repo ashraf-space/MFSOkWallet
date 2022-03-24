@@ -50,11 +50,13 @@ export class MerchantUserComponent implements OnInit {
             { label: 'Distributor', value: 'D' },
             { label: 'Bank', value: 'BNK' },
             { label: 'Donation', value: 'DON' },
-            { label: 'Ekpay', value: 'EKPAY' }
+            { label: 'Ekpay', value: 'EKPAY' },
+            { label: 'SSL COMMERZ', value: 'SSL' }
         ]
         this.merchantSubTypeList = [
             { label: 'Jamuna Bank', value: 'JBL' },
-            { label: 'Mutual Trust Bank', value: 'MTB' }    
+            { label: 'Mutual Trust Bank', value: 'MTB' },
+            { label: 'Brac Bank Limited', value: 'BBL' } 
         ]
         this.getMerchantList();
         this.entityId = +this.route.snapshot.paramMap.get('id');

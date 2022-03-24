@@ -79,7 +79,7 @@ namespace MFS.EnvironmentService.Repository
         {
             using (var connection = this.GetConnection())
             {
-                string query = @"select t.mphone from "+ dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'C'";
+                string query = @"select t.mphone from "+ dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category IN ('C','B')";
                 var result = connection.Query<string>(query).FirstOrDefault();
                 this.CloseConnection(connection);
                 return result;

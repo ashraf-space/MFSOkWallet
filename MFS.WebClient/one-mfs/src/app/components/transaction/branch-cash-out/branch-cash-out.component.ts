@@ -51,7 +51,7 @@ export class BranchCashOutComponent implements OnInit {
             this.error = true;
         }
         else {
-
+            this.isActionDisabled = true;
             this.branchCashInService.CheckData(this.tblPortalCashoutModel.transNo, this.tblPortalCashoutModel.mphone, this.tblPortalCashoutModel.amount).pipe(first())
                 .subscribe(
                     data => {

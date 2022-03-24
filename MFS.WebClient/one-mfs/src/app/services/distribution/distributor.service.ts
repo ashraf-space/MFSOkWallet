@@ -10,6 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class DistributorService {
     
+    
    
 
     constructor(private http: HttpClient, private distribution: MfsSettingService) {
@@ -44,6 +45,12 @@ export class DistributorService {
     }
     SaveB2bRetal(regInfoModel: any, isEditMode: boolean, event: string) {
         return this.http.post<any>(this.distribution.distributionApiServer + '/Distributor/SaveB2bRetal?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+    SaveB2bMasterDistributor(regInfoModel: any, isEditMode: boolean, event: string) {
+        return this.http.post<any>(this.distribution.distributionApiServer + '/Distributor/SaveB2bMasterDistributor?isEditMode=' + isEditMode + '&evnt=' + event, regInfoModel)
             .pipe(map(model => {
                 return model;
             }))
@@ -110,7 +117,7 @@ export class DistributorService {
             }));
     }
     generateB2bDistributorCode(selectedTerritory: string): any {
-        return this.http.get<any>(this.distribution.environmentApiServer + '/Location/GenerateDistributorCode?territoryCode=' + selectedTerritory)
+        return this.http.get<any>(this.distribution.environmentApiServer + '/Location/GenerateB2bDistributorCode?territoryCode=' + selectedTerritory)
             .pipe(map(distributorCode => {
                 return distributorCode;
             }));
@@ -203,4 +210,17 @@ export class DistributorService {
                 return distributorList;
             }));
     }
+    GetB2bDistributorForB2bDsrListWithDistCodeForDDL() {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/GetB2bDistributorForB2bDsrListWithDistCodeForDDL')
+            .pipe(map(distributorList => {
+                return distributorList;
+            }));
+    }
+    GetB2bMasterDistributorListForDDL() {
+        return this.http.get<any>(this.distribution.distributionApiServer + '/Distributor/GetB2bMasterDistributorListForDDL')
+            .pipe(map(distributorList => {
+                return distributorList;
+            }));
+    }
+
 }

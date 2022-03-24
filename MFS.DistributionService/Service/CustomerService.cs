@@ -24,6 +24,8 @@ namespace MFS.DistributionService.Service
 		object GetCustomerByMphone(string mPhone);
 		Reginfo ConvertCbsPullToregInfo(CbsCustomerInfo cbsCustomerInfo);
 		bool IsMobilePhoneMatch(string mphone, CbsCustomerInfo cbsCustomerInfo);
+		bool IsNidValid(string photoId);
+		bool IsPhotoIdExist(string catId, string photoId, int code);
 	}
 	public class CustomerService : BaseService<Reginfo>, ICustomerSevice
 	{
@@ -58,11 +60,18 @@ namespace MFS.DistributionService.Service
 					aReginfo.AcTypeCode = 2;
 					aReginfo.RegSource = "P";
 					aReginfo.EntryDate = System.DateTime.Now;
-					aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
+					//aReginfo.RegDate = aReginfo.RegDate + DateTime.Now.TimeOfDay;
+					aReginfo.RegDate = System.DateTime.Now;
 					aReginfo.Mphone = aReginfo.Mphone.Trim();
+					aReginfo.PhotoId = aReginfo.PhotoId.Trim();
 					try
 					{
 						reginfoModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						bool photoIdValid = (bool) kycService.CheckNidValidWithIdType(aReginfo.PhotoId, "C",aReginfo.PhotoIdTypeCode);
+						if (!photoIdValid)
+						{
+							return "IDEXIST";
+						}
 						if (reginfoModel == null)
 						{
 							if (string.IsNullOrEmpty(aReginfo.EntryBy))
@@ -140,6 +149,22 @@ namespace MFS.DistributionService.Service
 						aReginfo.UpdateDate = System.DateTime.Now;
 						convertedModel = GetConvertedReginfoModel(aReginfo);
 						prevModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
+						if(!string.IsNullOrEmpty(convertedModel.PhotoId))
+						{
+							string photoIdPrev = prevModel.GetType().GetProperty("PhotoId").GetValue(prevModel, null).ToString();
+							string photoIdTypeCodePrev = prevModel.GetType().GetProperty("PhotoIdTypeCode").GetValue(prevModel, null).ToString();
+							int photoIdTypeCodeIntPrev = Convert.ToInt32(photoIdTypeCodePrev);
+							string photoIdCurrent =  convertedModel.PhotoId;
+							int? photoIdTypeCodeIntCurrent = convertedModel.PhotoIdTypeCode;
+							if ((photoIdCurrent != photoIdPrev) || (photoIdTypeCodeIntPrev != photoIdTypeCodeIntCurrent))
+							{
+								bool photoIdValid = (bool)kycService.CheckNidValidWithIdType(photoIdCurrent, "C", convertedModel.PhotoIdTypeCode);
+								if (!photoIdValid)
+								{
+									return "IDEXIST";
+								}
+							}
+						}						
 						_customerRepository.UpdateRegInfo(convertedModel);
 						currentModel = kycService.GetRegInfoByMphone(aReginfo.Mphone);
 						kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, aReginfo.UpdateBy, 3, 4, "Customer", aReginfo.Mphone, "Update successfully");
@@ -212,7 +237,7 @@ namespace MFS.DistributionService.Service
 			{
 				aReginfo.PreAddr = base64Conversion.EncodeBase64(aReginfo.PreAddr);
 			}
-
+			aReginfo.PhotoId = aReginfo.PhotoId.Trim();
 			//if (!string.IsNullOrEmpty(aReginfo._FatherNameBangla) && !base64Conversion.IsLetterEnglish(aReginfo._FatherNameBangla))
 			//{
 			//	aReginfo._FatherNameBangla = base64Conversion.EncodeBase64(aReginfo._FatherNameBangla);
@@ -312,12 +337,12 @@ namespace MFS.DistributionService.Service
 			};
 			if (!String.IsNullOrEmpty(cbsCustomerInfo.cBSdbAccount.NationalID) && String.IsNullOrEmpty(cbsCustomerInfo.cBSdbAccount.PassportNo))
 			{
-				reginfo.PhotoId = cbsCustomerInfo.cBSdbAccount.NationalID;
+				reginfo.PhotoId = cbsCustomerInfo.cBSdbAccount.NationalID.Trim();
 				reginfo.PhotoIdTypeCode = 1;
 			}
 			if (!String.IsNullOrEmpty(cbsCustomerInfo.cBSdbAccount.PassportNo) && String.IsNullOrEmpty(cbsCustomerInfo.cBSdbAccount.NationalID))
 			{
-				reginfo.PhotoId = cbsCustomerInfo.cBSdbAccount.PassportNo;
+				reginfo.PhotoId = cbsCustomerInfo.cBSdbAccount.PassportNo.Trim();
 				reginfo.PhotoIdTypeCode = 2;
 			}
 			return reginfo;
@@ -333,6 +358,26 @@ namespace MFS.DistributionService.Service
 			{
 				return false;
 			}
+		}
+
+		public bool IsNidValid(string photoId)
+		{
+			int count = photoId.Trim().Length;
+
+			if(count==10 || count == 13 || count == 17)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
+
+		public bool IsPhotoIdExist(string catId, string photoId, int code)
+		{
+			return _customerRepository.IsPhotoIdExist(catId, photoId, code);
 		}
 	}
 }

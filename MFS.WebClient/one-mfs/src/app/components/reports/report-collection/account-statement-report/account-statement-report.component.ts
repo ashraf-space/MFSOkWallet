@@ -9,19 +9,27 @@ import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 export class AccountStatementReportComponent implements OnInit {
 
     model: any;
+    balanceTypeList: any;
+    error: boolean = false;
     constructor(private mfsUtilityService: MfsUtilityService) {
         this.model = {};
     }
 
     ngOnInit() {
+        this.balanceTypeList = [           
+                { label: 'Main Balance', value: 'M' },
+                { label: 'Commission Balance', value: 'C' }
+            ];
     }
 
     getReportParam() {
         if (this.validate()) {
             var obj: any = {};
+            obj.balanceType = this.model.balanceType;           
             obj.fromDate = this.mfsUtilityService.renderDate(this.model.fromDate, true);
-            obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true);
+            obj.toDate = this.mfsUtilityService.renderDate(this.model.toDate, true); 
             obj.mphone = this.model.mphone;  
+              
             return obj;
         }
         else {
@@ -31,7 +39,7 @@ export class AccountStatementReportComponent implements OnInit {
     }
 
     validate(): any {
-        if (!this.model.fromDate || !this.model.toDate || !this.model.mphone) {
+        if (!this.model.fromDate || !this.model.toDate || !this.model.mphone || !this.model.balanceType) {
             return false;
         }
         else {

@@ -12,6 +12,7 @@ namespace MFS.TransactionService.Service
     public interface IDistributorDepositService : IBaseService<TblCashEntry>
     {
         object GetCashEntryListByBranchCode(string branchCode, bool isRegistrationPermitted, double transAmtLimit);
+
         string GetTransactionNo();
         TblCashEntry GetDestributorDepositByTransNo(string transNo);
         object DataInsertToTransMSTandDTL(TblCashEntry cashEntry);
@@ -28,6 +29,7 @@ namespace MFS.TransactionService.Service
             return _distributorDepositRepository.GetCashEntryListByBranchCode(branchCode, isRegistrationPermitted, transAmtLimit);
         }
 
+      
         public string GetTransactionNo()
         {
             return _distributorDepositRepository.GetTransactionNo();

@@ -181,6 +181,58 @@
         <rd:TableAdapterName />
       </rd:DataSetInfo>
     </DataSet>
+    <DataSet Name="TotalClientCount">
+      <Query>
+        <DataSourceName>MFSDataSet</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="AGENT">
+          <DataField>AGENT</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="CUSTOMER">
+          <DataField>CUSTOMER</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DISTRIBUTOR">
+          <DataField>DISTRIBUTOR</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DSR">
+          <DataField>DSR</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MERCHANT">
+          <DataField>MERCHANT</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MERCHANTONLINE">
+          <DataField>MERCHANTONLINE</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="MERCHANTOFFLINE">
+          <DataField>MERCHANTOFFLINE</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="TOTALEMS">
+          <DataField>TOTALEMS</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="TOTALMMS">
+          <DataField>TOTALMMS</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>MFSDataSet</rd:DataSetName>
+        <rd:SchemaPath>E:\MFSOKWallet\OneMFS.ReportingApiServer\Reports\DataSet\MFSDataSet.xsd</rd:SchemaPath>
+        <rd:TableName>TotalClientCount</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
+      </rd:DataSetInfo>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -190,37 +242,37 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.64585in</Width>
+                  <Width>1.31612in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.66667in</Width>
+                  <Width>0.86822in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.39583in</Width>
+                  <Width>0.2849in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.65625in</Width>
+                  <Width>0.86824in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.40625in</Width>
+                  <Width>0.31612in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.66667in</Width>
+                  <Width>0.69118in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.40625in</Width>
+                  <Width>0.28488in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.5625in</Width>
+                  <Width>0.77449in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.44444in</Width>
+                  <Width>0.32307in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.38542in</Width>
+                  <Width>0.27448in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.56249in</Width>
+                  <Width>0.62864in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -275,7 +327,7 @@
                                   <Value>=Fields!CaptionOne.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -313,7 +365,7 @@
                                   <Value>=Fields!CaptionTwo.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -351,7 +403,7 @@
                                   <Value>=Fields!CaptionThree.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -389,7 +441,7 @@
                                   <Value>=Fields!CaptionFour.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -427,7 +479,7 @@
                                   <Value>=Fields!CaptionFive.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -506,7 +558,7 @@
                                   <Value>Volume </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -542,7 +594,7 @@
                                   <Value>%</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -578,7 +630,7 @@
                                   <Value>Volume </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -614,7 +666,7 @@
                                   <Value>%</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -650,7 +702,7 @@
                                   <Value>Volume </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -686,7 +738,7 @@
                                   <Value>%</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -722,7 +774,7 @@
                                   <Value>Volume </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -758,7 +810,7 @@
                                   <Value>%</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -794,7 +846,7 @@
                                   <Value>Count</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -830,7 +882,7 @@
                                   <Value>Volume </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -871,7 +923,7 @@
                                   <Value>=Fields!SubType.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -906,8 +958,8 @@
                                   <Value>=Fields!VolumeOne.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0</Format>
+                                    <FontSize>6pt</FontSize>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -942,15 +994,7 @@
                                   <Value>=(Fields!VolumeOne.Value/Sum(Fields!VolumeOne.Value, "TransactionAnalysis"))*100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0;(0)</Format>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value> %</Value>
-                                  <Style>
-                                    <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <Format>0;(0)</Format>
                                   </Style>
                                 </TextRun>
@@ -986,8 +1030,8 @@
                                   <Value>=Fields!VolumeTwo.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0</Format>
+                                    <FontSize>6pt</FontSize>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1022,15 +1066,7 @@
                                   <Value>=(Fields!VolumeTwo.Value/Sum(Fields!VolumeTwo.Value, "TransactionAnalysis"))*100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0;(0)</Format>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value> %</Value>
-                                  <Style>
-                                    <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <Format>0;(0)</Format>
                                   </Style>
                                 </TextRun>
@@ -1066,8 +1102,8 @@
                                   <Value>=Fields!VolumeThree.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0;(0)</Format>
+                                    <FontSize>6pt</FontSize>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1102,15 +1138,7 @@
                                   <Value>=(Fields!VolumeThree.Value/Sum(Fields!VolumeThree.Value, "TransactionAnalysis"))*100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0;(0)</Format>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value> %</Value>
-                                  <Style>
-                                    <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <Format>0;(0)</Format>
                                   </Style>
                                 </TextRun>
@@ -1146,8 +1174,8 @@
                                   <Value>=Fields!VolumeFour.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0</Format>
+                                    <FontSize>6pt</FontSize>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1182,15 +1210,15 @@
                                   <Value>=(Fields!VolumeFour.Value/Sum(Fields!VolumeFour.Value, "TransactionAnalysis"))*100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <Format>0;(0)</Format>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> %</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <Format>0;(0)</Format>
                                   </Style>
                                 </TextRun>
@@ -1226,7 +1254,7 @@
                                   <Value>=Fields!CountFive.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1261,8 +1289,8 @@
                                   <Value>=Fields!VolumeFive.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
-                                    <Format>0</Format>
+                                    <FontSize>6pt</FontSize>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1337,9 +1365,9 @@
                                   <Value>=Sum(Fields!VolumeOne.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1374,7 +1402,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1410,9 +1438,9 @@
                                   <Value>=Sum(Fields!VolumeTwo.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1447,7 +1475,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1483,9 +1511,9 @@
                                   <Value>=Sum(Fields!VolumeThree.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1520,7 +1548,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1556,9 +1584,9 @@
                                   <Value>=Sum(Fields!VolumeFour.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1593,7 +1621,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1629,7 +1657,7 @@
                                   <Value>=Sum(Fields!CountFive.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1665,9 +1693,9 @@
                                   <Value>=Sum(Fields!VolumeFive.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1743,9 +1771,9 @@
                                   <Value>=Sum(Fields!VolumeOne.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1777,10 +1805,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>100 %</Value>
+                                  <Value>100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1816,9 +1844,9 @@
                                   <Value>=Sum(Fields!VolumeTwo.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1850,10 +1878,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>100 %</Value>
+                                  <Value>100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1889,9 +1917,9 @@
                                   <Value>=Sum(Fields!VolumeThree.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1923,10 +1951,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>100 %</Value>
+                                  <Value>100</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -1962,9 +1990,9 @@
                                   <Value>=Sum(Fields!VolumeFour.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1996,10 +2024,10 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>100 %</Value>
+                                  <Value>100 </Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2035,7 +2063,7 @@
                                   <Value>=Sum(Fields!CountFive.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2071,9 +2099,9 @@
                                   <Value>=Sum(Fields!VolumeFive.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2149,9 +2177,9 @@
                                   <Value>=Sum(Fields!VolumeOne.Value, "TransactionAnalysis")/Fields!MonthDaysOne.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2186,7 +2214,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2222,7 +2250,7 @@
                                   <Value>=Sum(Fields!VolumeTwo.Value, "TransactionAnalysis")/Fields!MonthDaysTwo.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>0;(0)</Format>
                                   </Style>
@@ -2259,7 +2287,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2295,7 +2323,7 @@
                                   <Value>=Sum(Fields!VolumeThree.Value, "TransactionAnalysis")/Fields!MonthDaysThree.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>0;(0)</Format>
                                   </Style>
@@ -2332,7 +2360,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2368,7 +2396,7 @@
                                   <Value>=Sum(Fields!VolumeFour.Value, "TransactionAnalysis")/Fields!MonthDaysFour.Value</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>0;(0)</Format>
                                   </Style>
@@ -2405,7 +2433,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2441,7 +2469,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2477,7 +2505,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2554,8 +2582,9 @@
                                   <Value>=Sum(Fields!CountOne.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2590,7 +2619,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2626,9 +2655,9 @@
                                   <Value>=Sum(Fields!CountTwo.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2663,7 +2692,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2699,8 +2728,9 @@
                                   <Value>=Sum(Fields!CountThree.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Format>#,0;(#,0)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2735,7 +2765,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2771,9 +2801,9 @@
                                   <Value>=Sum(Fields!CountFour.Value)</Value>
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2808,7 +2838,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2844,7 +2874,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2880,7 +2910,7 @@
                                   <Value />
                                   <Style>
                                     <FontFamily>tahoma</FontFamily>
-                                    <FontSize>7pt</FontSize>
+                                    <FontSize>6pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -2927,7 +2957,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.375in</Size>
+                    <Size>1.00367in</Size>
                     <CellContents>
                       <Textbox Name="Textbox58">
                         <CanGrow>true</CanGrow>
@@ -2939,7 +2969,7 @@
                                 <Value />
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -2966,7 +2996,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.375in</Size>
+                    <Size>1.00367in</Size>
                     <CellContents>
                       <Textbox Name="Textbox7">
                         <CanGrow>true</CanGrow>
@@ -2978,7 +3008,7 @@
                                 <Value>Transaction Types</Value>
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -3020,7 +3050,7 @@
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>1.375in</Size>
+                        <Size>1.00367in</Size>
                         <CellContents>
                           <Textbox Name="TransactionType">
                             <CanGrow>true</CanGrow>
@@ -3032,7 +3062,7 @@
                                     <Value>=Fields!TransactionType.Value</Value>
                                     <Style>
                                       <FontFamily>tahoma</FontFamily>
-                                      <FontSize>7pt</FontSize>
+                                      <FontSize>6pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -3060,6 +3090,9 @@
                           <Group Name="Details" />
                         </TablixMember>
                         <TablixMember>
+                          <Visibility>
+                            <Hidden>=(Fields!TransactionType.Value = Fields!SubType.Value)</Hidden>
+                          </Visibility>
                           <KeepWithGroup>Before</KeepWithGroup>
                         </TablixMember>
                       </TablixMembers>
@@ -3068,7 +3101,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.375in</Size>
+                    <Size>1.00367in</Size>
                     <CellContents>
                       <Textbox Name="Textbox46">
                         <CanGrow>true</CanGrow>
@@ -3080,7 +3113,7 @@
                                 <Value>Total Volume of Tnx</Value>
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -3107,7 +3140,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.375in</Size>
+                    <Size>1.00367in</Size>
                     <CellContents>
                       <Textbox Name="Textbox114">
                         <CanGrow>true</CanGrow>
@@ -3119,7 +3152,7 @@
                                 <Value>Daily Average</Value>
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -3127,7 +3160,7 @@
                                 <Value>(volume)</Value>
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Normal</FontWeight>
                                 </Style>
                               </TextRun>
@@ -3154,7 +3187,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.375in</Size>
+                    <Size>1.00367in</Size>
                     <CellContents>
                       <Textbox Name="Textbox2">
                         <CanGrow>true</CanGrow>
@@ -3166,7 +3199,7 @@
                                 <Value>Total Number of Tnx</Value>
                                 <Style>
                                   <FontFamily>tahoma</FontFamily>
-                                  <FontSize>7pt</FontSize>
+                                  <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
                                 </Style>
                               </TextRun>
@@ -3195,9 +3228,644 @@
             </TablixRowHierarchy>
             <DataSetName>TransactionAnalysis</DataSetName>
             <Top>0.03124in</Top>
-            <Left>0.05083in</Left>
-            <Height>1.36457in</Height>
-            <Width>8.17362in</Width>
+            <Left>0.25711in</Left>
+            <Height>1.36458in</Height>
+            <Width>7.63401in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+          <Tablix Name="Tablix5">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>0.96643in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.05753in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.95208in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.7177in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.69165in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.81665in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.24028in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.19167in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.16737in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox86">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Customer</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox86</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox88">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Merchants</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox88</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox90">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Distributors</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox90</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox92">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Agents</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox92</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox94">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total EMS</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox94</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox96">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total  MMS</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox96</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox98">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Online Merchants</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox98</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox100">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Total Offline Merchants</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox100</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.17083in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="CUSTOMER">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!CUSTOMER.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>CUSTOMER</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="MERCHANT">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!MERCHANT.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>MERCHANT</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="DISTRIBUTOR">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!DISTRIBUTOR.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>DISTRIBUTOR</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="AGENT">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!AGENT.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>AGENT</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="TOTALEMS">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!TOTALEMS.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>TOTALEMS</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="TOTALMMS">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!TOTALMMS.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>TOTALMMS</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="MERCHANTONLINE">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!MERCHANTONLINE.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>MERCHANTONLINE</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="MERCHANTOFFLINE">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!MERCHANTOFFLINE.Value</Value>
+                                  <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>MERCHANTOFFLINE</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Details1" />
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>TotalClientCount</DataSetName>
+            <Top>1.48263in</Top>
+            <Left>0.25711in</Left>
+            <Height>0.3382in</Height>
+            <Width>7.63399in</Width>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3205,13 +3873,13 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.46873in</Height>
+        <Height>1.82083in</Height>
         <Style />
       </Body>
-      <Width>8.22445in</Width>
+      <Width>8.0786in</Width>
       <Page>
         <PageHeader>
-          <Height>0.83209in</Height>
+          <Height>0.63765in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -3225,7 +3893,6 @@
                       <Value>ONE Bank Ltd.</Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
-                        <FontSize>12pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
@@ -3237,43 +3904,22 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Transaction Analysis</Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value xml:space="preserve">                                                                                       </Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>9pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value xml:space="preserve">      </Value>
+                      <Value>Transaction Analysis  </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
                     <TextRun>
-                      <Value>                                                                                                                          Print Date &amp; Time : </Value>
+                      <Value xml:space="preserve">                                                     </Value>
+                      <Style>
+                        <FontFamily>tahoma</FontFamily>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>Print Date &amp; Time : </Value>
                       <Style>
                         <FontFamily>tahoma</FontFamily>
                         <FontSize>7pt</FontSize>
@@ -3286,27 +3932,6 @@
                         <FontSize>7pt</FontSize>
                       </Style>
                     </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value xml:space="preserve">                                                </Value>
-                      <Style>
-                        <FontFamily>tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
                     <TextRun>
                       <Value xml:space="preserve">                                                                             </Value>
                       <Style>
@@ -3316,15 +3941,15 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Center</TextAlign>
+                    <TextAlign>Left</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox26</rd:DefaultName>
-              <Top>0.06125in</Top>
+              <Top>0.125in</Top>
               <Left>2.22792in</Left>
-              <Height>0.66667in</Height>
-              <Width>5.8611in</Width>
+              <Height>0.47in</Height>
+              <Width>5.66318in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -3339,10 +3964,10 @@
               <Source>Embedded</Source>
               <Value>OKWallet</Value>
               <Sizing>FitProportional</Sizing>
-              <Top>0.06125in</Top>
-              <Left>0.32514in</Left>
-              <Height>0.66667in</Height>
-              <Width>0.69792in</Width>
+              <Top>0.125in</Top>
+              <Left>0.38764in</Left>
+              <Height>0.51265in</Height>
+              <Width>0.68404in</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -3358,7 +3983,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.03349in</Height>
+          <Height>0.01042in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <Style>

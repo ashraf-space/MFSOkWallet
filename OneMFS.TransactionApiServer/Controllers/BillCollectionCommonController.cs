@@ -119,6 +119,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                     param[1] = objBillCollectionCommon.SubMenuId;
                     param[2] = objBillCollectionCommon.Month;
 
+                    param[3] = objBillCollectionCommon.BeneficiaryNumber;
+
                     param[4] = objBillCollectionCommon.Amount.ToString();
                     param[5] = objBillCollectionCommon.CardHolderName;
                     //param[5] = objBillCollectionCommon.OnlineCall;
@@ -128,8 +130,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                     //objBillApiCalling.appid = "payapicall";
                     //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
                     //for live
-                    objBillApiCalling.appid = "payapiLIVEcall";
-                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
+                    //objBillApiCalling.appid = "payapiLIVEcall";
+                    //objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
                     objBillApiCalling.call = "method";
                     //objBillApiCalling.method = "DHAKAWASA";
                     objBillApiCalling.method = objBillCollectionCommon.MethodName;
@@ -198,8 +200,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                     //objBillApiCalling.appid = "payapicall";
                     //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
                     //for live
-                    objBillApiCalling.appid = "payapiLIVEcall";
-                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
+                    //objBillApiCalling.appid = "payapiLIVEcall";
+                    //objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
                     objBillApiCalling.call = "getFee";
                     objBillApiCalling.mphone = "BP";                   
                     objBillApiCalling.parts = param;
@@ -266,8 +268,8 @@ namespace OneMFS.TransactionApiServer.Controllers
                     //objBillApiCalling.appid = "payapicall";
                     //objBillApiCalling.appchk = "589500e2dd1a2d985901cca01205aaba";
                     //for live
-                    objBillApiCalling.appid = "payapiLIVEcall";
-                    objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
+                    //objBillApiCalling.appid = "payapiLIVEcall";
+                    //objBillApiCalling.appchk = "4945bdda77eba2bd6fa38add869a08d0";
                     objBillApiCalling.call = "msgin";
                     objBillApiCalling.mphone = "BP";
                     objBillApiCalling.parts = param;

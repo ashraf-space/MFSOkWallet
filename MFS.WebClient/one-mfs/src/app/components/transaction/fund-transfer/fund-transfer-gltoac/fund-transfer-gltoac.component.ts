@@ -31,6 +31,7 @@ export class FundTransferGltoacComponent implements OnInit {
     error: boolean = false;
     transAmtLimit: any;
     isLoading: boolean = false;
+    remarks: any;
 
 
 
@@ -84,6 +85,7 @@ export class FundTransferGltoacComponent implements OnInit {
                         this.glName = data[0].glName;
                         this.amount = data[0].debitAmount;
                         this.toAcNo = data[1].acNo;
+                        this.remarks = data[0].remarks;
                     }
                 },
                 error => {

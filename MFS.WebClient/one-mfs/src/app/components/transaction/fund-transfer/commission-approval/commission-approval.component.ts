@@ -27,6 +27,7 @@ export class CommissionApprovalComponent implements OnInit {
     toCatId: any;
     entryBrCode: any;
     entryOrApproval: string = null;
+    fromCatId: string;
 
     constructor(private fundTransferService: FundTransferService, private gridSettingService: GridSettingService, private authService: AuthenticationService,
         private mfsSettingService: MfsSettingService, private messageService: MessageService) {
@@ -91,9 +92,21 @@ export class CommissionApprovalComponent implements OnInit {
             this.isLoading = true;
             this.entryOrApproval = 'ForApproval';
 
-            this.toCatId = this.sysCoaCode == 'L40000000087' ? 'D' : 'A';
+            //this.toCatId = this.sysCoaCode == 'L40000000087' ? 'D' : 'A';
+            if (this.sysCoaCode == 'L40000000087') {
+                this.toCatId = 'D';
+                this.fromCatId = 'S1'
+            }
+            else if (this.sysCoaCode == 'L40000000046') {
+                this.toCatId = 'A';
+                this.fromCatId = 'S1'
+            }
+            else {
+                this.toCatId = 'D';
+                this.fromCatId = 'S2'
+            }
 
-            this.fundTransferService.GetCommssionMobileList(this.toCatId, this.entryOrApproval)
+            this.fundTransferService.GetCommssionMobileList(this.toCatId, this.fromCatId, this.entryOrApproval)
                 .pipe(first())
                 .subscribe(
                     data => {

@@ -26,6 +26,12 @@ export class KycService {
                 return data;
             }));
     }
+    checkNidValidWithIdType(value: any, type: any,idType:any) {
+        return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/checkNidValidWithIdType?photoid=' + value + '&type=' + type + '&idType=' + idType)
+            .pipe(map(data => {
+                return data;
+            }));
+    }
     getReginfoByMphone(mPhone: string): any {
         return this.http.get<any>(this.environment.distributionApiServer + '/Kyc/GetReginfoByMphone?mPhone=' + mPhone)
             .pipe(map(regInfoModel => {

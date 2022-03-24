@@ -175,15 +175,15 @@ export class FundTransferService {
             }));
     }
 
-    GetCommssionMobileList(sysCoaCode: any, entryOrApproval: string): any {
-        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetCommssionMobileList?sysCoaCode=' + sysCoaCode + '&entryOrApproval=' + entryOrApproval)
+    GetCommssionMobileList(sysCoaCode: any, fromCatId: any , entryOrApproval: string): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/FundTransfer/GetCommssionMobileList?sysCoaCode=' + sysCoaCode + '&fromCatId=' + fromCatId + '&entryOrApproval=' + entryOrApproval)
             .pipe(map(data => {
                 return data;
             }));
     }
 
-    SaveCommissionEntry(toCatId: any, entryBy: any, entryBrCode: any, SelectedCommissionEntryModel: any): any {
-        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/SaveCommissionEntry?toCatId=' + toCatId + '&entryBy=' + entryBy + '&entryBrCode=' + entryBrCode, SelectedCommissionEntryModel)
+    SaveCommissionEntry(toCatId: any, fromCatId: any, entryBy: any, entryBrCode: any, SelectedCommissionEntryModel: any): any {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/FundTransfer/SaveCommissionEntry?toCatId=' + toCatId + '&fromCatId=' + fromCatId + '&entryBy=' + entryBy + '&entryBrCode=' + entryBrCode, SelectedCommissionEntryModel)
             .pipe(map(model => {
                 return model;
             }))

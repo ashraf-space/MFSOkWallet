@@ -125,12 +125,7 @@ export class CustomerAddoreditComponent implements OnInit {
             this.reginfo.selectedKycType = 'K';
             this.GetCustomerByMphone();
             this.reginfo.isRegPermit = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
-            if (this.reginfo.isRegPermit) {
-                this.reginfo.isNidVerified = false;
-            }
-            else {
-                this.reginfo.isNidVerified = true;
-            }          
+                
         }
         if (!this.reginfo.entityId) {
             var currentDate = new Date();
@@ -208,10 +203,31 @@ export class CustomerAddoreditComponent implements OnInit {
                         }
                         if (this.reginfo.regInfoModel.regStatus === 'P') {
                             this.reginfo.isReject = false;
+                            this.reginfo.isauthorize = true;
                         }
                         else {
                             this.reginfo.isReject = true;
+                            this.reginfo.isauthorize = false;
                         }
+                        
+                        if (this.reginfo.isRegPermit) {
+                            if (this.reginfo.regInfoModel.photoidValidation) {
+                                if (this.reginfo.regInfoModel.photoidValidation === 'Y') {
+                                    this.reginfo.isNidVerified = true;
+                                    this.reginfo.isNidDisabled = true;
+                                }
+                                else {
+                                    this.reginfo.isNidVerified = false;
+                                    this.reginfo.isNidDisabled = false;
+                                }
+                            }
+                            else {
+                                this.reginfo.isNidVerified = true;
+                            }                            
+                        }
+                        else {
+                            this.reginfo.isNidVerified = true;
+                        }      
                     }
                     this.reginfo.isLoading = false;
                 },
@@ -555,8 +571,12 @@ export class CustomerAddoreditComponent implements OnInit {
                             }
                         }
                         else if (data === 'DATAEXIST') {
-                            window.history.back();
+                            //window.history.back();
                             this.messageService.add({ severity: 'warn', summary: 'Warning For: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Account is already Exist', closable: true });
+                        }
+                        else if (data === 'IDEXIST') {
+                            //window.history.back();
+                            this.messageService.add({ severity: 'warn', summary: 'Warning For: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Photo Id is already Exist', closable: true });
                         }
                         else {
                             this.messageService.add({ severity: 'error', summary: 'Erros in: ' + this.reginfo.regInfoModel.mphone, sticky: true, detail: 'Bad Response from BackEnd', closable: true });
@@ -575,17 +595,19 @@ export class CustomerAddoreditComponent implements OnInit {
     }
 
     checkPhotoIdLength() {
-        this.reginfo.formValidation.photoId = this.mfsUtilityService.checkPhotoIdLength(this.reginfo.regInfoModel.photoId, this.reginfo.regInfoModel.photoIdTypeCode);
-        if (!this.reginfo.formValidation.photoId) {
-            this.checkNidValid(this.reginfo.regInfoModel.photoId);
-        }
-        else {
-            this.reginfo.regInfoModel.photoId = '';
-        }
+        if (this.reginfo.regInfoModel.photoId && this.reginfo.regInfoModel.photoIdTypeCode) {
+            this.reginfo.formValidation.photoId = this.mfsUtilityService.checkPhotoIdLength(this.reginfo.regInfoModel.photoId, this.reginfo.regInfoModel.photoIdTypeCode);
+            if (!this.reginfo.formValidation.photoId) {
+                this.checkNidValid(this.reginfo.regInfoModel.photoId);
+            }
+            else {
+                this.reginfo.regInfoModel.photoId = '';
+            }
+        }      
     };
 
     checkNidValid(value: any): any {
-        this.kycService.checkNidValid(value, 'C')
+        this.kycService.checkNidValidWithIdType(value, 'C', this.reginfo.regInfoModel.photoIdTypeCode)
             .pipe(first())
             .subscribe(
                 data => {

@@ -5,13 +5,13 @@
             <h6 class="form-header"><i class="fa fa-list-alt" aria-hidden="true"></i> Fund Transfer (AC TO AC)</h6>
             <p-fieldset legend="Fund Transfer (AC to AC)">
                 <div class="p-grid">
-                    <div class="p-col-3">
+                    <div class="p-col-2">
                         <label>Transaction No <span class="mandatory">*</span></label>
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <label>From A/C</label>
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <label>GL Code</label>
                     </div>
                     <div class="p-col-3">
@@ -19,29 +19,35 @@
                             <label>GL Name</label>
                         </div>
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <div style="text-align:center">
                             <label style="text-align:center">Amount</label>
                         </div>
                     </div>
+                    <div class="p-col-4" style="text-align:center">
+                        <label>Remarks</label>
+                    </div>
                 </div>
 
                 <div class="p-grid">
-                    <div class="p-col-3">
+                    <div class="p-col-2">
                         <p-dropdown [options]="transactionList" [(ngModel)]="fundTransferModel.transNo" placeholder="Select Transaction No" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" (onChange)="GetTransactionDetailsByTransNo();"></p-dropdown>
                         <p-message *ngIf="(fundTransferModel.transNo==null || fundTransferModel.transNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <input type="text" class="form-control" [(ngModel)]="fromAC" [disabled]="true">
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <input type="text" class="form-control" [(ngModel)]="glCode" [disabled]="true">
                     </div>
                     <div class="p-col-3">
                         <input type="text" class="form-control" [(ngModel)]="glName" [disabled]="true">
                     </div>
-                    <div class="p-col-2">
+                    <div class="p-col-1">
                         <input type="text" style="text-align:center" class="form-control" [(ngModel)]="amount" [disabled]="true">
+                    </div>
+                    <div class="p-col-4">
+                        <input type="text" class="form-control" [(ngModel)]="remarks" [disabled]="true">
                     </div>
                 </div>
             </p-fieldset>

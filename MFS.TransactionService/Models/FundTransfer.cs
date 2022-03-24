@@ -36,6 +36,8 @@ namespace MFS.TransactionService.Models
         public DateTime? CheckDate { get; set; }
         public DateTime? ValueDate { get; set; }
         public string EntryBrCode { get; set; }
-        
+        public string Remarks { get; set; }
+
+
     }
 }

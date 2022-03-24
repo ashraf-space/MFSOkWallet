@@ -141,4 +141,100 @@
     </div>
 </app-generic-modal>
 
+<app-generic-modal [initiateModal]="promptChangeEmailIdModal" *ngIf="currentUser" [header]="'Update Your Information'" (onConfirm)="confirmEmailIdChange()" (onDestroy)="promptChangeEmailIdModal=false" [disableConfirm]="changeEmailIdModel.emailId==null || changeEmailIdModel.emailId!=changeEmailIdModel.confirmEmailId || verificationMatched==false" [hideCancel]="firstTimeChange">
+    <div class="form-group">
+        <div class="row" *ngIf="invalidCredentials">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: {{validationMsg}}</span>
+                </div>
+            </div>
+        </div>
+        <!--<h6 class="form-header"><i class="fas fa-user" aria-hidden="true"></i>  {{currentUser.user.name}} | Change Email Id <i class="fas fa-envelope-open-text"></i> <span *ngIf="firstTimeChange"> | {{showingEmailMsg}}</span></h6>-->
+        <h6 class="form-header"><i class="fas fa-user" aria-hidden="true"></i>  {{currentUser.user.name}} </h6>
+
+
+        <div class="form-group row" *ngIf="showEmployeeId">
+            <label for="customerEmailId" class="col-sm-1 col-form-label third-line">Employee Id <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <input type="text" class="form-control form-input" [(ngModel)]="changeEmailIdModel.employeeId" />
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerEmailId" class="col-sm-1 col-form-label third-line">Email Id <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <!--<input type="email" class="form-control form-input" [(ngModel)]="changeEmailIdModel.emailId" placeholder="xyz@onebank.com.bd" />-->
+                <input type="text" autocomplete="off" class="form-control" pattern="[a-z0-9._%+-]+@onebank+\.com+\.bd$"
+                       id="email" name="email" [(ngModel)]="changeEmailIdModel.emailId" #emailrefEmail="ngModel" placeholder="xyz@onebank.com.bd">
+                <div *ngIf="emailrefEmail.errors &&(emailrefEmail.touched || emailrefEmail.dirty)" class="alert alert-danger">
+                    <div [hidden]="!emailrefEmail.errors?.pattern">
+                        Invalid pattern
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row">
+            <label for="customerEmailId" class="col-sm-1 col-form-label third-line">Confirm Email Id <span class="mandatory">*</span></label>
+            <div class="col-sm-6">
+                <!--<input type="email" class="form-control form-input" [(ngModel)]="changeEmailIdModel.confirmEmailId" placeholder="xyz@onebank.com.bd" />-->
+                <input type="text" autocomplete="off" class="form-control" pattern="[a-z0-9._%+-]+@onebank+\.com+\.bd$"
+                       id="email" name="email" [(ngModel)]="changeEmailIdModel.confirmEmailId" #emailref="ngModel" placeholder="xyz@onebank.com.bd">
+                <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">
+                    <div [hidden]="!emailref.errors?.pattern">
+                        Invalid pattern
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-5" *ngIf="changeEmailIdModel.emailId!=null && changeEmailIdModel.emailId==changeEmailIdModel.confirmEmailId && !emailref.errors?.pattern">
+                <button type="button" class="btn btn-blue btn-sm btn-block btn-reverse" (click)="sendVeriCodeToEmail()">Send Verification Code</button>
+            </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="changeEmailIdModel.emailId!=null && changeEmailIdModel.emailId!=changeEmailIdModel.confirmEmailId">
+            <div class="col-sm-12">
+                <div class="alert alert-danger" style="padding:0.35rem !important;text-wrap:inherit">
+                    <span style="text-align:center;font-size:90%" class="login-box-msg">Warning: Email Id and Confirm Email Id does not Match</span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="veriCodeAsMd5Password!=null">
+            <div class="col-sm-12">
+                <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                    <span style="text-align:center;font-size:90%;" class="login-box-msg">{{emailSendMsg}}</span>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group row" *ngIf="veriCodeAsMd5Password!=null">
+            <label for="customerEmailId" class="col-sm-1 col-form-label third-line">Verification Code <span class="mandatory">*</span></label>
+            <div class="col-sm-11">
+                <!--<input type="text" class="form-control form-input" [(ngModel)]="changeEmailIdModel.verificationCode" (change)="checkVerificationCode();" />-->
+                <input type="text" class="form-control form-input" [(ngModel)]="changeEmailIdModel.verificationCode" (input)="checkVerificationCode();" />
+            </div>
+        </div>
+        <br />
+        <div class="row" *ngIf="changeEmailIdModel.verificationCode!=null">
+            <div class="col-sm-12">
+                <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                    <span style="text-align:center;font-size:90%;" class="login-box-msg">{{matchedMsg}}</span>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="row" *ngIf="showConfirmMsg!=null">
+            <div class="col-sm-12">
+                <div class="bg-main" style="padding:0.35rem !important;text-wrap:inherit; background: yellow; text-align:center;">
+                    <span style="text-align:center;font-size:90%;" class="login-box-msg">{{showConfirmMsg}}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</app-generic-modal>
+
 

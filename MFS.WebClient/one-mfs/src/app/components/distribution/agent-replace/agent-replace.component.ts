@@ -235,8 +235,12 @@ export class AgentReplaceComponent implements OnInit {
                                 this.exGridConfig.dataSource = [];
                                 this.AgentPhoneCodeModel = null;
                             }
-                            else
+                            else {
                                 this.newGridConfig.dataSource = [];
+                                this.isActionDisable = false;
+                            }
+                                
+
                         }
 
                     },

@@ -244,6 +244,22 @@ import { DownloadReceiptComponent } from './components/transaction/download-rece
 import { CommissionConvertionListComponent } from './components/transaction/commission-convertion/commission-convertion-list/commission-convertion-list.component';
 import { CommissionConvertionAddoreditComponent } from './components/transaction/commission-convertion/commission-convertion-addoredit/commission-convertion-addoredit.component';
 import { CommissionConvertComponent } from './components/transaction/commission-convert/commission-convert.component';
+import { UtilityDashComponent } from './components/client/utility-dash/utility-dash/utility-dash.component';
+import { EmerchantSettlementInfoComponent } from './components/reports/report-collection/emerchant-settlement-info/emerchant-settlement-info.component';
+import { AgentDistComponent } from './components/distribution/agent/agent-dist/agent-dist.component';
+import { ChannelBankInfoComponent } from './components/reports/report-collection/channel-bank-info/channel-bank-info.component';
+import { DormantAgentComponent } from './components/reports/report-collection/dormant-agent/dormant-agent.component';
+import { MerchantBankComponent } from './components/reports/report-collection/merchant-bank/merchant-bank.component';
+import { ReferralCampaignComponent } from './components/reports/report-collection/referral-campaign/referral-campaign.component';
+import { B2bDistAddoreditComponent } from './components/distribution/distributor/b2b-dist/b2b-dist.component';
+import { B2bDistListComponent } from './components/distribution/distributor/b2b-dist-list/b2b-dist-list.component';
+import { BtclTelephoneBillComponent } from './components/reports/report-collection/transaction-type/btcl-telephone-bill/btcl-telephone-bill.component';
+import { DistWiseCommissionComponent } from './components/reports/report-collection/dist-wise-commission/dist-wise-commission.component';
+import { AdmissionFeePaymentComponent } from './components/reports/report-collection/transaction-type/admission-fee-payment/admission-fee-payment.component';
+import { DisbursementVoucherComponent } from './components/reports/report-collection/transaction-type/disbursement-voucher/disbursement-voucher.component';
+import { B2bCollectionComponent } from './components/reports/report-collection/transaction-type/b2b-collection/b2b-collection.component';
+import { UtilityBillCollectionComponent } from './components/reports/report-collection/transaction-type/utility-bill-collection/utility-bill-collection.component';
+import { RlicRptComponent } from './components/reports/report-collection/rlic-rpt/rlic-rpt.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -484,7 +500,23 @@ import { CommissionConvertComponent } from './components/transaction/commission-
         DownloadReceiptComponent,
         CommissionConvertionListComponent,
         CommissionConvertionAddoreditComponent,
-        CommissionConvertComponent
+        CommissionConvertComponent,
+        UtilityDashComponent,
+        EmerchantSettlementInfoComponent,
+        AgentDistComponent,
+        ChannelBankInfoComponent,
+        DormantAgentComponent,
+        MerchantBankComponent,
+        ReferralCampaignComponent,
+        B2bDistAddoreditComponent,
+        B2bDistListComponent,
+        BtclTelephoneBillComponent,
+        DistWiseCommissionComponent,
+        AdmissionFeePaymentComponent,
+        DisbursementVoucherComponent,
+        B2bCollectionComponent,
+        UtilityBillCollectionComponent,
+        RlicRptComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -21,6 +21,7 @@
                     <!--<p-message *ngIf="(tblDisburseCompanyInfoModel.targetCatId==null || tblDisburseCompanyInfoModel.targetCatId=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
                 </div>
             </div>
+
             <div class="p-grid">
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Phone<span class="mandatory">*</span></label>
@@ -29,7 +30,6 @@
                     <p-inputMask mask="99999999999" [(ngModel)]="tblDisburseCompanyInfoModel.phone" pKeyFilter="int" [style]="{'width':'100%'}" [disabled]="isEditMode"></p-inputMask>
                     <p-message *ngIf="(tblDisburseCompanyInfoModel.phone==null || tblDisburseCompanyInfoModel.phone=='') && error " severity="error" text="Cannot be left blank"></p-message>
                 </div>
-
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Fax</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.fax" [disabled]="isEditMode">
@@ -38,11 +38,9 @@
                     <label for="float-input input-lg" class="col-form-label-dd">Salary Account</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.salAcc" (change)="enableSave(tblDisburseCompanyInfoModel.salAcc);" [disabled]="isEditMode">
                 </div>
-
             </div>
+
             <div class="p-grid">
-
-
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Remittance Account</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.remAcc" (change)="enableSave(tblDisburseCompanyInfoModel.remAcc);" [disabled]="isEditMode">
@@ -58,14 +56,11 @@
                 </div>
             </div>
 
-
-
             <div class="p-grid">
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Remittance Incentive Account</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.incAcc" (change)="enableSave(tblDisburseCompanyInfoModel.incAcc);" [disabled]="isEditMode">
                 </div>
-
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">EFT Inward Account</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.eftAcc" (change)="enableSave(tblDisburseCompanyInfoModel.eftAcc);" [disabled]="isEditMode">
@@ -73,6 +68,19 @@
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Reward Account</label>
                     <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.rwdAcc" (change)="enableSave(tblDisburseCompanyInfoModel.rwdAcc);" [disabled]="isEditMode">
+                </div>
+            </div>
+
+            <div class="p-grid">
+                <div class="p-col-4">
+                    <label for="float-input input-lg" class="col-form-label-dd">Training Honorarium Account</label>
+                    <input type="text" class="form-control form-input" [(ngModel)]="tblDisburseCompanyInfoModel.trhAcc" (change)="enableSave(tblDisburseCompanyInfoModel.trhAcc);" [disabled]="isEditMode">
+                </div>
+                <div class="p-col-4">
+                   
+                </div>
+                <div class="p-col-4">
+                   
                 </div>
             </div>
 
@@ -88,7 +96,7 @@
             <div class="p-grid" *ngIf="isEditMode">
                 <div class="p-col-4">
                     <label for="float-input input-lg" class="col-form-label-dd">Refund disbursement amount</label>
-                    
+
                 </div>
 
                 <div class="p-col-4">

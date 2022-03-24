@@ -127,7 +127,38 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 
 		}
+		[HttpGet]
+		[Route("GetB2bMasterDistributorListForDDL")]
+		public object GetB2bMasterDistributorListForDDL()
+		{
+			try
+			{
+				return _distributorService.GetB2bMasterDistributorListForDDL();
+			}
+			catch (Exception ex)
+			{
 
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+
+			}
+
+		}
+		[HttpGet]
+		[Route("GetB2bDistributorForB2bDsrListWithDistCodeForDDL")]
+		public object GetB2bDistributorForB2bDsrListWithDistCodeForDDL()
+		{
+			try
+			{
+				return _distributorService.GetB2bDistributorForB2bDsrListWithDistCodeForDDL();
+			}
+			catch (Exception ex)
+			{
+
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+
+			}
+
+		}
 		[HttpGet]
 		[Route("GetTotalAgentByMobileNo")]
 		public object GetTotalAgentByMobileNo(string ExMobileNo)
@@ -172,10 +203,11 @@ namespace OneMFS.DistributionApiServer.Controllers
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.RegDate = System.DateTime.Now;
 					regInfo.EntryDate = System.DateTime.Now;
 					string distCode = regInfo.DistCode.Substring(0, 6);
-					var isDistCodeExist = _kycService.CheckIsDistCodeExist(distCode);				
+					var isDistCodeExist = _kycService.CheckIsDistCodeExist(distCode);
 					if (Convert.ToInt32(isDistCodeExist) == 1)
 					{
 						var newDistCode = _locationService.GenerateDistributorCode(distCode);
@@ -186,7 +218,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 						try
 						{
 							_distributorService.Add(regInfo);
-							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Distributor",regInfo.Mphone, "Save successfully");
+							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Distributor", regInfo.Mphone, "Save successfully");
 							return HttpStatusCode.OK;
 						}
 						catch (Exception ex)
@@ -200,12 +232,12 @@ namespace OneMFS.DistributionApiServer.Controllers
 				else
 				{
 					if (evnt == "edit")
-					{						
+					{
 						regInfo.UpdateDate = System.DateTime.Now;
 						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
 						_distributorService.UpdateRegInfo(regInfo);
 						var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Distributor",regInfo.Mphone, "Update successfully");
+						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Distributor", regInfo.Mphone, "Update successfully");
 						return HttpStatusCode.OK;
 
 					}
@@ -223,7 +255,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 							_distributorService.UpdateRegInfo(regInfo);
 							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");						
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Distributor", regInfo.Mphone, "Register successfully");
 							//_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
 							MessageService service = new MessageService();
 							service.SendMessage(new MessageModel()
@@ -240,7 +272,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 						{
 							return HttpStatusCode.OK;
 						}
-						
+
 					}
 
 				}
@@ -268,16 +300,16 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 		}
 
-        [HttpGet]
-        [Route("GetDistcodeAndNameByMphone")]
-        public object GetDistcodeAndNameByMphone(string mPhone)
-        {
-            try
-            {
-                return _distributorService.GetDistcodeAndNameByMphone(mPhone);
-            }
-            catch (Exception ex)
-            {
+		[HttpGet]
+		[Route("GetDistcodeAndNameByMphone")]
+		public object GetDistcodeAndNameByMphone(string mPhone)
+		{
+			try
+			{
+				return _distributorService.GetDistcodeAndNameByMphone(mPhone);
+			}
+			catch (Exception ex)
+			{
 
 				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 
@@ -285,7 +317,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 		}
 
-        [HttpGet]
+		[HttpGet]
 		[Route("GetCompanyAndHolderName")]
 		public object GetCompanyAndHolderName(string acNo)
 		{
@@ -329,8 +361,8 @@ namespace OneMFS.DistributionApiServer.Controllers
 				};
 
 				string body;
-				string demand=null;
-				Reginfo reginfo;				
+				string demand = null;
+				Reginfo reginfo;
 				if (status == "D")
 				{
 					//dormantAccService.DeleteByCustomField(dormantModel.Mphone, "Mphone", new DormantAcc());
@@ -351,7 +383,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 				}
 				messageModel.MessageBody = body;
 				//var ret = _distributorService.UpdateRegInfo(reginfo);
-				_kycService.StatusChangeBasedOnDemand(dormantModel.Mphone, demand,dormantModel._ActionBy,remarks);
+				_kycService.StatusChangeBasedOnDemand(dormantModel.Mphone, demand, dormantModel._ActionBy, remarks);
 				var currentReginfo = AuditTrailForAddRemoveDormant(dormantModel, reginfo, status);
 				MessageService messageService = new MessageService();
 				messageService.SendMessage(messageModel);
@@ -359,7 +391,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-			 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 				return HttpStatusCode.BadRequest;
 			}
 		}
@@ -404,7 +436,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					Remarks = model.Remarks,
 					Request = "Pin Reset",
 					Status = "Y"
-				}; 
+				};
 				Reginfo prevAReginfo = (Reginfo)_kycService.GetRegInfoByMphone(model.Mphone);
 				_DsrService.UpdatePinNo(model.Mphone, fourDigitRandomNo.ToString());
 				customerRequestService.Add(customerRequest);
@@ -436,7 +468,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					auditTrail.Response = "Success! Account Unlocked Successfully";
 					auditTrailService.InsertIntoAuditTrail(auditTrail);
 				}
-								
+
 				string messagePrefix = isUnlockRequest == true ? "Your Account Has been Unlocked. Your new Pin is " : "Your Pin has successfully been reset to ";
 
 				MessageModel messageModel = new MessageModel()
@@ -453,7 +485,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 			catch (Exception ex)
 			{
-			 errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 				return HttpStatusCode.BadRequest;
 			}
 		}
@@ -479,7 +511,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 			if (!string.IsNullOrEmpty(aReginfo.PreAddr) && !base64Conversion.IsLetterEnglish(aReginfo.PreAddr))
 			{
 				aReginfo.PreAddr = base64Conversion.EncodeBase64(aReginfo.PreAddr);
-			}			
+			}
 			return aReginfo;
 		}
 		[HttpGet]
@@ -504,6 +536,21 @@ namespace OneMFS.DistributionApiServer.Controllers
 			try
 			{
 				return _distributorService.getRegInfoDetailsByMphone(mphone);
+			}
+			catch (Exception ex)
+			{
+
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+
+		[HttpGet]
+		[Route("getRegInfoDetailsByMphoneForCommiConvert")]
+		public object getRegInfoDetailsByMphoneForCommiConvert(string mphone)
+		{
+			try
+			{
+				return _distributorService.getRegInfoDetailsByMphoneForCommiConvert(mphone);
 			}
 			catch (Exception ex)
 			{
@@ -554,57 +601,61 @@ namespace OneMFS.DistributionApiServer.Controllers
 			}
 		}
 
-        [HttpGet]
-        [Route("GetRegionDetailsByMobileNo")]
-        public object GetRegionDetailsByMobileNo(string mobileNo)
-        {
-            try
-            {
-                return _distributorService.GetRegionDetailsByMobileNo(mobileNo);
-            }
-            catch (Exception ex)
-            {
+		[HttpGet]
+		[Route("GetRegionDetailsByMobileNo")]
+		public object GetRegionDetailsByMobileNo(string mobileNo)
+		{
+			try
+			{
+				return _distributorService.GetRegionDetailsByMobileNo(mobileNo);
+			}
+			catch (Exception ex)
+			{
 
-                throw;
-            }
-        }
+				throw;
+			}
+		}
 		[ApiGuardAuth]
 		[HttpPost]
-		[Route("SaveB2bDistributor")]
-		public object SaveB2bDistributor(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		[Route("SaveB2bMasterDistributor")]
+		public object SaveB2bMasterDistributor(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
 		{
 			try
 			{
 				if (isEditMode != true)
 				{
-					regInfo.CatId = "BD";
+					regInfo.CatId = "AMBD";
 					regInfo.AcTypeCode = 1;
 					regInfo.PinStatus = "N";
 					regInfo.RegSource = "P";
-					regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+					regInfo.RegDate = null;
+					regInfo.EntryDate = null;
+					regInfo.RegDate = System.DateTime.Now;
 					regInfo.EntryDate = System.DateTime.Now;
 					string distCode = regInfo.DistCode.Substring(0, 6);
-					var isDistCodeExist = _kycService.CheckIsDistCodeExist(distCode);
+					if (regInfo.SchargePer > 0)
+					{
+						double? serviceCharge = regInfo.SchargePer;
+						regInfo.SchargePer = serviceCharge / 100;
+					}
+					var isDistCodeExist = _kycService.CheckIsDistCodeExist(regInfo.DistCode);
 					if (Convert.ToInt32(isDistCodeExist) == 1)
 					{
-						var newDistCode = _locationService.GenerateDistributorCode(distCode);
+						var newDistCode = _locationService.GenerateB2bDistributorCode(distCode);
 						regInfo.DistCode = newDistCode.ToString();
 					}
-					else
+					try
 					{
-						try
-						{
-							_distributorService.Add(regInfo);
-							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "B2B Distributor", regInfo.Mphone, "Save successfully");
-							return HttpStatusCode.OK;
-						}
-						catch (Exception ex)
-						{
-
-							return HttpStatusCode.BadRequest;
-						}
+						_distributorService.Add(regInfo);
+						_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "B2B Distributor", regInfo.Mphone, "Save successfully");
+						return HttpStatusCode.OK;
 					}
-					return HttpStatusCode.OK;
+					catch (Exception ex)
+					{
+
+						return HttpStatusCode.BadRequest;
+					}
+
 				}
 				else
 				{
@@ -663,6 +714,106 @@ namespace OneMFS.DistributionApiServer.Controllers
 
 		[ApiGuardAuth]
 		[HttpPost]
+		[Route("SaveB2bDistributor")]
+		public object SaveB2bDistributor(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
+		{
+			try
+			{
+				if (isEditMode != true)
+				{
+					if (!string.IsNullOrEmpty(regInfo.DistCode) && !string.IsNullOrEmpty(regInfo.Pmphone) && !string.IsNullOrEmpty(regInfo.EntryBy))
+					{
+						regInfo.CatId = "ABD";
+						regInfo.AcTypeCode = 1;
+						regInfo.PinStatus = "N";
+						regInfo.RegSource = "P";
+						regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						regInfo.EntryDate = System.DateTime.Now;
+						string distCode = regInfo.DistCode.Substring(0, 10);
+						var isDistCodeExist = _kycService.CheckIsDistCodeExistForB2b(regInfo.DistCode);	
+						if (Convert.ToInt32(isDistCodeExist) == 1)
+						{
+							var newDistCode = _locationService.GenerateB2bDistributorCode(distCode);
+							regInfo.DistCode = newDistCode.ToString().Substring(0, 16);
+						}
+
+						try
+						{
+							_distributorService.Add(regInfo);
+							_kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "B2B Distributor", regInfo.Mphone, "Save successfully");
+							return HttpStatusCode.OK;
+						}
+						catch (Exception ex)
+						{
+
+							return HttpStatusCode.BadRequest;
+						}
+
+					}
+					else
+					{
+						return HttpStatusCode.BadRequest;
+					}
+
+				}
+				else
+				{
+					if (evnt == "edit")
+					{
+						regInfo.UpdateDate = System.DateTime.Now;
+						var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_distributorService.UpdateRegInfo(regInfo);
+						var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "B2B Distributor", regInfo.Mphone, "Update successfully");
+						return HttpStatusCode.OK;
+
+					}
+					else
+					{
+						var checkStatus = _kycService.CheckPinStatus(regInfo.Mphone);
+						if (checkStatus.ToString() != "P")
+						{
+							regInfo.RegStatus = "P";
+							int fourDigitRandomNo = new Random().Next(1000, 9999);
+
+							regInfo.AuthoDate = System.DateTime.Now;
+							//regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "D");
+							var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+							_distributorService.UpdateRegInfo(regInfo);
+							_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
+							var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+							_kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "B2B Distributor", regInfo.Mphone, "Register successfully");
+							//_DsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
+							MessageService service = new MessageService();
+							service.SendMessage(new MessageModel()
+							{
+								Mphone = regInfo.Mphone,
+								MessageId = "999",
+								MessageBody = "Congratulations! Your OK wallet has been opened successfully." + " Your Pin is "
+								+ fourDigitRandomNo.ToString() + ", please change PIN to activate your account, "
+							});
+
+							return HttpStatusCode.OK;
+						}
+						else
+						{
+							return HttpStatusCode.OK;
+						}
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+				return HttpStatusCode.BadRequest;
+			}
+		}
+
+
+		[ApiGuardAuth]
+		[HttpPost]
 		[Route("SaveB2bRetal")]
 		public object SaveB2bRetal(bool isEditMode, string evnt, [FromBody]Reginfo regInfo)
 		{
@@ -690,7 +841,7 @@ namespace OneMFS.DistributionApiServer.Controllers
 					{
 
 						return HttpStatusCode.BadRequest;
-					}					
+					}
 				}
 				else
 				{
@@ -743,6 +894,22 @@ namespace OneMFS.DistributionApiServer.Controllers
 				errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
 				return HttpStatusCode.BadRequest;
 			}
+		}
+		[HttpGet]
+		[Route("GetMasterDistributorDropdownList")]
+		public object GetMasterDistributorDropdownList()
+		{
+			try
+			{
+				return _distributorService.GetMasterDistributorDropdownList();
+			}
+			catch (Exception ex)
+			{
+
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+
+			}
+
 		}
 	}
 }

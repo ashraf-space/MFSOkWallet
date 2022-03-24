@@ -310,7 +310,7 @@ export class AgentAddoreditComponent implements OnInit {
                     //this.regInfoModel = data;
                     if (data) {
                         this.isLoading = false;
-                        if (data.catId === 'D') {
+                        if (data.catId === 'D' || data.catId === 'ABD') {
                             this.getRegionListForDDL();
                             this.selectedRegion = data.distCode.substring(0, 2);
                             this.fillAreaDDL();

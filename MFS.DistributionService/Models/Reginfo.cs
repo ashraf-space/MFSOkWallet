@@ -19,6 +19,7 @@ namespace MFS.DistributionService.Models
 		public int? AcTypeCode { get; set; }
 		public string DistCode { get; set; }	
 		public string Pmphone { get; set; }
+		public string Ppmphone { get; set; }
 		public string Name { get; set; }
 		public string LastName { get; set; }
 		public string Gender { get; set; }
@@ -132,5 +133,6 @@ namespace MFS.DistributionService.Models
 		public string _PreAddrBangla { get; set; }
 		public string _Blood { get; set; } 
 		public string _Referral { get; set; }
+		public double? SchargePer { get; set; }
 	}
 }

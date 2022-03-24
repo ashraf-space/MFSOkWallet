@@ -21,5 +21,6 @@ namespace MFS.TransactionService.Models.ViewModels
 
         public string DisburseAC { get; set; }
         public string Company { get; set; }
+        public string Remarks { get; set; }
     }
 }

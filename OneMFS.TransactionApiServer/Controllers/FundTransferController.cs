@@ -731,6 +731,7 @@ namespace OneMFS.TransactionApiServer.Controllers
                         objVMTransactionDetails.GLName = "";
                         objVMTransactionDetails.DebitAmount = 0;
                         objVMTransactionDetails.CreditAmount = 0;
+                        objVMTransactionDetails.Remarks = "";
                         VMTransactionDetaillist.Add(objVMTransactionDetails);
                     }
                 }
@@ -760,6 +761,7 @@ namespace OneMFS.TransactionApiServer.Controllers
 
                             objVMTransactionDetails.DebitAmount = objFundTransfer.PayAmt;
                             objVMTransactionDetails.CreditAmount = 0;
+                            objVMTransactionDetails.Remarks = objFundTransfer.Remarks;
 
                         }
                         else if (i == 1)
@@ -1331,11 +1333,11 @@ namespace OneMFS.TransactionApiServer.Controllers
 
         [HttpGet]
         [Route("GetCommssionMobileList")]
-        public object GetCommssionMobileList(string sysCoaCode, string entryOrApproval)
+        public object GetCommssionMobileList(string sysCoaCode,string fromCatId, string entryOrApproval)
         {
             try
             {
-                return _fundTransferService.GetCommssionMobileList(sysCoaCode, entryOrApproval);
+                return _fundTransferService.GetCommssionMobileList(sysCoaCode, fromCatId, entryOrApproval);
             }
             catch (Exception ex)
             {
@@ -1347,14 +1349,14 @@ namespace OneMFS.TransactionApiServer.Controllers
         [ApiGuardAuth]
         [HttpPost]
         [Route("SaveCommissionEntry")]
-        public object SaveCommissionEntry(string entryBy, string toCatId, string entrybrCode, [FromBody]List<CommissionMobile> commissionMobileList)
+        public object SaveCommissionEntry(string entryBy, string toCatId,string fromCatId, string entrybrCode, [FromBody]List<CommissionMobile> commissionMobileList)
         {
             try
             {
                 foreach (var item in commissionMobileList)
                 {
                     string transNo = _distributorDepositService.GetTransactionNo();
-                    _fundTransferService.SaveCommissionEntry(item, entryBy, toCatId, entrybrCode, transNo);
+                    _fundTransferService.SaveCommissionEntry(item, entryBy, toCatId, fromCatId, entrybrCode, transNo);
                     //Insert into audit trial audit and detail
                     item.Status = "M";
                     _auditTrailService.InsertModelToAuditTrail(item, entryBy, 9, 3, "Commission Entry", item.Mphone, "Saved Successfully!");

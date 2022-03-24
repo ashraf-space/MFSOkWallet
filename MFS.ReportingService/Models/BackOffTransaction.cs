@@ -20,7 +20,8 @@ namespace MFS.ReportingService.Models
         public DateTime? CkDate { get; set; }
         public string Particular { get; set; }
         public string FromCoa { get; set; }
-        public string ToCoa { get; set; }       
+        public string ToCoa { get; set; }
+        public string Remarks { get; set; }
 
     }
 }

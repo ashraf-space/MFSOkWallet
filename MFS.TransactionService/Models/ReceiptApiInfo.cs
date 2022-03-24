@@ -8,10 +8,10 @@ namespace MFS.TransactionService.Models
 {
     public class ReceiptApiInfo
     {
-        public string Ip { get; set; } = "http://10.20.32.118/";
+        //public string Ip { get; set; } = "http://10.20.34.35/";
 
         //for live
-        //public string Ip { get; set; } = "http://10.156.4.16/";
+        public string Ip { get; set; } = "http://10.156.4.16/";
         public string ApiUrl { get; set; } = "NEW/ok_api/receipt/view.php";
     }
 }

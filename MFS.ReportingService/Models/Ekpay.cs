@@ -9,6 +9,7 @@ namespace MFS.ReportingService.Models
 	public class Ekpay
 	{
 		public DateTime? TransDate { get; set; }
+		public string TransTime { get; set; }
 		public string TransNo { get; set; }
 		public string BankTransactionId { get; set; }
 		public string ServiceName { get; set; }

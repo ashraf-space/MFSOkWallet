@@ -25,14 +25,16 @@
 					</span>
 					<p-message *ngIf="(applicationUserModel.name==null || applicationUserModel.name=='') && error " severity="error" text="Cannot be left blank"></p-message>
 				</div>
-				<div class="p-col-6">
-					<br />
-					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.employeeId" pInputText id="float-input" [disabled]="!hasEditPermission">
-						<label for="float-input input-lg" class="col-form-label">Employee Id </label>
-					</span>
-					<!--<p-message *ngIf="(applicationUserModel.employeeId==null || applicationUserModel.employeeId=='') && error " severity="error" text="Cannot be left blank"></p-message>-->
-				</div>
+                <div class="p-col-6">
+                    <br />
+                    <span class="ui-float-label ">
+                        <!--<input type="text" class="form-control" [(ngModel)]="applicationUserModel.employeeId" pInputText id="float-input" [disabled]="!hasEditPermission" (blur)="checkExistingEmployeeId()">-->
+                        <input type="text" class="form-control" [(ngModel)]="applicationUserModel.employeeId" pInputText id="float-input" [disabled]="!hasEditPermission">
+                        <label for="float-input input-lg" class="col-form-label">Employee Id </label>
+                    </span>
+                    <!--<p-message *ngIf="(applicationUserModel.employeeId==null || applicationUserModel.employeeId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    <p-message *ngIf="isExistingEmployeeId" severity="error" text="Employee Id exist"></p-message>-->
+                </div>
 				<div class="p-col-3">
 					<br />
 					<span class="ui-float-label ">
@@ -42,21 +44,25 @@
 					<p-message *ngIf="(applicationUserModel.username==null || applicationUserModel.username=='') && error " severity="error" text="Cannot be left blank"></p-message>
 					<p-message *ngIf="isExistingUsername" severity="error" text="Username exist"></p-message>
 				</div>
-				<div class="p-col-3">
-					<br />
-					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.emailId" pInputText id="float-input" [disabled]="!hasEditPermission">
-						<label for="float-input input-lg" class="col-form-label">Email Address</label>
-					</span>
-				</div>
-				<div class="p-col-3">
-					<br />
-					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="applicationUserModel.mobileNo" pInputText id="float-input" [disabled]="!hasEditPermission">
-						<label for="float-input input-lg" class="col-form-label">Mobile # <span class="mandatory">*</span></label>
-					</span>
-					<p-message *ngIf="(applicationUserModel.mobileNo==null || applicationUserModel.mobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
-				</div>
+                <div class="p-col-3">
+                    <br />
+                    <span class="ui-float-label ">
+                        <!--<input type="text" class="form-control" [(ngModel)]="applicationUserModel.emailId" pInputText id="float-input" [disabled]="!hasEditPermission" (blur)="checkExistingEmailId()">-->
+                        <input type="text" class="form-control" [(ngModel)]="applicationUserModel.emailId" pInputText id="float-input" [disabled]="!hasEditPermission">
+                        <label for="float-input input-lg" class="col-form-label">Email Address </label>
+                    </span>
+                    <!--<p-message *ngIf="(applicationUserModel.emailId==null || applicationUserModel.emailId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    <p-message *ngIf="isExistingEmailId" severity="error" text="Email Id exist"></p-message>-->
+                </div>
+                <div class="p-col-3">
+                    <br />
+                    <span class="ui-float-label ">
+                        <input type="text" class="form-control" [(ngModel)]="applicationUserModel.mobileNo" pInputText id="float-input" [disabled]="!hasEditPermission" (blur)="checkExistingMobileNo()">
+                        <label for="float-input input-lg" class="col-form-label">Mobile # <span class="mandatory">*</span></label>
+                    </span>
+                    <p-message *ngIf="(applicationUserModel.mobileNo==null || applicationUserModel.mobileNo=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                    <p-message *ngIf="isExistingMobileNo" severity="error" text="Mobile Number exist"></p-message>
+                </div>
 				<div class="p-col-3">
 					<br />
 					<span class="ui-float-label ">

@@ -1,4 +1,5 @@
-﻿using MFS.SecurityService.Repository;
+﻿using MFS.ClientService.Repository;
+using MFS.SecurityService.Repository;
 using MFS.SecurityService.Service;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -23,6 +24,7 @@ namespace OneMFS.SecurityApiServer.InterfaceMapper
 			services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
 			services.AddTransient<IMerchantUserRepository, MerchantUserRepository>();
 			services.AddTransient<IDisbursementUserRepository, DisbursementUserRepository>();
+			services.AddTransient<IEmailRepository, EmailRepository>();
 		}
     }
 }

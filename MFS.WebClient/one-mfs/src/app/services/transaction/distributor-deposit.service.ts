@@ -26,6 +26,13 @@ export class DistributorDepositService {
             }))
     }
 
+    saveCommissionConversion(cashEntryModel: any, isEditMode: boolean, event: string) {
+        return this.http.post<any>(this.transactionService.transactionApiServer + '/CommissionConversion/SaveCommissionConversion?isEditMode=' + isEditMode + '&evnt=' + event, cashEntryModel)
+            .pipe(map(model => {
+                return model;
+            }))
+    }
+
     GetTransAmtLimit(createUser: any): any {
         return this.http.get<any>(this.transactionService.securityApiServer + '/ApplicationUser/GetTransAmtLimit?createUser=' + createUser)
             .pipe(map(model => {
@@ -42,6 +49,13 @@ export class DistributorDepositService {
 
     getDestributorDepositByTransNo(transNo: string): any {
         return this.http.get<any>(this.transactionService.transactionApiServer + '/DistributorDeposit/GetDestributorDepositByTransNo?transNo=' + transNo)
+            .pipe(map(tblCashEntryModel => {
+                return tblCashEntryModel;
+            }));
+    }
+
+    GetCommissionConversionByTransNo(transNo: string): any {
+        return this.http.get<any>(this.transactionService.transactionApiServer + '/CommissionConversion/GetCommissionConversionByTransNo?transNo=' + transNo)
             .pipe(map(tblCashEntryModel => {
                 return tblCashEntryModel;
             }));

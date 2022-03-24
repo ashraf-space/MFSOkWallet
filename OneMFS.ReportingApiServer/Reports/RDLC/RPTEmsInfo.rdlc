@@ -147,7 +147,7 @@
                   <Width>1.08334in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.08334in</Width>
+                  <Width>0.89582in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.94792in</Width>
@@ -165,27 +165,27 @@
                   <Width>0.72917in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.80209in</Width>
+                  <Width>0.56251in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.66667in</Width>
+                  <Width>1.62501in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.64584in</Width>
+                  <Width>0.62501in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.76042in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>0.71875in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>0.89583in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.29167in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -198,6 +198,8 @@
                                 <TextRun>
                                   <Value>Trans No</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -232,6 +234,8 @@
                                 <TextRun>
                                   <Value>Trans Date</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -266,6 +270,8 @@
                                 <TextRun>
                                   <Value>Trans From</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -300,6 +306,8 @@
                                 <TextRun>
                                   <Value>Trans To</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -334,6 +342,8 @@
                                 <TextRun>
                                   <Value>Amount</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -368,6 +378,8 @@
                                 <TextRun>
                                   <Value>Fees</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -402,6 +414,8 @@
                                 <TextRun>
                                   <Value>Student Id</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -436,6 +450,8 @@
                                 <TextRun>
                                   <Value>School Code</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -470,6 +486,8 @@
                                 <TextRun>
                                   <Value>School Name</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -504,6 +522,8 @@
                                 <TextRun>
                                   <Value>Gateway</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -538,6 +558,8 @@
                                 <TextRun>
                                   <Value>Branch Code</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -572,6 +594,8 @@
                                 <TextRun>
                                   <Value>Paid By</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -606,6 +630,8 @@
                                 <TextRun>
                                   <Value>Extra Id</Value>
                                   <Style>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -645,7 +671,8 @@
                                 <TextRun>
                                   <Value>=Fields!TransNo.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -679,8 +706,9 @@
                                 <TextRun>
                                   <Value>=Fields!TransDate.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
-                                    <Format>d MMMM, yyyy</Format>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>dd-MMM-yy</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -714,7 +742,8 @@
                                 <TextRun>
                                   <Value>=Fields!TransFrom.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -748,7 +777,8 @@
                                 <TextRun>
                                   <Value>=Fields!TransTo.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -782,13 +812,14 @@
                                 <TextRun>
                                   <Value>=Fields!Amount.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
-                                    <Format>0.00;(0.00)</Format>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Center</TextAlign>
+                                <TextAlign>Right</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -817,13 +848,14 @@
                                 <TextRun>
                                   <Value>=Fields!SchargeAmt.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                     <Format>0.00;(0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Center</TextAlign>
+                                <TextAlign>Right</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -852,7 +884,8 @@
                                 <TextRun>
                                   <Value>=Fields!StudentId.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -886,7 +919,8 @@
                                 <TextRun>
                                   <Value>=Fields!SchoolCode.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -920,7 +954,8 @@
                                 <TextRun>
                                   <Value>=Fields!CompanyName.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -954,7 +989,8 @@
                                 <TextRun>
                                   <Value>=Fields!Gateway.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -988,7 +1024,8 @@
                                 <TextRun>
                                   <Value>=Fields!BranchCode.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1022,7 +1059,8 @@
                                 <TextRun>
                                   <Value>=Fields!PaidBy.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1056,7 +1094,8 @@
                                 <TextRun>
                                   <Value>=Fields!ExtraId.Value</Value>
                                   <Style>
-                                    <FontSize>9pt</FontSize>
+                                    <FontFamily>tahoma</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1237,12 +1276,12 @@
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0.00;(0.00)</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Center</TextAlign>
+                                <TextAlign>Right</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -1278,7 +1317,7 @@
                                 </TextRun>
                               </TextRuns>
                               <Style>
-                                <TextAlign>Center</TextAlign>
+                                <TextAlign>Right</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -1578,8 +1617,8 @@
             <DataSetName>EmsReport</DataSetName>
             <Top>0.22096in</Top>
             <Left>0.10291in</Left>
-            <Height>0.75in</Height>
-            <Width>11.02088in</Width>
+            <Height>0.79167in</Height>
+            <Width>11.38546in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1594,7 +1633,7 @@
           </Border>
         </Style>
       </Body>
-      <Width>11.20712in</Width>
+      <Width>11.48837in</Width>
       <Page>
         <PageHeader>
           <Height>0.96529in</Height>

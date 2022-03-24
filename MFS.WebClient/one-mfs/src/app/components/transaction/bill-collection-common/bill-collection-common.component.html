@@ -10,7 +10,7 @@
                             <label for="name" class="col-sm-4 col-form-label single-line">Select {{featurePayModel.SUBMENUTITLE}} <span class="mandatory">*</span></label>
                             <div class="col-sm-8">
                                 <p-dropdown [options]="subMenuList" [(ngModel)]="billCollectionCommonModel.subMenuId" placeholder="Select {{featurePayModel.SUBMENUTITLE}}" [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}" [disabled]="isDisabledSubMenuDDL"></p-dropdown>
-                                <p-message *ngIf="(billCollectionCommonModel.subMenuId==null || billCollectionCommonModel.subMenuId=='') && error " severity="error" text="Cannot be left blank"></p-message>
+                                <p-message *ngIf="(billCollectionCommonModel.subMenuId==null || billCollectionCommonModel.subMenuId=='' || billCollectionCommonModel.subMenuId=='0') && error " severity="error" text="Cannot be left blank"></p-message>
                             </div>
                         </div>
 
@@ -25,7 +25,7 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-4 col-form-label single-line">Enter {{featurePayModel.BILLTITLE}} <span class="mandatory">*</span></label>
                             <div class="col-sm-8">
-                                <input type="text" maxlength="30" class="form-control form-input" placeholder="Enter {{featurePayModel.BILLTITLE}}" pInputText pKeyFilter="money" [(ngModel)]="billCollectionCommonModel.billId" [disabled]="isDisabledBillId">
+                                <input type="text" maxlength="30" class="form-control form-input" placeholder="Enter {{featurePayModel.BILLTITLE}}" [(ngModel)]="billCollectionCommonModel.billId" [disabled]="isDisabledBillId">
                                 <p-message *ngIf="(billCollectionCommonModel.billId==null || billCollectionCommonModel.billId==''|| billCollectionCommonModel.billId=='0') && error " severity="error" text="Cannot be left blank"></p-message>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
 
                     <div class="form-group row">
                         <div class="p-grid" style="margin:5px">
-                            <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)">
+                            <generic-grid [gridConfig]="gridConfig" (customAction)="onGenerate($event)" (customActionTwo)="onThermalReceipt($event)">
                             </generic-grid>
                         </div>
                     </div>

@@ -72,7 +72,7 @@ export class FundEntryComponent implements OnInit {
 
 
     //fill amount against Sys code
-    fillAmount(SelectedGL, formOrTotype) {      
+    fillAmount(SelectedGL, formOrTotype) {
         if (this.fundTransferModel.fromSysCoaCode) {
             this.fromGl = this.glList.find(it => {
                 return it.value.toLowerCase().includes(this.fundTransferModel.fromSysCoaCode.toLowerCase());
@@ -138,7 +138,7 @@ export class FundEntryComponent implements OnInit {
         if (this.fundTransferModel.payAmt == '') {
             this.fundTransferModel.payAmt = 0;
         }
-       
+
         if (this.fundTransferModel.fromSysCoaCode && this.fundTransferModel.toSysCoaCode) {
             this.transAmtLimit = this.currentUserModel.user.tranAmtLimit;
             this.glType = this.fundTransferModel.fromSysCoaCode.charAt(0);
@@ -168,7 +168,7 @@ export class FundEntryComponent implements OnInit {
                         return it.value.toLowerCase().includes(this.fundTransferModel.toSysCoaCode.toLowerCase());
                     }).label;
                 }
-                
+
             }
             else {
                 this.messageService.add({ severity: 'warn', summary: 'Exceed Limit', detail: 'Your Limit Amount :' + this.transAmtLimit });
@@ -210,7 +210,7 @@ export class FundEntryComponent implements OnInit {
         this.cols = [
             { field: 'glCode', header: 'GL Code', width: '30%', template: 'none' },
             { field: 'glName', header: 'GL Name', width: '30%', filter: this.gridSettingService.getFilterableNone(), template: 'none' },
-            { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData()  },
+            { field: 'debitAmount', header: 'Debit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() },
             { field: 'creditAmount', header: 'Credit Amount', width: '20%', filter: this.gridSettingService.getFilterableNone(), template: this.gridSettingService.getMoneyTemplateForRowData() }
         ];
 
@@ -220,7 +220,8 @@ export class FundEntryComponent implements OnInit {
 
         if (!this.fundTransferModel.fromSysCoaCode || this.fundTransferModel.fromSysCoaCode == '' ||
             !this.fundTransferModel.toSysCoaCode || this.fundTransferModel.toSysCoaCode == '' ||
-            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '0' || this.fundTransferModel.payAmt == '') {
+            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '0' || this.fundTransferModel.payAmt == '' ||
+            !this.fundTransferModel.remarks || this.fundTransferModel.remarks == '0' || this.fundTransferModel.remarks == '') {
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
             this.error = true;
@@ -250,39 +251,39 @@ export class FundEntryComponent implements OnInit {
     }
     onConfirmSave() {
         //if (+this.fundTransferModel.payAmt <= +this.GLBalance) {
-            if (this.isEditMode && !this.isRegistrationPermitted) {
-                this.fundTransferModel.updateUser = this.currentUserModel.user.username;
-            }
-            if (this.isEditMode && this.isRegistrationPermitted) {
-                this.fundTransferModel.checkUser = this.currentUserModel.user.username;
-            }
+        if (this.isEditMode && !this.isRegistrationPermitted) {
+            this.fundTransferModel.updateUser = this.currentUserModel.user.username;
+        }
+        if (this.isEditMode && this.isRegistrationPermitted) {
+            this.fundTransferModel.checkUser = this.currentUserModel.user.username;
+        }
 
 
-            if (this.fromGl != "" || this.toGl != "") {
-                this.fundTransferModel.fromCatId = "S";
-                this.fundTransferModel.toCatId = "S";
-                this.fundTransferModel.hotkey = "GL TO GL";//for data base save
-                
-                this.fundTransferService.saveFundTransferEntry(this.fundTransferModel, this.fromGl, this.toGl, this.isEditMode, event).pipe(first())
-                    .subscribe(
-                        data => {
-                            
-                            if (this.isEditMode)
-                                this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Fund entry GL to GL updated' });
-                            else
-                                this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Fund entry GL to GL added' });
-                            //console.log(data);
-                            setTimeout(() => {
-                                this.isLoading = false;
-                                location.reload();
-                            }, 5000);
-                            //window.history.back();
-                        },
-                        error => {
-                            console.log(error);
-                        });
+        if (this.fromGl != "" || this.toGl != "") {
+            this.fundTransferModel.fromCatId = "S";
+            this.fundTransferModel.toCatId = "S";
+            this.fundTransferModel.hotkey = "GL TO GL";//for data base save
 
-            }
+            this.fundTransferService.saveFundTransferEntry(this.fundTransferModel, this.fromGl, this.toGl, this.isEditMode, event).pipe(first())
+                .subscribe(
+                    data => {
+
+                        if (this.isEditMode)
+                            this.messageService.add({ severity: 'success', summary: 'Update successfully', detail: 'Fund entry GL to GL updated' });
+                        else
+                            this.messageService.add({ severity: 'success', summary: 'Save successfully', detail: 'Fund entry GL to GL added' });
+                        //console.log(data);
+                        setTimeout(() => {
+                            this.isLoading = false;
+                            location.reload();
+                        }, 5000);
+                        //window.history.back();
+                    },
+                    error => {
+                        console.log(error);
+                    });
+
+        }
         //}
         //else {
         //    this.messageService.add({ severity: 'warn', summary: 'Exceed from amount', detail: 'Cannot be greater than from amount :' + this.GLBalance });

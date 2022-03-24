@@ -1,4 +1,5 @@
-﻿using MFS.ReportingService.Models;
+﻿using MFS.DistributionService.Models;
+using MFS.ReportingService.Models;
 using MFS.ReportingService.Service;
 using MFS.ReportingService.Utility;
 using Microsoft.Reporting.WebForms;
@@ -238,9 +239,10 @@ namespace OneMFS.ReportingApiServer.Controllers
 			string accNo = builder.ExtractText(Convert.ToString(model.ReportOption), "accNo", "}");
 			string category = builder.ExtractText(Convert.ToString(model.ReportOption), "category", ",");
 			string regStatus = builder.ExtractText(Convert.ToString(model.ReportOption), "regStatus", ",");
+			string fromHour = builder.ExtractText(Convert.ToString(model.ReportOption), "fromHour", ",");
+			string toHour = builder.ExtractText(Convert.ToString(model.ReportOption), "toHour", ",");
 
-
-			List<OnlineRegistration> onlineRegistrations = service.GetOnlineRegReport(fromDate, toDate, category, accNo, regStatus);
+			List<OnlineRegistration> onlineRegistrations = service.GetOnlineRegReport(fromDate, toDate, category, accNo, regStatus,fromHour,toHour);
 			ReportViewer reportViewer = new ReportViewer();
 			reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTOnlineReg.rdlc");  //Request.RequestUri("");
 			reportViewer.LocalReport.SetParameters(GetOnlineRegRptParameter(fromDate, toDate, category,regStatus));
@@ -356,26 +358,69 @@ namespace OneMFS.ReportingApiServer.Controllers
 		{
 			StringBuilderService builder = new StringBuilderService();
 			string mphone = builder.ExtractText(Convert.ToString(model.ReportOption), "mphone", ",");
+			string qrType = builder.ExtractText(Convert.ToString(model.ReportOption), "qrType", ",");
 			string catId = builder.ExtractText(Convert.ToString(model.ReportOption), "catId", "}");
-
-			try
+			Reginfo reginfo = (Reginfo)service.GetClientInfoByMphone(mphone);
+			if (qrType == "okqr")
 			{
-				QrCode qrCode = service.GenerateQrCodeForBackOff(mphone);
-				List<QrCode> qrCodes = new List<QrCode>();
-				qrCodes.Add(qrCode);
-				ReportViewer reportViewer = new ReportViewer();
-				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/QrCodeSlip.rdlc");  //Request.RequestUri("");
-				reportViewer.LocalReport.SetParameters(GetGenerateQrReceiptParameter(mphone));
-				ReportDataSource A = new ReportDataSource("QrCode", qrCodes);
-				reportViewer.LocalReport.DataSources.Add(A);
-				ReportUtility reportUtility = new ReportUtility();
-				MFSFileManager fileManager = new MFSFileManager();
-				return reportUtility.GenerateReport(reportViewer, model.FileType);
+				try
+				{
+					//QrCode qrCode = service.GenerateQrCodeForBackOff(mphone);
+					//List<QrCode> qrCodes = new List<QrCode>();
+					//qrCodes.Add(qrCode);
+					//ReportViewer reportViewer = new ReportViewer();
+					//reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/QrCodeSlip.rdlc");  //Request.RequestUri("");
+					//reportViewer.LocalReport.SetParameters(GetGenerateQrReceiptParameter(mphone));
+					//ReportDataSource A = new ReportDataSource("QrCode", qrCodes);
+					//reportViewer.LocalReport.DataSources.Add(A);
+					//ReportUtility reportUtility = new ReportUtility();
+					//MFSFileManager fileManager = new MFSFileManager();
+					//return reportUtility.GenerateReport(reportViewer, model.FileType);
+					string banglaQr = service.GetBanglaQrStream(reginfo.Mphone, reginfo.CatId);
+					QrCode qrCode = service.GenerateQrCodeForBackOff(banglaQr);
+					List<QrCode> qrCodes = new List<QrCode>();
+					qrCodes.Add(qrCode);
+					ReportViewer reportViewer = new ReportViewer();
+					reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/QrCodeSlip.rdlc");  //Request.RequestUri("");
+					reportViewer.LocalReport.SetParameters(GetGenerateQrReceiptParameter(mphone));
+					ReportDataSource A = new ReportDataSource("QrCode", qrCodes);
+					reportViewer.LocalReport.DataSources.Add(A);
+					ReportUtility reportUtility = new ReportUtility();
+					MFSFileManager fileManager = new MFSFileManager();
+					return reportUtility.GenerateReport(reportViewer, model.FileType);
+				}
+				catch (Exception ex)
+				{
+					return ex.ToString();
+				}
 			}
-			catch (Exception ex)
+			else if(qrType == "bnqr" && (reginfo.CatId == "M" || reginfo.CatId=="CM" || reginfo.CatId == "A") && !string.IsNullOrEmpty(mphone))
 			{
-				return ex.ToString();
+				try
+				{
+					string banglaQr = service.GetBanglaQrStream(reginfo.Mphone,reginfo.CatId);
+					QrCode qrCode = service.GenerateQrCodeForBackOff(banglaQr);
+					List<QrCode> qrCodes = new List<QrCode>();
+					qrCodes.Add(qrCode);
+					ReportViewer reportViewer = new ReportViewer();
+					reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/BanglaQrCodeSlip.rdlc");  //Request.RequestUri("");
+					reportViewer.LocalReport.SetParameters(GetGenerateQrReceiptParameter(mphone));
+					ReportDataSource A = new ReportDataSource("QrCode", qrCodes);
+					reportViewer.LocalReport.DataSources.Add(A);
+					ReportUtility reportUtility = new ReportUtility();
+					MFSFileManager fileManager = new MFSFileManager();
+					return reportUtility.GenerateReport(reportViewer, model.FileType);
+				}
+				catch (Exception ex)
+				{
+					return ex.ToString();
+				}
 			}
+			else
+			{
+				return null;
+			}
+		
 
 		}
 		[HttpGet]
@@ -597,8 +642,219 @@ namespace OneMFS.ReportingApiServer.Controllers
 			}
 
 		}
+		[HttpGet]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Kyc/ChannelBankInfo")]
+		public object ChannelBankInfo(ReportModel model)
+		{
+			try
+			{
+				StringBuilderService builder = new StringBuilderService();
+				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+				string accNo = builder.ExtractText(Convert.ToString(model.ReportOption), "accNo", ",");
+				string catId = builder.ExtractText(Convert.ToString(model.ReportOption), "catId", "}");
+				ReportViewer reportViewer = new ReportViewer();
+				List<ChannelBankInfo> channelBankInfos = new List<ChannelBankInfo>();
+
+				channelBankInfos = service.ChannelBankInfoReport(fromDate, toDate, accNo, catId);
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTChannelBankInfo.rdlc");  //Request.RequestUri("");
 
 
+				reportViewer.LocalReport.SetParameters(GetReportParameterForChannelBankInfoReport(fromDate, toDate,catId));
+				ReportDataSource A = new ReportDataSource("ChannelBankInfo", channelBankInfos);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
+
+		}
+
+		private IEnumerable<ReportParameter> GetReportParameterForChannelBankInfoReport(string fromDate, string toDate, string category)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+
+			if (fromDate != null && fromDate != "")
+			{
+				paraList.Add(new ReportParameter("fromDate", fromDate));
+			}
+			if (toDate != null && toDate != "")
+			{
+				paraList.Add(new ReportParameter("toDate", toDate));
+			}
+			paraList.Add(new ReportParameter("category", service.GetCatNameById(category)));			
+			return paraList;
+		}
+
+        [HttpGet]
+        [AcceptVerbs("GET", "POST")]
+        [Route("api/Kyc/EmerchantSettlementInfo")]
+        public object EmerchantSettlementInfo(ReportModel model)
+        {
+            try
+            {
+                StringBuilderService builder = new StringBuilderService();
+                string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+                string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+
+                ReportViewer reportViewer = new ReportViewer();
+                List<EmerchantSettlementInfo> emerchantSettlementInfoList = new List<EmerchantSettlementInfo>();
+                emerchantSettlementInfoList = service.GetEmerchantSettlementInfoList(fromDate, toDate);
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTEmerchantSettlementInfo.rdlc");  //Request.RequestUri("");
+
+                reportViewer.LocalReport.SetParameters(GenerateParamEmerchantSettlementInfo(fromDate, toDate));
+                ReportDataSource A = new ReportDataSource("EmerchantSettlementInfo", emerchantSettlementInfoList);
+                reportViewer.LocalReport.DataSources.Add(A);
+                ReportUtility reportUtility = new ReportUtility();
+                MFSFileManager fileManager = new MFSFileManager();
+                return reportUtility.GenerateReport(reportViewer, model.FileType);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+        private IEnumerable<ReportParameter> GenerateParamEmerchantSettlementInfo(string fromDate, string toDate)
+        {
+            List<ReportParameter> paraList = new List<ReportParameter>();
+
+            if (fromDate != null && fromDate != "")
+            {
+                paraList.Add(new ReportParameter("FromDate", fromDate));
+            }
+            if (toDate != null && toDate != "")
+            {
+                paraList.Add(new ReportParameter("ToDate", toDate));
+            }
+            return paraList;
+        }
+
+        [HttpGet]
+        [AcceptVerbs("GET", "POST")]
+        [Route("api/Kyc/DormantAgent")]
+        public object DormantAgent(ReportModel model)
+        {
+            try
+            {
+                StringBuilderService builder = new StringBuilderService();
+                string type = builder.ExtractText(Convert.ToString(model.ReportOption), "type", ",");
+                string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+                string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", "}");
+                
+
+                ReportViewer reportViewer = new ReportViewer();
+                List<DormantAgent> dormantAgentList = new List<DormantAgent>();
+                dormantAgentList = service.GetDormantAgentList(fromDate, toDate, type);
+                reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTDormantAgent.rdlc");  //Request.RequestUri("");
+
+                reportViewer.LocalReport.SetParameters(GenerateParamEmerchantSettlementInfo(fromDate, toDate));
+                ReportDataSource A = new ReportDataSource("DormantAgent", dormantAgentList);
+                reportViewer.LocalReport.DataSources.Add(A);
+                ReportUtility reportUtility = new ReportUtility();
+                MFSFileManager fileManager = new MFSFileManager();
+                return reportUtility.GenerateReport(reportViewer, model.FileType);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+		[HttpGet]
+		[AcceptVerbs("GET", "POST")]
+		[Route("api/Kyc/MerchantBankInfo")]
+		public object MerchantBankInfo(ReportModel model)
+		{
+			try
+			{
+				StringBuilderService builder = new StringBuilderService();
+				string fromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "fromDate", ",");
+				string toDate = builder.ExtractText(Convert.ToString(model.ReportOption), "toDate", ",");
+				string accNo = builder.ExtractText(Convert.ToString(model.ReportOption), "accNo", ",");
+				string catId = builder.ExtractText(Convert.ToString(model.ReportOption), "catId", "}");
+				ReportViewer reportViewer = new ReportViewer();
+				List<MerchantBankInfo> merchantBankInfos = new List<MerchantBankInfo>();
+
+				merchantBankInfos = service.MerchantBankInfoReport(fromDate, toDate, accNo, catId);
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTMerchantBankInfo.rdlc");  //Request.RequestUri("");
+
+
+				reportViewer.LocalReport.SetParameters(GetReportParameterForChannelBankInfoReport(fromDate, toDate, catId));
+				ReportDataSource A = new ReportDataSource("MerchantBank", merchantBankInfos);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+				MFSFileManager fileManager = new MFSFileManager();
+				return reportUtility.GenerateReport(reportViewer, model.FileType);
+			}
+			catch (Exception ex)
+			{
+				return ex.ToString();
+			}
+
+		}
+
+        [HttpGet]
+        [AcceptVerbs("GET", "POST")]
+        [Route("api/Kyc/KycCommission")]
+        public object KycCommission(ReportModel model)
+        {
+            try
+            {
+                StringBuilderService builder = new StringBuilderService();
+                string reportName = builder.ExtractText(Convert.ToString(model.ReportOption), "reportName", ",");
+                string regFromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "regFromDate", ",");
+                string regToDate = builder.ExtractText(Convert.ToString(model.ReportOption), "regToDate", ",");
+                string commissionStatus = builder.ExtractText(Convert.ToString(model.ReportOption), "commissionStatus", ",");
+                string authFromDate = builder.ExtractText(Convert.ToString(model.ReportOption), "authFromDate", ",");
+                string authToDate = builder.ExtractText(Convert.ToString(model.ReportOption), "authToDate", ",");
+				string agentNo = builder.ExtractText(Convert.ToString(model.ReportOption), "agentNo", "}");
+				string distributorNo = builder.ExtractText(Convert.ToString(model.ReportOption), "distributorNo", ",");
+				string transNo = builder.ExtractText(Convert.ToString(model.ReportOption), "transNo", ",");
+
+
+				ReportViewer reportViewer = new ReportViewer();
+                List<KycCommission> kycCommissions = new List<KycCommission>();
+				kycCommissions = service.GetRptkycCommissionsList(reportName,regFromDate,regToDate,commissionStatus,authFromDate,authToDate,distributorNo,agentNo,transNo);
+				reportViewer.LocalReport.ReportPath = HostingEnvironment.MapPath("~/Reports/RDLC/RPTKycCom.rdlc");
+				reportViewer.LocalReport.SetParameters(GenerateParamKycCom(regFromDate, regToDate,reportName));
+				ReportDataSource A = new ReportDataSource("KycCommission", kycCommissions);
+				reportViewer.LocalReport.DataSources.Add(A);
+				ReportUtility reportUtility = new ReportUtility();
+                MFSFileManager fileManager = new MFSFileManager();
+                return reportUtility.GenerateReport(reportViewer, model.FileType);
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+
+        }
+
+		private IEnumerable<ReportParameter> GenerateParamKycCom(string regFromDate, string regToDate, string reportName)
+		{
+			List<ReportParameter> paraList = new List<ReportParameter>();
+
+			if (regFromDate != null && regFromDate != "")
+			{
+				paraList.Add(new ReportParameter("FromDate", regFromDate));
+			}
+			if (regToDate != null && regToDate != "")
+			{
+				paraList.Add(new ReportParameter("ToDate", regToDate));
+			}
+			paraList.Add(new ReportParameter("printDate", DateTime.Now.ToShortDateString()));
+			paraList.Add(new ReportParameter("reportType", service.GetKycComReportNameById(reportName)));
+			return paraList;
+		}
 	}
-
 }
+
+

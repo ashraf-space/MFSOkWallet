@@ -13,11 +13,13 @@ namespace MFS.SecurityService.Service
     {
         AuthUserModel login(LoginModel model);
         string GetTransAmtLimit(string createUser);
-		object IsProceedToController(List<string> userInfos);
-		object GetAppUserListDdl();
-		object GetAppUserListDdlForStingValue(string branchCode);
+        object IsProceedToController(List<string> userInfos);
+        object GetAppUserListDdl();
+        object GetAppUserListDdlForStingValue(string branchCode);
         object GetAllApplicationUserList(string roleName);
         PasswordPolicy GetPasswordPolicy();
+        object UpdateEmail(string passwordChangedBy, ChangeEmailModel model);
+        bool CheckingFields(string field, string userName, string employeeId, string mobileNo);
     }
 
     public class ApplicationUserService : BaseService<ApplicationUser>, IApplicationUserService
@@ -51,14 +53,15 @@ namespace MFS.SecurityService.Service
             if (authUserModel.User.Is_validated)
             {
                 authUserModel.IsAuthenticated = true;
-				if(authUserModel.User.Pstatus == "Y")
-				{
-					authUserModel.FeatureList = featureService.GetAuthFeatureList(authUserModel.User.Id);
-				}
-				else
-				{
-					authUserModel.FeatureList = new List<dynamic>();
-				}
+                //if (authUserModel.User.Pstatus == "Y")
+                if (authUserModel.User.Pstatus == "Y" && !string.IsNullOrEmpty(authUserModel.User.EmailId) && !string.IsNullOrEmpty(authUserModel.User.EmployeeId))
+                {
+                    authUserModel.FeatureList = featureService.GetAuthFeatureList(authUserModel.User.Id);
+                }
+                else
+                {
+                    authUserModel.FeatureList = new List<dynamic>();
+                }
                 authUserModel.BearerToken = Guid.NewGuid().ToString();
             }
             else
@@ -82,25 +85,25 @@ namespace MFS.SecurityService.Service
             }
         }
 
-		public object IsProceedToController(List<string> userInfos)
-		{
-			var userId = userInfos[0];
-			var roleId = userInfos[1];
-			var userInfo = (Tuple<string,string>) usersRepo.IsProceedToController(userInfos);
-			if(userInfo.Item1 != roleId || userInfo.Item2 == "Y")
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
+        public object IsProceedToController(List<string> userInfos)
+        {
+            var userId = userInfos[0];
+            var roleId = userInfos[1];
+            var userInfo = (Tuple<string, string>)usersRepo.IsProceedToController(userInfos);
+            if (userInfo.Item1 != roleId || userInfo.Item2 == "Y")
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
 
-		public object GetAppUserListDdl()
-		{
-			return usersRepo.GetAppUserListDdl();
-		}
+        public object GetAppUserListDdl()
+        {
+            return usersRepo.GetAppUserListDdl();
+        }
 
         public object GetAppUserListDdlForStingValue(string branchCode)
         {
@@ -123,6 +126,15 @@ namespace MFS.SecurityService.Service
 
                 throw;
             }
+        }
+        public object UpdateEmail(string passwordChangedBy, ChangeEmailModel model)
+        {
+            return usersRepo.UpdateEmail(passwordChangedBy, model);
+        }
+
+        public bool CheckingFields(string field, string userName, string employeeId, string mobileNo)
+        {
+            return usersRepo.CheckingFields( field, userName, employeeId, mobileNo);
         }
 
     }

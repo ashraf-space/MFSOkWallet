@@ -72,6 +72,7 @@
     <Compile Include="Models\RobiTopupStockEntry.cs" />
     <Compile Include="Models\TblBdStatus.cs" />
     <Compile Include="Models\TblCashEntry.cs" />
+    <Compile Include="Models\TblCommissionConversion.cs" />
     <Compile Include="Models\TblDisburse.cs" />
     <Compile Include="Models\TblDisburseAmtDtlMake.cs" />
     <Compile Include="Models\TblDisburseCompanyInfo.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Models\ViewModels\VMTransactionDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\BillCollectionCommonRepository.cs" />
+    <Compile Include="Repository\CommissionConversionRepository.cs" />
     <Compile Include="Repository\TblDisburseTmpRepository.cs" />
     <Compile Include="Repository\DisburseAmtDtlMakeRepository.cs" />
     <Compile Include="Repository\DisbursementRepository.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Repository\TransactionDetailRepository.cs" />
     <Compile Include="Repository\TransactionMasterRepository.cs" />
     <Compile Include="Service\BillCollectionCommonService.cs" />
+    <Compile Include="Service\CommissionConversionService.cs" />
     <Compile Include="Service\TblDisburseTmpService.cs" />
     <Compile Include="Service\DisburseAmtDtlMakeService.cs" />
     <Compile Include="Service\DisbursementService.cs" />

@@ -54,12 +54,17 @@ namespace OneMFS.DistributionApiServer.Controllers
                     int fourDigitRandomNo = new Random().Next(1000, 9999);
                     try
                     {
+						if (string.IsNullOrEmpty(regInfo.Pmphone))
+						{
+							return HttpStatusCode.BadRequest;
+						}
                         regInfo.CatId = "A";
                         regInfo.PinStatus = "N";
                         regInfo.AcTypeCode = 1;
                         regInfo.RegSource = "P";
-                        regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
-                        regInfo.EntryDate = System.DateTime.Now;
+						//regInfo.RegDate = regInfo.RegDate + DateTime.Now.TimeOfDay;
+						regInfo.RegDate = System.DateTime.Now;
+						regInfo.EntryDate = System.DateTime.Now;
                         _service.Add(regInfo);
                         _kycService.InsertModelToAuditTrail(regInfo, regInfo.EntryBy, 3, 3, "Agent", regInfo.Mphone, "Save successfully");
                         return HttpStatusCode.OK;
@@ -75,9 +80,10 @@ namespace OneMFS.DistributionApiServer.Controllers
                     if (evnt == "edit")
                     {
                         regInfo.UpdateDate = System.DateTime.Now;
-                        var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-                        _service.UpdateRegInfo(regInfo);
-                        var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
+						Reginfo aReginfo = _kycService.NullifyReginfoForKycUpdate(regInfo);
+                        var prevModel = _kycService.GetRegInfoByMphone(aReginfo.Mphone);
+                        _service.UpdateRegInfo(aReginfo);
+                        var currentModel = _kycService.GetRegInfoByMphone(aReginfo.Mphone);
                         _kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.UpdateBy, 3, 4, "Agent", regInfo.Mphone, "Update successfully");
                         return HttpStatusCode.OK;
 
@@ -88,16 +94,18 @@ namespace OneMFS.DistributionApiServer.Controllers
                         var checkStatus = _kycService.CheckPinStatus(regInfo.Mphone);
                         if (checkStatus.ToString() != "P")
                         {
-                            int fourDigitRandomNo = new Random().Next(1000, 9999);
-
+							if (string.IsNullOrEmpty(regInfo.AuthoBy))
+							{
+								return HttpStatusCode.Unauthorized;
+							}
+							int fourDigitRandomNo = new Random().Next(1000, 9999);
                             regInfo.RegStatus = "P";
-                            regInfo.AuthoDate = System.DateTime.Now;
-                            //regInfo.RegDate = _kycService.GetRegDataByMphoneCatID(regInfo.Mphone, "A");							
+                            regInfo.AuthoDate = System.DateTime.Now;                           						
                             var prevModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
                             _service.UpdateRegInfo(regInfo);
                             _dsrService.UpdatePinNo(regInfo.Mphone, fourDigitRandomNo.ToString());
                             var currentModel = _kycService.GetRegInfoByMphone(regInfo.Mphone);
-                            _kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Agent", regInfo.Mphone);
+                            _kycService.InsertUpdatedModelToAuditTrail(currentModel, prevModel, regInfo.AuthoBy, 3, 4, "Agent", regInfo.Mphone, "Register successfully");
                             MessageService service = new MessageService();
                             service.SendMessage(new MessageModel()
                             {

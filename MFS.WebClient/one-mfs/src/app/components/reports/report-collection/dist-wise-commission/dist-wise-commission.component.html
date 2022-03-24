@@ -1,0 +1,71 @@
+<mfs-loader *ngIf="isLoading"></mfs-loader>
+<div class="form-group">
+    <div class="p-grid">
+        <div class="p-col-12">
+            <label for="float-input" class="col-form-label">Report Name</label>
+            <p-dropdown [options]="reportNameList" placeholder="Select Name" [(ngModel)]="model.reportName" [showClear]="true"
+                        [filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+            <p-message *ngIf="(model.reportName==null || model.reportName==''|| model.reportName=='0') && error " severity="error" text="Cannot be left blank"></p-message>
+        </div>
+              
+    </div>
+	<div class="p-grid">
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Reg. From Date<span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From"
+					   name="dp" [(ngModel)]="model.regFromDate" ngbDatepicker #g="ngbDatepicker" (click)="g.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Reg. To Date<span class="mandatory">*</span></label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To"
+					   name="dp" [(ngModel)]="model.regToDate" ngbDatepicker #h="ngbDatepicker"
+					   (click)="h.toggle()" id="float-input">
+			</div>
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Auth. From Date</label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="From"
+					   name="dp" [(ngModel)]="model.authFromDate" ngbDatepicker #i="ngbDatepicker" (click)="i.toggle()"
+					   id="float-input">
+			</div>
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Auth. To Date</label>
+			<div class="input-group">
+				<input class="form-control" placement="down" [readonly]="true" placeholder="To"
+					   name="dp" [(ngModel)]="model.authToDate" ngbDatepicker #j="ngbDatepicker"
+					   (click)="j.toggle()" id="float-input">
+			</div>
+		</div>
+		
+
+	</div>
+	<div class="p-grid">
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Commission Status</label>
+			<p-dropdown [options]="commissionStatusList" placeholder="Select Status" [(ngModel)]="model.commissionStatus" [showClear]="true"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Distributor No</label>
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.distributorNo" pKeyFilter="int" maxlength="13">
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Agent No</label>
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.agentNo" pKeyFilter="int" maxlength="13">
+
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">Trans No</label>
+			<input id="float-input" type="text" class="form-control" pInputText [(ngModel)]="model.transNo" pKeyFilter="int" maxlength="50">
+
+		</div>
+	</div>
+</div>

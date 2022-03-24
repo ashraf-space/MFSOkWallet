@@ -197,9 +197,13 @@ export class CustRetailComponent implements OnInit {
                         }
                         this.getDistrictByBank();
                         this.getBankBranchListByBankCodeAndDistCode();
-                        this.selectedDivision = this.regInfoModel.locationCode.substring(0, 2);
+                        if (this.regInfoModel.locationCode) {
+                            this.selectedDivision = this.regInfoModel.locationCode.substring(0, 2);
+                        }
                         this.fillDistrictDDLByDivision();
-                        this.selectedDistrict = this.regInfoModel.locationCode.substring(0, 4);
+                        if (this.regInfoModel.locationCode) {
+                            this.selectedDistrict = this.regInfoModel.locationCode.substring(0, 4);
+                        }
                         this.fillThanaDDLByDistrict();
                         this.isLoading = false;
                     }

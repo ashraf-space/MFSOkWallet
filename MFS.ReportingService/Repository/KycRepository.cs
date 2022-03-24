@@ -23,7 +23,7 @@ namespace MFS.ReportingService.Repository
         object GetClientInfoByMphone(string mphone);
 		object GetMerchantKycInfoByMphone(string mPhone);
 		object GetChainMerchantMphoneByCode(string chainMerchantCode);
-		List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus);
+		List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus, string fromHour, string toHour);
 		List<RegInfoReport> GetRegReportByCategory(string fromDate, string toDate, string regSource, string status, string accCategory, string regStatus);
 		object GetCurrentBalance(string mphone);
 		object GetComissionBalance(string mphone);
@@ -37,6 +37,12 @@ namespace MFS.ReportingService.Repository
 		object GetSubAccountCategory();
 		List<CommissionReport> CommissionReport(string mphone, string fromDate, string toDate);
 		List<MerchantTransaction> GetTransactionById(string transNo, string refNo, string mphone);
+		List<ChannelBankInfo> ChannelBankInfoReport(string fromDate, string toDate, string accNo, string catId);
+        List<EmerchantSettlementInfo> GetEmerchantSettlementInfoList(string fromDate, string toDate);
+        List<DormantAgent> GetDormantAgentList(string fromDate, string toDate, string type);
+		List<MerchantBankInfo> MerchantBankInfoReport(string fromDate, string toDate, string accNo, string catId);
+		List<KycCommission> GetRptkycCommissionsList(string reportName, string regFromDate, string regToDate, string commissionStatus, string authFromDate, string authToDate, string distributorNo, string agentNo, string transNo);
+		BanglaQr GetBanglaQrInfo(string mphone, string catId);
 	}
     public class KycRepository : BaseRepository<RegistrationReport>, IKycRepository
     {
@@ -208,10 +214,10 @@ namespace MFS.ReportingService.Repository
 			}
 		}
 
-		public List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus)
+		public List<OnlineRegistration> GetOnlineRegReport(string fromDate, string toDate, string category, string accNo, string regStatus, string fromHour, string toHour)
 		{
 			try
-			{
+			{				
 				using (var connection = this.GetConnection())
 				{
 					var dyParam = new OracleDynamicParameters();
@@ -538,6 +544,146 @@ namespace MFS.ReportingService.Repository
 					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
 
 					List<MerchantTransaction> result = SqlMapper.Query<MerchantTransaction>(connection, dbUser + "GET_MER_TRANBYID", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<ChannelBankInfo> ChannelBankInfoReport(string fromDate, string toDate, string accNo, string catId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, accNo == "null" ? null : accNo);
+					dyParam.Add("V_CAT_ID", OracleDbType.Varchar2, ParameterDirection.Input, catId);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<ChannelBankInfo> result = SqlMapper.Query<ChannelBankInfo>(connection, dbUser + "RPT_CHANNEL_BANK", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+        public List<EmerchantSettlementInfo> GetEmerchantSettlementInfoList(string fromDate, string toDate)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    List<EmerchantSettlementInfo> result = SqlMapper.Query<EmerchantSettlementInfo>(connection, dbUser + "RPT_EmerchantSettlementInfo", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<DormantAgent> GetDormantAgentList(string fromDate, string toDate, string type)
+        {
+            try
+            {
+                using (var connection = this.GetConnection())
+                {
+                    var dyParam = new OracleDynamicParameters();
+                    dyParam.Add("V_FromDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+                    dyParam.Add("V_ToDate", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+                    dyParam.Add("V_Type", OracleDbType.Varchar2, ParameterDirection.Input, type == "null" ? "" : type);
+                    dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+                    List<DormantAgent> result = SqlMapper.Query<DormantAgent>(connection, dbUser + "RPT_DormantAgent", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+                    this.CloseConnection(connection);
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+		public List<MerchantBankInfo> MerchantBankInfoReport(string fromDate, string toDate, string accNo, string catId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_CAT_ID", OracleDbType.Varchar2, ParameterDirection.Input, catId);
+					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, accNo == "null" ? null : accNo);
+					dyParam.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, catId);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<MerchantBankInfo> result = SqlMapper.Query<MerchantBankInfo>(connection, dbUser + "RPT_MERCHANT_BANK", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<KycCommission> GetRptkycCommissionsList(string reportName, string regFromDate, string regToDate, string commissionStatus, string authFromDate, string authToDate, string distributorNo, string agentNo, string transNo)
+		{
+			using (var connection = this.GetConnection())
+			{
+				var dyParam = new OracleDynamicParameters();
+
+				dyParam.Add("REPORTNAME", OracleDbType.Varchar2, ParameterDirection.Input, reportName);
+				dyParam.Add("REGFROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(regFromDate));
+				dyParam.Add("REGTODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(regToDate));
+				dyParam.Add("COMMISSIONSTATUS", OracleDbType.Varchar2, ParameterDirection.Input, commissionStatus == "null" ? null : commissionStatus);
+				dyParam.Add("AUTHFROMDATE", OracleDbType.Date, ParameterDirection.Input, authFromDate == "null" ? DateTime.Now.AddYears(-20) : Convert.ToDateTime(authFromDate));
+				dyParam.Add("AUTHTODATE", OracleDbType.Date, ParameterDirection.Input, authFromDate == "null" ? DateTime.Now : Convert.ToDateTime(authToDate));
+				dyParam.Add("V_DISTRIBUTORNO", OracleDbType.Varchar2, ParameterDirection.Input, distributorNo == "null" ? null : distributorNo);
+				dyParam.Add("V_AGENTNO", OracleDbType.Varchar2, ParameterDirection.Input, agentNo == "null" ? null : agentNo);
+				dyParam.Add("V_TRANSNO", OracleDbType.Varchar2, ParameterDirection.Input, transNo == "null" ? null : transNo);
+
+				dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+				List<KycCommission> result = SqlMapper.Query<KycCommission>(connection, dbUser + "RPT_KYC_COMMISSION", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+				this.CloseConnection(connection);
+				return result;
+			}
+		}
+
+		public BanglaQr GetBanglaQrInfo(string mphone, string catId)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+					dyParam.Add("V_MPHONE", OracleDbType.Varchar2, ParameterDirection.Input, mphone);
+					dyParam.Add("V_CAT", OracleDbType.Varchar2, ParameterDirection.Input, catId);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					BanglaQr result = SqlMapper.Query<BanglaQr>(connection, dbUser + "SP_GET_BANQR_INFO", param: dyParam, commandType: CommandType.StoredProcedure).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}

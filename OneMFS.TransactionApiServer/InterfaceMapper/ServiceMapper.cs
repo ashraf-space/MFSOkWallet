@@ -29,6 +29,7 @@ namespace OneMFS.TransactionApiServer.InterfaceMapper
 			services.AddTransient<IErrorLogService, ErrorLogService>();
 			services.AddTransient<IBillCollectionCommonService, BillCollectionCommonService>();
 			services.AddTransient<IKycService, KycService>();			
+			services.AddTransient<ICommissionConversionService, CommissionConversionService>();			
 		}
     }
 }

@@ -23,10 +23,12 @@ namespace OneMFS.DistributionApiServer.Controllers
     {
 	    private ICustomerSevice _customerSevice;
 		private IErrorLogService errorLogService;
-		public CustomerController(ICustomerSevice customerSevice, IErrorLogService _errorLogService)
+		private IDistributorService distributorService;
+		public CustomerController(IDistributorService _distributorService, ICustomerSevice customerSevice, IErrorLogService _errorLogService)
 	    {
 		    this._customerSevice = customerSevice;
 			this.errorLogService = _errorLogService;
+			this.distributorService = _distributorService;
 	    }
 		[HttpGet]
 		[Route("GetCustomerGridList")]
@@ -94,64 +96,91 @@ namespace OneMFS.DistributionApiServer.Controllers
 					var customerInfo = _customerSevice.GetCustomerByMphone(mphone);
 					if(customerInfo == null)
 					{
+						CbsApiInfo apiInfo = new CbsApiInfo();
+						CbsCustomerInfo cbsCustomerInfo = new CbsCustomerInfo();
+						Reginfo reginfo = new Reginfo();
+						dynamic apiResponse = null;
+						bool isMphoneSame = false;
+						bool isNidValid = false;
+						bool isNidExist = false;
 						using (var httpClient = new HttpClient())
 						{
-							CbsApiInfo apiInfo = new CbsApiInfo();
-							CbsCustomerInfo cbsCustomerInfo = new CbsCustomerInfo();
-							Reginfo reginfo = new Reginfo();
-							dynamic apiResponse = null;
-							bool isMphoneSame=false;
+
 							using (var response = await httpClient.GetAsync(apiInfo.Ip + apiInfo.ApiUrl + bankAcNo))
 							{
-								apiResponse = await response.Content.ReadAsStringAsync();								
+								apiResponse = await response.Content.ReadAsStringAsync();
 								cbsCustomerInfo = JsonConvert.DeserializeObject<CbsCustomerInfo>(apiResponse);
 							}
-							
-							if (cbsCustomerInfo != null)
-							{
-								isMphoneSame = _customerSevice.IsMobilePhoneMatch(mphone, cbsCustomerInfo);
-								reginfo = _customerSevice.ConvertCbsPullToregInfo(cbsCustomerInfo);								 
-							}
-							if (cbsCustomerInfo == null)
-							{
-								return Ok(new
-								{
-									Status = HttpStatusCode.NotAcceptable,
-									Model = string.Empty,
-									Erros = "No Cbs Account Found"
-								});
-							}
-							if (reginfo.Mphone.Length != 11)
-							{
-								return Ok(new
-								{
-									Status = HttpStatusCode.NotAcceptable,
-									Model = string.Empty,
-									Erros = "Mobile No Should be 11 digit"
-								});
-							}
-							if (isMphoneSame)
-							{
-								return Ok(new
-								{
-									Status = HttpStatusCode.OK,
-									Model = reginfo,
-									Erros = String.Empty
-								});
-								
-								
-							}
-							else
-							{
-								return Ok(new
-								{
-									Status = HttpStatusCode.NotAcceptable,
-									Model = string.Empty,
-									Erros = "Mobile No Mismatched"
-								});
-							}
-							
 						}
+
+						if (cbsCustomerInfo == null)
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.NotAcceptable,
+								Model = string.Empty,
+								Erros = "No Cbs Account Found"
+							});
+						}
+
+						if (cbsCustomerInfo != null)
+						{
+							isMphoneSame = _customerSevice.IsMobilePhoneMatch(mphone, cbsCustomerInfo);
+							reginfo = _customerSevice.ConvertCbsPullToregInfo(cbsCustomerInfo);
+						}					
+						if (!string.IsNullOrEmpty(reginfo.PhotoId))
+						{
+							isNidValid = CheckIsNidIsValid(reginfo.PhotoId);
+							isNidExist = CheckIsNidIsExist(reginfo.PhotoId);
+						}
+						if (!isNidValid)
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.NotAcceptable,
+								Model = string.Empty,
+								Erros = "Invalid Photo Id"
+							});
+						}
+						if (isNidExist)
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.NotAcceptable,
+								Model = string.Empty,
+								Erros = "Photo Id already exist"
+							});
+						}
+						if (reginfo.Mphone.Length != 11)
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.NotAcceptable,
+								Model = string.Empty,
+								Erros = "Mobile No Should be 11 digit"
+							});
+						}
+						if (isMphoneSame)
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.OK,
+								Model = reginfo,
+								Erros = String.Empty
+							});
+
+
+						}
+						else
+						{
+							return Ok(new
+							{
+								Status = HttpStatusCode.NotAcceptable,
+								Model = string.Empty,
+								Erros = "Mobile No Mismatched"
+							});
+						}
+
 					}
 					else
 					{
@@ -184,6 +213,17 @@ namespace OneMFS.DistributionApiServer.Controllers
 					Erros = ex.Message.ToString()
 				});
 			}
+		}
+
+		private bool CheckIsNidIsExist(string photoId)
+		{
+			return _customerSevice.IsPhotoIdExist("C", photoId, 0);
+			
+		}
+
+		private bool CheckIsNidIsValid(string photoId)
+		{
+			return _customerSevice.IsNidValid(photoId);							
 		}
 	}
 }

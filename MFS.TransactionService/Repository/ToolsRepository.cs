@@ -88,7 +88,7 @@ namespace MFS.TransactionService.Repository
             {
 
 				MappingApiInfo mappingApiInfo = new MappingApiInfo();
-				string URL = mappingApiInfo.UatApiInfo + accNo.ToString(); //For Live 
+				string URL = mappingApiInfo.LiveApiInfo + accNo.ToString(); //For Live 
 				
 				object dataObjects = null;
                 HttpClient client = new HttpClient();

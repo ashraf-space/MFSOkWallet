@@ -32,6 +32,7 @@ export class FundTransferActoglComponent implements OnInit {
     error: boolean = false;
     transAmtLimit: any;
     isLoading: boolean = false;
+    remarks: any;
 
     constructor(private fundTransferService: FundTransferService, private mfsSettingService: MfsSettingService, private gridSettingService: GridSettingService
         , private authService: AuthenticationService, private messageService: MessageService) {
@@ -82,6 +83,7 @@ export class FundTransferActoglComponent implements OnInit {
                         //this.glName = data[0].glName;
                         this.acHolderName = data[0].acHolderName;
                         this.amount = data[0].debitAmount;
+                        this.remarks = data[0].remarks;
                     }
                 },
                 error => {

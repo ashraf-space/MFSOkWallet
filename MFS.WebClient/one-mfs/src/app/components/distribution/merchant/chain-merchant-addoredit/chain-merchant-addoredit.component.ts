@@ -53,6 +53,8 @@ export class ChainMerchantAddoreditComponent implements OnInit {
     parentCode: any;
     parentCompanyName: any;
     isLoading: boolean = false;
+    serviceCharge: any;
+    viewServiceCharge: boolean = false;
     constructor(private merchantService: MerchantService, private distributorService: DistributorService, private router: Router,
         private route: ActivatedRoute, private messageService: MessageService, private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService) {
@@ -86,7 +88,7 @@ export class ChainMerchantAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     if (data) {
-                        this.regInfoModel = data;
+                        this.regInfoModel = data;                       
                         this.parentCompanyName = this.regInfoModel.companyName;
                         this.selectedChainMerchant = data.pmphone;
                         this.parentCode = data._Mcode.substring(0, 12);
@@ -172,13 +174,16 @@ export class ChainMerchantAddoreditComponent implements OnInit {
             );
     }
     getChainMerchantList() {
+        //this.isLoading = true;
         this.merchantService.getChainMerchantList()
             .pipe(first())
             .subscribe(
                 data => {
                     this.chainMerchantList = data;
+                    //this.isLoading = false;
                 },
                 error => {
+                    //this.isLoading = false;
                     console.log(error);
                 }
             );
@@ -207,7 +212,7 @@ export class ChainMerchantAddoreditComponent implements OnInit {
                         this.parentCompanyName = this.regInfoModel.companyName;
                         this.regInfoModel.offAddr = '';
                         this.regInfoModel.companyName = '';
-                        this.regInfoModel.locationCode = '';
+                        this.regInfoModel.locationCode = '';                       
                     }
                     else {
                         this.regInfoModel = {};
@@ -234,7 +239,8 @@ export class ChainMerchantAddoreditComponent implements OnInit {
                         (this.selectedDistrict == '0') ||
                         (this.selectedDivision == '0') ||
                         !this.selectedChainMerchant||
-                        !this.regInfoModel.locationCode
+                        !this.regInfoModel.locationCode ||
+                        !this.regInfoModel._ChildMphone
                     ) {
                         this.msgs = [];                
                         this.messageService.add({ severity: 'error', summary: 'Warning!', detail: 'Cannot be left blank' });
@@ -268,7 +274,8 @@ export class ChainMerchantAddoreditComponent implements OnInit {
 
         this.regInfoModel.mAreaType = this.selectedAreatype;
         this.regInfoModel.pmphone = this.selectedChainMerchant;
-        if (this.regInfoModel._ChildMphone != "") {
+        //this.regInfoModel.schargePer = this.serviceCharge;
+        if (this.regInfoModel._ChildMphone) {
             this.merchantService.saveChildMerchant(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {

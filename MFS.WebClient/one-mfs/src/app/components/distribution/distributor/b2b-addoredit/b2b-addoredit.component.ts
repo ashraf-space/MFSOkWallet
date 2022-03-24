@@ -8,7 +8,7 @@ import { AuthenticationService } from 'src/app/shared/_services';
 import { MfsUtilityService } from 'src/app/services/mfs-utility.service';
 import { KycService } from '../../../../services/distribution/kyc.service';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-
+import { MerchantService } from '../../../../services/distribution/merchant.service';
 @Component({
   selector: 'app-b2b-addoredit',
   templateUrl: './b2b-addoredit.component.html',
@@ -51,7 +51,11 @@ export class B2bAddoreditComponent implements OnInit {
     error: boolean = false;
     showDuplicateMsg: boolean = false;
     checkedAsPresent: boolean = false;
-
+    merchantBankBranchList: any;
+    bankDistrictList: any;
+    bankBranchByDistBankCodeList: any;
+    disabledEdit: boolean = true;
+    isSecuredViewPermitted: boolean = false;  
     constructor(private distributionService: DistributorService,
         private router: Router,
         private route: ActivatedRoute,
@@ -59,7 +63,8 @@ export class B2bAddoreditComponent implements OnInit {
         private authService: AuthenticationService,
         private mfsUtilityService: MfsUtilityService,
         private ngbDatepickerConfig: NgbDatepickerConfig,
-        private kycService: KycService) {
+        private kycService: KycService,
+        private merchantService: MerchantService) {
         ngbDatepickerConfig.minDate = { year: 1919, month: 1, day: 1 };
         var currentDate = new Date();
         ngbDatepickerConfig.maxDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
@@ -132,7 +137,7 @@ export class B2bAddoreditComponent implements OnInit {
         this.getRegionListForDDL();
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-
+        this.getMerchantBankBranchList();
         this.getPhotoIDTypeListForDDL();
         this.regInfoModel.nationality = 'Bangladeshi';
         this.entityId = this.route.snapshot.paramMap.get('id');
@@ -149,7 +154,70 @@ export class B2bAddoreditComponent implements OnInit {
             this.regDate = { year: currentDate.getFullYear(), month: currentDate.getMonth() + 1, day: currentDate.getDate() };
         }
         this.regInfoModel.partOfFirst = 100;
+        this.checkForSecureView();
+    }
+    getRoutingNo(): any {
+        this.merchantService.getRoutingNo(this.regInfoModel.eftBankCode, this.regInfoModel.eftDistCode, this.regInfoModel.eftBranchCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.regInfoModel.eftRoutingNo = data.routing_no;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    checkForSecureView() {
+        if (this.entityId) {
+            this.isSecuredViewPermitted = this.authService.checkIsSecuredViewPermitted(this.route.snapshot.routeConfig.path);
+            if (this.isSecuredViewPermitted) {
+                this.disabledEdit = false;
+            }
+            else {
+                this.disabledEdit = true;
+            }
+        }
+        else {
+            this.disabledEdit = false;
+        }
 
+    }
+    getBankBranchListByBankCodeAndDistCode(): any {
+        this.merchantService.getBankBranchListByBankCodeAndDistCode(this.regInfoModel.eftBankCode, this.regInfoModel.eftDistCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.bankBranchByDistBankCodeList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getMerchantBankBranchList(): any {
+        this.merchantService.getMerchantBankBranchList()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.merchantBankBranchList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+    getDistrictByBank(): any {
+        this.merchantService.getDistrictByBank(this.regInfoModel.eftBankCode)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.bankDistrictList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
     async getRegionListForDDL() {
         this.distributionService.getRegionList()
@@ -208,6 +276,8 @@ export class B2bAddoreditComponent implements OnInit {
                 data => {
                     if (data.distCode) {
                         this.regInfoModel = data;
+                        this.getDistrictByBank();
+                        this.getBankBranchListByBankCodeAndDistCode()
                         this.selectedRegion = this.regInfoModel.distCode.substring(0, 2);
                         this.fillAreaDDL();
                         this.selectedArea = this.regInfoModel.distCode.substring(0, 4);
@@ -310,11 +380,11 @@ export class B2bAddoreditComponent implements OnInit {
 
     }
     async generateDistributorCode() {
-        this.distributionService.generateDistributorCode(this.selectedTerritory)
+        this.distributionService.generateB2bDistributorCode(this.selectedTerritory)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.regInfoModel.distCode = data.DIST_CODE;
+                    this.regInfoModel.distCode = data;
 
 
                 },
@@ -483,17 +553,17 @@ export class B2bAddoreditComponent implements OnInit {
             this.regInfoModel.authoBy = this.currentUserModel.user.username;
         }
         if (this.regInfoModel.distCode != "" || this.regInfoModel.branchName != "") {
-            this.distributionService.saveB2bDistributor(this.regInfoModel, this.isEditMode, event).pipe(first())
+            this.distributionService.SaveB2bMasterDistributor(this.regInfoModel, this.isEditMode, event).pipe(first())
                 .subscribe(
                     data => {
                         if (data === 200) {
                             window.history.back();
                             if (this.isEditMode && !this.isRegistrationPermitted)
-                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Distributor updated: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Update successfully', sticky: true, detail: 'Super Distributor updated: ' + this.regInfoModel.mphone });
                             else if (this.isEditMode && this.isRegistrationPermitted)
-                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Distributor registerd: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Register successfully', sticky: true, detail: 'Super Distributor registerd: ' + this.regInfoModel.mphone });
                             else {
-                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Distributor added: ' + this.regInfoModel.mphone });
+                                this.messageService.add({ severity: 'success', summary: 'Save successfully', sticky: true, detail: 'Super Distributor added: ' + this.regInfoModel.mphone });
                             }
                         }
                         else {

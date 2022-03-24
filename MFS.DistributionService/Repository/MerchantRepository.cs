@@ -53,16 +53,16 @@ namespace MFS.DistributionService.Repository
 					var parameter = new OracleDynamicParameters();
 					parameter.Add("CatType", OracleDbType.Varchar2, ParameterDirection.Input, "M");
 					parameter.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
-					var result = SqlMapper.Query<Reginfo>(connection, dbUser+"SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
+					var result = SqlMapper.Query<Reginfo>(connection, dbUser + "SP_Get_RegIngo_ByCatType", param: parameter, commandType: CommandType.StoredProcedure);
 
 					this.CloseConnection(connection);
 
 					return result;
 				}
-					
+
 			}
 			catch (Exception)
-			{				
+			{
 				throw;
 			}
 
@@ -83,11 +83,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception)
 			{
-				
+
 				throw;
 			}
 
@@ -106,11 +106,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception)
 			{
-				
+
 				throw;
 			}
 
@@ -127,13 +127,13 @@ namespace MFS.DistributionService.Repository
 					parameter.Add("fourDigitRandomNo", OracleDbType.Varchar2, ParameterDirection.Input, fourDigitRandomNo);
 					var result = SqlMapper.Query(connection, dbUser + "SP_Update_PIN_No", param: parameter, commandType: CommandType.StoredProcedure);
 					this.CloseConnection(connection);
-					
+
 				}
 
 			}
 			catch (Exception)
 			{
-				
+
 				throw;
 			}
 
@@ -151,11 +151,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception)
 			{
-				
+
 				throw;
 			}
 
@@ -174,11 +174,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 
@@ -197,11 +197,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 
@@ -220,11 +220,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -233,8 +233,21 @@ namespace MFS.DistributionService.Repository
 		{
 			try
 			{
-				if (selectedCategory !="C")
+				if (selectedCategory == "C" || selectedCategory == "ABM")
 				{
+					using (var connection = this.GetConnection())
+					{
+						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,7,6))+1 || '0000' AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG t where t.category = 'C' or t.category = 'ABM'";
+						var result = connection.Query(query).FirstOrDefault();
+						this.CloseConnection(connection);
+						return result;
+					}
+
+				}
+				else
+				{
+
+
 					using (var connection = this.GetConnection())
 					{
 						//string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,6,6))+1 AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG";
@@ -244,24 +257,12 @@ namespace MFS.DistributionService.Repository
 						this.CloseConnection(connection);
 						return result;
 					}
-						
-				}
-				else
-				{
 
-					using (var connection = this.GetConnection())
-					{
-						string query = @"SELECT TO_CHAR(SYSDATE,'RRMMDD') || MAX(SUBSTR(MCODE,7,6))+1 || '0000' AS M_CODE FROM " + dbUser + "MERCHANT_CONFIG t where t.category = 'C'";
-						var result = connection.Query(query).FirstOrDefault();
-						this.CloseConnection(connection);
-						return result;
-					}
-						
 				}
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 
@@ -279,12 +280,12 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -295,18 +296,21 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"select t.mphone as ""value"", t.mphone as ""label"" from " + dbUser + "merchant_config t where t.category = 'C'";
+					//string query = @"select t.mphone as ""value"", t.mphone as ""label"" from " + dbUser + "merchant_config t where t.category = 'C'";
+					string query = @"select t.mphone as ""value"", t.mphone as ""label""
+									from one.merchant_config t join one.reginfo r 
+									on t.mphone = r.mphone 
+									where t.category = 'C' OR r.cat_id = 'ABM'";
 					var result = connection.Query<CustomDropDownModel>(query);
-
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -320,16 +324,16 @@ namespace MFS.DistributionService.Repository
 					//string query = @"select count(*) as count from " + dbUser + "merchant_config t where t.mcode like '%" + mcode + "%' and t.category = 'M'";
 					string query = @"SELECT  TO_CHAR(MAX(SUBSTR(MCODE,1,16)) + 1) AS M_CODE
 										FROM ONE.MERCHANT_CONFIG T
-								WHERE (T.CATEGORY = 'M' OR T.CATEGORY = 'C') AND substr(t.mcode,1,12) = substr(" + mcode+",1,12)";
+								WHERE T.CATEGORY IN ('M','C','B') AND substr(t.mcode,1,12) = substr(" + mcode + ",1,12)";
 					var result = connection.Query<string>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -381,7 +385,7 @@ namespace MFS.DistributionService.Repository
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -397,17 +401,17 @@ namespace MFS.DistributionService.Repository
 							 M.SNAME, M.CUSTOMER_SERVICE_CHARGE_MAX AS ""CUSTOMERSERVICECHARGEMAX"",M.CUSTOMER_SERVICE_CHARGE_MIN AS ""CUSTOMERSERVICECHARGEMIN"",
 							 M.STATUS AS ""STATUS"", M.MAX_TRANS_AMT AS ""MAXTRANSAMT"",
 							 M.MIN_TRANS_AMT AS ""MINTRANSAMT"", M.CUSTOMER_SERVICE_CHARGE_PER*100 ""CUSTOMERSERVICECHARGEPER""
-							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '" 
+							 FROM " + dbUser + "MERCHANT_CONFIG M  INNER JOIN " + dbUser + "REGINFOVIEW T ON T.MPHONE = M.MPHONE  AND M.MPHONE = '"
 							 + mPhone + "' AND (T.CATID = 'M' OR T.CATID = 'CM' OR T.CatId = 'EMSM' OR t.CatId = 'EMSC' OR T.CatId = 'MMSM' OR t.CatId = 'MMSC')";
 					var result = connection.Query<MerchantConfig>(query).FirstOrDefault();
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 		}
@@ -423,11 +427,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 
@@ -444,14 +448,14 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
-			
+
 		}
 
 		public object GetMerchantListForUser()
@@ -465,11 +469,11 @@ namespace MFS.DistributionService.Repository
 					this.CloseConnection(connection);
 					return result;
 				}
-					
+
 			}
 			catch (Exception ex)
 			{
-				
+
 				throw;
 			}
 
@@ -481,7 +485,7 @@ namespace MFS.DistributionService.Repository
 			{
 				using (var connection = this.GetConnection())
 				{
-					string query = @"SELECT COUNT(*) FROM ONE.MERCHANT_CONFIG T WHERE T.SNAME = CONCAT('EMS.','" + orgCode.Trim()+"')";
+					string query = @"SELECT COUNT(*) FROM ONE.MERCHANT_CONFIG T WHERE T.SNAME = CONCAT('EMS.','" + orgCode.Trim() + "')";
 
 					var result = connection.Query<int>(query).FirstOrDefault();
 					this.CloseConnection(connection);

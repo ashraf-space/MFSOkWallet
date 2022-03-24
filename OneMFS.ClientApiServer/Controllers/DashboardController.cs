@@ -67,5 +67,18 @@ namespace OneMFS.ClientApiServer.Controllers
 
             }
         }
-    }
+		[HttpGet]
+		[Route("GetDataForUtilityDashboard")]
+		public object GetDataForUtilityDashboard()
+		{
+			try
+			{
+				return  dashboardService.GetDataForUtilityDashboard();
+			}
+			catch (Exception ex)
+			{
+				return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().DeclaringType.Name, Request.Headers["UserInfo"].ToString());
+			}
+		}
+	}
 }

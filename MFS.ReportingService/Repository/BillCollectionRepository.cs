@@ -38,6 +38,10 @@ namespace MFS.ReportingService.Repository
 		List<KwasaBillPayment> GetKwasaReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
 		List<WzpdclBillPayment> GetWzpdclPoReport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
 		List<Ekpay> GetEkpaysConnectivitiesReport(string fromDate, string toDate, string dateType);
+		List<PgclBillReport> GetPgclBillreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
+		List<LandTaxBill> GetLandTaxreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode);
+		List<Ivac> GetSslReport(string fromDate, string toDate, string reportType);
+		List<Rlic> GetrlicsReport(string fromDate, string toDate);
 	}
 	public class BillCollectionRepository : BaseRepository<BillCollection>, IBillCollectionRepository
 	{
@@ -700,6 +704,110 @@ namespace MFS.ReportingService.Repository
 
 					List<Ekpay> result = SqlMapper.Query<Ekpay>(connection, dbUser + "RPT_EKPAY_CON", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 					//List<BillCollection> result = null;
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<PgclBillReport> GetPgclBillreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("UTILITY", OracleDbType.Varchar2, ParameterDirection.Input, utility);
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("P_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, gateway == "All" ? null : gateway);
+					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
+					dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
+					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<PgclBillReport> result = SqlMapper.Query<PgclBillReport>(connection, dbUser + "RPT_PGCL", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					//List<BillCollection> result = null;
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<LandTaxBill> GetLandTaxreport(string utility, string fromDate, string toDate, string gateway, string dateType, string catType, string branchCode)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("UTILITY", OracleDbType.Varchar2, ParameterDirection.Input, utility);
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("P_GATEWAY", OracleDbType.Varchar2, ParameterDirection.Input, gateway == "All" ? null : gateway);
+					dyParam.Add("DATETYPE", OracleDbType.Varchar2, ParameterDirection.Input, dateType);
+					dyParam.Add("CUSTTYPE", OracleDbType.Varchar2, ParameterDirection.Input, catType == "All" ? null : catType);
+					dyParam.Add("V_BCODE", OracleDbType.Varchar2, ParameterDirection.Input, branchCode == "0000" ? null : branchCode);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+
+					List<LandTaxBill> result = SqlMapper.Query<LandTaxBill>(connection, dbUser + "RPT_LAND_TAX", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
+					//List<BillCollection> result = null;
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<Ivac> GetSslReport(string fromDate, string toDate, string reportType)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					dyParam.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, reportType);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+					List<Ivac> result = SqlMapper.Query<Ivac>(connection, dbUser + "RPT_IVAC", param: dyParam, commandType: CommandType.StoredProcedure).ToList();					
+					this.CloseConnection(connection);
+					return result;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		public List<Rlic> GetrlicsReport(string fromDate, string toDate)
+		{
+			try
+			{
+				using (var connection = this.GetConnection())
+				{
+					var dyParam = new OracleDynamicParameters();
+
+					dyParam.Add("FROMDATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(fromDate));
+					dyParam.Add("TODATE", OracleDbType.Date, ParameterDirection.Input, Convert.ToDateTime(toDate));
+					//dyParam.Add("V_TYPE", OracleDbType.Varchar2, ParameterDirection.Input, reportType);
+					dyParam.Add("CUR_DATA", OracleDbType.RefCursor, ParameterDirection.Output);
+					List<Rlic> result = SqlMapper.Query<Rlic>(connection, dbUser + "RPT_RLIC", param: dyParam, commandType: CommandType.StoredProcedure).ToList();
 					this.CloseConnection(connection);
 					return result;
 				}

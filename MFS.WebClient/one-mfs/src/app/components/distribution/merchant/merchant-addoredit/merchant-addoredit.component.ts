@@ -60,6 +60,8 @@ export class MerchantAddoreditComponent implements OnInit {
     isLoading: boolean = false;
     selectedCycleWeekDay: SelectItem[];
     disabledEdit: boolean = true;
+    distributorList: any;
+    parentNo: any;
     constructor(private merchantService: MerchantService,
         private distributorService: DistributorService,
         private router: Router,
@@ -80,7 +82,7 @@ export class MerchantAddoreditComponent implements OnInit {
 
         this.getDivisionListForDDL();
         this.getBankBranchListForDDL();
-
+        this.getDistributorForDDL();
         this.getPhotoIDTypeListForDDL();
 
         //this.getMerchantCodeListForDDL();
@@ -120,7 +122,8 @@ export class MerchantAddoreditComponent implements OnInit {
             { label: 'EMS Mercahnt Module', value: 'EMSM' },
             { label: 'EMS Bill Payment Module', value: 'EMSC' },
             { label: 'MMS Mercahnt Module', value: 'MMSM' },
-            { label: 'MMS Bill Payment Module', value: 'MMSC' }
+            { label: 'MMS Bill Payment Module', value: 'MMSC' },
+            { label: 'B2B Parent Merchant', value: 'ABM' }
         ]
 
         this.mAreaList = [
@@ -142,6 +145,22 @@ export class MerchantAddoreditComponent implements OnInit {
             this.isRegistrationPermitted = this.authService.checkRegisterPermissionAccess(this.route.snapshot.routeConfig.path);
         }
         this.checkForSecureView();
+    }
+    getB2bMasterDistributorData() {
+
+        this.regInfoModel.pmphone = this.parentNo;
+    }
+    getDistributorForDDL() {
+        this.distributorService.GetB2bMasterDistributorListForDDL()
+            .pipe(first())
+            .subscribe(
+                data => {
+                    this.distributorList = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
     checkForSecureView() {
         if (this.entityId) {
@@ -174,6 +193,7 @@ export class MerchantAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.merchantBankBranchList = data;
+                    this.merchantBankBranchList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);
@@ -226,6 +246,7 @@ export class MerchantAddoreditComponent implements OnInit {
                         this.selectedAreatype = data.mAreaType;
                         this.selectedCycle = data.settlementCycle;
                         this.regInfoModel._mcode = data._Mcode;
+                        this.parentNo = data.pmphone;
                         this.getDistrictByBank();
                         this.getBankBranchListByBankCodeAndDistCode();
                         this.selectedDivision = this.regInfoModel.locationCode.substring(0, 2);
@@ -288,6 +309,7 @@ export class MerchantAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.bankDistrictList = data;
+                    this.bankDistrictList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);
@@ -300,6 +322,7 @@ export class MerchantAddoreditComponent implements OnInit {
             .subscribe(
                 data => {
                     this.bankBranchByDistBankCodeList = data;
+                    this.bankBranchByDistBankCodeList.unshift({ label: 'Not Applicable', value: 'None' });
                 },
                 error => {
                     console.log(error);
@@ -465,6 +488,10 @@ export class MerchantAddoreditComponent implements OnInit {
                     } else {
                         if ((this.selectedCategory === 'EMSC' || this.selectedCategory === 'EMSM' ||
                             this.selectedCategory === 'MMSC' || this.selectedCategory === 'MMSM') && !this.regInfoModel._OrgCode) {
+                            this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
+                            this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
+                        }
+                        else if (this.selectedCategory === 'ABM' && !this.regInfoModel.schargePer) {
                             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
                             this.messageService.add({ severity: 'error', summary: 'Cannot be left blank', detail: 'Mandatory input Cannot be left blank', closable: true });
                         }

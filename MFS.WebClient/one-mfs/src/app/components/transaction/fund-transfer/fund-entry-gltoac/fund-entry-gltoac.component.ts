@@ -243,7 +243,8 @@ export class FundEntryGltoacComponent implements OnInit {
 
         if (!this.fundTransferModel.fromSysCoaCode || this.fundTransferModel.fromSysCoaCode == '' ||
             !this.fundTransferModel.transTo || this.fundTransferModel.transTo == '' ||
-            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '0' || this.fundTransferModel.payAmt == '') {
+            !this.fundTransferModel.payAmt || this.fundTransferModel.payAmt == '0' || this.fundTransferModel.payAmt == '' ||
+            !this.fundTransferModel.remarks || this.fundTransferModel.remarks == '0' || this.fundTransferModel.remarks == '') {
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: 'Warning! ', detail: 'Cannot be left blank' });
             this.error = true;

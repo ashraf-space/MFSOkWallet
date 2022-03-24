@@ -25,6 +25,7 @@ namespace MFS.TransactionService.Service
         string DataInsertToTransMSTandDTL(FundTransfer fundTransferModel, string transType);
         VMACandGLDetails GetACandGLDetailsByMphone(string transFrom);
         object saveBranchCashIn(BranchCashIn branchCashIn);
+        object saveCommiConvert(BranchCashIn branchCashIn);
         object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt);
         object saveRobiTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
         object saveAirtelTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
@@ -34,8 +35,8 @@ namespace MFS.TransactionService.Service
         object saveBlinkTopupStockEntry(RobiTopupStockEntry robiTopupStockEntryModel);
         object saveTtalkTopupStockEntry(RobiTopupStockEntry ttalkTopupStockEntryModel);
         object GetCommissionGlListForDDL();
-        object GetCommssionMobileList(string sysCoaCode, string entryOrApproval);
-        void SaveCommissionEntry(CommissionMobile item,string entryBy,string toCatId, string entrybrCode,string transNo);
+        object GetCommssionMobileList(string sysCoaCode,string fromCatId, string entryOrApproval);
+        void SaveCommissionEntry(CommissionMobile item,string entryBy,string toCatId,string fromCatId, string entrybrCode,string transNo);
         string CheckPendingApproval();
         void UpdateCommissionEntry(CommissionMobile item, string entryBy);
         string AproveOrRejectCommissionEntry(CommissionMobile item, string entryBy);
@@ -188,6 +189,19 @@ namespace MFS.TransactionService.Service
             }
         }
 
+        public object saveCommiConvert(BranchCashIn branchCashIn)
+        {
+            try
+            {
+                return _FundTransferRepository.saveCommiConvert(branchCashIn);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public object AproveOrRejectBranchCashout(TblPortalCashout tblPortalCashout, string evnt)
         {
             try
@@ -304,11 +318,11 @@ namespace MFS.TransactionService.Service
             }
         }
 
-        public object GetCommssionMobileList(string sysCoaCode, string entryOrApproval)
+        public object GetCommssionMobileList(string sysCoaCode,  string fromCatId, string entryOrApproval)
         {
             try
             {
-                return _FundTransferRepository.GetCommssionMobileList(sysCoaCode, entryOrApproval);
+                return _FundTransferRepository.GetCommssionMobileList(sysCoaCode, fromCatId, entryOrApproval);
             }
             catch (Exception ex)
             {
@@ -317,9 +331,9 @@ namespace MFS.TransactionService.Service
             }
         }
 
-        public void SaveCommissionEntry(CommissionMobile item, string entryBy, string toCatId,string entrybrCode,string transNo)
+        public void SaveCommissionEntry(CommissionMobile item, string entryBy, string toCatId, string fromCatId, string entrybrCode,string transNo)
         {
-             _FundTransferRepository.SaveCommissionEntry(item,  entryBy,  toCatId, entrybrCode, transNo);
+             _FundTransferRepository.SaveCommissionEntry(item,  entryBy,  toCatId, fromCatId, entrybrCode, transNo);
         }
 
         public string CheckPendingApproval()

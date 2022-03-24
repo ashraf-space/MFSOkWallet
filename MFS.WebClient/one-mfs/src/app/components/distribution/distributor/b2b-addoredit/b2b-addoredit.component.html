@@ -16,16 +16,14 @@
 							<br />
 							<span class="ui-float-label ">
 								<p-inputMask mask="99999999999" [(ngModel)]="regInfoModel.mphone" pKeyFilter="int" [style]="{'width':'100%'}" [disabled]="isEditMode" (change)="checkMphoneAlreadyExist()"></p-inputMask>
-								<label for="float-input input-lg" class="col-form-label"> Distributor AC No<span class="mandatory">*</span></label>
+								<label for="float-input input-lg" class="col-form-label">B2B Master Distributor AC No<span class="mandatory">*</span></label>
 							</span>
 							<p-message *ngIf="(regInfoModel.mphone==null || regInfoModel.mphone=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
 						<div class="p-col-4">
-							<br />
-							<span class="ui-float-label ">
-								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.formSerial" pInputText id="float-input">
-								<label for="float-input input-lg">Form Serial No </label>
-							</span>
+							<label for="float-input input-lg" class="col-form-label-dd">Commission Share %<span class="mandatory">*</span></label>
+							<input autocomplete="off" type="text" class="form-control" [disabled]="isEditMode" [(ngModel)]="regInfoModel.schargePer" pKeyFilter="int" pInputText id="float-input">
+							<p-message *ngIf="(regInfoModel.schargePer==null || regInfoModel.schargePer=='') && error " severity="error" text="Cannot be left blank"></p-message>
 						</div>
 						<div class="p-col-4">
 							<br />
@@ -409,7 +407,63 @@
 				</div>
 
 			</p-card>
+			<p-card [style]="{'margin-bottom':'20px'}">
+				<div class="form-group">
+					<h6 class="form-header">Other Bank Information</h6>
+					<div class="p-grid">
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.eftAccName" uppercase maxlength="50" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Account Name</label>
+							</span>
+						</div>
 
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [disabled]="disabledEdit" [(ngModel)]="regInfoModel.eftAccNo" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Account No</label>
+							</span>
+						</div>
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label">Bank Name</label>
+							<p-dropdown [options]="merchantBankBranchList" [(ngModel)]="regInfoModel.eftBankCode" placeholder="Select Bank"
+										[filter]="true" filterBy="label,value.name" (onChange)="getDistrictByBank()" [showClear]="true"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label">District</label>
+							<p-dropdown [options]="bankDistrictList" [(ngModel)]="regInfoModel.eftDistCode" placeholder="Select District"
+										[filter]="true" filterBy="label,value.name" (onChange)="getBankBranchListByBankCodeAndDistCode()"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+					</div>
+
+					<div class="p-grid">
+						<div class="p-col-6">
+							<label for="float-input input-lg" class="col-form-label-dd">Branch Name </label>
+							<p-dropdown [options]="bankBranchByDistBankCodeList" [(ngModel)]="regInfoModel.eftBranchCode"
+										[filter]="true" filterBy="label,value.name" placeholder="Select Branch"
+										(onChange)="getRoutingNo()"
+										[style]="{display: 'grid'}" [disabled]="isRegistrationPermitted || disabledEdit"></p-dropdown>
+						</div>
+
+						<div class="p-col-6">
+							<br />
+							<span class="ui-float-label ">
+								<input autocomplete="off" type="text" class="form-control" [(ngModel)]="regInfoModel.eftRoutingNo" [readonly]="true" pInputText id="float-input">
+								<label for="float-input input-lg" class="col-form-label">Routing No</label>
+							</span>
+						</div>
+					</div>
+
+				</div>
+			</p-card>
 		</div>
 
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MFS.ClientService.Models;
+using MFS.ClientService.Service;
 using MFS.CommunicationService.Service;
 using MFS.SecurityService.Models;
 using MFS.SecurityService.Service;
@@ -25,18 +27,20 @@ namespace OneMFS.SecurityApiServer.Controllers
         public IMerchantUserService merchantUsersService;
         private IErrorLogService errorLogService;
         private readonly IAuditTrailService _auditTrailService;
+        public IEmailService emailService;
         public ApplicationUserController(IMerchantUserService _merchantUserService, IErrorLogService _errorLogService,
-            IApplicationUserService _usersService, IAuditTrailService objAuditTrailService)
+            IApplicationUserService _usersService, IAuditTrailService objAuditTrailService, IEmailService _emailService)
         {
             usersService = _usersService;
             errorLogService = _errorLogService;
             merchantUsersService = _merchantUserService;
             _auditTrailService = objAuditTrailService;
+            emailService = _emailService;
         }
 
         [HttpGet]
         [Route("GetAllApplicationUserList")]
-        public object GetAllApplicationUserList(string roleName=null)
+        public object GetAllApplicationUserList(string roleName = null)
         {
             try
             {
@@ -127,7 +131,7 @@ namespace OneMFS.SecurityApiServer.Controllers
 
         [HttpPost]
         [Route("ChangePassword")]
-        public object ChangePassword(string passwordChangedBy,[FromBody]ChangePasswordModel model)
+        public object ChangePassword(string passwordChangedBy, [FromBody]ChangePasswordModel model)
         {
             try
             {
@@ -394,6 +398,74 @@ namespace OneMFS.SecurityApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+
+        [HttpGet]
+        [Route("CheckExistingEmailId")]
+        public object CheckExistingEmailId(string emailId)
+        {
+            try
+            {
+                var data = usersService.SingleOrDefaultByCustomField(emailId, "email_id", new ApplicationUser());
+                if (data != null && data.Id != 0)
+                {
+                    return "data exist";
+                }
+                else
+                {
+                    return "no previous data";
+                }
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("CheckExistingMobileNo")]
+        public object CheckExistingMobileNo(string mobileNo)
+        {
+            try
+            {
+                var data = usersService.SingleOrDefaultByCustomField(mobileNo, "mobile_no", new ApplicationUser());
+                if (data != null && data.Id != 0)
+                {
+                    return "data exist";
+                }
+                else
+                {
+                    return "no previous data";
+                }
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("CheckExistingEmployeeId")]
+        public object CheckExistingEmployeeId(string employeeId)
+        {
+            try
+            {
+                var data = usersService.SingleOrDefaultByCustomField(employeeId, "employee_id", new ApplicationUser());
+                if (data != null && data.Id != 0)
+                {
+                    return "data exist";
+                }
+                else
+                {
+                    return "no previous data";
+                }
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+
         [HttpGet]
         [Route("GetAppUserListDdl")]
         public object GetAppUserListDdl()
@@ -421,5 +493,77 @@ namespace OneMFS.SecurityApiServer.Controllers
                 return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
             }
         }
+
+        [HttpPost]
+        [Route("ChangeEmail")]
+        public object ChangeEmail(string passwordChangedBy, [FromBody]ChangeEmailModel model)
+        {
+            try
+            {
+                ApplicationUser userDetails = usersService.SingleOrDefault(model.ApplicationUserId, new ApplicationUser());
+                userDetails.UpdatedBy = passwordChangedBy;
+                userDetails.ChangePassDt = DateTime.Now;
+                return usersService.UpdateEmail(passwordChangedBy, model);
+
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+
+            }
+        }
+
+        [HttpPost]
+        [Route("ResetPasswordForForgot")]
+        public object ResetPasswordForForgot([FromBody]ForgotPassReset model)
+        {
+            try
+            {
+                //var modelToChange = usersService.SingleOrDefault(model.Id, new ApplicationUser());
+                var modelToChange = usersService.SingleOrDefaultByCustomField(model.UserName, "username", new ApplicationUser());
+                modelToChange = generateSecuredCredentials(modelToChange);
+                modelToChange.Pstatus = "N";
+                modelToChange = usersService.Update(modelToChange);                
+
+                Email objEmail = new Email();
+                objEmail.EMAIL = model.OfficialEmail;
+                objEmail.TEMPLETE = "2";
+                //objEmail.DATA1 = "Password Reset";
+                objEmail.DATA1 = modelToChange.PlainPassword;
+                //objEmail.DATA2 = "Your password for OKWallet Application User has been reset and password is " + modelToChange.PlainPassword;
+                emailService.SendVeriCodeToEmail(objEmail);
+
+                ApplicationUser prevModel = new ApplicationUser();
+                prevModel = modelToChange;
+                prevModel.Pstatus = "L";
+
+                //Insert into audit trial audit and detail                   
+                _auditTrailService.InsertUpdatedModelToAuditTrail(modelToChange, prevModel, model.UserName, 7, 4, "Application User", modelToChange.Username, "Password Reset Successfully!");
+
+                return modelToChange;
+            }
+            catch (Exception ex)
+            {
+                return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+            }
+        }
+
+        [HttpGet]
+        [Route("CheckingFields")]
+        public bool CheckingFields(string field, string userName, string employeeId, string mobileNo)
+        //public object CheckingFields(string field, [FromBody]ForgotPassReset model)
+        {
+            try
+            {
+                return usersService.CheckingFields(field, userName, employeeId, mobileNo);
+            }
+            catch (Exception ex)
+            {
+                // return errorLogService.InsertToErrorLog(ex, MethodBase.GetCurrentMethod().Name, Request.Headers["UserInfo"].ToString());
+                return false;
+            }
+        }
+
+
     }
 }

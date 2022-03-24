@@ -1,11 +1,11 @@
 <div class="form-group">
 	<div class="p-grid">
-		<div class="p-col-6">
+		<div class="p-col-4">
 			<label for="float-input input-lg" class="col-form-label">Account No</label>
 			<input autocomplete="off" type="text" class="form-control form-input" (change)="disabledDatepicker()"
 				   [(ngModel)]="model.accNo" pInputText />
 		</div>
-		<div class="p-col-6">
+		<div class="p-col-4">
 			<label for="float-input" class="col-form-label">Registration Status <span class="mandatory">*</span></label>
 			<p-dropdown [options]="statusList" placeholder="Select Category" [disabled]="isOkAccExist" [(ngModel)]="model.regStatus"
 						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
@@ -18,7 +18,7 @@
 
 		</div>
 
-		<div class="p-col-4">
+		<div class="p-col-3">
 			<label for="float-input" class="col-form-label">From <span class="mandatory">*</span></label>
 			<div class="input-group">
 				<input class="form-control" placement="down" [disabled]="isOkAccExist" [readonly]="true" placeholder="From"
@@ -26,13 +26,25 @@
 					   id="float-input">
 			</div>
 		</div>
-		<div class="p-col-4">
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">From Hour<span class="mandatory">*</span></label>
+			<p-dropdown [options]="hourList" placeholder="Select Hour" [disabled]="isOkAccExist" [(ngModel)]="model.fromHour"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
+		</div>
+		<div class="p-col-3">
 			<label for="float-input" class="col-form-label">To <span class="mandatory">*</span></label>
 			<div class="input-group">
 				<input class="form-control" placement="down" [disabled]="isOkAccExist" [readonly]="true" placeholder="To"
 					   name="dp" [(ngModel)]="model.toDate" ngbDatepicker #h="ngbDatepicker"
 					   (click)="h.toggle()" id="float-input">
 			</div>
+		</div>
+		<div class="p-col-3">
+			<label for="float-input" class="col-form-label">To Hour<span class="mandatory">*</span></label>
+			<p-dropdown [options]="hourList" placeholder="Select Hour" [disabled]="isOkAccExist" [(ngModel)]="model.toHour"
+						[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
+
 		</div>
 
 	</div>

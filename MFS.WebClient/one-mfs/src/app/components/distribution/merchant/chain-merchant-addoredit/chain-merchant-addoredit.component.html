@@ -14,7 +14,7 @@
 								id="float-input"></p-dropdown>
 					<p-message *ngIf="(selectedChainMerchant == '0') && error" severity="error" text="Cannot be left blank"></p-message>
 				</div>
-
+				
 				<div class="p-col-4">
 					<br />
 					<span class="ui-float-label ">
@@ -37,9 +37,10 @@
 			</div>
 
 			<div class="p-grid">
+				
 				<div class="p-col-6">
 					<label for="float-input input-lg" class="col-form-label-dd">Photo Id Type<span class="mandatory">*</span></label>
-					<p-dropdown [options]="photoIDTypeList" placeholder="Select Type" 
+					<p-dropdown [options]="photoIDTypeList" placeholder="Select Type"
 								[(ngModel)]="regInfoModel.photoIdTypeCode" [disabled]="isRegistrationPermitted"
 								[filter]="true" filterBy="label,value.name" [style]="{display: 'grid'}"></p-dropdown>
 
@@ -49,7 +50,7 @@
 				<div class="p-col-6">
 					<br />
 					<span class="ui-float-label ">
-						<input type="text" class="form-control" [(ngModel)]="regInfoModel.photoId"  (change)="checkPhotoIdLength()" pInputText id="float-input">
+						<input type="text" class="form-control" [(ngModel)]="regInfoModel.photoId" (change)="checkPhotoIdLength()" pInputText id="float-input">
 						<label for="float-input input-lg" class="col-form-label">Photo ID No <span class="mandatory">*</span></label>
 					</span>
 					<p-message *ngIf="(regInfoModel.photoId==null || regInfoModel.photoId=='') && error " severity="error" text="Cannot be left blank"></p-message>
@@ -85,7 +86,7 @@
 
 			<div class="p-grid">
 				<div class="p-col-4">
-					<label for="float-input input-lg" class="col-form-label-dd">Outlet Name</label>
+					<label for="float-input input-lg" class="col-form-label-dd">Outlet Name<span class="mandatory">*</span></label>
 					<input type="text" class="form-control" [(ngModel)]="regInfoModel.companyName"
 						   pInputText id="float-input">
 					<p-message *ngIf="(regInfoModel.companyName==null || regInfoModel.companyName=='') && error "
